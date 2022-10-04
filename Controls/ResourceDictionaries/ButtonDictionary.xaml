@@ -1,0 +1,63 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ColorDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/FontDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <Style x:Key="{x:Type c:SatisfactoryButton}" TargetType="{x:Type c:SatisfactoryButton}">
+        <Setter Property="MinHeight" Value="20" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FontFamily" Value="{StaticResource BaseFontFamily}" />
+        <Setter Property="FontSize" Value="{StaticResource BaseFontSize}" />
+        <Setter Property="FontStretch" Value="{StaticResource BaseFontStretch}" />
+        <Setter Property="FontWeight" Value="{StaticResource BaseFontWeight}" />
+        <Setter Property="FrameworkElement.UseLayoutRounding" Value="True" />
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
+        <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
+        <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
+        <Setter Property="Background" Value="#00FFFFFF" />
+        <Setter Property="Foreground" Value="#FFFFFFFF" />
+        <Setter Property="c:SatisfactoryButton.HoverColor" Value="{StaticResource SecondaryColor}" />
+        <Setter Property="Padding" Value="10,5,10,5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:SatisfactoryButton}">
+                    <Grid HorizontalAlignment="{TemplateBinding HorizontalAlignment}" VerticalAlignment="{TemplateBinding VerticalAlignment}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" CornerRadius="{TemplateBinding CornerRadius}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Margin="{TemplateBinding Padding}" />
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="true">
+                            <Setter Property="Background" Value="{Binding HoverColor, RelativeSource={RelativeSource Self}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="RoundedButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource {x:Type c:SatisfactoryButton}}">
+        <Setter Property="c:SatisfactoryButton.CornerRadius" Value="3" />
+    </Style>
+
+    <Style x:Key="RoundedSecondaryButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource RoundedButton}">
+        <Setter Property="Background" Value="{StaticResource SecondaryColor}" />
+        <Setter Property="c:SatisfactoryButton.HoverColor" Value="{StaticResource SecondaryLightColor}" />
+    </Style>
+
+    <Style x:Key="LargeRoundedButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource RoundedButton}">
+        <Setter Property="FontSize" Value="{StaticResource LargeFontSize}" />
+        <Setter Property="FontWeight" Value="{StaticResource LargeFontWeight}" />
+    </Style>
+
+    <Style x:Key="LargeRoundedSecondaryButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource LargeRoundedButton}">
+        <Setter Property="Background" Value="{StaticResource SecondaryColor}" />
+        <Setter Property="c:SatisfactoryButton.HoverColor" Value="{StaticResource SecondaryLightColor}" />
+    </Style>
+
+</ResourceDictionary>

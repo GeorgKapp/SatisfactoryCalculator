@@ -1,0 +1,15 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ColorDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/FontDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ScrollBarDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ButtonDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/TextBoxDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/TextBlockDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ItemsControlDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ListViewDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/SpinnerDictionary.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
+</ResourceDictionary>

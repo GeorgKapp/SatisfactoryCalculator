@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                    xmlns:s="clr-namespace:System;assembly=mscorlib">
+
+    <FontFamily x:Key="BaseFontFamily">Roboto</FontFamily>
+    <FontWeight x:Key="BaseFontWeight">Light</FontWeight>
+    <FontWeight x:Key="LargeFontWeight">SemiBold</FontWeight>
+    <FontStretch x:Key="BaseFontStretch">Expanded</FontStretch>
+
+    <s:Double x:Key="SmallFontSize">14</s:Double>
+    <s:Double x:Key="BaseFontSize">18</s:Double>
+    <s:Double x:Key="MediumFontSize">25</s:Double>
+    <s:Double x:Key="LargeFontSize">30</s:Double>
+
+</ResourceDictionary>

@@ -50,4 +50,9 @@ public class ConfigurationModel : ObservableObject
         get => _lastSyncDate;
         set => SetProperty(ref _lastSyncDate, value);
     }
+
+    public Dictionary<string, BuildingModel> BuildingDictionary { get; set; } = new();
+    public Dictionary<string, ItemModel> ItemDictionary { get; set; } = new();
+    public Dictionary<string, ItemRecipeModel> ItemRecipesDictionary { get; set; } = new();
+    public Dictionary<string, ItemRecipeModel> BuildingRecipesDictionary { get; set; } = new();
 }

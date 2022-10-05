@@ -17,7 +17,7 @@ internal class ItemsViewModel : ObservableObject
             }
             else
             {
-                var itemInRecipeModel = _applicationState.ItemRecipesDictionary[value.ClassName];
+                var itemInRecipeModel = _applicationState.Configuration.ItemRecipesDictionary[value.ClassName];
                 SelectedItemAsIngredientInRecipes = new ObservableCollection<RecipeModel>(itemInRecipeModel.ContainedAsIngredient);
                 SelectedItemAsBuildingIngredientInRecipes = new ObservableCollection<RecipeModel>(itemInRecipeModel.ContainedAsBuildingIngredient);
                 SelectedItemAsProductInRecipes = new ObservableCollection<RecipeModel>(itemInRecipeModel.ContainedAsProduct);

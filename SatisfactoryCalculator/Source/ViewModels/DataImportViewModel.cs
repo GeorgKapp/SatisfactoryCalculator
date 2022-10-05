@@ -1,3 +1,7 @@
+using SatisfactoryCalculator.Services.DataAccess;
+using SatisfactoryCalculator.Source.ApplicationServices.MappingService;
+using System.Configuration;
+
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class DataImportViewModel : ObservableObject
@@ -53,49 +57,44 @@ internal class DataImportViewModel : ObservableObject
 
     private async Task LoadData()
 	{
-		try
-		{
-			await Task.Run(async () =>
-			{
-				IsLoading = true;
-				var progress = new ExtendedProgress<string>(ReportMessage);
+        try
+        {
+            await Task.Run(async () =>
+            {
+                IsLoading = true;
+                var progress = new ExtendedProgress<string>(ReportMessage);
 
-				var result = await _docsParserService.ParseDocsJsonAsync(DocsJsonFilePath, progress, _cancellationTokenSource.Token);
-				if (!result.IsSuccess)
-				{
+                var result = await _docsParserService.ParseDocsJsonAsync(DocsJsonFilePath, progress, _cancellationTokenSource.Token);
+                if (!result.IsSuccess)
+                {
                     ReportMessage("Error occured: Error copied to clipboard");
-					_clipBoardService.CopyToClipboard(result.Error);
-					return;
-				}
+                    _clipBoardService.CopyToClipboard(result.Error);
+                    return;
+                }
 
-				var data = await _dataModelImageCreateService.CreateImagesAsync(result.Content, UeModelExportDirectoryPath, progress, _cancellationTokenSource.Token);
-				var configurationModel = _mappingService.MapToConfigurationModel(data, progress, _cancellationTokenSource.Token);
+                var data = await _dataModelImageCreateService.CreateImagesAsync(result.Content, UeModelExportDirectoryPath, progress, _cancellationTokenSource.Token);
+                var mappingResult = _mappingService.MapToConfigurationModel(data, progress, _cancellationTokenSource.Token);
 
-				_applicationState.Data = data;
-				_applicationState.Configuration ??= new();
-				_applicationState.Configuration.Items = configurationModel.Items;
-				_applicationState.Configuration.Buildings = configurationModel.Buildings;
-				_applicationState.Configuration.Recipes = configurationModel.Recipes;
-				_applicationState.Configuration.LastSyncDate = configurationModel.LastSyncDate;
+                _applicationState.Data = data;
+                _applicationState.SetConfig(mappingResult);
 
-				_applicationState.BuildDictionariesAndMappingWhichIsReallyNotGoodBecauseItShouldBeDoneInTheMappingServiceAsAMappingResultWhichContainsDictionaries();
-				Settings.Default.Save();
-			});
-		}
-		catch (OperationCanceledException)
-		{
-		}
-		catch (Exception ex2)
-		{
-			ReportMessage("Exception occured: Exception copied to clipboard");
-			_clipBoardService.CopyToClipboard(ex2.ToString());
-		}
-		finally
-		{
-			_cancellationTokenSource.Dispose();
-			_cancellationTokenSource = new CancellationTokenSource();
-			IsLoading = false;
-		}
+                Settings.Default.Save();
+            });
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch (Exception ex2)
+        {
+            ReportMessage("Exception occured: Exception copied to clipboard");
+            _clipBoardService.CopyToClipboard(ex2.ToString());
+        }
+        finally
+        {
+            _cancellationTokenSource.Dispose();
+            _cancellationTokenSource = new CancellationTokenSource();
+            IsLoading = false;
+        }
 	}
 
 	private void CancelLoadData()

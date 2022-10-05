@@ -220,23 +220,23 @@ public partial class DocsParserService
         return recipe;
     }
 
-    private CustomizationRecipe[] ParseCustomizationRecipes(Class2[] classes2, Dictionary<string, Class2> classesDictionary)
+    private CustomizationRecipe[] ParseCustomizationRecipes(Class2[] classes2)
     {
         return classes2
-            .Select(p => ParseCustomizationRecipe(p, classesDictionary))
+            .Select(p => ParseCustomizationRecipe(p))
             .ToArray();
     }
 
-    private CustomizationRecipe ParseCustomizationRecipe(Class2 class2, Dictionary<string, Class2> classesDictionary)
+    private CustomizationRecipe ParseCustomizationRecipe(Class2 class2)
     {
         var array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
-        
-        var constructedByBuildGun = array.Contains("BuildGun_C");
+
+        var constructedByBuildGun = array.Contains("BuildGun_C") || array.Contains("FGBuildGun");
         var constructedInWorkshop = array.Contains("WorkshopComponent_C");
         var constructedInWorkbench = array.Contains("WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C");
-        
-        array = array.Except("BuildGun_C", "WorkshopComponent_C", "WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C").ToArray();
-       
+
+        array = array.Except("BuildGun_C", "FGBuildGun", "WorkshopComponent_C", "WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C").ToArray();
+
         CustomizationRecipe customizationRecipe = new CustomizationRecipe
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
@@ -258,18 +258,10 @@ public partial class DocsParserService
         double factor = 60.0 / customizationRecipe.ManufactoringDuration;
 
         foreach (Reference ingredient in customizationRecipe.Ingredients)
-        {
-            var form = StringToEnumParseUtility.ParseFormStringToEnum(classesDictionary[ingredient.ClassName].mForm);
-            ingredient.Amount = form != Form.Solid ? ingredient.Amount / 1000.0 : ingredient.Amount;
             ingredient.AmountPerMinute = ingredient.Amount * factor;
-        }
 
         foreach (Reference product in customizationRecipe.Products)
-        {
-            var form = StringToEnumParseUtility.ParseFormStringToEnum(classesDictionary[product.ClassName].mForm);
-            product.Amount = form != Form.Solid ? product.Amount / 1000.0 : product.Amount;
             product.AmountPerMinute = product.Amount * factor;
-        }
 
         return customizationRecipe;
     }

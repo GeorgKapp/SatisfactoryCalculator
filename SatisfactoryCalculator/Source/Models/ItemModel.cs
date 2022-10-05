@@ -5,7 +5,7 @@ public class ItemModel
     public string ClassName { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public Form Form { get; set; }
+    public Form? Form { get; set; }
 
     private string _imagePath;
     public string ImagePath

@@ -1,3 +1,5 @@
+using SatisfactoryCalculator.Source.ApplicationServices.MappingService;
+
 namespace SatisfactoryCalculator.Source.DependencyInjection;
 
 internal static class ServiceExtensions
@@ -62,7 +64,7 @@ internal static class ServiceExtensions
 			.AddSingleton<BuildingsViewModel>()
 			.AddSingleton<ItemsViewModel>()
 			.AddSingleton<RecipesViewModel>()
-			.AddSingleton<OverviewViewModel>()
+			.AddTransient<OverviewViewModel>()
 			.AddSingleton<DataImportViewModel>();
 
 		return services;

@@ -76,9 +76,7 @@ internal class DataImportViewModel : ObservableObject
                 Settings.Default.Save();
             });
         }
-        catch (OperationCanceledException)
-        {
-        }
+        catch (OperationCanceledException) { }
         catch (Exception exception)
         {
             ReportMessage("Exception occured: Exception copied to clipboard");

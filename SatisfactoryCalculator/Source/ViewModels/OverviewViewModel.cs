@@ -7,7 +7,7 @@ internal class OverviewViewModel : ObservableObject
 	public int RecipeAmount => _applicationState.Configuration.Recipes.Count;
 	public DateTime? LastSyncDate => _applicationState.Configuration.LastSyncDate;
 
-	public OverviewViewModel(ApplicationState applicationState, ClipBoardService clipBoardService)
+	public OverviewViewModel(ApplicationState applicationState)
 	{
 		_applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
 		NotifyChanges();

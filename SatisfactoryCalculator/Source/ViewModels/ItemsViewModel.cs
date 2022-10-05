@@ -71,10 +71,10 @@ internal class ItemsViewModel : ObservableObject
         Notify(nameof(Items));
     }
 
-    private Thickness CalculateMargin(bool isPreviousControlVisible)
-    {
-        return isPreviousControlVisible ? new Thickness(-10, 50, 0, 0) : new Thickness(-10, 0, 0, 0);
-    }
+    private Thickness CalculateMargin(bool isPreviousControlVisible) => 
+        isPreviousControlVisible
+            ? new Thickness(-10, 50, 0, 0)
+            : new Thickness(-10, 0, 0, 0);
 
     private void NotifyMarginUpdates()
     {

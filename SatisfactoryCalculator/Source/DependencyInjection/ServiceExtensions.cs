@@ -1,5 +1,3 @@
-using SatisfactoryCalculator.Source.ApplicationServices.MappingService;
-
 namespace SatisfactoryCalculator.Source.DependencyInjection;
 
 internal static class ServiceExtensions

@@ -9,6 +9,20 @@ internal class MainViewModel : ObservableObject
 		set => SetProperty(ref _currentPage, value);
 	}
 
+    private bool _isInitializing;
+    public bool IsInitializing
+    {
+        get => _isInitializing;
+        set => SetProperty(ref _isInitializing, value);
+    }
+
+    private string _initializingText;
+    public string InitializingText
+    {
+        get => _initializingText;
+        set => SetProperty(ref _initializingText, value);
+    }
+
     private ICommand _showBuildingsCommand;
     public ICommand ShowBuildingsCommand => _showBuildingsCommand ??= new SimpleCommand(new Action(ShowBuildings));
 
@@ -27,12 +41,13 @@ internal class MainViewModel : ObservableObject
     private ICommand _saveCommand;
     public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(new Action(Save));
 
-	public MainViewModel(ApplicationState applicationState, JsonService jsonService, ViewModelViewLinker viewModelViewLinker)
+	public MainViewModel(ApplicationState applicationState, JsonService jsonService, ViewModelViewLinker viewModelViewLinker, DataModelMappingService dataModelMappingService)
 	{
 		_applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
 		_viewModelViewLinker = viewModelViewLinker ?? throw new ArgumentNullException(nameof(viewModelViewLinker));
-	}
+        _dataModelMappingService = dataModelMappingService ?? throw new ArgumentNullException(nameof(dataModelMappingService));
+    }
 
 	private void ShowBuildings() => CurrentPage = _viewModelViewLinker.GetPageByType<BuildingsPage>();
 	private void ShowItems() => CurrentPage = _viewModelViewLinker.GetPageByType<ItemsPage>();
@@ -46,8 +61,23 @@ internal class MainViewModel : ObservableObject
 		_jsonService.WriteJson(_applicationState.Data, Constants.InformationFileName);
 	}
 
+    public async Task Load()
+    {
+        IsInitializing = true;
+        InitializingText = "Initializing";
+
+        var data = await _jsonService.ReadJsonAsync<Data>(Constants.InformationFileName);
+        var mappedData = _dataModelMappingService.MapToConfigurationModel(data);
+
+        _applicationState.SetConfig(data, mappedData);
+
+        IsInitializing = false;
+        InitializingText = string.Empty;
+    }
+
     private ApplicationState _applicationState;
 
     private readonly JsonService _jsonService;
     private readonly ViewModelViewLinker _viewModelViewLinker;
+    private readonly DataModelMappingService _dataModelMappingService;
 }

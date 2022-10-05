@@ -1,7 +1,3 @@
-using SatisfactoryCalculator.Services.DataAccess;
-using SatisfactoryCalculator.Source.ApplicationServices.MappingService;
-using System.Configuration;
-
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class DataImportViewModel : ObservableObject
@@ -68,15 +64,14 @@ internal class DataImportViewModel : ObservableObject
                 if (!result.IsSuccess)
                 {
                     ReportMessage("Error occured: Error copied to clipboard");
+                    await Task.Delay(1000);
                     _clipBoardService.CopyToClipboard(result.Error);
                     return;
                 }
 
                 var data = await _dataModelImageCreateService.CreateImagesAsync(result.Content, UeModelExportDirectoryPath, progress, _cancellationTokenSource.Token);
                 var mappingResult = _mappingService.MapToConfigurationModel(data, progress, _cancellationTokenSource.Token);
-
-                _applicationState.Data = data;
-                _applicationState.SetConfig(mappingResult);
+                _applicationState.SetConfig(data, mappingResult);
 
                 Settings.Default.Save();
             });
@@ -84,10 +79,11 @@ internal class DataImportViewModel : ObservableObject
         catch (OperationCanceledException)
         {
         }
-        catch (Exception ex2)
+        catch (Exception exception)
         {
             ReportMessage("Exception occured: Exception copied to clipboard");
-            _clipBoardService.CopyToClipboard(ex2.ToString());
+            await Task.Delay(1000);
+            _clipBoardService.CopyToClipboard(exception.ToString());
         }
         finally
         {
@@ -109,7 +105,7 @@ internal class DataImportViewModel : ObservableObject
 
     private void ReportMessage(string report)
     {
-
+        Report = report;
     }
 
     private ApplicationState _applicationState;

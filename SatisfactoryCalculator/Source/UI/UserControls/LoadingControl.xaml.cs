@@ -16,6 +16,13 @@ public partial class LoadingControl : UserControl
     }
     public static readonly DependencyProperty IsLoadingProperty = DependencyProperty.Register(nameof(IsLoading), typeof(bool), typeof(LoadingControl));
 
+    public bool AllowCancel
+    {
+        get => (bool)GetValue(AllowCancelProperty);
+        set => SetValue(AllowCancelProperty, value);
+    }
+    public static readonly DependencyProperty AllowCancelProperty = DependencyProperty.Register(nameof(AllowCancel), typeof(bool), typeof(LoadingControl), new PropertyMetadata(true));
+
     public ICommand CancelCommand
     {
         get => (ICommand)GetValue(CancelCommandProperty);

@@ -7,7 +7,7 @@
     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
         <c:Spinner Name="loadingSpinner" Style="{StaticResource LargeSpinner}" IsSpinning="{Binding IsLoading, ElementName=userControl}" />
         <c:SatisfactoryTextBlock HorizontalAlignment="Center" Margin="0,10,0,0" Text="{Binding Report, ElementName=userControl}" />
-        <c:SatisfactoryButton Content="Cancel" Style="{StaticResource LargeRoundedSecondaryButton}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="0,30,0,0" Command="{Binding CancelCommand, ElementName=userControl}" Width="{Binding Diameter, ElementName=loadingSpinner}" />
+        <c:SatisfactoryButton Content="Cancel" Style="{StaticResource LargeRoundedSecondaryButton}" Visibility="{Binding AllowCancel, ElementName=userControl, Converter={StaticResource StandardBooleanToVisibilityConverter}}" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="0,30,0,0" Command="{Binding CancelCommand, ElementName=userControl}" Width="{Binding Diameter, ElementName=loadingSpinner}" />
     </StackPanel>
     
 </UserControl>

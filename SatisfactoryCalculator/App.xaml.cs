@@ -6,6 +6,10 @@ public partial class App : Application
 
     private void OnStartup(object sender, StartupEventArgs e)
     {
-        ServiceHost.Provider.GetRequiredService<ViewModelViewLinker>().GetViewByType<MainView>().Show();
+        var mainViewModel = ServiceHost.Provider.GetRequiredService<MainViewModel>();
+        var mainView = ServiceHost.Provider.GetRequiredService<MainView>();
+        mainView.DataContext = mainViewModel;
+        mainView.Show();
+        Task.Run(() => mainViewModel.Load());
     }
 }

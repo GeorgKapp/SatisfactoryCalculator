@@ -54,12 +54,27 @@ internal class ApplicationState : ObservableObject
 				recipe.Buildings = recipe.Buildings.Add(ToRecipeBuildingModel(BuildingDictionary["Workshop_C"]));
 
 			foreach (var ingredient in recipe.Ingredients)
+			{
 				ingredient.Item = ItemDictionary[ingredient.ItemName];
+				if (ingredient.Item.Form != Form.Solid)
+				{
+					ingredient.StackSize /= 1000;
+					ingredient.AmountPerMinute /= 1000;
+				}
+			}
 
 			foreach (var product in recipe.Products)
+			{
 				product.Item = ItemDictionary.ContainsKey(product.ItemName)
 					? ItemDictionary[product.ItemName]
 					: MapToItemModel(BuildingDictionary[product.ItemName]);
+
+                if (product.Item.Form != Form.Solid)
+                {
+                    product.StackSize /= 1000;
+                    product.AmountPerMinute /= 1000;
+                }
+            }
 
 			foreach (var building in recipe.Buildings)
 				building.Building = BuildingDictionary[building.BuildingName];

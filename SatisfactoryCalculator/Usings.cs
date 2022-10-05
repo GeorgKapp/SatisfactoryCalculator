@@ -32,3 +32,4 @@ global using System.Windows.Controls;
 global using System.Windows.Data;
 global using System.Windows.Input;
 global using System.Windows.Media.Imaging;
+global using SatisfactoryCalculator.Shared.Enums;

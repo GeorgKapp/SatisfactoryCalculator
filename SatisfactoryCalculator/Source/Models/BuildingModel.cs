@@ -5,6 +5,7 @@ public class BuildingModel
     public string ClassName { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
+    public Form? Form { get; set; }
     public double? PowerConsumption { get; set; }
     public PowerConsumptionRange? PowerConsumptionRange { get; set; }
 

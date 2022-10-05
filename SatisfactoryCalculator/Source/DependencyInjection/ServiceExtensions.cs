@@ -58,12 +58,12 @@ internal static class ServiceExtensions
 	private static ServiceCollection AddViewModels(this ServiceCollection services)
 	{
 		services
-			.AddTransient<MainViewModel>()
-			.AddTransient<BuildingsViewModel>()
-			.AddTransient<ItemsViewModel>()
-			.AddTransient<RecipesViewModel>()
-			.AddTransient<OverviewViewModel>()
-			.AddTransient<DataImportViewModel>();
+			.AddSingleton<MainViewModel>()
+			.AddSingleton<BuildingsViewModel>()
+			.AddSingleton<ItemsViewModel>()
+			.AddSingleton<RecipesViewModel>()
+			.AddSingleton<OverviewViewModel>()
+			.AddSingleton<DataImportViewModel>();
 
 		return services;
 	}

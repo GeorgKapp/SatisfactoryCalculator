@@ -13,44 +13,47 @@ public partial class DocsParserService
 
     private Building[] ParseBuildings(Class2[] classes2, Dictionary<string, Class2> classesDictionary)
     {
-        Dictionary<string, Class2> classesDictionary2 = classesDictionary;
-        return (from p in classes2
-                where !ExcludeBuilding(p.ClassName)
-                select ParseBuilding(p, classesDictionary2)).ToArray();
+        return classes2
+            .Where(p => !ExcludeBuilding(p.ClassName))
+            .Select(p => ParseBuilding(p, classesDictionary))
+            .ToArray();
     }
 
     private Building ParseBuilding(Class2 class2, Dictionary<string, Class2> classesDictionary)
     {
-        string text = class2.mSmallIcon;
-        string text2 = class2.mPersistentBigIcon;
-        string text3 = ClassNameParseUtility.CorrectClassNameForImageLookup(class2.ClassName);
-        if (text3 == class2.ClassName)
+        string smallIconPath = class2.mSmallIcon;
+        string bigIconPath = class2.mPersistentBigIcon;
+
+        string correctedClassName = ClassNameParseUtility.CorrectClassNameForImageLookup(class2.ClassName);
+        
+        if (correctedClassName == class2.ClassName)
         {
-            text3 = ClassNameParseUtility.ConvertClassNameToDescClassName(text3);
+            correctedClassName = ClassNameParseUtility.ConvertClassNameToDescClassName(correctedClassName);
         }
-        if (classesDictionary.ContainsKey(text3))
+        if (classesDictionary.ContainsKey(correctedClassName))
         {
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(smallIconPath))
             {
-                text = IconPathParseUtility.ReplaceSmallIconPathFromClass(classesDictionary[text3]);
+                smallIconPath = IconPathParseUtility.ReplaceSmallIconPathFromClass(classesDictionary[correctedClassName]);
             }
-            if (string.IsNullOrEmpty(text2))
+            if (string.IsNullOrEmpty(bigIconPath))
             {
-                text2 = IconPathParseUtility.ReplaceBigIconPathFromClass(classesDictionary[text3]);
+                bigIconPath = IconPathParseUtility.ReplaceBigIconPathFromClass(classesDictionary[correctedClassName]);
             }
         }
         else
         {
-            text = IconPathParseUtility.ReplaceSmallIconPathFromClass(class2);
-            text2 = IconPathParseUtility.ReplaceBigIconPathFromClass(class2);
+            smallIconPath = IconPathParseUtility.ReplaceSmallIconPathFromClass(class2);
+            bigIconPath = IconPathParseUtility.ReplaceBigIconPathFromClass(class2);
         }
+
         return new Building
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             DisplayName = class2.mDisplayName,
             Description = class2.mDescription,
-            SmallIconPath = IconPathParseUtility.ConvertIconPathToUEPath(text),
-            BigIconPath = IconPathParseUtility.ConvertIconPathToUEPath(text2),
+            SmallIconPath = IconPathParseUtility.ConvertIconPathToUEPath(smallIconPath),
+            BigIconPath = IconPathParseUtility.ConvertIconPathToUEPath(bigIconPath),
             PowerConsumption = NumberParseUtility.MapToNullableDouble(class2.mPowerConsumption),
             PowerConsumptionExponent = NumberParseUtility.MapToNullableDouble(class2.mPowerConsumptionExponent),
             ManuFacturingSpeed = NumberParseUtility.MapToNullableDouble(class2.mManufacturingSpeed),
@@ -61,7 +64,7 @@ public partial class DocsParserService
 
     private Item[] ParseItems(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseItem(p)).ToArray();
+        return classes2.Select(p => ParseItem(p)).ToArray();
     }
 
     private Item ParseItem(Class2 class2)
@@ -74,17 +77,17 @@ public partial class DocsParserService
             Form = StringToEnumParseUtility.ParseFormStringToEnum(class2.mForm),
             StackSize = StringToEnumParseUtility.ParseStackSizeStringToEnum(class2.mStackSize),
             EnergyValue = NumberParseUtility.MapToDouble(class2.mEnergyValue),
-            IsRadioActive = (string.IsNullOrEmpty(class2.mIsRadioActive) ? null : new bool?(Convert.ToBoolean(class2.mIsRadioActive))),
+            IsRadioActive = string.IsNullOrEmpty(class2.mIsRadioActive) ? null : Convert.ToBoolean(class2.mIsRadioActive),
             RadioActiveDecay = NumberParseUtility.MapToDouble(class2.mRadioactiveDecay),
             SmallIconPath = IconPathParseUtility.ConvertIconPathToUEPath(class2.mSmallIcon),
             BigIconPath = IconPathParseUtility.ConvertIconPathToUEPath(class2.mPersistentBigIcon),
-            SinkPoints = (string.IsNullOrEmpty(class2.mResourceSinkPoints) ? null : new int?(Convert.ToInt32(class2.mResourceSinkPoints)))
+            SinkPoints = string.IsNullOrEmpty(class2.mResourceSinkPoints) ? null : Convert.ToInt32(class2.mResourceSinkPoints)
         };
     }
 
     private Resource[] ParseResources(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseResource(p)).ToArray();
+        return classes2.Select(p => ParseResource(p)).ToArray();
     }
 
     private Resource ParseResource(Class2 class2)
@@ -97,7 +100,7 @@ public partial class DocsParserService
 
     private Equipment[] ParseEquipments(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseEquipment(p)).ToArray();
+        return classes2.Select(p => ParseEquipment(p)).ToArray();
     }
 
     private Equipment ParseEquipment(Class2 class2)
@@ -111,7 +114,7 @@ public partial class DocsParserService
 
     private Vehicle[] ParseVehicles(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseVehicle(p)).ToArray();
+        return classes2.Select(p => ParseVehicle(p)).ToArray();
     }
 
     private Vehicle ParseVehicle(Class2 class2)
@@ -119,14 +122,14 @@ public partial class DocsParserService
         return new Vehicle
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
-            FuelConsumption = (string.IsNullOrEmpty(class2.mFuelConsumption) ? null : new double?(NumberParseUtility.MapToDouble(class2.mFuelConsumption))),
-            InventorySize = (string.IsNullOrEmpty(class2.mInventorySize) ? null : new int?(Convert.ToInt32(class2.mInventorySize)))
+            FuelConsumption = string.IsNullOrEmpty(class2.mFuelConsumption) ? null : NumberParseUtility.MapToDouble(class2.mFuelConsumption),
+            InventorySize = string.IsNullOrEmpty(class2.mInventorySize) ? null : Convert.ToInt32(class2.mInventorySize)
         };
     }
 
     private Weapon[] ParseWeapons(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseWeapon(p)).ToArray();
+        return classes2.Select(p => ParseWeapon(p)).ToArray();
     }
 
     private Weapon ParseWeapon(Class2 class2)
@@ -143,7 +146,7 @@ public partial class DocsParserService
 
     private Ammunition[] ParseAmmunitions(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseAmmunition(p)).ToArray();
+        return classes2.Select(p => ParseAmmunition(p)).ToArray();
     }
 
     private Ammunition ParseAmmunition(Class2 class2)
@@ -160,30 +163,31 @@ public partial class DocsParserService
 
     private bool ExcludeRecipe(string className)
     {
-        return new string[3] { "Recipe_Wall_Window_8x4_03_Steel_C", "Recipe_CandyCaneBasher_C", "Recipe_PillarTop_C" }.Contains(className);
+        return new[] { "Recipe_Wall_Window_8x4_03_Steel_C", "Recipe_CandyCaneBasher_C", "Recipe_PillarTop_C" }.Contains(className);
     }
 
     private Recipe[] ParseRecipes(Class2[] classes2)
     {
-        return (from p in classes2
-                where !ExcludeRecipe(p.ClassName)
-                select ParseRecipe(p) into p
-                where p != null
-                select p).Cast<Recipe>().ToArray();
+        return classes2
+            .Where(p => !ExcludeRecipe(p.ClassName))
+            .Select(p => ParseRecipe(p))
+            .Where(p => p is not null).Cast<Recipe>()
+            .ToArray();
     }
 
     private Recipe? ParseRecipe(Class2 class2)
     {
-        string[] array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
+        var array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
         if (array.Contains("Converter_C"))
-        {
             return null;
-        }
-        bool constructedByBuildGun = array.Contains("BuildGun_C") || array.Contains("FGBuildGun");
-        bool constructedInWorkshop = array.Contains("WorkshopComponent_C");
-        bool constructedInWorkbench = array.Contains("WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C");
+
+        var constructedByBuildGun = array.Contains("BuildGun_C") || array.Contains("FGBuildGun");
+        var constructedInWorkshop = array.Contains("WorkshopComponent_C");
+        var constructedInWorkbench = array.Contains("WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C");
+        
         array = array.Except("BuildGun_C", "FGBuildGun", "WorkshopComponent_C", "WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C").ToArray();
-        Recipe recipe = new Recipe
+        
+        var recipe = new Recipe
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             DisplayName = class2.mDisplayName,
@@ -199,32 +203,40 @@ public partial class DocsParserService
             ConstructedInWorkbench = constructedInWorkbench,
             IsAlternate = class2.mDisplayName.StartsWith("Alternate")
         };
-        double num = 60.0 / recipe.ManufactoringDuration;
-        Reference[] ingredients = recipe.Ingredients;
-        foreach (Reference reference in ingredients)
+
+        double factor = 60.0 / recipe.ManufactoringDuration;
+        foreach (Reference ingredient in recipe.Ingredients)
         {
-            reference.AmountPerMinute = reference.Amount * num;
+            ingredient.Amount = ingredient.Amount;
+            ingredient.AmountPerMinute = ingredient.Amount * factor;
         }
-        Reference[] products = recipe.Products;
-        foreach (Reference reference2 in products)
+
+        foreach (Reference product in recipe.Products)
         {
-            reference2.AmountPerMinute = reference2.Amount * num;
+            product.Amount = product.Amount;
+            product.AmountPerMinute = product.Amount * factor;
         }
+
         return recipe;
     }
 
-    private CustomizationRecipe[] ParseCustomizationRecipes(Class2[] classes2)
+    private CustomizationRecipe[] ParseCustomizationRecipes(Class2[] classes2, Dictionary<string, Class2> classesDictionary)
     {
-        return classes2.Select((Class2 p) => ParseCustomizationRecipe(p)).ToArray();
+        return classes2
+            .Select(p => ParseCustomizationRecipe(p, classesDictionary))
+            .ToArray();
     }
 
-    private CustomizationRecipe ParseCustomizationRecipe(Class2 class2)
+    private CustomizationRecipe ParseCustomizationRecipe(Class2 class2, Dictionary<string, Class2> classesDictionary)
     {
-        string[] array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
-        bool constructedByBuildGun = array.Contains("BuildGun_C");
-        bool constructedInWorkshop = array.Contains("WorkshopComponent_C");
-        bool constructedInWorkbench = array.Contains("WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C");
+        var array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
+        
+        var constructedByBuildGun = array.Contains("BuildGun_C");
+        var constructedInWorkshop = array.Contains("WorkshopComponent_C");
+        var constructedInWorkbench = array.Contains("WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C");
+        
         array = array.Except("BuildGun_C", "WorkshopComponent_C", "WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C").ToArray();
+       
         CustomizationRecipe customizationRecipe = new CustomizationRecipe
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
@@ -242,38 +254,45 @@ public partial class DocsParserService
             IsSwatchRecipe = class2.ClassName.Contains("_Swatch"),
             IsPatternRemover = class2.ClassName.Contains("_Pattern_Remover")
         };
-        double num = 60.0 / customizationRecipe.ManufactoringDuration;
-        Reference[] ingredients = customizationRecipe.Ingredients;
-        foreach (Reference reference in ingredients)
+
+        double factor = 60.0 / customizationRecipe.ManufactoringDuration;
+
+        foreach (Reference ingredient in customizationRecipe.Ingredients)
         {
-            reference.AmountPerMinute = reference.Amount * num;
+            var form = StringToEnumParseUtility.ParseFormStringToEnum(classesDictionary[ingredient.ClassName].mForm);
+            ingredient.Amount = form != Form.Solid ? ingredient.Amount / 1000.0 : ingredient.Amount;
+            ingredient.AmountPerMinute = ingredient.Amount * factor;
         }
-        Reference[] products = customizationRecipe.Products;
-        foreach (Reference reference2 in products)
+
+        foreach (Reference product in customizationRecipe.Products)
         {
-            reference2.AmountPerMinute = reference2.Amount * num;
+            var form = StringToEnumParseUtility.ParseFormStringToEnum(classesDictionary[product.ClassName].mForm);
+            product.Amount = form != Form.Solid ? product.Amount / 1000.0 : product.Amount;
+            product.AmountPerMinute = product.Amount * factor;
         }
+
         return customizationRecipe;
     }
 
     private Miner[] ParseMiners(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseMiner(p)).ToArray();
+        return classes2.Select(p => ParseMiner(p)).ToArray();
     }
 
     private Miner ParseMiner(Class2 class2)
     {
-        Miner miner = new Miner();
-        miner.ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName);
-        miner.ItemsPerCycle = Convert.ToInt32(class2.mItemsPerCycle);
-        miner.ExtractCycleTime = NumberParseUtility.MapToNullableDouble(class2.mExtractCycleTime);
-        miner.AllowedResourceForms = ((!(class2.ClassName == "Build_GeneratorGeoThermal_C")) ? MultiFormParseUtility.MapToForms(class2.mAllowedResourceForms) : new Form[1] { Form.Gas });
-        return miner;
+        return new Miner
+        {
+            ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
+            ItemsPerCycle = Convert.ToInt32(class2.mItemsPerCycle),
+            ExtractCycleTime = NumberParseUtility.MapToNullableDouble(class2.mExtractCycleTime),
+            AllowedResourceForms = class2.ClassName == "Build_GeneratorGeoThermal_C" ? new Form[1] { Form.Gas } : MultiFormParseUtility.MapToForms(class2.mAllowedResourceForms)
+        };
     }
 
     private Schematic[] ParseSchematics(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseSchematic(p)).ToArray();
+        return classes2.Select(p => ParseSchematic(p)).ToArray();
     }
 
     private Schematic ParseSchematic(Class2 class2)
@@ -286,10 +305,10 @@ public partial class DocsParserService
             TimeToComplete = NumberParseUtility.MapToNullableDouble(class2.mTimeToComplete),
             TechTier = Convert.ToInt32(class2.mTechTier),
             Type = StringToEnumParseUtility.ParseSchematicTypeStringToEnum(class2.mType),
-            SmallIconPath = (string.IsNullOrEmpty(class2.mSmallSchematicIcon) ? null : IconPathParseUtility.ReadIconPathFromSchematicIcon(class2.mSmallSchematicIcon)),
-            BigIconPath = (string.IsNullOrEmpty(class2.mSchematicIcon) ? null : IconPathParseUtility.ReadIconPathFromSchematicIcon(class2.mSchematicIcon)),
-            RelevantEvents = (string.IsNullOrEmpty(class2.mRelevantEvents) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArray(class2.mRelevantEvents)),
-            Cost = (string.IsNullOrEmpty(class2.mRelevantEvents) ? Array.Empty<Reference>() : ReferenceParseUtility.MapToReferenceWithAmountArray(class2.mCost)),
+            SmallIconPath = string.IsNullOrEmpty(class2.mSmallSchematicIcon) ? null : IconPathParseUtility.ReadIconPathFromSchematicIcon(class2.mSmallSchematicIcon),
+            BigIconPath = string.IsNullOrEmpty(class2.mSchematicIcon) ? null : IconPathParseUtility.ReadIconPathFromSchematicIcon(class2.mSchematicIcon),
+            RelevantEvents = string.IsNullOrEmpty(class2.mRelevantEvents) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArray(class2.mRelevantEvents),
+            Cost = string.IsNullOrEmpty(class2.mRelevantEvents) ? Array.Empty<Reference>() : ReferenceParseUtility.MapToReferenceWithAmountArray(class2.mCost),
             HiddenUntilDependenciesMet = Convert.ToBoolean(class2.mDependenciesBlocksSchematicAccess),
             DependenciesBlocksSchematicAccess = Convert.ToBoolean(class2.mDependenciesBlocksSchematicAccess),
             UnlocksRecipes = Array.Empty<string>(),
@@ -299,6 +318,7 @@ public partial class DocsParserService
             ItemsToGive = Array.Empty<Reference>(),
             SchematicDependencies = Array.Empty<SchematicDependency>()
         };
+
         Munlock[] mUnlocks = class2.mUnlocks;
         foreach (Munlock munlock in mUnlocks)
         {
@@ -323,37 +343,35 @@ public partial class DocsParserService
                     schematic.Emotes = ReferenceParseUtility.MapToReferenceArray(munlock.mEmotes);
                     break;
                 case "BP_UnlockScannableResource_C":
-                    schematic.UnlocksScannerResources = (string.IsNullOrEmpty(munlock.mResourcesToAddToScanner) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArray(munlock.mResourcesToAddToScanner));
-                    schematic.UnlocksScannerResourcePairs = (string.IsNullOrEmpty(munlock.mResourcePairsToAddToScanner) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArrayIgnoreIdentifiers(munlock.mResourcePairsToAddToScanner));
+                    schematic.UnlocksScannerResources = string.IsNullOrEmpty(munlock.mResourcesToAddToScanner) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArray(munlock.mResourcesToAddToScanner);
+                    schematic.UnlocksScannerResourcePairs = string.IsNullOrEmpty(munlock.mResourcePairsToAddToScanner) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArrayIgnoreIdentifiers(munlock.mResourcePairsToAddToScanner);
                     break;
                 case "BP_UnlockGiveItem_C":
                     schematic.ItemsToGive = ReferenceParseUtility.MapToReferenceWithAmountArray(munlock.mItemsToGive);
                     break;
             }
         }
-        List<SchematicDependency> list = new List<SchematicDependency>();
-        Mschematicdependency[] mSchematicDependencies = class2.mSchematicDependencies;
-        foreach (Mschematicdependency mschematicdependency in mSchematicDependencies)
+
+        List<SchematicDependency> schematicDependencies = new();
+        foreach (var mschematicdependency in class2.mSchematicDependencies)
         {
-            SchematicDependency schematicDependency = new SchematicDependency();
-            string class3 = mschematicdependency.Class;
-            string text = class3;
-            if (!(text == "BP_SchematicPurchasedDependency_C"))
-            {
-                if (text == "BP_GamePhaseReachedDependency_C")
-                {
-                    schematicDependency.SchematicDependencyType = SchematicDependencyType.GamePhaseReached;
-                }
-            }
-            else
+            SchematicDependency schematicDependency = new();
+            if (mschematicdependency.Class == "BP_SchematicPurchasedDependency_C")
             {
                 schematicDependency.Schematics = ReferenceParseUtility.MapToReferenceArray(mschematicdependency.mSchematics);
                 schematicDependency.RequireAllSchematicsToBePurchased = Convert.ToBoolean(mschematicdependency.mRequireAllSchematicsToBePurchased);
                 schematicDependency.SchematicDependencyType = SchematicDependencyType.PurchasedDependency;
             }
-            list.Add(schematicDependency);
+            else
+            {
+                if (mschematicdependency.Class == "BP_GamePhaseReachedDependency_C")
+                    schematicDependency.SchematicDependencyType = SchematicDependencyType.GamePhaseReached;
+            }
+
+            schematicDependencies.Add(schematicDependency);
         }
-        schematic.SchematicDependencies = list.ToArray();
+
+        schematic.SchematicDependencies = schematicDependencies.ToArray();
         return schematic;
     }
 
@@ -367,7 +385,7 @@ public partial class DocsParserService
         return new Generator
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
-            Fuel = ((class2.mFuel == null) ? Array.Empty<Fuel>() : ParseFuel(class2.mFuel)),
+            Fuel = class2.mFuel is null ? Array.Empty<Fuel>() : ParseFuel(class2.mFuel),
             PowerProduction = NumberParseUtility.MapToNullableDouble(class2.mPowerProduction),
             PowerProductionExponent = NumberParseUtility.MapToNullableDouble(class2.mPowerProductionExponent),
             SupplementToPowerRatio = NumberParseUtility.MapToNullableDouble(class2.mSupplementalToPowerRatio),
@@ -377,7 +395,7 @@ public partial class DocsParserService
 
     private Consumable[] ParseConsumables(Class2[] classes2)
     {
-        return classes2.Select((Class2 p) => ParseConsumable(p)).ToArray();
+        return classes2.Select(p => ParseConsumable(p)).ToArray();
     }
 
     private Consumable ParseConsumable(Class2 class2)
@@ -391,12 +409,12 @@ public partial class DocsParserService
 
     private Fuel[] ParseFuel(Mfuel[] mFuel)
     {
-        return mFuel.Select((Mfuel p) => new Fuel
+        return mFuel.Select(p => new Fuel
         {
             FuelClass = ClassNameParseUtility.CleanClassName(p.mFuelClass),
             SupplementalResourceClass = ClassNameParseUtility.CleanClassName(p.mSupplementalResourceClass),
-            ByProduct = (string.IsNullOrEmpty(p.mByproduct) ? null : ClassNameParseUtility.CleanClassName(p.mByproduct)),
-            ByProductAmount = (string.IsNullOrEmpty(p.mByproductAmount) ? null : new int?(Convert.ToInt32(p.mByproductAmount)))
+            ByProduct = string.IsNullOrEmpty(p.mByproduct) ? null : ClassNameParseUtility.CleanClassName(p.mByproduct),
+            ByProductAmount = string.IsNullOrEmpty(p.mByproductAmount) ? null : Convert.ToInt32(p.mByproductAmount)
         }).ToArray();
     }
 }

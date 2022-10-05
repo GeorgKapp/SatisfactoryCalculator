@@ -1,4 +1,4 @@
-namespace SatisfactoryCalculator.DocsServices.Enums;
+namespace SatisfactoryCalculator.Shared.Enums;
 
 public enum StackSize
 {

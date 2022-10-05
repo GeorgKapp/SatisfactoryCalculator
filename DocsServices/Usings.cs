@@ -1,11 +1,11 @@
-﻿global using SatisfactoryCalculator.DocsServices.Enums;
-global using SatisfactoryCalculator.DocsServices.Models.Base;
+﻿global using SatisfactoryCalculator.DocsServices.Models.Base;
 global using SatisfactoryCalculator.DocsServices.Models.DataModels;
 global using SatisfactoryCalculator.DocsServices.Models.JsonModels;
 global using SatisfactoryCalculator.DocsServices.Utility;
 global using SatisfactoryCalculator.Services.DataAccess;
+global using SatisfactoryCalculator.Shared.Common.Progress;
+global using SatisfactoryCalculator.Shared.Enums;
 global using SatisfactoryCalculator.Shared.Extensions;
 global using SatisfactoryCalculator.Shared.Models;
 global using SatisfactoryCalculator.Shared.Utility;
-global using SatisfactoryCalculator.Shared.Common.Progress;
 global using System.Globalization;

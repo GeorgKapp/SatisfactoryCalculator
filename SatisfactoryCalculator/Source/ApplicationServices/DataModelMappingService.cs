@@ -37,30 +37,9 @@ internal class DataModelMappingService
             ClassName = p.ClassName,
             Name = p.DisplayName,
             Description = p.Description,
+            Form = p.Form,
             ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath)
         }).ToList();
-    }
-
-    public List<ItemModel> MapToItemModels(List<Building> buildings)
-    {
-        return buildings.Select(p => new ItemModel
-        {
-            ClassName = p.ClassName,
-            Name = p.DisplayName,
-            Description = p.Description,
-            ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath)
-        }).ToList();
-    }
-
-    public ItemModel MapToItemModel(Building building)
-    {
-        return new ItemModel
-        {
-            ClassName = building.ClassName,
-            Name = building.DisplayName,
-            Description = building.Description,
-            ImagePath = SelectImagePath(building.SmallIconPath, building.BigIconPath)
-        };
     }
 
     private List<BuildingModel> MapToBuildingModels(List<Building> buildings)
@@ -70,6 +49,7 @@ internal class DataModelMappingService
             ClassName = p.ClassName,
             Name = p.DisplayName,
             Description = p.Description,
+            Form = p.Form,
             ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath),
             PowerConsumption = p.PowerConsumption,
             PowerConsumptionRange = p.PowerConsumptionRange

@@ -145,7 +145,7 @@ public partial class DocsParserService
 					data.Recipes.AddRange(ParseRecipes(class1.Classes)); break;
 
 				case "Class'/Script/FactoryGame.FGCustomizationRecipe'":
-					data.CustomizationRecipes.AddRange(ParseCustomizationRecipes(class1.Classes)); break;
+					data.CustomizationRecipes.AddRange(ParseCustomizationRecipes(class1.Classes, classesDictionary)); break;
 
 				case "Class'/Script/FactoryGame.FGPortableMinerDispenser'":
 				case "Class'/Script/FactoryGame.FGPoleDescriptor'":

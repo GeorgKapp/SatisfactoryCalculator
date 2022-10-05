@@ -1,4 +1,3 @@
-using System.Configuration;
 using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
 using Item = SatisfactoryCalculator.DocsServices.Models.DataModels.Item;
 using Recipe = SatisfactoryCalculator.DocsServices.Models.DataModels.Recipe;

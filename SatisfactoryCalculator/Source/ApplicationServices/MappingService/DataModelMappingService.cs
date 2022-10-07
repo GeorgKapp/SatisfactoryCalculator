@@ -7,6 +7,11 @@ namespace SatisfactoryCalculator.Source.ApplicationServices.MappingService;
 
 internal class DataModelMappingService
 {
+    public DataModelMappingService(CalculationService calculationService)
+    {
+        _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
+    }
+
     public DataModelMappingResult MapToConfigurationModel(Data? data, IExtendedProgress<string> progress = null, CancellationToken? token = null)
     {
         if (data is null)
@@ -20,62 +25,125 @@ internal class DataModelMappingService
         var buildings = MapToBuildingModels(data.Buildings);
         var buildingDictionary = MapToBuildingDictionary(buildings);
 
+        ProgressUtility.ReportOrThrow("Map Generators", progress, token);
+        var generators = MapToGeneratorModels(data.Generators, buildingDictionary);
+
+        ProgressUtility.ReportOrThrow("Map Fuels", progress, token);
+        var fuels = MapToFuelModels(data.Generators, generators, itemDictionary);
+
         ProgressUtility.ReportOrThrow("Map Recipes", progress, token);
         var recipes = MapToRecipeModels(data.Recipes, itemDictionary, buildingDictionary);
-        var itemRecipeDictionary = MapToItemRecipeModelDictionary(items, recipes, buildingDictionary);
-        var buildingRecipeDictionary = MapToItemRecipeModelDictionary(buildings, recipes);
+
+        ProgressUtility.ReportOrThrow("Map References", progress, token);
+        var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, fuels, recipes);
 
         var lastSyncDate = GetLastSyncDate();
-
         return new DataModelMappingResult
         {
-            ItemDictionary = itemDictionary,
-            BuildingDictionary = buildingDictionary,
-            ItemRecipesDictionary = itemRecipeDictionary,
-            BuildingRecipesDictionary = buildingRecipeDictionary,
             Items = items,
             Buildings = buildings,
+            Generators = generators,
+            Fuels = fuels,
             Recipes = recipes,
+            ReferenceDictionary = referenceDictionary,
             LastSyncDate = lastSyncDate
         };
     }
 
-    private ItemModel[] MapToItemModels(List<Item> items) =>
-        items.Select(p => new ItemModel
-        {
-            ClassName = p.ClassName,
-            Name = p.DisplayName,
-            Description = p.Description,
-            Form = p.Form,
-            ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath)
-        }).ToArray();
+    #region Model Methods
 
-    private ItemModel MapToItemModel(BuildingModel buildingModel) =>
-        new ItemModel
+    private ItemModel[] MapToItemModels(List<Item> items) => items.Select(p => new ItemModel
+    {
+        ClassName = p.ClassName,
+        Name = p.DisplayName,
+        Description = p.Description,
+        Form = p.Form,
+        ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath)
+    }).OrderBy(p => p.Name).ToArray();
+
+    private ItemModel MapToItemModel(BuildingModel buildingModel) => new ItemModel
+    {
+        Name = buildingModel.Name,
+        ClassName = buildingModel.ClassName,
+        Description = buildingModel.Description,
+        ImagePath = buildingModel.ImagePath
+    };
+
+    private BuildingModel[] MapToBuildingModels(List<Building> buildings) => buildings.Select(p => new BuildingModel
+    {
+        ClassName = p.ClassName,
+        Name = p.DisplayName,
+        Description = p.Description,
+        Form = p.Form,
+        ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath),
+        PowerConsumption = p.PowerConsumption,
+        PowerConsumptionRange = p.PowerConsumptionRange
+    }).OrderBy(p => p.Name).ToArray();
+
+    private GeneratorModel[] MapToGeneratorModels(List<Generator> generators, Dictionary<string, BuildingModel> buildingDictionary) => generators
+            .Select(p => MapToGeneratorModel(p, buildingDictionary))
+            .OrderBy(p => p.Name)
+            .ToArray();
+
+    private GeneratorModel MapToGeneratorModel(Generator generator, Dictionary<string, BuildingModel> buildingDictionary)
+    {
+        var buildingReference = buildingDictionary[generator.ClassName];
+        return new GeneratorModel
         {
-            Name = buildingModel.Name,
-            ClassName = buildingModel.ClassName,
-            Description = buildingModel.Description,
-            ImagePath = buildingModel.ImagePath
+            ClassName = generator.ClassName,
+            Name = buildingReference.Name,
+            Description = buildingReference.Description,
+            Form = buildingReference.Form,
+            ImagePath = buildingReference.ImagePath,
+            SupplementalToPowerRatio = generator.SupplementToPowerRatio,
+            PowerProduction = generator.PowerProduction,
+            PowerProductionExponent = generator.PowerProductionExponent
         };
+    }
 
-    private BuildingModel[] MapToBuildingModels(List<Building> buildings) =>
-        buildings.Select(p => new BuildingModel
+    private FuelModel[] MapToFuelModels(List<Generator> generators, GeneratorModel[] generatorModels, Dictionary<string, ItemModel> itemDictionary)
+    {
+        List<FuelModel> fuelModels = new();
+        foreach (var generator in generators)
         {
-            ClassName = p.ClassName,
-            Name = p.DisplayName,
-            Description = p.Description,
-            Form = p.Form,
-            ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath),
-            PowerConsumption = p.PowerConsumption,
-            PowerConsumptionRange = p.PowerConsumptionRange
-        })
-        .ToArray();
+            var generatorModel = generatorModels.Where(p => p.ClassName == generator.ClassName).First();
+            foreach (var fuel in generator.Fuels)
+                fuelModels.Add(MapToFuelModel(fuel, generatorModel, itemDictionary));
+        }
+        return fuelModels.ToArray();
+    }
+
+    private FuelModel MapToFuelModel(Fuel fuel, GeneratorModel generatorModel, Dictionary<string, ItemModel> itemDictionary)
+    {
+        var ingredients = new List<FuelContentModel>();
+        ingredients.Add(MapToFuelContentModel(itemDictionary[fuel.FuelClass], 0));
+
+        if (!string.IsNullOrEmpty(fuel.SupplementalResourceClass))
+            ingredients.Add(MapToFuelContentModel(itemDictionary[fuel.SupplementalResourceClass], 0));
+
+        var byProductItem = !string.IsNullOrEmpty(fuel.ByProduct)
+            ? MapToFuelContentModel(itemDictionary[fuel.ByProduct], 0)
+            : null;
+
+        return new FuelModel
+        {
+            Ingredients = ingredients.ToArray(),
+            ByProduct = byProductItem,
+            Generator = generatorModel
+        };
+    }
+
+    private FuelContentModel MapToFuelContentModel(ItemModel item, double amount) => new FuelContentModel
+    {
+        Item = item,
+        ItemName = item.ClassName,
+        AmountPerMinute = amount,
+    };
 
     private RecipeModel[] MapToRecipeModels(List<Recipe> recipes, Dictionary<string, ItemModel> itemDictionary, Dictionary<string, BuildingModel> buildingDictionary) =>
         recipes
             .Select(p => MapToRecipeModel(p, itemDictionary, buildingDictionary))
-            .ToArray();
+            .OrderRecipeModel();
 
     private RecipeModel MapToRecipeModel(Recipe recipe, Dictionary<string, ItemModel> itemDictionary, Dictionary<string, BuildingModel> buildingDictionary)
     {
@@ -89,12 +157,16 @@ internal class DataModelMappingService
         if (recipe.ConstructedInWorkshop)
             buildings.Add(MapToRecipeBuildingModel(buildingDictionary["Workshop_C"], recipe.VariablePowerConsumptionRange));
 
+        var productIsBuilding = recipe.Products
+            .Where(p => buildingDictionary.ContainsKey(p.ClassName))
+            .Any();
+
         var ingredients = recipe.Ingredients
-            .Select(ingredient => MapToRecipeContentModel(ingredient, itemDictionary, buildingDictionary))
+            .Select(ingredient => MapToRecipeContentModel(ingredient, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
             .ToArray();
 
         var products = recipe.Products
-            .Select(product => MapToRecipeContentModel(product, itemDictionary, buildingDictionary))
+            .Select(product => MapToRecipeContentModel(product, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
             .ToArray();
 
         return new RecipeModel
@@ -111,7 +183,7 @@ internal class DataModelMappingService
         };
     }
 
-    private RecipeContentModel MapToRecipeContentModel(Reference recipeItem, Dictionary<string, ItemModel> itemDictionary, Dictionary<string, BuildingModel> buildingDictionary)
+    private RecipeContentModel MapToRecipeContentModel(Reference recipeItem, double manufactoringDuration, Dictionary<string, ItemModel> itemDictionary, Dictionary<string, BuildingModel> buildingDictionary, bool setOnlyAmount)
     {
         var item = itemDictionary.ContainsKey(recipeItem.ClassName)
             ? itemDictionary[recipeItem.ClassName]
@@ -121,92 +193,96 @@ internal class DataModelMappingService
         {
             Item = item,
             ItemName = recipeItem.ClassName,
-            StackSize = MapAmount(item.Form, recipeItem.Amount),
-            AmountPerMinute = MapAmount(item.Form, recipeItem.AmountPerMinute),
+            Amount = _calculationService.CalculateAmount(item.Form, recipeItem.Amount),
+            AmountPerMinute = setOnlyAmount ? null : _calculationService.CalculateAmountPerMinte(item.Form, recipeItem.Amount, manufactoringDuration),
         };
     }
 
-    private RecipeBuildingModel MapToRecipeBuildingModel(BuildingModel buildingModel, PowerConsumptionRange? powerConsumptionRange) =>
-        new RecipeBuildingModel
-        {
-            Building = buildingModel,
-            BuildingName = buildingModel.ClassName,
-            PowerConsumptionRange = powerConsumptionRange
-        };
-
-    private double MapAmount(Form? form, double input)
+    private RecipeBuildingModel MapToRecipeBuildingModel(BuildingModel buildingModel, PowerConsumptionRange? powerConsumptionRange) => new RecipeBuildingModel
     {
-        if (form is not null && (form == Form.Liquid || form == Form.Gas))
-            input /= 1000;
+        Building = buildingModel,
+        BuildingName = buildingModel.ClassName,
+        PowerConsumptionRange = powerConsumptionRange
+    };
 
-        return input;
-    }
+    #endregion
 
-    private double? MapAmount(Form? form, double? input) =>
-        input is not null
-            ? MapAmount(form, input.Value)
-            : null;
+    #region Dictionary Methods
 
-    private string SelectImagePath(string smallIconPath, string bigIconPath) =>
-        string.IsNullOrEmpty(smallIconPath)
-            ? bigIconPath
-            : smallIconPath;
     private Dictionary<string, ItemModel> MapToItemDictionary(ItemModel[] items) =>
         items.ToDictionary(p => p.ClassName, p => p);
 
     private Dictionary<string, BuildingModel> MapToBuildingDictionary(BuildingModel[] buildings) =>
         buildings.ToDictionary(p => p.ClassName, p => p);
 
-    private Dictionary<string, ItemRecipeModel> MapToItemRecipeModelDictionary(ItemModel[] items, RecipeModel[] recipes, Dictionary<string, BuildingModel> buildingDictionary)
+    private Dictionary<string, EntityReference> MapToEntityReferenceDictionary(Dictionary<string, ItemModel> itemDictionary, Dictionary<string, BuildingModel> buildingDictionary, FuelModel[] fuels, RecipeModel[] recipes)
     {
-        var dictionary = new Dictionary<string, ItemRecipeModel>();
-        foreach (var item in items)
-        {
-            var itemRecipeModel = new ItemRecipeModel { ItemName = item.ClassName };
-            foreach (var recipe in recipes)
-            {
-                if (recipe.Ingredients.Where(p => p.Item.ClassName == item.ClassName).Any())
-                {
-                    if (recipe.Products.Where(p => buildingDictionary.ContainsKey(p.Item.ClassName)).Any())
-                        itemRecipeModel.ContainedAsBuildingIngredient = itemRecipeModel.ContainedAsBuildingIngredient.Add(recipe);
-                    else
-                        itemRecipeModel.ContainedAsIngredient = itemRecipeModel.ContainedAsIngredient.Add(recipe);
-                }
+        var entityReferences = new Dictionary<string, EntityReference>();
 
-                if (recipe.Products.Where(p => p.Item.ClassName == item.ClassName).Any())
-                    itemRecipeModel.ContainedAsProduct = itemRecipeModel.ContainedAsProduct.Add(recipe);
-            }
-            dictionary.Add(item.ClassName, itemRecipeModel);
-        }
-        return dictionary;
+        foreach (var item in itemDictionary.Values)
+            entityReferences.Add(item.ClassName, CreateEntityReference(item.ClassName, itemDictionary, buildingDictionary, fuels, recipes));
+
+        foreach (var building in buildingDictionary.Values)
+            entityReferences.Add(building.ClassName, CreateEntityReference(building.ClassName, itemDictionary, buildingDictionary, fuels, recipes));
+
+        return entityReferences;
     }
 
-    private Dictionary<string, ItemRecipeModel> MapToItemRecipeModelDictionary(BuildingModel[] buildings, RecipeModel[] recipes)
+    private EntityReference CreateEntityReference(string entityClassName, Dictionary<string, ItemModel> itemDictionary, Dictionary<string, BuildingModel> buildingDictionary, FuelModel[] fuels, RecipeModel[] recipes) => new EntityReference
     {
-        var dictionary = new Dictionary<string, ItemRecipeModel>();
-        foreach (var building in buildings)
-        {
-            List<RecipeModel> buildingProductRecipes = new();
-            var itemRecipeModel = new ItemRecipeModel { ItemName = building.ClassName };
+        EntityClassName = entityClassName,
+        RecipeIngredient = GetRecipeIngredientReferences(entityClassName, recipes, buildingDictionary),
+        RecipeBuildingIngredient = GetRecipeBuildingIngredientReferences(entityClassName, recipes, buildingDictionary),
+        RecipeProduct = GetRecipeProductReferences(entityClassName, recipes, buildingDictionary),
+        RecipeBuilding = GetRecipeBuildingReferences(entityClassName, recipes, buildingDictionary),
+        FuelIngredient = GetFuelIngredientReferences(entityClassName, fuels),
+        FuelByProduct = GetFuelByProductReferences(entityClassName, fuels),
+        FuelGenerator = GetFuelGeneratorReferences(entityClassName, fuels)
+    };
 
-            foreach (var recipe in recipes)
-            {
-                if (recipe.Products.Where(p => p.ItemName == building.ClassName).Any())
-                    itemRecipeModel.ContainedAsProduct = itemRecipeModel.ContainedAsProduct.Add(recipe);
-            }
+    private RecipeModel[] GetRecipeIngredientReferences(string entityClassName, RecipeModel[] recipes, Dictionary<string, BuildingModel> buildingDictionary) => recipes
+        .Where(recipe => recipe.Ingredients.Any(p => p.Item.ClassName == entityClassName) &&
+                            recipe.Products.All(p => !buildingDictionary.ContainsKey(p.Item.ClassName)))
+        .ToArray();
 
-            dictionary.Add(building.ClassName, itemRecipeModel);
-        }
-        return dictionary;
-    }
+    private RecipeModel[] GetRecipeBuildingIngredientReferences(string entityClassName, RecipeModel[] recipes, Dictionary<string, BuildingModel> buildingDictionary) => recipes
+        .Where(recipe => recipe.Ingredients.Any(p => p.Item.ClassName == entityClassName) &&
+                            recipe.Products.Any(p => buildingDictionary.ContainsKey(p.Item.ClassName)))
+        .ToArray();
 
-    private RecipeModel[] OrderRecipeModel(List<RecipeModel> input) => input
-            .OrderBy(p => p.IsAlternateRecipe)
-            .ThenBy(p => p.RecipeName)
-            .ToArray();
+    private RecipeModel[] GetRecipeProductReferences(string entityClassName, RecipeModel[] recipes, Dictionary<string, BuildingModel> buildingDictionary) => recipes
+        .Where(recipe => recipe.Products.Any(p => p.Item.ClassName == entityClassName))
+        .ToArray();
 
-    private DateTime? GetLastSyncDate() =>
-        File.Exists(Constants.InformationFileName)
+    private RecipeModel[] GetRecipeBuildingReferences(string entityClassName, RecipeModel[] recipes, Dictionary<string, BuildingModel> buildingDictionary) => recipes
+        .Where(recipe => recipe.Buildings.Any(p => p.Building.ClassName == entityClassName))
+        .ToArray();
+
+    private FuelModel[] GetFuelIngredientReferences(string entityClassName, FuelModel[] fuels) => fuels
+        .Where(fuel => fuel.Ingredients.Any(p => p.ItemName == entityClassName))
+        .ToArray();
+
+    private FuelModel[] GetFuelByProductReferences(string entityClassName, FuelModel[] fuels) => fuels
+       .Where(fuel => fuel.ByProduct is not null && fuel.ByProduct.ItemName == entityClassName)
+       .ToArray();
+
+    private FuelModel[] GetFuelGeneratorReferences(string entityClassName, FuelModel[] fuels) => fuels
+       .Where(fuel => fuel.Generator.ClassName == entityClassName)
+       .ToArray();
+
+    #endregion
+
+    #region Utility Methods
+
+    private string SelectImagePath(string smallIconPath, string bigIconPath) => string.IsNullOrEmpty(smallIconPath)
+        ? bigIconPath
+        : smallIconPath;
+
+    private DateTime? GetLastSyncDate() => File.Exists(Constants.InformationFileName)
         ? new DateTime?(File.GetLastWriteTime(Constants.InformationFileName))
         : null;
+
+    #endregion
+
+    private readonly CalculationService _calculationService;
 }

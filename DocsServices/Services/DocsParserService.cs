@@ -17,16 +17,27 @@ public partial class DocsParserService
 		ProgressUtility.ReportOrThrow("Parse data", progress, token);
 		var data = new Data();
 
-		foreach (Class1 class1 in classes1)
+        Item[] biomassItems = Array.Empty<Item>();
+        foreach (Class1 class1 in classes1)
+		{
+			if (class1.NativeClass == "Class'/Script/FactoryGame.FGItemDescriptorBiomass'")
+			{
+                biomassItems = ParseItems(class1.Classes);
+				break;
+			}
+		}
+		data.Items.AddRange(biomassItems);
+
+        foreach (Class1 class1 in classes1)
 		{
 			token?.ThrowIfCancellationRequested();
 			switch (class1.NativeClass)
 			{
 				case "Class'/Script/FactoryGame.FGItemDescriptor'":
-				case "Class'/Script/FactoryGame.FGItemDescriptorBiomass'":
 				case "Class'/Script/FactoryGame.FGItemDescriptorNuclearFuel'":
 				case "Class'/Script/FactoryGame.FGEquipmentDescriptor'":
-					data.Items.AddRange(ParseItems(class1.Classes)); break;
+					data.Items.AddRange(ParseItems(class1.Classes)); 
+					break;
 
 				case "Class'/Script/FactoryGame.FGConsumableDescriptor'":
 					data.Items.AddRange(ParseItems(class1.Classes));
@@ -48,7 +59,8 @@ public partial class DocsParserService
 				case "Class'/Script/FactoryGame.FGWeapon'":
 				case "Class'/Script/FactoryGame.FGEquipmentStunSpear'":
 				case "Class'/Script/FactoryGame.FGChargedWeapon'":
-					data.Weapons.AddRange(ParseWeapons(class1.Classes)); break;
+					data.Weapons.AddRange(ParseWeapons(class1.Classes)); 
+					break;
 
 				case "Class'/Script/FactoryGame.FGVehicleDescriptor'":
 					data.Items.AddRange(ParseItems(class1.Classes));
@@ -64,7 +76,8 @@ public partial class DocsParserService
 				case "Class'/Script/FactoryGame.FGGasMask'":
 				case "Class'/Script/FactoryGame.FGEquipmentZipline'":
 				case "Class'/Script/FactoryGame.FGChainsaw'":
-					data.Equipments.AddRange(ParseEquipments(class1.Classes)); break;
+					data.Equipments.AddRange(ParseEquipments(class1.Classes)); 
+					break;
 
 				case "Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
 				case "Class'/Script/FactoryGame.FGBuildableWaterPump'":
@@ -77,7 +90,7 @@ public partial class DocsParserService
 				case "Class'/Script/FactoryGame.FGBuildableGeneratorFuel'":
 				case "Class'/Script/FactoryGame.FGBuildableGeneratorNuclear'":
 					data.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
-					data.Generators.AddRange(ParseGenerators(class1.Classes));
+					data.Generators.AddRange(ParseGenerators(class1.Classes, biomassItems));
 					break;
 
 				case "Class'/Script/FactoryGame.FGBuildable'":
@@ -136,28 +149,32 @@ public partial class DocsParserService
 				case "Class'/Script/FactoryGame.FGConveyorPoleStackable'":
 				case "Class'/Script/FactoryGame.FGPipeHyperStart'":
 				case "Class'/Script/FactoryGame.FGBuildablePole'":
-					data.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary)); break;
+					data.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
+					break;
 
 				case "Class'/Script/FactoryGame.FGSchematic'":
-					data.Schematics.AddRange(ParseSchematics(class1.Classes)); break;
+					data.Schematics.AddRange(ParseSchematics(class1.Classes));
+					break;
 
 				case "Class'/Script/FactoryGame.FGRecipe'":
-					data.Recipes.AddRange(ParseRecipes(class1.Classes)); break;
+					data.Recipes.AddRange(ParseRecipes(class1.Classes)); 
+					break;
 
 				case "Class'/Script/FactoryGame.FGCustomizationRecipe'":
-					data.CustomizationRecipes.AddRange(ParseCustomizationRecipes(class1.Classes)); break;
+					data.CustomizationRecipes.AddRange(ParseCustomizationRecipes(class1.Classes));
+					break;
 
 				case "Class'/Script/FactoryGame.FGPortableMinerDispenser'":
 				case "Class'/Script/FactoryGame.FGPoleDescriptor'":
 				case "Class'/Script/FactoryGame.FGGolfCartDispenser'":
 				case "Class'/Script/FactoryGame.FGBuildingDescriptor'":
 				case "Class'/Script/FactoryGame.FGConsumableEquipment'":
-					//Ignore classes
-					break;
+				case "Class'/Script/FactoryGame.FGItemDescriptorBiomass'":
+                    //Ignore classes
+                    break;
 
 				default:
-					progress?.ReportWarning(class1.NativeClass + " not parsed"); break;
-
+					return Result<Data>.Failure($"{class1.NativeClass} not parsed");
 			}
 		}
 
@@ -183,20 +200,24 @@ public partial class DocsParserService
 		data.Statues.AddRange(Statues);
 
 		ProgressUtility.ReportOrThrow("Check for duplicates", progress, token);
-		if (!SeperatelyValidateDataForDuplicates(data, progress))
-			return Result<Data>.Failure("Duplicate Items found");
+		var duplicateCheckResult = SeperatelyValidateDataForDuplicates(data);
+        if (!duplicateCheckResult.IsSuccess)
+			return Result<Data>.Failure(duplicateCheckResult.Error);
 
 		ProgressUtility.ReportOrThrow("Check data references", progress, token);
-		if (!ValidateDataReferences(data, progress))
-			return Result<Data>.Failure("Item References missing");
+        var dataReferencesCheckResult = ValidateDataReferences(data);
+        if (!dataReferencesCheckResult.IsSuccess)
+            return Result<Data>.Failure(dataReferencesCheckResult.Error);
 
 		ProgressUtility.ReportOrThrow("Check if all items exist for recipe info", progress, token);
-		if (!ValidateItemExistanceInRecipes(data, progress))
-			return Result<Data>.Failure("Recipe items missing");
+        var validateItemExistenceInRecipesCheckResult = ValidateItemExistanceInRecipes(data);
+        if (!validateItemExistenceInRecipesCheckResult.IsSuccess)
+            return Result<Data>.Failure(validateItemExistenceInRecipesCheckResult.Error);
 
 		ProgressUtility.ReportOrThrow("Check if all items and all schematic references exist for schematic info", progress, token);
-		if (!ValidateItemExistanceInSchematics(data, progress))
-			return Result<Data>.Failure("Schematic items missing");
+        var validateItemExistenceInSchematicsCheckResult = ValidateItemExistanceInSchematics(data);
+        if (!validateItemExistenceInSchematicsCheckResult.IsSuccess)
+            return Result<Data>.Failure(validateItemExistenceInSchematicsCheckResult.Error);
 
 		progress.ReportSuccess("Data succesfully parsed");
 		return Result<Data>.Success(data);

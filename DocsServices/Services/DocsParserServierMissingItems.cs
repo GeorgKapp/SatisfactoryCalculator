@@ -59,7 +59,7 @@ public partial class DocsParserService
         EquipmentSlot = EquipmentSlot.Arms
     };
 
-    private Emote[] Emotes = new Emote[10]
+    private Emote[] Emotes = new Emote[]
     {
         new Emote
         {
@@ -133,7 +133,7 @@ public partial class DocsParserService
         }
     };
 
-    private Statue[] Statues = new Statue[7]
+    private Statue[] Statues = new Statue[]
     {
         new Statue
         {

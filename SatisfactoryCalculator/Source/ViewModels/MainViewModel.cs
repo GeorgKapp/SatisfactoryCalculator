@@ -23,23 +23,26 @@ internal class MainViewModel : ObservableObject
         set => SetProperty(ref _initializingText, value);
     }
 
-    private ICommand _showBuildingsCommand;
-    public ICommand ShowBuildingsCommand => _showBuildingsCommand ??= new SimpleCommand(new Action(ShowBuildings));
-
     private ICommand _showItemsCommand;
-    public ICommand ShowItemsCommand => _showItemsCommand ??= new SimpleCommand(new Action(ShowItems));
+    public ICommand ShowItemsCommand => _showItemsCommand ??= new SimpleCommand(ShowItems);
+
+    private ICommand _showBuildingsCommand;
+    public ICommand ShowBuildingsCommand => _showBuildingsCommand ??= new SimpleCommand(ShowBuildings);
+
+    private ICommand _showGeneratorsCommand;
+    public ICommand ShowGeneratorsCommand => _showGeneratorsCommand ??= new SimpleCommand(ShowGenerators);
 
     private ICommand _showRecipesCommand;
-    public ICommand ShowRecipesCommand => _showRecipesCommand ??= new SimpleCommand(new Action(ShowRecipes));
+    public ICommand ShowRecipesCommand => _showRecipesCommand ??= new SimpleCommand(ShowRecipes);
 
     private ICommand _showOverviewCommand;
-    public ICommand ShowOverviewCommand => _showOverviewCommand ??= new SimpleCommand(new Action(ShowOverview));
+    public ICommand ShowOverviewCommand => _showOverviewCommand ??= new SimpleCommand(ShowOverview);
 
     private ICommand _showDataImportCommand;
-    public ICommand ShowDataImportCommand => _showDataImportCommand ??= new SimpleCommand(new Action(ShowDataImport));
+    public ICommand ShowDataImportCommand => _showDataImportCommand ??= new SimpleCommand(ShowDataImport);
 
     private ICommand _saveCommand;
-    public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(new Action(Save));
+    public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(Save);
 
 	public MainViewModel(ApplicationState applicationState, JsonService jsonService, ViewModelViewLinker viewModelViewLinker, DataModelMappingService dataModelMappingService)
 	{
@@ -49,9 +52,10 @@ internal class MainViewModel : ObservableObject
         _dataModelMappingService = dataModelMappingService ?? throw new ArgumentNullException(nameof(dataModelMappingService));
     }
 
-	private void ShowBuildings() => CurrentPage = _viewModelViewLinker.GetPageByType<BuildingsPage>();
-	private void ShowItems() => CurrentPage = _viewModelViewLinker.GetPageByType<ItemsPage>();
-	private void ShowRecipes() => CurrentPage = _viewModelViewLinker.GetPageByType<RecipesPage>();
+    private void ShowItems() => CurrentPage = _viewModelViewLinker.GetPageByType<ItemsPage>();
+    private void ShowBuildings() => CurrentPage = _viewModelViewLinker.GetPageByType<BuildingsPage>();
+    private void ShowGenerators() => CurrentPage = _viewModelViewLinker.GetPageByType<GeneratorsPage>();
+    private void ShowRecipes() => CurrentPage = _viewModelViewLinker.GetPageByType<RecipesPage>();
 	private void ShowOverview() => CurrentPage = _viewModelViewLinker.GetPageByType<OverviewPage>();
 	private void ShowDataImport() => CurrentPage = _viewModelViewLinker.GetPageByType<DataImportPage>();
 
@@ -63,11 +67,16 @@ internal class MainViewModel : ObservableObject
 
     public async Task Load()
     {
-        IsInitializing = true;
         InitializingText = "Initializing";
+        IsInitializing = true;
 
-        var data = await _jsonService.ReadJsonAsync<Data>(Constants.InformationFileName);
-        var mappedData = _dataModelMappingService.MapToConfigurationModel(data);
+        var data = await DebugExtensions.ProfileAsync(
+            _jsonService.ReadJsonAsync<Data>(Constants.InformationFileName), 
+            "Read Data");
+
+        var mappedData = DebugExtensions.Profile(() =>
+            _dataModelMappingService.MapToConfigurationModel(data),
+            "Map Data");
 
         _applicationState.SetConfig(data, mappedData);
 

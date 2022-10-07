@@ -17,10 +17,10 @@ internal class ItemsViewModel : ObservableObject
             }
             else
             {
-                var itemInRecipeModel = _applicationState.Configuration.ItemRecipesDictionary[value.ClassName];
-                SelectedItemAsIngredientInRecipes = new ObservableCollection<RecipeModel>(itemInRecipeModel.ContainedAsIngredient);
-                SelectedItemAsBuildingIngredientInRecipes = new ObservableCollection<RecipeModel>(itemInRecipeModel.ContainedAsBuildingIngredient);
-                SelectedItemAsProductInRecipes = new ObservableCollection<RecipeModel>(itemInRecipeModel.ContainedAsProduct);
+                var entityReference = _applicationState.Configuration.ReferenceDictionary[value.ClassName];
+                SelectedItemAsIngredientInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeIngredient);
+                SelectedItemAsBuildingIngredientInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeBuildingIngredient);
+                SelectedItemAsProductInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeProduct);
             }
         }
     }

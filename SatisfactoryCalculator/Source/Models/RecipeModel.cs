@@ -1,6 +1,6 @@
 namespace SatisfactoryCalculator.Source.Models;
 
-public class RecipeModel
+internal class RecipeModel
 {
     public string ClassName { get; set; }
     public string RecipeName { get; set; }

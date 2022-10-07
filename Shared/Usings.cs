@@ -4,3 +4,4 @@ global using System;
 global using System.Collections;
 global using System.Threading;
 global using SatisfactoryCalculator.Shared.Common.Progress;
+global using System.Diagnostics;

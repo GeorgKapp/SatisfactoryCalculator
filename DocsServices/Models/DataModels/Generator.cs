@@ -7,5 +7,5 @@ public class Generator : IBase
 	public double? PowerProductionExponent { get; set; }
 	public double? SupplementToPowerRatio { get; set; }
 	public double? SupplementalLoadAmount { get; set; }
-	public Fuel[] Fuel { get; set; }
+	public Fuel[] Fuels { get; set; }
 }

@@ -6,18 +6,21 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-    private bool ExcludeBuilding(string className)
-    {
-        return new string[5] { "Desc_Wall_Window_8x4_03_Steel_C", "Build_PillarTop_C", "Desc_QuarterPipeMiddle_Ficsit_4x1_C", "Desc_QuarterPipeMiddle_Ficsit_4x2_C", "Desc_QuarterPipeMiddle_Ficsit_4x4_C" }.Contains(className);
-    }
+    private bool ExcludeBuilding(string className) => 
+        new string[] 
+        {   "Desc_Wall_Window_8x4_03_Steel_C", 
+            "Build_PillarTop_C", 
+            "Desc_QuarterPipeMiddle_Ficsit_4x1_C", 
+            "Desc_QuarterPipeMiddle_Ficsit_4x2_C", 
+            "Desc_QuarterPipeMiddle_Ficsit_4x4_C" 
+        }
+        .Contains(className);
 
-    private Building[] ParseBuildings(Class2[] classes2, Dictionary<string, Class2> classesDictionary)
-    {
-        return classes2
+    private Building[] ParseBuildings(Class2[] classes2, Dictionary<string, Class2> classesDictionary) => 
+        classes2
             .Where(p => !ExcludeBuilding(p.ClassName))
             .Select(p => ParseBuilding(p, classesDictionary))
             .ToArray();
-    }
 
     private Building ParseBuilding(Class2 class2, Dictionary<string, Class2> classesDictionary)
     {
@@ -62,14 +65,13 @@ public partial class DocsParserService
         };
     }
 
-    private Item[] ParseItems(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseItem(p)).ToArray();
-    }
+    private Item[] ParseItems(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseItem(p))
+        .ToArray();
 
-    private Item ParseItem(Class2 class2)
-    {
-        return new Item
+    private Item ParseItem(Class2 class2) => 
+        new Item
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             DisplayName = class2.mDisplayName,
@@ -83,58 +85,50 @@ public partial class DocsParserService
             BigIconPath = IconPathParseUtility.ConvertIconPathToUEPath(class2.mPersistentBigIcon),
             SinkPoints = string.IsNullOrEmpty(class2.mResourceSinkPoints) ? null : Convert.ToInt32(class2.mResourceSinkPoints)
         };
-    }
 
-    private Resource[] ParseResources(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseResource(p)).ToArray();
-    }
+    private Resource[] ParseResources(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseResource(p))
+        .ToArray();
 
-    private Resource ParseResource(Class2 class2)
-    {
-        return new Resource
+    private Resource ParseResource(Class2 class2) => 
+        new Resource
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)
         };
-    }
 
-    private Equipment[] ParseEquipments(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseEquipment(p)).ToArray();
-    }
+    private Equipment[] ParseEquipments(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseEquipment(p))
+        .ToArray();
 
-    private Equipment ParseEquipment(Class2 class2)
-    {
-        return new Equipment
+    private Equipment ParseEquipment(Class2 class2) => 
+        new Equipment
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             EquipmentSlot = StringToEnumParseUtility.ParseEquipmentSlotStringToEnum(class2.mEquipmentSlot)
         };
-    }
 
-    private Vehicle[] ParseVehicles(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseVehicle(p)).ToArray();
-    }
+    private Vehicle[] ParseVehicles(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseVehicle(p))
+        .ToArray();
 
-    private Vehicle ParseVehicle(Class2 class2)
-    {
-        return new Vehicle
+    private Vehicle ParseVehicle(Class2 class2) => 
+        new Vehicle
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             FuelConsumption = string.IsNullOrEmpty(class2.mFuelConsumption) ? null : NumberParseUtility.MapToDouble(class2.mFuelConsumption),
             InventorySize = string.IsNullOrEmpty(class2.mInventorySize) ? null : Convert.ToInt32(class2.mInventorySize)
         };
-    }
 
-    private Weapon[] ParseWeapons(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseWeapon(p)).ToArray();
-    }
+    private Weapon[] ParseWeapons(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseWeapon(p))
+        .ToArray();
 
-    private Weapon ParseWeapon(Class2 class2)
-    {
-        return new Weapon
+    private Weapon ParseWeapon(Class2 class2) => 
+        new Weapon
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             AutoReloadDelay = NumberParseUtility.MapToNullableDouble(class2.mAutoReloadDelay),
@@ -142,16 +136,14 @@ public partial class DocsParserService
             DamageMultiplier = NumberParseUtility.MapToNullableDouble(class2.mWeaponDamageMultiplier),
             EquipmentSlot = StringToEnumParseUtility.ParseEquipmentSlotStringToEnum(class2.mEquipmentSlot)
         };
-    }
 
-    private Ammunition[] ParseAmmunitions(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseAmmunition(p)).ToArray();
-    }
+    private Ammunition[] ParseAmmunitions(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseAmmunition(p))
+        .ToArray();
 
-    private Ammunition ParseAmmunition(Class2 class2)
-    {
-        return new Ammunition
+    private Ammunition ParseAmmunition(Class2 class2) => 
+        new Ammunition
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             FireRate = NumberParseUtility.MapToDouble(class2.mFireRate),
@@ -159,21 +151,21 @@ public partial class DocsParserService
             ReloadTimeMultiplier = NumberParseUtility.MapToNullableDouble(class2.mReloadTimeModifier),
             WeaponDamageMultiplier = NumberParseUtility.MapToDouble(class2.mWeaponDamageMultiplier)
         };
-    }
 
-    private bool ExcludeRecipe(string className)
-    {
-        return new[] { "Recipe_Wall_Window_8x4_03_Steel_C", "Recipe_CandyCaneBasher_C", "Recipe_PillarTop_C" }.Contains(className);
-    }
+    private bool ExcludeRecipe(string className) => 
+        new[] { 
+            "Recipe_Wall_Window_8x4_03_Steel_C", 
+            "Recipe_CandyCaneBasher_C", 
+            "Recipe_PillarTop_C" 
+        }
+        .Contains(className);
 
-    private Recipe[] ParseRecipes(Class2[] classes2)
-    {
-        return classes2
+    private Recipe[] ParseRecipes(Class2[] classes2) =>
+        classes2
             .Where(p => !ExcludeRecipe(p.ClassName))
             .Select(p => ParseRecipe(p))
             .Where(p => p is not null).Cast<Recipe>()
             .ToArray();
-    }
 
     private Recipe? ParseRecipe(Class2 class2)
     {
@@ -204,28 +196,19 @@ public partial class DocsParserService
             IsAlternate = class2.mDisplayName.StartsWith("Alternate")
         };
 
-        double factor = 60.0 / recipe.ManufactoringDuration;
         foreach (Reference ingredient in recipe.Ingredients)
-        {
             ingredient.Amount = ingredient.Amount;
-            ingredient.AmountPerMinute = ingredient.Amount * factor;
-        }
 
         foreach (Reference product in recipe.Products)
-        {
             product.Amount = product.Amount;
-            product.AmountPerMinute = product.Amount * factor;
-        }
 
         return recipe;
     }
 
-    private CustomizationRecipe[] ParseCustomizationRecipes(Class2[] classes2)
-    {
-        return classes2
+    private CustomizationRecipe[] ParseCustomizationRecipes(Class2[] classes2) => 
+        classes2
             .Select(p => ParseCustomizationRecipe(p))
             .ToArray();
-    }
 
     private CustomizationRecipe ParseCustomizationRecipe(Class2 class2)
     {
@@ -255,41 +238,37 @@ public partial class DocsParserService
             IsPatternRemover = class2.ClassName.Contains("_Pattern_Remover")
         };
 
-        double factor = 60.0 / customizationRecipe.ManufactoringDuration;
-
         foreach (Reference ingredient in customizationRecipe.Ingredients)
-            ingredient.AmountPerMinute = ingredient.Amount * factor;
+            ingredient.Amount = ingredient.Amount;
 
         foreach (Reference product in customizationRecipe.Products)
-            product.AmountPerMinute = product.Amount * factor;
+            product.Amount = product.Amount;
 
         return customizationRecipe;
     }
 
-    private Miner[] ParseMiners(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseMiner(p)).ToArray();
-    }
+    private Miner[] ParseMiners(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseMiner(p))
+        .ToArray();
 
-    private Miner ParseMiner(Class2 class2)
-    {
-        return new Miner
+    private Miner ParseMiner(Class2 class2) => 
+        new Miner
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             ItemsPerCycle = Convert.ToInt32(class2.mItemsPerCycle),
             ExtractCycleTime = NumberParseUtility.MapToNullableDouble(class2.mExtractCycleTime),
             AllowedResourceForms = class2.ClassName == "Build_GeneratorGeoThermal_C" ? new Form[1] { Form.Gas } : MultiFormParseUtility.MapToForms(class2.mAllowedResourceForms)
         };
-    }
 
-    private Schematic[] ParseSchematics(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseSchematic(p)).ToArray();
-    }
+    private Schematic[] ParseSchematics(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseSchematic(p))
+        .ToArray();
 
     private Schematic ParseSchematic(Class2 class2)
     {
-        Schematic schematic = new Schematic
+        var schematic = new Schematic
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             DisplayName = class2.mDisplayName,
@@ -311,8 +290,7 @@ public partial class DocsParserService
             SchematicDependencies = Array.Empty<SchematicDependency>()
         };
 
-        Munlock[] mUnlocks = class2.mUnlocks;
-        foreach (Munlock munlock in mUnlocks)
+        foreach (Munlock munlock in class2.mUnlocks)
         {
             switch (munlock.Class)
             {
@@ -367,46 +345,59 @@ public partial class DocsParserService
         return schematic;
     }
 
-    private Generator[] ParseGenerators(Class2[] classes2)
-    {
-        return classes2.Select((Class2 p) => ParseGenerator(p)).ToArray();
-    }
+    private Generator[] ParseGenerators(Class2[] classes2, Item[] biomassItems) => 
+        classes2
+        .Select(p => ParseGenerator(p, biomassItems))
+        .ToArray();
 
-    private Generator ParseGenerator(Class2 class2)
-    {
-        return new Generator
+    private Generator ParseGenerator(Class2 class2, Item[] biomassItems) => 
+        new Generator
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
-            Fuel = class2.mFuel is null ? Array.Empty<Fuel>() : ParseFuel(class2.mFuel),
+            Fuels = class2.mFuel is null ? Array.Empty<Fuel>() : ParseFuels(class2.mFuel, biomassItems),
             PowerProduction = NumberParseUtility.MapToNullableDouble(class2.mPowerProduction),
             PowerProductionExponent = NumberParseUtility.MapToNullableDouble(class2.mPowerProductionExponent),
             SupplementToPowerRatio = NumberParseUtility.MapToNullableDouble(class2.mSupplementalToPowerRatio),
             SupplementalLoadAmount = NumberParseUtility.MapToNullableDouble(class2.mSupplementalLoadAmount)
         };
-    }
 
-    private Consumable[] ParseConsumables(Class2[] classes2)
-    {
-        return classes2.Select(p => ParseConsumable(p)).ToArray();
-    }
+    private Consumable[] ParseConsumables(Class2[] classes2) => 
+        classes2
+        .Select(p => ParseConsumable(p))
+        .ToArray();
 
-    private Consumable ParseConsumable(Class2 class2)
-    {
-        return new Consumable
+    private Consumable ParseConsumable(Class2 class2) => 
+        new Consumable
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             HealthGain = NumberParseUtility.MapToNullableDouble(class2.mHealthGain)
         };
+
+    private Fuel[] ParseFuels(Mfuel[] mFuel, Item[] biomassItems) => mFuel
+        .SelectMany(p => ParseFuel(p, biomassItems))
+        .ToArray();
+
+    private Fuel[] ParseFuel(Mfuel mFuel, Item[] biomassItems)
+    {
+        if(mFuel.mFuelClass == "FGItemDescriptorBiomass")
+        {
+            return biomassItems.Select(p => ParseFuel(new Mfuel
+            {
+                mFuelClass = p.ClassName,
+                mSupplementalResourceClass = mFuel.mSupplementalResourceClass,
+                mByproduct = mFuel.mByproduct,
+                mByproductAmount = mFuel.mByproductAmount
+            })).ToArray();
+        }
+
+        return new[] { ParseFuel(mFuel) };
     }
 
-    private Fuel[] ParseFuel(Mfuel[] mFuel)
+    private Fuel ParseFuel(Mfuel mFuel) => new Fuel
     {
-        return mFuel.Select(p => new Fuel
-        {
-            FuelClass = ClassNameParseUtility.CleanClassName(p.mFuelClass),
-            SupplementalResourceClass = ClassNameParseUtility.CleanClassName(p.mSupplementalResourceClass),
-            ByProduct = string.IsNullOrEmpty(p.mByproduct) ? null : ClassNameParseUtility.CleanClassName(p.mByproduct),
-            ByProductAmount = string.IsNullOrEmpty(p.mByproductAmount) ? null : Convert.ToInt32(p.mByproductAmount)
-        }).ToArray();
-    }
+        FuelClass = ClassNameParseUtility.CleanClassName(mFuel.mFuelClass),
+        SupplementalResourceClass = ClassNameParseUtility.CleanClassName(mFuel.mSupplementalResourceClass),
+        ByProduct = string.IsNullOrEmpty(mFuel.mByproduct) ? null : ClassNameParseUtility.CleanClassName(mFuel.mByproduct),
+        ByProductAmount = string.IsNullOrEmpty(mFuel.mByproductAmount) ? null : Convert.ToInt32(mFuel.mByproductAmount)
+    };
 }

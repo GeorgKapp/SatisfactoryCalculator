@@ -24,6 +24,7 @@ internal static class ServiceExtensions
 	{
 		services
 			.AddSingleton<ViewModelViewLinker>()
+			.AddTransient<CalculationService>()
 			.AddTransient<DataModelMappingService>()
 			.AddTransient<DataModelImageCreateService>()
 			.AddTransient<MessageService>()
@@ -46,9 +47,10 @@ internal static class ServiceExtensions
 	{
 		services
 			.AddSingleton<MainView>()
-			.AddSingleton<BuildingsPage>()
-			.AddSingleton<ItemsPage>()
-			.AddSingleton<RecipesPage>()
+            .AddSingleton<ItemsPage>()
+            .AddSingleton<BuildingsPage>()
+            .AddSingleton<GeneratorsPage>()
+            .AddSingleton<RecipesPage>()
 			.AddSingleton<OverviewPage>()
 			.AddSingleton<DataImportPage>();
 
@@ -59,9 +61,10 @@ internal static class ServiceExtensions
 	{
 		services
 			.AddSingleton<MainViewModel>()
-			.AddSingleton<BuildingsViewModel>()
-			.AddSingleton<ItemsViewModel>()
-			.AddSingleton<RecipesViewModel>()
+            .AddSingleton<ItemsViewModel>()
+            .AddSingleton<BuildingsViewModel>()
+            .AddSingleton<GeneratorsViewModel>()
+            .AddSingleton<RecipesViewModel>()
 			.AddTransient<OverviewViewModel>()
 			.AddSingleton<DataImportViewModel>();
 

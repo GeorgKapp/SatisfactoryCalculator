@@ -1,13 +1,14 @@
-namespace SatisfactoryCalculator.Source.Models;
+﻿namespace SatisfactoryCalculator.Source.Models;
 
-internal class BuildingModel
+internal class GeneratorModel
 {
     public string ClassName { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
     public Form? Form { get; set; }
-    public double? PowerConsumption { get; set; }
-    public PowerConsumptionRange? PowerConsumptionRange { get; set; }
+    public double? PowerProduction { get; set; }
+    public double? PowerProductionExponent { get; set; }
+    public double? SupplementalToPowerRatio { get; set; }
 
     private string _imagePath;
     public string ImagePath
@@ -21,4 +22,5 @@ internal class BuildingModel
     }
 
     public BitmapImage BitmapImage { get; set; }
+
 }

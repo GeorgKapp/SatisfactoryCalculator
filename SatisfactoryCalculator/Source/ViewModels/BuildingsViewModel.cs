@@ -11,7 +11,7 @@ internal class BuildingsViewModel : ObservableObject
             SetProperty(ref _selectedBuilding, value);
 
             SelectedBuildingRecipes = value is not null
-                ? new ObservableCollection<RecipeModel>(_applicationState.Configuration.BuildingRecipesDictionary[value.ClassName].ContainedAsProduct)
+                ? new ObservableCollection<RecipeModel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct)
                 : new();
         }
     }

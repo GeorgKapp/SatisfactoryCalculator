@@ -9,7 +9,7 @@ internal class ApplicationState : ObservableObject
         set => SetProperty(ref _configuration, value);
     }
 
-	public Data Data { get; set; }
+    public Data Data { get; set; }
 
 	public void SetConfig(Data data, DataModelMappingResult mappingResult)
 	{
@@ -17,11 +17,10 @@ internal class ApplicationState : ObservableObject
         Configuration ??= new();
         Configuration.Items = new(mappingResult.Items);
         Configuration.Buildings = new(mappingResult.Buildings);
+        Configuration.Generators = new(mappingResult.Generators);
         Configuration.Recipes = new(mappingResult.Recipes);
-        Configuration.ItemDictionary = mappingResult.ItemDictionary;
-        Configuration.BuildingDictionary = mappingResult.BuildingDictionary;
-        Configuration.ItemRecipesDictionary = mappingResult.ItemRecipesDictionary;
-        Configuration.BuildingRecipesDictionary = mappingResult.BuildingRecipesDictionary;
+        Configuration.ReferenceDictionary = mappingResult.ReferenceDictionary;
+
         Configuration.LastSyncDate = mappingResult.LastSyncDate;
     }
 }

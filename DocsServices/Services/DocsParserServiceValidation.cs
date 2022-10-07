@@ -2,7 +2,7 @@
 
 public partial class DocsParserService
 {
-    private bool ValidateForDuplicates<T>(IEnumerable<T> source, IExtendedProgress<string> progress) where T : IBase
+    private Result ValidateForDuplicates<T>(IEnumerable<T> source) where T : IBase
     {
         var duplicates = source
             .GroupBy(p => p.ClassName)
@@ -10,56 +10,46 @@ public partial class DocsParserService
             .Select(p => p.Key)
             .ToArray();
 
-        if (duplicates.Length > 0)
-        {
-            foreach (string item in duplicates)
-                progress.ReportErrorMessage("Duplicate source Item in type: " + typeof(T).Name + " detected: " + item);
-
-            return false;
-        }
-        return true;
+        return duplicates.Length > 0
+            ? Result.Failure($"Duplicate source Items in type: {typeof(T).Name} detected: {string.Join(Environment.NewLine, duplicates)}")
+            : Result.Success();
     }
 
-    private bool ValidateReferencesByTarget<T>(IEnumerable<T> source, IEnumerable<T> target, IExtendedProgress<string> progress) where T : IBase
+    private Result ValidateReferencesByTarget<T>(IEnumerable<T> source, IEnumerable<T> target) where T : IBase
     {
         var missingReferences = target.Select(p => p.ClassName)
             .Except(source.Select(p => p.ClassName))
             .ToArray();
 
-        if (missingReferences.Length > 0)
-        {
-            foreach (string item in missingReferences)
-                progress.ReportErrorMessage("Reference Item missing: " + item);
-
-            return false;
-        }
-        return true;
+        return missingReferences.Length > 0
+            ? Result.Failure($"Reference Items missing: {string.Join(Environment.NewLine, missingReferences)}")
+            : Result.Success();
     }
 
-    private bool SeperatelyValidateDataForDuplicates(Data data, IExtendedProgress<string> progress)
+    private Result SeperatelyValidateDataForDuplicates(Data data)
     {
-        if (!ValidateForDuplicates(data.Items, progress) ||
-            !ValidateForDuplicates(data.Recipes, progress) ||
-            !ValidateForDuplicates(data.CustomizationRecipes, progress) ||
-            !ValidateForDuplicates(data.Buildings, progress) ||
-            !ValidateForDuplicates(data.Vehicles, progress) ||
-            !ValidateForDuplicates(data.Miners, progress) ||
-            !ValidateForDuplicates(data.Schematics, progress) ||
-            !ValidateForDuplicates(data.Resources, progress) ||
-            !ValidateForDuplicates(data.Consumables, progress) ||
-            !ValidateForDuplicates(data.Ammunition, progress) ||
-            !ValidateForDuplicates(data.Weapons, progress) ||
-            !ValidateForDuplicates(data.Equipments, progress) ||
-            !ValidateForDuplicates(data.Generators, progress) ||
-            !ValidateForDuplicates(data.Emotes, progress) ||
-            !ValidateForDuplicates(data.Statues, progress))
-
-            return false;
-
-        return true;
+        return Result.Combine(
+            new Result[] 
+            {
+                ValidateForDuplicates(data.Items),
+                ValidateForDuplicates(data.Recipes),
+                ValidateForDuplicates(data.CustomizationRecipes),
+                ValidateForDuplicates(data.Buildings),
+                ValidateForDuplicates(data.Vehicles),
+                ValidateForDuplicates(data.Miners),
+                ValidateForDuplicates(data.Schematics),
+                ValidateForDuplicates(data.Resources),
+                ValidateForDuplicates(data.Consumables),
+                ValidateForDuplicates(data.Ammunition),
+                ValidateForDuplicates(data.Weapons),
+                ValidateForDuplicates(data.Equipments),
+                ValidateForDuplicates(data.Generators),
+                ValidateForDuplicates(data.Emotes),
+                ValidateForDuplicates(data.Statues) }
+            );
     }
 
-    private bool ValidateDataReferences(Data data, IExtendedProgress<string> progress)
+    private Result ValidateDataReferences(Data data)
     {
         var items = data.Items.Cast<IBase>();
 
@@ -68,21 +58,23 @@ public partial class DocsParserService
             .Concat(data.Weapons.Cast<IBase>())
             .Concat(data.Vehicles.Cast<IBase>());
 
-        if (!ValidateReferencesByTarget(items, itemReferences, progress))
-            return false;
+        var itemValidationResult = ValidateReferencesByTarget(items, itemReferences);
+        if (!itemValidationResult.IsSuccess)
+            return itemValidationResult;
 
         var buildings = data.Buildings.Cast<IBase>();
 
         var buildingReferences = data.Generators.Cast<IBase>()
             .Concat(data.Miners.Cast<IBase>());
 
-        if (!ValidateReferencesByTarget(buildings, buildingReferences, progress))
-            return false;
+        var buildingValidationResult = ValidateReferencesByTarget(buildings, buildingReferences);
+        if (!buildingValidationResult.IsSuccess)
+            return buildingValidationResult;
 
-        return true;
+        return Result.Success();
     }
 
-    private bool ValidateItemExistanceInRecipes(Data data, IExtendedProgress<string> progress)
+    private Result ValidateItemExistanceInRecipes(Data data)
     {
         string[] sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
@@ -98,11 +90,11 @@ public partial class DocsParserService
             .Concat(GetClassNames(data.Statues))
             .ToArray();
 
-        bool result = true;
         var recipes = data.Recipes.Cast<IRecipe>()
             .Concat(data.CustomizationRecipes.Cast<IRecipe>())
             .ToArray();
 
+        var results = new List<Result>();
         foreach (var recipe in recipes)
         {
             string[] recipeContentNames = GetClassNames(recipe.Ingredients)
@@ -113,16 +105,13 @@ public partial class DocsParserService
             if (!differences.Any())
                 continue;
 
-            progress.ReportErrorMessage("Recipe: " + recipe.DisplayName + " could not find the following references:");
-            foreach (string item in differences)
-                progress.ReportErrorMessage(item);
-
-            result = false;
+            results.Add(Result.Failure(
+                $"Recipe: {recipe.DisplayName} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
         }
-        return result;
+        return Result.Combine(results);
     }
 
-    private bool ValidateItemExistanceInSchematics(Data data, IExtendedProgress<string> progress)
+    private Result ValidateItemExistanceInSchematics(Data data)
     {
         var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
@@ -138,7 +127,7 @@ public partial class DocsParserService
             .Concat(GetClassNames(data.Statues))
             .ToArray();
 
-        bool result = true;
+        var results = new List<Result>();
         foreach (Schematic schematic in data.Schematics)
         {
             var controlEntities =
@@ -149,17 +138,15 @@ public partial class DocsParserService
                 .Concat(schematic.Emotes)
                 .ToArray();
 
-            var difference = controlEntities.Except(sources).ToList();
-            if (!difference.Any())
+            var differences = controlEntities.Except(sources).ToList();
+            if (!differences.Any())
                 continue;
 
-            progress.ReportErrorMessage("Schematic: " + schematic.DisplayName + " could not find the following references:");
-            foreach (string item in difference)
-                progress.ReportErrorMessage(item);
-
-            result = false;
+            results.Add(Result.Failure(
+               $"Schematic: {schematic.DisplayName} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
         }
-        return result;
+
+        return Result.Combine(results);
     }
 
     private IEnumerable<string> GetClassNames<T>(IEnumerable<T> source) where T : IBase =>

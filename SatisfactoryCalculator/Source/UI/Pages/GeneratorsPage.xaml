@@ -1,0 +1,86 @@
+﻿<Page x:Class="SatisfactoryCalculator.Source.UI.Pages.GeneratorsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SatisfactoryCalculator.Source.UI.Pages" 
+      xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls" 
+      xmlns:u="clr-namespace:SatisfactoryCalculator.Source.UI.UserControls"
+      xmlns:models="clr-namespace:SatisfactoryCalculator.Source.Models"
+      xmlns:context="clr-namespace:SatisfactoryCalculator.Source.ViewModels"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="GeneratorsPage"
+      d:DataContext="{d:DesignInstance Type=context:GeneratorsViewModel}">
+
+    <Page.Resources>
+
+        <CollectionViewSource x:Key="GeneratorCollection" Source="{Binding SelectedGeneratorFuels}"/>
+
+        <DataTemplate DataType="{x:Type models:FuelModel}">
+            <u:FuelControl Fuel="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+    </Page.Resources>
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <u:FilterControl Grid.Column="0" 
+                         ItemsSource="{Binding Generators}"
+                         SelectedItem="{Binding SelectedGenerator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                         FilterMemberPath="Name">
+
+            <u:FilterControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type models:GeneratorModel}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="28" Height="28" Source="{Binding BitmapImage}" />
+                        <c:SatisfactoryTextBlock Text="{Binding Name}" />
+                    </StackPanel>
+                </DataTemplate>
+            </u:FilterControl.ItemTemplate>
+
+        </u:FilterControl>
+
+
+        <Grid Column="1" Margin="20">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedGenerator.BitmapImage}" />
+                <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
+                    <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Name}" />
+                    <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Description}" />
+                </StackPanel>
+            </Grid>
+
+            <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
+
+                <ItemsControl.ItemsSource>
+                    <CompositeCollection>
+
+                        <c:SatisfactoryTextBlock Text="Generator Fuels" Style="{StaticResource LargeTextBlock}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
+                        <CollectionContainer Collection="{Binding Source={StaticResource GeneratorCollection}}"/>
+
+                    </CompositeCollection>
+                </ItemsControl.ItemsSource>
+            </c:VirtualizedItemsControl>
+
+        </Grid>
+
+    </Grid>
+</Page>

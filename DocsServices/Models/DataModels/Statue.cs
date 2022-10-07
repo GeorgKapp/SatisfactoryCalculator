@@ -1,6 +1,6 @@
 namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 
-public class Statue : IBase, IIcon
+public class Statue : IBase , IIcon
 {
 	public string ClassName { get; set; }
 	public string DisplayName { get; set; }

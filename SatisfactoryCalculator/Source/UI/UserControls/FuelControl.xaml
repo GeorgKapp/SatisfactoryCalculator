@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="SatisfactoryCalculator.Source.UI.UserControls.FuelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+             xmlns:p="clr-namespace:SatisfactoryCalculator.Controls.Panels;assembly=SatisfactoryCalculator.Controls"
+             xmlns:models="clr-namespace:SatisfactoryCalculator.Source.Models"
+             mc:Ignorable="d" 
+             x:Name="userControl">
+
+    <UserControl.Resources>
+
+        <CollectionViewSource x:Key="IngredientCollection" Source="{Binding Fuel.Ingredients, ElementName=userControl}"/>
+
+        <ItemsPanelTemplate x:Key="FuelItemsPanelTemplate">
+            <p:ExtendedStackPanel Orientation="Horizontal" Spacing="8"/>
+        </ItemsPanelTemplate>
+
+        <DataTemplate DataType="{x:Type models:FuelContentModel}">
+            <Grid MinHeight="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding AmountPerMinuteText}"/>
+
+                <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Item.BitmapImage}">
+                    <FrameworkElement.ToolTip>
+                        <ToolTip Background="#00FFFFFF" BorderThickness="0" Placement="Right">
+                            <Border BorderThickness="1" BorderBrush="#FFFFFFFF" CornerRadius="10" Background="{StaticResource PrimaryColor}">
+                                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Text="{Binding Item.Name}" />
+                            </Border>
+                        </ToolTip>
+                    </FrameworkElement.ToolTip>
+                </Image>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type models:GeneratorModel}">
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding BitmapImage}">
+                <FrameworkElement.ToolTip>
+                    <ToolTip Background="#00FFFFFF" BorderThickness="0" Placement="Right">
+                        <Border BorderThickness="1" BorderBrush="#FFFFFFFF" CornerRadius="10" Background="{StaticResource PrimaryColor}">
+                            <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Text="{Binding Name}" />
+                        </Border>
+                    </ToolTip>
+                </FrameworkElement.ToolTip>
+            </Image>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+
+    <p:ExtendedStackPanel Orientation="Horizontal" Spacing="8">
+        
+        <ItemsControl ItemsPanel="{StaticResource FuelItemsPanelTemplate}" ItemsSource="{Binding Fuel.Ingredients, ElementName=userControl}" Margin="10,0,0,0"/>
+        <TextBlock x:Name="textBoxEqual" Text="+" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" Visibility="{Binding Fuel.ByProduct, Converter={StaticResource NullToVisibilityConverter},ElementName=userControl}" FontSize="30" VerticalAlignment="Stretch"/>
+        <ContentControl Content="{Binding Fuel.ByProduct, ElementName=userControl}"/>
+        <TextBlock x:Name="textBoxArrow" Text="▶" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" FontSize="20" VerticalAlignment="Center"/>
+        <ContentControl Content="{Binding Fuel.Generator, ElementName=userControl}"/>
+
+        <!--<models:FuelContentModel AmountPerMinute="{Binding Fuel.ByProduct.AmountPerMinute}"/>-->
+
+        
+    </p:ExtendedStackPanel>
+
+</UserControl>

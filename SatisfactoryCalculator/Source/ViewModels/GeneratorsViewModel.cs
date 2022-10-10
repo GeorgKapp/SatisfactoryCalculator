@@ -9,9 +9,17 @@ internal class GeneratorsViewModel : ObservableObject
         set
         {
             SetProperty(ref _selectedGenerator, value);
-            SelectedGeneratorFuels = value is not null
-                ? new ObservableCollection<FuelModel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator)
-                : new();
+
+            if(value is null)
+            {
+                SelectedGeneratorFuels = new();
+                SelectedGeneratorRecipes = new();
+            }
+            else
+            {
+                SelectedGeneratorFuels = new ObservableCollection<FuelModel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator);
+                SelectedGeneratorRecipes = new ObservableCollection<RecipeModel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeBuilding);
+            }
         }
     }
 
@@ -20,6 +28,13 @@ internal class GeneratorsViewModel : ObservableObject
     {
         get => _selectedGeneratorFuels;
         set => SetProperty(ref _selectedGeneratorFuels, value);
+    }
+
+    private ObservableCollection<RecipeModel> _selectedGeneratorRecipes = new();
+    public ObservableCollection<RecipeModel> SelectedGeneratorRecipes
+    {
+        get => _selectedGeneratorRecipes;
+        set => SetProperty(ref _selectedGeneratorRecipes, value);
     }
 
     public ObservableCollection<GeneratorModel> Generators => _applicationState.Configuration.Generators;

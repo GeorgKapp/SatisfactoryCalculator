@@ -115,11 +115,11 @@ internal class DataModelMappingService
 
     private FuelModel MapToFuelModel(Fuel fuel, GeneratorModel generatorModel, Dictionary<string, ItemModel> itemDictionary)
     {
-        var ingredients = new List<FuelContentModel>();
-        ingredients.Add(MapToFuelContentModel(itemDictionary[fuel.FuelClass], 0));
+        var ingredient = MapToFuelContentModel(itemDictionary[fuel.FuelClass], 0);
 
-        if (!string.IsNullOrEmpty(fuel.SupplementalResourceClass))
-            ingredients.Add(MapToFuelContentModel(itemDictionary[fuel.SupplementalResourceClass], 0));
+        var supplementalIngredient = !string.IsNullOrEmpty(fuel.SupplementalResourceClass)
+            ? MapToFuelContentModel(itemDictionary[fuel.SupplementalResourceClass], 0)
+            : null;
 
         var byProductItem = !string.IsNullOrEmpty(fuel.ByProduct)
             ? MapToFuelContentModel(itemDictionary[fuel.ByProduct], 0)
@@ -127,7 +127,8 @@ internal class DataModelMappingService
 
         return new FuelModel
         {
-            Ingredients = ingredients.ToArray(),
+            Ingredient = ingredient,
+            SupplementalIngredient = supplementalIngredient,
             ByProduct = byProductItem,
             Generator = generatorModel
         };
@@ -259,7 +260,7 @@ internal class DataModelMappingService
         .ToArray();
 
     private FuelModel[] GetFuelIngredientReferences(string entityClassName, FuelModel[] fuels) => fuels
-        .Where(fuel => fuel.Ingredients.Any(p => p.ItemName == entityClassName))
+        .Where(fuel => fuel.Ingredient.ItemName == entityClassName || fuel.SupplementalIngredient?.ItemName == entityClassName)
         .ToArray();
 
     private FuelModel[] GetFuelByProductReferences(string entityClassName, FuelModel[] fuels) => fuels

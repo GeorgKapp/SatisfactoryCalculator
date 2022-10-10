@@ -11,12 +11,6 @@
 
     <UserControl.Resources>
 
-        <CollectionViewSource x:Key="IngredientCollection" Source="{Binding Fuel.Ingredients, ElementName=userControl}"/>
-
-        <ItemsPanelTemplate x:Key="FuelItemsPanelTemplate">
-            <p:ExtendedStackPanel Orientation="Horizontal" Spacing="8"/>
-        </ItemsPanelTemplate>
-
         <DataTemplate DataType="{x:Type models:FuelContentModel}">
             <Grid MinHeight="50">
                 <Grid.ColumnDefinitions>
@@ -25,7 +19,6 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding AmountPerMinuteText}"/>
-
                 <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Item.BitmapImage}">
                     <FrameworkElement.ToolTip>
                         <ToolTip Background="#00FFFFFF" BorderThickness="0" Placement="Right">
@@ -35,6 +28,7 @@
                         </ToolTip>
                     </FrameworkElement.ToolTip>
                 </Image>
+                
             </Grid>
         </DataTemplate>
 
@@ -53,17 +47,13 @@
     </UserControl.Resources>
 
 
-    <p:ExtendedStackPanel Orientation="Horizontal" Spacing="8">
-        
-        <ItemsControl ItemsPanel="{StaticResource FuelItemsPanelTemplate}" ItemsSource="{Binding Fuel.Ingredients, ElementName=userControl}" Margin="10,0,0,0"/>
+    <p:ExtendedStackPanel Orientation="Horizontal" Spacing="3">
+        <ContentControl Content="{Binding Fuel.Ingredient, ElementName=userControl}"/>
+        <ContentControl Content="{Binding Fuel.SupplementalIngredient, ElementName=userControl}" Margin="8,0,0,0"/>
         <TextBlock x:Name="textBoxEqual" Text="+" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" Visibility="{Binding Fuel.ByProduct, Converter={StaticResource NullToVisibilityConverter},ElementName=userControl}" FontSize="30" VerticalAlignment="Stretch"/>
-        <ContentControl Content="{Binding Fuel.ByProduct, ElementName=userControl}"/>
-        <TextBlock x:Name="textBoxArrow" Text="▶" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" FontSize="20" VerticalAlignment="Center"/>
+        <ContentControl Content="{Binding Fuel.ByProduct, ElementName=userControl}"  Margin="8,0,8,0"/>
+        <TextBlock x:Name="textBoxArrow" Text="▶" Margin="-15,0,0,0" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" FontSize="20" VerticalAlignment="Center"/>
         <ContentControl Content="{Binding Fuel.Generator, ElementName=userControl}"/>
-
-        <!--<models:FuelContentModel AmountPerMinute="{Binding Fuel.ByProduct.AmountPerMinute}"/>-->
-
-        
     </p:ExtendedStackPanel>
 
 </UserControl>

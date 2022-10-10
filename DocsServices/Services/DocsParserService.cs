@@ -86,14 +86,13 @@ public partial class DocsParserService
 					data.Miners.AddRange(ParseMiners(class1.Classes));
 					break;
 
-				case "Class'/Script/FactoryGame.FGBuildableManufacturerVariablePower'":
 				case "Class'/Script/FactoryGame.FGBuildableGeneratorFuel'":
 				case "Class'/Script/FactoryGame.FGBuildableGeneratorNuclear'":
 					data.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
 					data.Generators.AddRange(ParseGenerators(class1.Classes, biomassItems));
 					break;
 
-				case "Class'/Script/FactoryGame.FGBuildable'":
+                case "Class'/Script/FactoryGame.FGBuildable'":
 				case "Class'/Script/FactoryGame.FGBuildableAttachmentMerger'":
 				case "Class'/Script/FactoryGame.FGBuildableAttachmentSplitter'":
 				case "Class'/Script/FactoryGame.FGBuildableBeam'":
@@ -117,7 +116,8 @@ public partial class DocsParserService
 				case "Class'/Script/FactoryGame.FGBuildableLightsControlPanel'":
 				case "Class'/Script/FactoryGame.FGBuildableMAM'":
 				case "Class'/Script/FactoryGame.FGBuildableManufacturer'":
-				case "Class'/Script/FactoryGame.FGBuildablePassthrough'":
+                case "Class'/Script/FactoryGame.FGBuildableManufacturerVariablePower'":
+                case "Class'/Script/FactoryGame.FGBuildablePassthrough'":
 				case "Class'/Script/FactoryGame.FGBuildablePillar'":
 				case "Class'/Script/FactoryGame.FGBuildablePipeHyper'":
 				case "Class'/Script/FactoryGame.FGBuildablePipeReservoir'":

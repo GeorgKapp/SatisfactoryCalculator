@@ -10,7 +10,7 @@
       d:Height="600"
       Background="Transparent"
       d:Background="#202125"
-      d:DataContext="{d:DesignInstance Type=context:OverviewViewModel, IsDesignTimeCreatable=True}">
+      d:DataContext="{d:DesignInstance Type=context:OverviewViewModel}">
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
 

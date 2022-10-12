@@ -12,7 +12,7 @@
       d:Height="600"
       Background="Transparent"
       d:Background="#202125"
-      d:DataContext="{d:DesignInstance Type=context:RecipesViewModel, IsDesignTimeCreatable=True}">
+      d:DataContext="{d:DesignInstance Type=context:RecipesViewModel}">
 
     <Grid>
 

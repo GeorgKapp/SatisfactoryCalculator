@@ -14,6 +14,7 @@ internal class ItemsViewModel : ObservableObject
                 SelectedItemAsIngredientInRecipes = new();
                 SelectedItemAsBuildingIngredientInRecipes = new();
                 SelectedItemAsProductInRecipes = new();
+                SelectedItemAsFuels = new();
             }
             else
             {
@@ -21,6 +22,7 @@ internal class ItemsViewModel : ObservableObject
                 SelectedItemAsIngredientInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeIngredient);
                 SelectedItemAsBuildingIngredientInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeBuildingIngredient);
                 SelectedItemAsProductInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeProduct);
+                SelectedItemAsFuels = new ObservableCollection<FuelModel>(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
             }
         }
     }
@@ -59,11 +61,23 @@ internal class ItemsViewModel : ObservableObject
         }
     }
 
+    private ObservableCollection<FuelModel> _selectedItemAsFuels = new();
+    public ObservableCollection<FuelModel> SelectedItemAsFuels
+    {
+        get => _selectedItemAsFuels;
+        set
+        {
+            SetProperty(ref _selectedItemAsFuels, value);
+            NotifyMarginUpdates();
+        }
+    }
+
     public ObservableCollection<ItemModel> Items => _applicationState.Configuration.Items;
 
     public Thickness ProductsSectionMargin => CalculateMargin(false);
     public Thickness IngredientsSectionMargin => CalculateMargin(_selectedItemAsProductInRecipes.Count > 0);
     public Thickness BuildingIngredientSectionMargin => CalculateMargin(_selectedItemAsIngredientInRecipes.Count > 0);
+    public Thickness FuelsSectionMargin => CalculateMargin(_selectedItemAsBuildingIngredientInRecipes.Count > 0 || _selectedItemAsProductInRecipes.Count > 0);
 
     public ItemsViewModel(ApplicationState applicationState)
     {
@@ -81,6 +95,7 @@ internal class ItemsViewModel : ObservableObject
         Notify(nameof(ProductsSectionMargin));
         Notify(nameof(IngredientsSectionMargin));
         Notify(nameof(BuildingIngredientSectionMargin));
+        Notify(nameof(FuelsSectionMargin));
     }
 
     private ApplicationState _applicationState;

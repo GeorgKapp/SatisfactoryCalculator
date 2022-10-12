@@ -14,7 +14,7 @@ public partial class FuelControl : UserControl
         get => (bool)GetValue(ShowFuelGeneratorProperty);
         set => SetValue(ShowFuelGeneratorProperty, value);
     }
-    internal static readonly DependencyProperty ShowFuelGeneratorProperty = DependencyProperty.Register(nameof(ShowFuelGenerator), typeof(bool), typeof(FuelControl));
+    internal static readonly DependencyProperty ShowFuelGeneratorProperty = DependencyProperty.Register(nameof(ShowFuelGenerator), typeof(bool), typeof(FuelControl), new PropertyMetadata(true));
 
     private static void UpdateVisibilities(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

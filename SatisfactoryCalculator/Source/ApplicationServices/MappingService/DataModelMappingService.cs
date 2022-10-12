@@ -259,6 +259,10 @@ internal class DataModelMappingService
         .Where(recipe => recipe.Buildings.Any(p => p.Building.ClassName == entityClassName))
         .ToArray();
 
+    private RecipeModel[] GetRecipeFuelIngredientReferences(string entityClassName, RecipeModel[] recipes, Dictionary<string, BuildingModel> buildingDictionary) => recipes
+        .Where(recipe => recipe.Buildings.Any(p => p.Building.ClassName == entityClassName))
+        .ToArray();
+
     private FuelModel[] GetFuelIngredientReferences(string entityClassName, FuelModel[] fuels) => fuels
         .Where(fuel => fuel.Ingredient.ItemName == entityClassName || fuel.SupplementalIngredient?.ItemName == entityClassName)
         .ToArray();

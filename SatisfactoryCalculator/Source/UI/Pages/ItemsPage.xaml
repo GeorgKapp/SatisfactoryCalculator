@@ -19,6 +19,11 @@
         <CollectionViewSource x:Key="ProductCollection" Source="{Binding SelectedItemAsProductInRecipes}"/>
         <CollectionViewSource x:Key="IngredientCollection" Source="{Binding SelectedItemAsIngredientInRecipes}"/>
         <CollectionViewSource x:Key="BuildingIngredientCollection" Source="{Binding SelectedItemAsBuildingIngredientInRecipes}"/>
+        <CollectionViewSource x:Key="FuelIngredientCollection" Source="{Binding SelectedItemAsFuels}"/>
+
+        <DataTemplate DataType="{x:Type models:FuelModel}">
+            <u:FuelControl Fuel="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:RecipeModel}">
             <u:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
@@ -84,6 +89,9 @@
 
                         <c:SatisfactoryTextBlock Text="Item used as Building Ingredient" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedItemAsBuildingIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding BuildingIngredientSectionMargin}"/>
                         <CollectionContainer Collection="{Binding Source={StaticResource BuildingIngredientCollection}}"/>
+
+                        <c:SatisfactoryTextBlock Text="Item used as Fuel" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedItemAsFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding FuelsSectionMargin}"/>
+                        <CollectionContainer Collection="{Binding Source={StaticResource FuelIngredientCollection}}"/>
 
                     </CompositeCollection>
                 </ItemsControl.ItemsSource>

@@ -19,7 +19,7 @@
         <CollectionViewSource x:Key="RecipeCollection" Source="{Binding SelectedGeneratorRecipes}"/>
 
         <DataTemplate DataType="{x:Type models:FuelModel}">
-            <u:FuelControl Fuel="{Binding}" Margin="0,0,0,15"/>
+            <u:FuelControl Fuel="{Binding}" Margin="0,0,0,15" ShowFuelGenerator="False"/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:RecipeModel}">
@@ -78,11 +78,11 @@
                 <ItemsControl.ItemsSource>
                     <CompositeCollection>
 
-                        <c:SatisfactoryTextBlock Text="Fuels" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedGeneratorFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
-                        <CollectionContainer Collection="{Binding Source={StaticResource GeneratorCollection}}"/>
-
                         <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedGeneratorRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
                         <CollectionContainer Collection="{Binding Source={StaticResource RecipeCollection}}"/>
+
+                        <c:SatisfactoryTextBlock Text="Fuels" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedGeneratorFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
+                        <CollectionContainer Collection="{Binding Source={StaticResource GeneratorCollection}}"/>
 
                     </CompositeCollection>
                 </ItemsControl.ItemsSource>

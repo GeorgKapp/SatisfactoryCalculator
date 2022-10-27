@@ -3,7 +3,7 @@ using Item = SatisfactoryCalculator.DocsServices.Models.DataModels.Item;
 using Recipe = SatisfactoryCalculator.DocsServices.Models.DataModels.Recipe;
 using Reference = SatisfactoryCalculator.DocsServices.Models.DataModels.Reference;
 
-namespace SatisfactoryCalculator.Source.ApplicationServices.MappingService;
+namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelMappingService
 {
@@ -76,6 +76,7 @@ internal class DataModelMappingService
         Description = p.Description,
         Form = p.Form,
         ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath),
+        ManufactoringSpeed = p.ManuFacturingSpeed,
         PowerConsumption = p.PowerConsumption,
         PowerConsumptionRange = p.PowerConsumptionRange
     }).OrderBy(p => p.Name).ToArray();
@@ -170,6 +171,7 @@ internal class DataModelMappingService
             .Select(product => MapToRecipeContentModel(product, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
             .ToArray();
 
+        
         return new RecipeModel
         {
             ClassName = recipe.ClassName,
@@ -178,6 +180,7 @@ internal class DataModelMappingService
             ConstructedByBuildGun = recipe.ConstructedByBuildGun,
             ConstructedInWorkbench = recipe.ConstructedInWorkbench,
             ConstructedInWorkshop = recipe.ConstructedInWorkshop,
+            ManufactoringDuration = recipe.ManufactoringDuration,
             Ingredients = ingredients,
             Products = products,
             Buildings = buildings.ToArray()

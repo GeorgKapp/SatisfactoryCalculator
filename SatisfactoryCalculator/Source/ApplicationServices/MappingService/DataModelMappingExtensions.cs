@@ -1,4 +1,4 @@
-﻿namespace SatisfactoryCalculator.Source.ApplicationServices.MappingService;
+﻿namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal static class DataModelMappingExtensions
 {

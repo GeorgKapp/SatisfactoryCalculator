@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calculator", "SatisfactoryCalculator\Calculator.csproj", "{EB98AE39-FCC4-442A-BD87-B2ED68574ADE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator", "SatisfactoryCalculator\Calculator.csproj", "{EB98AE39-FCC4-442A-BD87-B2ED68574ADE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{61A3E5E0-CA55-4E0B-BA0A-D9272C443FAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{61A3E5E0-CA55-4E0B-BA0A-D9272C443FAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocsServices", "DocsServices\DocsServices.csproj", "{1C5B3B09-7478-4989-9F17-63447A1ACEAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocsServices", "DocsServices\DocsServices.csproj", "{1C5B3B09-7478-4989-9F17-63447A1ACEAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{15E4F364-39DB-463C-87D6-C164CD0777C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{15E4F364-39DB-463C-87D6-C164CD0777C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controls", "Controls\Controls.csproj", "{356BD6AC-66F6-4B19-9D46-06AEEA5362C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Controls", "Controls\Controls.csproj", "{356BD6AC-66F6-4B19-9D46-06AEEA5362C0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{889117C7-D2AD-459B-9411-C3E8DCE12321}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{356BD6AC-66F6-4B19-9D46-06AEEA5362C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{356BD6AC-66F6-4B19-9D46-06AEEA5362C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{356BD6AC-66F6-4B19-9D46-06AEEA5362C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{889117C7-D2AD-459B-9411-C3E8DCE12321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{889117C7-D2AD-459B-9411-C3E8DCE12321}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{889117C7-D2AD-459B-9411-C3E8DCE12321}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{889117C7-D2AD-459B-9411-C3E8DCE12321}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

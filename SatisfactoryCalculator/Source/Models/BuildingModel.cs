@@ -6,7 +6,10 @@ internal class BuildingModel
     public string Name { get; set; }
     public string Description { get; set; }
     public Form? Form { get; set; }
+    public double? ManufactoringSpeed { get; set; }
     public double? PowerConsumption { get; set; }
+    public double? PowerConsumptionExponent { get; set; }
+    public double? ManuFacturingSpeed { get; set; }
     public PowerConsumptionRange? PowerConsumptionRange { get; set; }
 
     private string _imagePath;

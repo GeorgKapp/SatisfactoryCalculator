@@ -81,14 +81,14 @@ public partial class DocsParserService
 
 				case "Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
 				case "Class'/Script/FactoryGame.FGBuildableWaterPump'":
-				case "Class'/Script/FactoryGame.FGBuildableGeneratorGeoThermal'":
 					data.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
 					data.Miners.AddRange(ParseMiners(class1.Classes));
 					break;
 
 				case "Class'/Script/FactoryGame.FGBuildableGeneratorFuel'":
 				case "Class'/Script/FactoryGame.FGBuildableGeneratorNuclear'":
-					data.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
+                case "Class'/Script/FactoryGame.FGBuildableGeneratorGeoThermal'":
+                    data.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
 					data.Generators.AddRange(ParseGenerators(class1.Classes, biomassItems));
 					break;
 

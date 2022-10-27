@@ -1,3 +1,4 @@
+[assembly: InternalsVisibleToAttribute("SatisfactoryCalculator.Tests")]
 
 [assembly: ThemeInfo(
     ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located

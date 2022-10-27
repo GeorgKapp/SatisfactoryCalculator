@@ -1,6 +1,6 @@
 ﻿using SatisfactoryCalculator.Source.Models.Refernces;
 
-namespace SatisfactoryCalculator.Source.ApplicationServices.MappingService;
+namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelMappingResult
 {

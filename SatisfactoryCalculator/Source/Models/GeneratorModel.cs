@@ -9,6 +9,7 @@ internal class GeneratorModel
     public double? PowerProduction { get; set; }
     public double? PowerProductionExponent { get; set; }
     public double? SupplementalToPowerRatio { get; set; }
+    public double SupplementalLoadAmount { get; set; }
 
     private string _imagePath;
     public string ImagePath

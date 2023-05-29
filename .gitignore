@@ -353,6 +353,8 @@ MigrationBackup/
 .ionide/
 
 # Ignore Debug/Release Folders
-
 bin/
 obj/
+
+# Ignore Rider Folders
+.idea/

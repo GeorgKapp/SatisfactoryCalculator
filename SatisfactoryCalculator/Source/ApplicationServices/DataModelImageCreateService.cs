@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelImageCreateService

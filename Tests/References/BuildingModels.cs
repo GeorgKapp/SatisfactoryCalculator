@@ -10,7 +10,6 @@ internal class BuildingModels
         ManufactoringSpeed = 1,
         PowerConsumption = 4,
         PowerConsumptionExponent = 1.6,
-        ManuFacturingSpeed = 1,
         PowerConsumptionRange = null
     };
 
@@ -22,7 +21,6 @@ internal class BuildingModels
         ManufactoringSpeed = 1,
         PowerConsumption = 30,
         PowerConsumptionExponent = 1.6,
-        ManuFacturingSpeed = 1,
         PowerConsumptionRange = null
     };
 }

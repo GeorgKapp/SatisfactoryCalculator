@@ -25,6 +25,14 @@ internal class ItemModels
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
     };
+    
+    public static ItemModel IronRod = new ItemModel
+    {
+        ClassName = "IronRod_C",
+        Name = "Iron Rod",
+        Form = Shared.Enums.Form.Solid,
+        EnergyValue = 0
+    };
 
     public static ItemModel IronIngot = new ItemModel
     {

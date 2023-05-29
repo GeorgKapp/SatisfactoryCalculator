@@ -1,11 +1,10 @@
-﻿using SatisfactoryCalculator.DocsServices.Models.DataModels;
-
-namespace SatisfactoryCalculator.Source.ApplicationServices;
+﻿namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class CalculationService
 {
     private const double defaultPercentage = 100;
     private const double secondsPerMinute = 60;
+    private const double powerConsumptionExponent = 1.321928;
 
     public double? CalculateAmountPerMinte(Form? form, double? amount, double manufactoringDuration)
     {
@@ -65,7 +64,7 @@ internal class CalculationService
     public RecipeItemProductionResult CalculateRecipeItemProduction(RecipeModel recipe, ItemModel item, RecipeBuildingProductionResult buildingProductionResult)
     {
         var foundItem = recipe.Ingredients.Concat(recipe.Products)
-            .Where(p => p.ItemName == item.ClassName)
+            .Where(p => p.Item.ClassName == item.ClassName)
             .FirstOrDefault() ?? throw new ArgumentException("Item could not be found");
 
         var amount = NormalizeAmount(foundItem.Item.Form, foundItem.SourceAmount);
@@ -74,7 +73,9 @@ internal class CalculationService
         return new RecipeItemProductionResult
         {
             Amount = amount,
-            AmountPerMinute = amountPerMinute
+            AmountPerMinute = amountPerMinute,
+            Time = buildingProductionResult.Time,
+            PowerConsumption = buildingProductionResult.PowerConsumption
         };
     }
 
@@ -104,10 +105,14 @@ internal class CalculationService
             ? building.ManufactoringSpeed.Value
             : 1;
 
-    private double CalculatePowerConsumption(double? initialPowerConsumption, double overclockMultiplier) => 
-        initialPowerConsumption.HasValue
-            ? Math.Round((initialPowerConsumption.Value * Math.Pow(overclockMultiplier, 1.6) + double.Epsilon) * 100.0) / 100.0
-            : 0;
+    private double CalculatePowerConsumption(double? initialPowerConsumption, double overclockMultiplier)
+    {
+        if (!initialPowerConsumption.HasValue)
+            return 0;
+
+        var result = initialPowerConsumption.Value * Math.Pow(overclockMultiplier, powerConsumptionExponent) + double.Epsilon;
+        return Math.Round(result, 1);
+    }
 
     private double NormalizeAmount(Form? form, double sourceInput) =>
         IsFormLiquidOrGas(form)

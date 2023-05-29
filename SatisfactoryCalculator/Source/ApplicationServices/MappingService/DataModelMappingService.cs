@@ -196,7 +196,6 @@ internal class DataModelMappingService
         return new RecipeContentModel
         {
             Item = item,
-            ItemName = recipeItem.ClassName,
             Amount = _calculationService.CalculateAmount(item.Form, recipeItem.Amount),
             SourceAmount = recipeItem.Amount,
             AmountPerMinute = setOnlyAmount ? null : _calculationService.CalculateAmountPerMinte(item.Form, recipeItem.Amount, manufactoringDuration),
@@ -206,7 +205,6 @@ internal class DataModelMappingService
     private RecipeBuildingModel MapToRecipeBuildingModel(BuildingModel buildingModel, PowerConsumptionRange? powerConsumptionRange) => new RecipeBuildingModel
     {
         Building = buildingModel,
-        BuildingName = buildingModel.ClassName,
         PowerConsumptionRange = powerConsumptionRange
     };
 

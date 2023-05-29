@@ -16,8 +16,7 @@ internal class RecipeModels
         { 
             new RecipeBuildingModel 
             {
-                Building = BuildingModels.Constructor, 
-                BuildingName = BuildingModels.Constructor.ClassName 
+                Building = BuildingModels.Constructor
             } 
         },
 
@@ -26,7 +25,6 @@ internal class RecipeModels
             new RecipeContentModel 
             { 
                 Item = ItemModels.Wire,
-                ItemName = ItemModels.Wire.ClassName,
                 SourceAmount = 2
             },  
         },
@@ -36,7 +34,6 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.Cable,
-                ItemName = ItemModels.Cable.ClassName,
                 SourceAmount = 1
             },
         }
@@ -48,8 +45,8 @@ internal class RecipeModels
         RecipeName = "Iron Plate",
         ManufactoringDuration = 6,
         ConstructedByBuildGun = false,
-        ConstructedInWorkbench = false,
-        ConstructedInWorkshop = true,
+        ConstructedInWorkbench = true,
+        ConstructedInWorkshop = false,
         IsAlternateRecipe = false,
 
         Buildings = new[]
@@ -57,7 +54,6 @@ internal class RecipeModels
             new RecipeBuildingModel
             {
                 Building = BuildingModels.Constructor,
-                BuildingName = BuildingModels.Constructor.ClassName
             }
         },
 
@@ -66,7 +62,6 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.IronIngot,
-                ItemName = ItemModels.IronIngot.ClassName,
                 SourceAmount = 3
             },
         },
@@ -76,8 +71,44 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.IronPlate,
-                ItemName = ItemModels.IronPlate.ClassName,
                 SourceAmount = 2
+            },
+        }
+    };
+    
+    public static RecipeModel IronRodRecipe = new RecipeModel
+    {
+        ClassName = "IronRod_C",
+        RecipeName = "Iron Rod",
+        ManufactoringDuration = 4,
+        ConstructedByBuildGun = false,
+        ConstructedInWorkbench = true,
+        ConstructedInWorkshop = false,
+        IsAlternateRecipe = false,
+
+        Buildings = new[]
+        {
+            new RecipeBuildingModel
+            {
+                Building = BuildingModels.Constructor
+            }
+        },
+
+        Ingredients = new[]
+        {
+            new RecipeContentModel
+            {
+                Item = ItemModels.IronIngot,
+                SourceAmount = 1
+            },
+        },
+
+        Products = new[]
+        {
+            new RecipeContentModel
+            {
+                Item = ItemModels.IronRod,
+                SourceAmount = 1
             },
         }
     };
@@ -97,7 +128,6 @@ internal class RecipeModels
             new RecipeBuildingModel
             {
                 Building = BuildingModels.OilRefinery,
-                BuildingName = BuildingModels.OilRefinery.ClassName
             }
         },
 
@@ -106,13 +136,11 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.PolymerResin,
-                ItemName = ItemModels.PolymerResin.ClassName,
                 SourceAmount = 6
             },
             new RecipeContentModel
             {
                 Item = ItemModels.Water,
-                ItemName = ItemModels.Water.ClassName,
                 SourceAmount = 2000
             },
         },
@@ -122,7 +150,6 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.Plastic,
-                ItemName = ItemModels.Plastic.ClassName,
                 SourceAmount = 2
             },
         }

@@ -9,7 +9,6 @@ internal class BuildingModel
     public double? ManufactoringSpeed { get; set; }
     public double? PowerConsumption { get; set; }
     public double? PowerConsumptionExponent { get; set; }
-    public double? ManuFacturingSpeed { get; set; }
     public PowerConsumptionRange? PowerConsumptionRange { get; set; }
 
     private string _imagePath;

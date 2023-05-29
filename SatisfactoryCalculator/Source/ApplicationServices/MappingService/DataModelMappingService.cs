@@ -198,6 +198,7 @@ internal class DataModelMappingService
             Item = item,
             ItemName = recipeItem.ClassName,
             Amount = _calculationService.CalculateAmount(item.Form, recipeItem.Amount),
+            SourceAmount = recipeItem.Amount,
             AmountPerMinute = setOnlyAmount ? null : _calculationService.CalculateAmountPerMinte(item.Form, recipeItem.Amount, manufactoringDuration),
         };
     }

@@ -1,6 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Source.ApplicationServices;
 
-internal class BuildingCalculationResult
+internal class RecipeBuildingProductionResult
 {
     public double CyclesPerMinute { get; set; }
     public double Time { get; set; }

@@ -96,6 +96,8 @@ public partial class DocsParserService
 				case "Class'/Script/FactoryGame.FGBuildableAttachmentMerger'":
 				case "Class'/Script/FactoryGame.FGBuildableAttachmentSplitter'":
 				case "Class'/Script/FactoryGame.FGBuildableBeam'":
+                case "Class'/Script/FactoryGame.FGBuildableBeamLightweight'":
+                case "Class'/Script/FactoryGame.FGBuildableBlueprintDesigner'":
 				case "Class'/Script/FactoryGame.FGBuildableCircuitSwitch'":
 				case "Class'/Script/FactoryGame.FGBuildableConveyorBelt'":
 				case "Class'/Script/FactoryGame.FGBuildableConveyorLift'":
@@ -108,7 +110,8 @@ public partial class DocsParserService
 				case "Class'/Script/FactoryGame.FGBuildableFactorySimpleProducer'":
 				case "Class'/Script/FactoryGame.FGBuildableFloodlight'":
 				case "Class'/Script/FactoryGame.FGBuildableFoundation'":
-				case "Class'/Script/FactoryGame.FGBuildableFrackingActivator'":
+                case "Class'/Script/FactoryGame.FGBuildableFoundationLightweight'":
+                case "Class'/Script/FactoryGame.FGBuildableFrackingActivator'":
 				case "Class'/Script/FactoryGame.FGBuildableFrackingExtractor'":
 				case "Class'/Script/FactoryGame.FGBuildableJumppad'":
 				case "Class'/Script/FactoryGame.FGBuildableLadder'":
@@ -119,13 +122,14 @@ public partial class DocsParserService
                 case "Class'/Script/FactoryGame.FGBuildableManufacturerVariablePower'":
                 case "Class'/Script/FactoryGame.FGBuildablePassthrough'":
 				case "Class'/Script/FactoryGame.FGBuildablePillar'":
-				case "Class'/Script/FactoryGame.FGBuildablePipeHyper'":
+                case "Class'/Script/FactoryGame.FGBuildablePillarLightweight'":
+                case "Class'/Script/FactoryGame.FGBuildablePipeHyper'":
 				case "Class'/Script/FactoryGame.FGBuildablePipeReservoir'":
 				case "Class'/Script/FactoryGame.FGBuildablePipeline'":
 				case "Class'/Script/FactoryGame.FGBuildablePipelineJunction'":
 				case "Class'/Script/FactoryGame.FGBuildablePipelinePump'":
 				case "Class'/Script/FactoryGame.FGBuildablePipelineSupport'":
-				case "Class'/Script/FactoryGame.FGBuildablePowerPole'":
+                case "Class'/Script/FactoryGame.FGBuildablePowerPole'":
 				case "Class'/Script/FactoryGame.FGBuildablePowerStorage'":
 				case "Class'/Script/FactoryGame.FGBuildableRadarTower'":
 				case "Class'/Script/FactoryGame.FGBuildableRailroadSignal'":
@@ -143,12 +147,15 @@ public partial class DocsParserService
 				case "Class'/Script/FactoryGame.FGBuildableTrainPlatformCargo'":
 				case "Class'/Script/FactoryGame.FGBuildableTrainPlatformEmpty'":
 				case "Class'/Script/FactoryGame.FGBuildableWalkway'":
-				case "Class'/Script/FactoryGame.FGBuildableWall'":
+                case "Class'/Script/FactoryGame.FGBuildableWalkwayLightweight'":
+                case "Class'/Script/FactoryGame.FGBuildableWall'":
+                case "Class'/Script/FactoryGame.FGBuildableWallLightweight'":
 				case "Class'/Script/FactoryGame.FGBuildableWidgetSign'":
 				case "Class'/Script/FactoryGame.FGBuildableWire'":
 				case "Class'/Script/FactoryGame.FGConveyorPoleStackable'":
 				case "Class'/Script/FactoryGame.FGPipeHyperStart'":
 				case "Class'/Script/FactoryGame.FGBuildablePole'":
+                case "Class'/Script/FactoryGame.FGBuildablePoleLightweight'":
 					data.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
 					break;
 

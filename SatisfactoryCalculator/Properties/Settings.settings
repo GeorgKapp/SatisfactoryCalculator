@@ -1,12 +1,13 @@
-﻿<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SatisfactoryCalculator.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="UeModelExportDirectory" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Users\Georg\Downloads\umodel_win32\UmodelExport</Value>
+      <Value Profile="(Default)">C:\Program Files (x86)\umodel_win32\UmodelExport</Value>
     </Setting>
     <Setting Name="DocsFilePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\Satisfactory\CommunityResources\Docs\Docs.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>
+

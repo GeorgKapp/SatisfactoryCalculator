@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelImageCreateService
@@ -37,11 +39,17 @@ internal class DataModelImageCreateService
     private async Task<string> CreateImageAsync(string sourceRelativePath, string ueModelExportPath)
     {
         if (string.IsNullOrEmpty(sourceRelativePath))
-            return null;
+            return string.Empty;
 
-        string fileName = Path.GetFileName(sourceRelativePath);
-        string sourceFile = ueModelExportPath.Append(sourceRelativePath);
-        string targetPath = Path.Combine(Constants.ImageFilePath, fileName);
+        var fileName = Path.GetFileName(sourceRelativePath);
+        var sourceFile = ueModelExportPath.Append(sourceRelativePath);
+        var targetPath = Path.Combine(Constants.ImageFilePath, fileName);
+        
+        if (!File.Exists(sourceFile))
+        {
+            Debug.Print($"File missing: {sourceFile}");
+            return string.Empty;
+        }
 
         await CopyFileAsync(sourceFile, targetPath);
         return targetPath;
@@ -49,8 +57,8 @@ internal class DataModelImageCreateService
 
     private async Task CopyFileAsync(string sourceFile, string destinationFile, CancellationToken? token = null)
     {
-        using FileStream sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.Read);
-        using FileStream destinationStream = new FileStream(destinationFile, FileMode.Create, FileAccess.Write, FileShare.None);
+        await using var sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.Read);
+        await using var destinationStream = new FileStream(destinationFile, FileMode.Create, FileAccess.Write, FileShare.None);
 
         token ??= CancellationToken.None;
         await sourceStream.CopyToAsync(destinationStream, token.Value);

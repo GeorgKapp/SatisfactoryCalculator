@@ -31,7 +31,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="ItemsControlHorizontalVirtualizedStyle" TargetType="ItemsControl" BasedOn="{StaticResource ItemsControlVerticalVirtualizedStyle}">
+    <Style x:Key="ItemsControlHorizontalVirtualizedStyle" TargetType="{x:Type c:VirtualizedItemsControl}" BasedOn="{StaticResource ItemsControlVerticalVirtualizedStyle}">
         <Setter Property="ItemsPanel" Value="{StaticResource HorizontalVirtualizingStackPanelTemplate}"/>
     </Style>
 

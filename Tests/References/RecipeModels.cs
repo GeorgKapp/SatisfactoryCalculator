@@ -26,7 +26,8 @@ internal class RecipeModels
             new RecipeContentModel 
             { 
                 Item = ItemModels.Wire,
-                Amount = 2
+                ItemName = ItemModels.Wire.ClassName,
+                SourceAmount = 2
             },  
         },
 
@@ -35,7 +36,8 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.Cable,
-                Amount = 1
+                ItemName = ItemModels.Cable.ClassName,
+                SourceAmount = 1
             },
         }
     };
@@ -64,7 +66,8 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.IronIngot,
-                Amount = 3
+                ItemName = ItemModels.IronIngot.ClassName,
+                SourceAmount = 3
             },
         },
 
@@ -73,7 +76,8 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.IronPlate,
-                Amount = 2
+                ItemName = ItemModels.IronPlate.ClassName,
+                SourceAmount = 2
             },
         }
     };
@@ -102,12 +106,14 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.PolymerResin,
-                Amount = 6
+                ItemName = ItemModels.PolymerResin.ClassName,
+                SourceAmount = 6
             },
             new RecipeContentModel
             {
                 Item = ItemModels.Water,
-                Amount = 2000
+                ItemName = ItemModels.Water.ClassName,
+                SourceAmount = 2000
             },
         },
 
@@ -116,7 +122,8 @@ internal class RecipeModels
             new RecipeContentModel
             {
                 Item = ItemModels.Plastic,
-                Amount = 2
+                ItemName = ItemModels.Plastic.ClassName,
+                SourceAmount = 2
             },
         }
     };

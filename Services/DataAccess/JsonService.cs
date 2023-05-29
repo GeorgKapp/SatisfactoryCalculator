@@ -7,15 +7,6 @@ public class JsonService
 		WriteIndented = true
 	};
 
-	public T? ReadJson<T>(string jsonFileName)
-	{
-		if (!File.Exists(jsonFileName))
-			return default(T);
-
-		string json = File.ReadAllText(jsonFileName);
-		return JsonSerializer.Deserialize<T>(json, _options);
-	}
-
 	public void WriteJson<T>(T serializedObject, string fileName)
 	{
 		string contents = JsonSerializer.Serialize(serializedObject, _options);
@@ -27,7 +18,8 @@ public class JsonService
 		if (!File.Exists(jsonFileName))
 			return default(T);
 
-		return JsonSerializer.Deserialize<T>(await File.ReadAllTextAsync(jsonFileName), _options);
+		using var fileStream = new FileStream(jsonFileName, FileMode.Open, FileAccess.Read);
+        return await JsonSerializer.DeserializeAsync<T>(fileStream, _options);
 	}
 
 	public async Task WriteJsonAsync<T>(T serializedObject, string fileName)

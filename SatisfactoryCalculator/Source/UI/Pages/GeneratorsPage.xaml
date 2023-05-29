@@ -58,20 +58,36 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedGenerator.BitmapImage}" />
+                <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedGenerator.BitmapImage}"/>
                 <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
                     <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Name}" />
                     <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Description}" />
                 </StackPanel>
-            </Grid>
 
+                <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,20,0,0" Visibility="{Binding SelectedGenerator, Converter={StaticResource NullToVisibilityConverter}}">
+                    <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Text="Clock Speed"/>
+                    <Grid Margin="9,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <c:SatisfactoryTextBox Width="80" Text="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <c:SatisfactorySlider Value="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" Margin="10,0,10,0" Grid.Column="1"/>
+                    </Grid>
+                </StackPanel>
+            </Grid>
+            
             <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
 
                 <ItemsControl.ItemsSource>

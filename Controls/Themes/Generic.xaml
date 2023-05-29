@@ -10,6 +10,7 @@
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ItemsControlDictionary.xaml" />
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ListViewDictionary.xaml" />
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/SpinnerDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/SliderDictionary.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
 </ResourceDictionary>

@@ -58,6 +58,7 @@ internal class DataModelMappingService
         Name = p.DisplayName,
         Description = p.Description,
         Form = p.Form,
+        EnergyValue = p.EnergyValue,
         ImagePath = SelectImagePath(p.SmallIconPath, p.BigIconPath)
     }).OrderBy(p => p.Name).ToArray();
 
@@ -196,7 +197,7 @@ internal class DataModelMappingService
         return new RecipeContentModel
         {
             Item = item,
-            Amount = _calculationService.CalculateAmount(item.Form, recipeItem.Amount),
+            Amount = _calculationService.NormalizeAmount(item.Form, recipeItem.Amount),
             SourceAmount = recipeItem.Amount,
             AmountPerMinute = setOnlyAmount ? null : _calculationService.CalculateAmountPerMinte(item.Form, recipeItem.Amount, manufactoringDuration),
         };

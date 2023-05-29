@@ -1,6 +1,8 @@
-﻿namespace SatisfactoryCalculator.Source.ApplicationServices;
+﻿using SatisfactoryCalculator.DocsServices.Models.DataModels;
 
-internal class CalculationService
+namespace SatisfactoryCalculator.Source.ApplicationServices;
+
+internal class CalculationService : ICalculationService
 {
     private const double defaultPercentage = 100;
     private const double secondsPerMinute = 60;
@@ -11,31 +13,43 @@ internal class CalculationService
         if (amount is null)
             return null;
 
-        amount = CalculateAmount(form, amount);
+        amount = NormalizeAmount(form, amount.Value);
 
         double factor = 60.0 / manufactoringDuration;
         return amount * factor;
     }
 
-    public double CalculateAmount(Form? form, double sourceInput)
-    {
-        if (form is not null && (form == Form.Liquid || form == Form.Gas))
-            sourceInput /= 1000;
+    public double NormalizeAmount(Form? form, double sourceInput) =>
+        IsFormLiquidOrGas(form)
+            ? sourceInput / 1000
+            : sourceInput;
 
-        return sourceInput;
+    public void UpdateFuelModel(FuelModel fuelModel, double overclock)
+    {
+        var overclockMultiplier = GetOverClockMultiplier(overclock);
+        var powerProduction = fuelModel.Generator.PowerProduction ?? 1;
+        var energyValue = fuelModel.Ingredient.Item.EnergyValue;
+        var multiplier = (powerProduction / energyValue) * secondsPerMinute * overclockMultiplier;
+
+        fuelModel.Ingredient.AmountPerMinute = multiplier;
+
+        if(fuelModel.SupplementalIngredient is not null)
+            fuelModel.SupplementalIngredient.AmountPerMinute = multiplier * fuelModel.Generator.SupplementalLoadAmount;
+        //var normalizedAmount = IsFormLiquidOrGas(fuelModel.Ingredient.Item.Form) ? 1000 : 1;
+        //var divider = (powerProduction / energyValue) * secondsPerMinute * overclockMultiplier;
+
+
+        _ = "";
     }
 
-    public double? CalculateAmount(Form? form, double? sourceInput) =>
-        sourceInput is not null
-            ? CalculateAmount(form, sourceInput.Value)
-            : null;
+    private double CalculateGeneratorWaterConsumption(GeneratorModel generator, double overclock)
+	{
+		return (secondsPerMinute * (CalculatePowerGeneratorPowerCapacity(generator, overclock) * generator.SupplementalToPowerRatio!.Value)) / 1000;
+	}
 
-    private double CalculateFuelAmountPerMinute(double fuelEnergyValue, double powerProduction, double powerProductionExponent, double efficiency)
+    private double CalculatePowerGeneratorPowerCapacity(GeneratorModel generator, double overclock)
     {
-        var efficiencyMultiplicator = efficiency / 100;
-        var actualPowerProduction = powerProduction * efficiencyMultiplicator;
-        var amount = fuelEnergyValue / actualPowerProduction;
-        return 0;
+        return (generator.PowerProduction ?? 1 * Math.Pow(overclock / 100, 1 / generator.PowerProductionExponent!.Value));
     }
 
     public FuelItemResult CalculateFuelConsumptionItemResult(FuelModel fuelModel, double overclock)
@@ -45,7 +59,6 @@ internal class CalculationService
         var energyValue = fuelModel.Ingredient.Item.EnergyValue;
         var powerProductionExponent = fuelModel.Generator.PowerProductionExponent ?? 1;
         var normalizedAmount = IsFormLiquidOrGas(fuelModel.Ingredient.Item.Form) ? 1000 : 1;
-
         var amountPerMinute = ((powerProduction / energyValue) * secondsPerMinute) / normalizedAmount * Math.Pow(overclockMultiplier, 1 / powerProductionExponent);
 
         return new FuelItemResult
@@ -97,13 +110,13 @@ internal class CalculationService
         };
     }
 
-    private double GetOverClockMultiplier(double percentage) => 
-        percentage / defaultPercentage;
-
-    private double GetManufactoringBuildingSpeed(BuildingModel building) => 
-        building.ManufactoringSpeed.HasValue
-            ? building.ManufactoringSpeed.Value
-            : 1;
+    private double CalculateFuelAmountPerMinute(double fuelEnergyValue, double powerProduction, double powerProductionExponent, double efficiency)
+    {
+        var efficiencyMultiplicator = efficiency / 100;
+        var actualPowerProduction = powerProduction * efficiencyMultiplicator;
+        var amount = fuelEnergyValue / actualPowerProduction;
+        return 0;
+    }
 
     private double CalculatePowerConsumption(double? initialPowerConsumption, double overclockMultiplier)
     {
@@ -114,11 +127,16 @@ internal class CalculationService
         return Math.Round(result, 1);
     }
 
-    private double NormalizeAmount(Form? form, double sourceInput) =>
-        IsFormLiquidOrGas(form)
-            ? sourceInput / 1000
-            : sourceInput;
+    private double GetOverClockMultiplier(double percentage) => 
+        percentage / defaultPercentage;
 
-    private bool IsFormLiquidOrGas(Form? form) => form is not null && (form == Form.Liquid || form == Form.Gas);
+    private double GetManufactoringBuildingSpeed(BuildingModel building) => 
+        building.ManufactoringSpeed.HasValue
+            ? building.ManufactoringSpeed.Value
+            : 1;
+
+    private bool IsFormLiquidOrGas(Form? form) => 
+        form is not null && 
+        (form == Form.Liquid || form == Form.Gas);
 
 }

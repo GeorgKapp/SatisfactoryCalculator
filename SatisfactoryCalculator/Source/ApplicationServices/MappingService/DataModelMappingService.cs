@@ -98,6 +98,7 @@ internal class DataModelMappingService
             Form = buildingReference.Form,
             ImagePath = buildingReference.ImagePath,
             SupplementalToPowerRatio = generator.SupplementToPowerRatio,
+            SupplementalLoadAmount = generator.SupplementalLoadAmount,
             PowerProduction = generator.PowerProduction,
             PowerProductionExponent = generator.PowerProductionExponent
         };
@@ -123,15 +124,20 @@ internal class DataModelMappingService
             ? MapToFuelContentModel(itemDictionary[fuel.SupplementalResourceClass], 0)
             : null;
 
-        var byProductItem = !string.IsNullOrEmpty(fuel.ByProduct)
-            ? MapToFuelContentModel(itemDictionary[fuel.ByProduct], 0)
-            : null;
+        FuelContentModel? byProductItem = null;
+        double? byProductAmount = null;
+        if (!string.IsNullOrEmpty(fuel.ByProduct))
+        {
+            byProductItem = MapToFuelContentModel(itemDictionary[fuel.ByProduct], 0);
+            byProductAmount = fuel.ByProductAmount;
+        }
 
         return new FuelModel
         {
             Ingredient = ingredient,
             SupplementalIngredient = supplementalIngredient,
             ByProduct = byProductItem,
+            ByProductAmount = byProductAmount,
             Generator = generatorModel
         };
     }

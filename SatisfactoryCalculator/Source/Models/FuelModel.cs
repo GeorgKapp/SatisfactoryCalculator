@@ -6,4 +6,5 @@ internal class FuelModel
     public FuelContentModel Ingredient { get; set; }
     public FuelContentModel? SupplementalIngredient { get; set; }
     public FuelContentModel? ByProduct { get; set; }
+    public double? ByProductAmount { get; set; }
 }

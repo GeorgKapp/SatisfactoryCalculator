@@ -44,11 +44,7 @@ internal class CalculationService : ICalculationService
     public RecipeItemProductionResult CalculateRecipeItemProduction(RecipeModel recipe, ItemModel item, BuildingModel building, double overclock)
     {
         var buildingProductionResult = CalculateRecipeBuildingProduction(recipe, building, overclock);
-        return CalculateRecipeItemProduction(recipe, item, buildingProductionResult);
-    }
-
-    public RecipeItemProductionResult CalculateRecipeItemProduction(RecipeModel recipe, ItemModel item, RecipeBuildingProductionResult buildingProductionResult)
-    {
+        
         var foundItem = recipe.Ingredients.Concat(recipe.Products)
             .Where(p => p.Item.ClassName == item.ClassName)
             .FirstOrDefault() ?? throw new ArgumentException("Item could not be found");

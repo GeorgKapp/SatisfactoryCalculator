@@ -77,7 +77,7 @@ internal class ItemModels
     public static ItemModel LiquidFuel = new ItemModel
     {
         ClassName = "LiquidFuel_C",
-        Name = "Fuel",
+        Name = "LiquidFuel",
         Form = Shared.Enums.Form.Liquid,
         EnergyValue = 0.75
     };
@@ -109,7 +109,7 @@ internal class ItemModels
     public static ItemModel PackagedFuel = new ItemModel
     {
         ClassName = "Fuel_C",
-        Name = "Fuel",
+        Name = "LiquidFuel",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 750
     };

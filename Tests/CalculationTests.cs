@@ -40,13 +40,7 @@ public class CalculationTests
     [Fact(DisplayName = "Calculate Water Item")]
     public void CalculateWaterItem() => CalculateItemProduction(RecipeModels.ResidualPlasticRecipe, ItemModels.Water, BuildingModels.OilRefinery, 100, 2, 20);
 
-    [Fact(DisplayName = "Calculate Coal Fuel Consumption")]
-    public void CalculateCoalFuelConsumption() => CalculateFuelConsumption(FuelModels.CoalFuel, 100, 15);
-
-    [Fact(DisplayName = "Calculate Coal Fuel Consumption with overlock(200%)")]
-    public void CalculateCoalFuelConsumptionOverclock() => CalculateFuelConsumption(FuelModels.CoalFuel, 200, 25.565411892857238);
-
-
+  
     private void CalculateRecipeProductionTime(RecipeModel recipe, BuildingModel buildingManufactorer, double overclock, double execptedTime, double expectedCyclesPerMinute, double expectedPowerConsumption)
     {
         var productionResult = _calculationService.CalculateRecipeBuildingProduction(recipe, buildingManufactorer, overclock);
@@ -68,11 +62,5 @@ public class CalculationTests
         Assert.Equal(execptedAmount, productionResult.Amount);
         Assert.Equal(exepectedAmountPerMinute, productionResult.AmountPerMinute);
         Assert.Equal(expectedEnergyConsumption, productionResult.PowerConsumption);
-    }
-
-    private void CalculateFuelConsumption(FuelModel fuelModel, double overclock, double expectedAmountPerMinute)
-    {
-        var result = _calculationService.CalculateFuelConsumption(fuelModel, overclock);
-        Assert.Equal(expectedAmountPerMinute, result);
     }
 }

@@ -20,23 +20,33 @@ internal class CalculationService : ICalculationService
     
     public FuelCalculationResult CalculateFuelConsumption(FuelModel fuelModel, double overclock)
     {
-        var powerProduction = CalculatePowerGeneratorPowerCapacity(fuelModel.Generator, overclock);
-        var amountPerMinute = NormalizeAmount(fuelModel.Ingredient.Item.Form, (powerProduction / fuelModel.Ingredient.Item.EnergyValue) * secondsPerMinute);
+        if (overclock is < 1 or > 255)
+            throw new ArgumentException("Overclock Parameter must be between 1 and 255");
+        
+        var overClockMultiplier = GetOverClockMultiplier(overclock);
+        var powerCapacity = fuelModel.Generator.PowerProduction * overClockMultiplier;
+        var fuelBurnTime = fuelModel.Ingredient.Item.EnergyValue / powerCapacity;
+        var amountPerMinute = Math.Round(secondsPerMinute / fuelBurnTime, 2);
 
-        var calculationResult = new FuelCalculationResult();
-        calculationResult.AmountPerMinute = amountPerMinute;
+        var calculationResult = new FuelCalculationResult
+        {
+            AmountPerMinute = NormalizeAmount(fuelModel.Ingredient.Item.Form, amountPerMinute),
+            PowerProduction = Math.Round(powerCapacity, 1, MidpointRounding.AwayFromZero),
+            FuelBurnTime = fuelBurnTime
+        };
 
         if (fuelModel.SupplementalIngredient is not null)
         {
-            calculationResult.SupplementalAmountPerMinute =
-                powerProduction
-                * fuelModel.Generator.SupplementalToPowerRatio!.Value
-                * secondsPerMinute
-                / NormalizeAmount(fuelModel.SupplementalIngredient.Item.Form, fuelModel.Generator.SupplementalLoadAmount!.Value);
+            var supplementalAmountPerMinute = powerCapacity
+                                              * fuelModel.Generator.SupplementalToPowerRatio!.Value
+                                              * secondsPerMinute
+                                              / fuelModel.Generator.SupplementalLoadAmount!.Value;
+            
+            calculationResult.SupplementalAmountPerMinute = Math.Round(supplementalAmountPerMinute, MidpointRounding.AwayFromZero);
         }
-
+        
         if (fuelModel.ByProduct is not null)
-            calculationResult.ByProductAmountPerMinute = amountPerMinute * NormalizeAmount(fuelModel.ByProduct.Item.Form, fuelModel.ByProductAmount!.Value);
+            calculationResult.ByProductAmountPerMinute = Math.Round(amountPerMinute * NormalizeAmount(fuelModel.ByProduct.Item.Form, fuelModel.ByProductAmount!.Value), 1, MidpointRounding.AwayFromZero);
 
         return calculationResult;
     }
@@ -44,7 +54,7 @@ internal class CalculationService : ICalculationService
     public RecipeItemProductionResult CalculateRecipeItemProduction(RecipeModel recipe, ItemModel item, BuildingModel building, double overclock)
     {
         var buildingProductionResult = CalculateRecipeBuildingProduction(recipe, building, overclock);
-        
+
         var foundItem = recipe.Ingredients.Concat(recipe.Products)
             .Where(p => p.Item.ClassName == item.ClassName)
             .FirstOrDefault() ?? throw new ArgumentException("Item could not be found");
@@ -77,16 +87,7 @@ internal class CalculationService : ICalculationService
             PowerConsumption = powerConsumption
         };
     }
-    
-    private double CalculatePowerGeneratorPowerCapacity(GeneratorModel generator, double overclock)
-    {
-        var powerProduction = generator.PowerProduction;
-        var overClockMultiplier = GetOverClockMultiplier(overclock);
-        var multiplicationFactor = Math.Pow(overClockMultiplier, 1 / generator.PowerProductionExponent);
-        var result = powerProduction * multiplicationFactor;
-        return result;
-    }
-    
+
     private double CalculatePowerConsumption(double? powerConsumption, double overclockMultiplier)
     {
         if (!powerConsumption.HasValue)
@@ -108,7 +109,7 @@ internal class CalculationService : ICalculationService
         form is not null && 
         (form == Form.Liquid || form == Form.Gas);
     
-    
+
     private const double defaultPercentage = 100;
     private const double secondsPerMinute = 60;
     private const double powerConsumptionExponent = 1.321928;

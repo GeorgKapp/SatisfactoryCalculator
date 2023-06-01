@@ -20,7 +20,7 @@ internal class GeneratorsViewModel : ObservableObject
             {
                 SelectedGeneratorFuels = new ObservableCollection<FuelModel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator);
                 SelectedGeneratorRecipes = new ObservableCollection<RecipeModel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
-                SelectedGeneratorClockSpeed = 100;
+                SelectedGeneratorClockSpeed = "100";
             }
         }
     }
@@ -39,16 +39,34 @@ internal class GeneratorsViewModel : ObservableObject
         set => SetProperty(ref _selectedGeneratorRecipes, value);
     }
 
-    private int _selectedGeneratorClockSpeed;
-    public int SelectedGeneratorClockSpeed
+    private string _selectedGeneratorClockSpeed;
+    public string SelectedGeneratorClockSpeed
     {
         get => _selectedGeneratorClockSpeed;
         set
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                SetProperty(ref _selectedGeneratorClockSpeed, value);
+                return;
+            }
+            
+            if (!double.TryParse(value, out var selectedGeneratorClockSpeed))
+                return;
+            
+            if (selectedGeneratorClockSpeed is < 1 or > 255)
+                return;
+            
+            selectedGeneratorClockSpeed = Math.Round(selectedGeneratorClockSpeed, 4);
+            
+            if(!value.EndsWith(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
+                value = selectedGeneratorClockSpeed.ToString(CultureInfo.CurrentCulture);
+            
             SetProperty(ref _selectedGeneratorClockSpeed, value);
+            
             foreach(var fuelItem in SelectedGeneratorFuels)
             {
-                var fuelConsumptionResult = _calculationService.CalculateFuelConsumption(fuelItem, _selectedGeneratorClockSpeed);
+                var fuelConsumptionResult = _calculationService.CalculateFuelConsumption(fuelItem, selectedGeneratorClockSpeed);
                 
                 fuelItem.Ingredient.AmountPerMinute = fuelConsumptionResult.AmountPerMinute;
                 

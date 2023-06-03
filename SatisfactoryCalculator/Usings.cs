@@ -36,3 +36,5 @@ global using System.Windows.Input;
 global using System.Windows.Media.Imaging;
 global using System.Diagnostics;
 global using System.Globalization;
+global using SatisfactoryCalculator.Shared.Common;
+global using SatisfactoryCalculator.Shared.Common;

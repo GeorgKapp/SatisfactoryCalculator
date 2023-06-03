@@ -2,7 +2,6 @@
 
 internal class GeneratorsViewModel : ObservableObject
 {
-
     private GeneratorModel? _selectedGenerator;
     public GeneratorModel? SelectedGenerator
     {
@@ -45,24 +44,11 @@ internal class GeneratorsViewModel : ObservableObject
         get => _selectedGeneratorClockSpeed;
         set
         {
-            if (string.IsNullOrEmpty(value))
-            {
-                SetProperty(ref _selectedGeneratorClockSpeed, value);
-                return;
-            }
-            
-            if (!double.TryParse(value, out var selectedGeneratorClockSpeed))
-                return;
-            
-            if (selectedGeneratorClockSpeed is < 1 or > 255)
-                return;
-            
-            selectedGeneratorClockSpeed = Math.Round(selectedGeneratorClockSpeed, 4);
-            
-            if(!value.EndsWith(CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator))
-                value = selectedGeneratorClockSpeed.ToString(CultureInfo.CurrentCulture);
-            
             SetProperty(ref _selectedGeneratorClockSpeed, value);
+            
+            var selectedGeneratorClockSpeed = string.IsNullOrEmpty(value) 
+                ? 0 
+                : double.Parse(value);
             
             foreach(var fuelItem in SelectedGeneratorFuels)
             {

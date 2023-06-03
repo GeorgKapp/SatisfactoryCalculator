@@ -20,18 +20,18 @@ internal class CalculationService : ICalculationService
     
     public FuelCalculationResult CalculateFuelConsumption(FuelModel fuelModel, double overclock)
     {
-        if (overclock is < 1 or > 255)
-            throw new ArgumentException("Overclock Parameter must be between 1 and 255");
+        if (overclock is < 0 or > 250)
+            throw new ArgumentException("Overclock Parameter must be between 0 and 250");
         
         var overClockMultiplier = GetOverClockMultiplier(overclock);
         var powerCapacity = fuelModel.Generator.PowerProduction * overClockMultiplier;
         var fuelBurnTime = fuelModel.Ingredient.Item.EnergyValue / powerCapacity;
-        var amountPerMinute = Math.Round(secondsPerMinute / fuelBurnTime, 2);
+        var amountPerMinute = secondsPerMinute / fuelBurnTime;
 
         var calculationResult = new FuelCalculationResult
         {
-            AmountPerMinute = NormalizeAmount(fuelModel.Ingredient.Item.Form, amountPerMinute),
-            PowerProduction = Math.Round(powerCapacity, 1, MidpointRounding.AwayFromZero),
+            AmountPerMinute = Math.Round(Math.Round(NormalizeAmount(fuelModel.Ingredient.Item.Form, amountPerMinute), 4), 2),
+            PowerProduction = Math.Round(Math.Round(powerCapacity, 4), 2),
             FuelBurnTime = fuelBurnTime
         };
 
@@ -45,8 +45,9 @@ internal class CalculationService : ICalculationService
             calculationResult.SupplementalAmountPerMinute = Math.Round(supplementalAmountPerMinute, MidpointRounding.AwayFromZero);
         }
         
+        //TODO: needs to be checked for nuclear fuel generators
         if (fuelModel.ByProduct is not null)
-            calculationResult.ByProductAmountPerMinute = Math.Round(amountPerMinute * NormalizeAmount(fuelModel.ByProduct.Item.Form, fuelModel.ByProductAmount!.Value), 1, MidpointRounding.AwayFromZero);
+            calculationResult.ByProductAmountPerMinute = amountPerMinute * NormalizeAmount(fuelModel.ByProduct.Item.Form, fuelModel.ByProductAmount!.Value);
 
         return calculationResult;
     }

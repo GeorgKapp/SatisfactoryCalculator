@@ -7,7 +7,6 @@ internal class GeneratorModels
         ClassName = "GeneratorCoal_C",
         Name = "Coal Generator",
         PowerProduction = 75,
-        PowerProductionExponent = 1.3,
         SupplementalToPowerRatio = 10,
         SupplementalLoadAmount = 1000
     };
@@ -17,7 +16,6 @@ internal class GeneratorModels
         ClassName = "GeneratorFuel_C",
         Name = "LiquidFuel Generator",
         PowerProduction = 150,
-        PowerProductionExponent = 1.3
     };
     
     public static GeneratorModel NuclearGenerator = new GeneratorModel
@@ -25,7 +23,6 @@ internal class GeneratorModels
         ClassName = "GeneratorNuclear_C",
         Name = "Nuclear Generator",
         PowerProduction = 2500,
-        PowerProductionExponent = 1.321928,
         SupplementalToPowerRatio = 2,
         SupplementalLoadAmount = 10000
     };

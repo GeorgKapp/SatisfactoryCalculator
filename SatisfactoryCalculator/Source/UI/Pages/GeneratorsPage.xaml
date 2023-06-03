@@ -82,7 +82,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <c:SatisfactoryTextBox Width="80" Text="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <c:SatisfactoryTextBox Width="80" IsOverclock="True" Text="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <c:SatisfactorySlider Value="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" Margin="10,0,10,0" Grid.Column="1"/>
                     </Grid>
                 </StackPanel>

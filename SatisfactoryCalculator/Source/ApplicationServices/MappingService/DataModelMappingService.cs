@@ -99,8 +99,7 @@ internal class DataModelMappingService
             ImagePath = buildingReference.ImagePath,
             SupplementalToPowerRatio = generator.SupplementToPowerRatio,
             SupplementalLoadAmount = generator.SupplementalLoadAmount,
-            PowerProduction = generator.PowerProduction,
-            PowerProductionExponent = generator.PowerProductionExponent
+            PowerProduction = generator.PowerProduction
         };
     }
 

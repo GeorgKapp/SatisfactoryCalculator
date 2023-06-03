@@ -52,7 +52,7 @@ internal class GeneratorsViewModel : ObservableObject
             
             foreach(var fuelItem in SelectedGeneratorFuels)
             {
-                var fuelConsumptionResult = _calculationService.CalculateFuelConsumption(fuelItem, selectedGeneratorClockSpeed);
+                var fuelConsumptionResult = _calculationService.CalculateRoundedFuelConsumption(fuelItem, selectedGeneratorClockSpeed);
                 
                 fuelItem.Ingredient.AmountPerMinute = fuelConsumptionResult.AmountPerMinute;
                 

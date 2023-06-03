@@ -18,20 +18,32 @@ internal class CalculationService : ICalculationService
             ? sourceInput / 1000
             : sourceInput;
     
+    public FuelCalculationResult CalculateRoundedFuelConsumption(FuelModel fuelModel, double overclock)
+    {
+        var fuelConsumptionresult = CalculateFuelConsumption(fuelModel, overclock);
+        fuelConsumptionresult.AmountPerMinute = Math.Round(Math.Round(fuelConsumptionresult.AmountPerMinute, 4), 2);
+        fuelConsumptionresult.PowerProduction = Math.Round(Math.Round(fuelConsumptionresult.PowerProduction, 4), 2);
+        
+        if(fuelConsumptionresult.SupplementalAmountPerMinute.HasValue)
+            fuelConsumptionresult.SupplementalAmountPerMinute = Math.Round(fuelConsumptionresult.SupplementalAmountPerMinute.Value, MidpointRounding.AwayFromZero);
+        
+        return fuelConsumptionresult;
+    }
+    
     public FuelCalculationResult CalculateFuelConsumption(FuelModel fuelModel, double overclock)
     {
         if (overclock is < 0 or > 250)
             throw new ArgumentException("Overclock Parameter must be between 0 and 250");
         
-        var overClockMultiplier = GetOverClockMultiplier(overclock);
+        var overClockMultiplier = OverClockMultiplier(overclock);
         var powerCapacity = fuelModel.Generator.PowerProduction * overClockMultiplier;
         var fuelBurnTime = fuelModel.Ingredient.Item.EnergyValue / powerCapacity;
         var amountPerMinute = secondsPerMinute / fuelBurnTime;
 
         var calculationResult = new FuelCalculationResult
         {
-            AmountPerMinute = Math.Round(Math.Round(NormalizeAmount(fuelModel.Ingredient.Item.Form, amountPerMinute), 4), 2),
-            PowerProduction = Math.Round(Math.Round(powerCapacity, 4), 2),
+            AmountPerMinute = NormalizeAmount(fuelModel.Ingredient.Item.Form, amountPerMinute),
+            PowerProduction = powerCapacity,
             FuelBurnTime = fuelBurnTime
         };
 
@@ -42,7 +54,7 @@ internal class CalculationService : ICalculationService
                                               * secondsPerMinute
                                               / fuelModel.Generator.SupplementalLoadAmount!.Value;
             
-            calculationResult.SupplementalAmountPerMinute = Math.Round(supplementalAmountPerMinute, MidpointRounding.AwayFromZero);
+            calculationResult.SupplementalAmountPerMinute = supplementalAmountPerMinute;
         }
         
         //TODO: needs to be checked for nuclear fuel generators
@@ -74,7 +86,7 @@ internal class CalculationService : ICalculationService
 
     public RecipeBuildingProductionResult CalculateRecipeBuildingProduction(RecipeModel recipe, BuildingModel building, double overclock)
     {
-        var overclockMultiplier = GetOverClockMultiplier(overclock);
+        var overclockMultiplier = OverClockMultiplier(overclock);
         var buildingSpeed = GetManufactoringBuildingSpeed(building);
         var powerConsumption = CalculatePowerConsumption(building.PowerConsumption, overclockMultiplier);
 
@@ -98,9 +110,6 @@ internal class CalculationService : ICalculationService
         return Math.Round(result, 1);
     }
 
-    private double GetOverClockMultiplier(double percentage) => 
-        percentage / defaultPercentage;
-
     private double GetManufactoringBuildingSpeed(BuildingModel building) => 
         building.ManufactoringSpeed.HasValue
             ? building.ManufactoringSpeed.Value
@@ -110,6 +119,7 @@ internal class CalculationService : ICalculationService
         form is not null && 
         (form == Form.Liquid || form == Form.Gas);
     
+    private double OverClockMultiplier(double overclock) => overclock / 100;
 
     private const double defaultPercentage = 100;
     private const double secondsPerMinute = 60;

@@ -68,7 +68,7 @@ public class FuelCalculationTests
     
     private void CalculateFuelConsumption(FuelModel fuelModel, double overclock, double expectedPowerProduction, double expectedAmountPerMinute, double? expectedSupplementalAmountPerMinute = null, double? expectedByProductAmountPerMinute = null)
     {
-        var result = _calculationService.CalculateFuelConsumption(fuelModel, overclock);
+        var result = _calculationService.CalculateRoundedFuelConsumption(fuelModel, overclock);
         
         Assert.Equal(expectedPowerProduction, result.PowerProduction);
         Assert.Equal(expectedAmountPerMinute, result.AmountPerMinute);

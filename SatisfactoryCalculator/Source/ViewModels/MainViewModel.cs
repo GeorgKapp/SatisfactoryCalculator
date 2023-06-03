@@ -71,7 +71,7 @@ internal class MainViewModel : ObservableObject
         IsInitializing = true;
 
         var data = await DebugExtensions.ProfileAsync(
-            _jsonService.ReadJsonAsync<Data>(Constants.InformationFileName), 
+            _jsonService.ReadUtf8JsonAsync<Data>(Constants.InformationFileName), 
             "Read Data");
 
         var mappedData = DebugExtensions.Profile(() =>

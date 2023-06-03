@@ -17,8 +17,8 @@ public partial class DocsParserService
 		ProgressUtility.ReportOrThrow("Parse data", progress, token);
 		var data = new Data();
 
-        Item[] biomassItems = Array.Empty<Item>();
-        foreach (Class1 class1 in classes1)
+        var biomassItems = Array.Empty<Item>();
+        foreach (var class1 in classes1)
 		{
 			if (class1.NativeClass == "Class'/Script/FactoryGame.FGItemDescriptorBiomass'")
 			{
@@ -28,7 +28,7 @@ public partial class DocsParserService
 		}
 		data.Items.AddRange(biomassItems);
 
-        foreach (Class1 class1 in classes1)
+        foreach (var class1 in classes1)
 		{
 			token?.ThrowIfCancellationRequested();
 			switch (class1.NativeClass)
@@ -205,6 +205,16 @@ public partial class DocsParserService
 
 		ProgressUtility.ReportOrThrow("Add missing statues", progress, token);
 		data.Statues.AddRange(Statues);
+		
+		ProgressUtility.ReportOrThrow("Remove Generator Fuels with no energy value", progress, token);
+		foreach (var generator in data.Generators)
+		{
+			generator.Fuels = generator.Fuels
+				.Where(p =>  data.Items
+					.Where(i => i.ClassName == p.FuelClass)
+					.Single().EnergyValue > 0)
+				.ToArray();
+		}
 
 		ProgressUtility.ReportOrThrow("Check for duplicates", progress, token);
 		var duplicateCheckResult = SeperatelyValidateDataForDuplicates(data);

@@ -410,7 +410,6 @@ public partial class DocsParserService
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName),
             Fuels = class2.mFuel is null ? Array.Empty<Fuel>() : ParseFuels(class2.mFuel, biomassItems),
             PowerProduction = NumberParseUtility.MapToDouble(class2.mPowerProduction),
-            PowerProductionExponent = NumberParseUtility.MapToDouble(class2.mPowerProductionExponent),
             SupplementToPowerRatio = NumberParseUtility.MapToNullableDouble(class2.mSupplementalToPowerRatio),
             SupplementalLoadAmount = NumberParseUtility.MapToNullableDouble(class2.mSupplementalLoadAmount)
         };

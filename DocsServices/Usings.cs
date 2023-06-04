@@ -9,3 +9,4 @@ global using SatisfactoryCalculator.Shared.Extensions;
 global using SatisfactoryCalculator.Shared.Models;
 global using SatisfactoryCalculator.Shared.Utility;
 global using System.Globalization;
+global using System.Diagnostics;

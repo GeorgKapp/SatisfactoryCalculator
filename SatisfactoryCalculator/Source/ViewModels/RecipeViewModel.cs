@@ -1,15 +1,17 @@
+using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
+
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class RecipeViewModel : ObservableObject
 {
-    private RecipeModel? _selectedRecipe;
-    public RecipeModel? SelectedRecipe
+    private Recipe? _selectedRecipe;
+    public Recipe? SelectedRecipe
     {
         get => _selectedRecipe;
         set => SetProperty(ref _selectedRecipe, value);
     }
 
-    public ObservableCollection<RecipeModel> Recipes => _applicationState.Configuration.Recipes;
+    public ObservableCollection<Recipe> Recipes => _applicationState.Configuration.Recipes;
 
     public RecipeViewModel(ApplicationState applicationState)
     {

@@ -11,7 +11,7 @@
 
     <UserControl.Resources>
 
-        <DataTemplate DataType="{x:Type models:FuelContentModel}">
+        <DataTemplate DataType="{x:Type models:FuelItem}">
             <Grid MinHeight="50">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -19,7 +19,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding AmountPerMinuteText}"/>
-                <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Item.BitmapImage}">
+                <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Item.Image}">
                     <FrameworkElement.ToolTip>
                         <ToolTip Background="#00FFFFFF" BorderThickness="0" Placement="Right">
                             <Border BorderThickness="1" BorderBrush="#FFFFFFFF" CornerRadius="10" Background="{StaticResource PrimaryColor}">
@@ -32,8 +32,8 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type models:GeneratorModel}">
-            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding BitmapImage}">
+        <DataTemplate DataType="{x:Type models:Generator}">
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Image}">
                 <FrameworkElement.ToolTip>
                     <ToolTip Background="#00FFFFFF" BorderThickness="0" Placement="Right">
                         <Border BorderThickness="1" BorderBrush="#FFFFFFFF" CornerRadius="10" Background="{StaticResource PrimaryColor}">

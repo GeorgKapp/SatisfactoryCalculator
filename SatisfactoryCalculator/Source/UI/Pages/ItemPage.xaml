@@ -21,11 +21,11 @@
         <CollectionViewSource x:Key="BuildingIngredientCollection" Source="{Binding SelectedItemAsBuildingIngredientInRecipes}"/>
         <CollectionViewSource x:Key="FuelIngredientCollection" Source="{Binding SelectedItemAsFuels}"/>
 
-        <DataTemplate DataType="{x:Type models:FuelModel}">
+        <DataTemplate DataType="{x:Type models:Fuel}">
             <u:FuelControl Fuel="{Binding}" Margin="0,0,0,15"/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type models:RecipeModel}">
+        <DataTemplate DataType="{x:Type models:Recipe}">
             <u:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
         </DataTemplate>
 
@@ -44,9 +44,9 @@
                          FilterMemberPath="Name">
             
             <u:FilterControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:ItemModel}">
+                <DataTemplate DataType="{x:Type models:Item}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="28" Height="28" Source="{Binding BitmapImage}" />
+                        <Image Width="28" Height="28" Source="{Binding Image}" />
                         <c:SatisfactoryTextBlock Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>
@@ -69,7 +69,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedItem.BitmapImage}" />
+                <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedItem.Image}" />
                 <StackPanel Margin="5,0,0,0" Grid.Column="1">
                     <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedItem.Name}" />
                     <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedItem.Description}" />

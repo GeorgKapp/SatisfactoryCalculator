@@ -1,19 +1,21 @@
-﻿namespace SatisfactoryCalculator.Source.UI.UserControls;
+﻿using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
+
+namespace SatisfactoryCalculator.Source.UI.UserControls;
 
 public partial class RecipeControl : UserControl
 {
-    internal RecipeModel Recipe
+    internal Recipe Recipe
     {
-        get => (RecipeModel)GetValue(RecipeProperty);
+        get => (Recipe)GetValue(RecipeProperty);
         set => SetValue(RecipeProperty, value);
     }
-    internal static readonly DependencyProperty RecipeProperty = DependencyProperty.Register(nameof(Recipe), typeof(RecipeModel), typeof(RecipeControl), new PropertyMetadata(UpdateVisibilities));
+    internal static readonly DependencyProperty RecipeProperty = DependencyProperty.Register(nameof(Recipe), typeof(Recipe), typeof(RecipeControl), new PropertyMetadata(UpdateVisibilities));
 
     private static void UpdateVisibilities(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var control = (d as RecipeControl);
-        control.textBoxEqual.Visibility = (e.NewValue as RecipeModel)?.Products?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
-        control.textBoxArrow.Visibility = (e.NewValue as RecipeModel)?.Buildings?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
+        control.textBoxEqual.Visibility = (e.NewValue as Recipe)?.Products?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
+        control.textBoxArrow.Visibility = (e.NewValue as Recipe)?.Buildings?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public RecipeControl()

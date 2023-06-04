@@ -54,9 +54,9 @@ public partial class DocsParserService
         var items = data.Items.Cast<IBase>();
 
         var itemReferences = data.Consumables.Cast<IBase>()
-            .Concat(data.Equipments.Cast<IBase>())
-            .Concat(data.Weapons.Cast<IBase>())
-            .Concat(data.Vehicles.Cast<IBase>());
+            .Concat(data.Equipments)
+            .Concat(data.Weapons)
+            .Concat(data.Vehicles);
 
         var itemValidationResult = ValidateReferencesByTarget(items, itemReferences);
         if (!itemValidationResult.IsSuccess)
@@ -65,7 +65,7 @@ public partial class DocsParserService
         var buildings = data.Buildings.Cast<IBase>();
 
         var buildingReferences = data.Generators.Cast<IBase>()
-            .Concat(data.Miners.Cast<IBase>());
+            .Concat(data.Miners);
 
         var buildingValidationResult = ValidateReferencesByTarget(buildings, buildingReferences);
         if (!buildingValidationResult.IsSuccess)

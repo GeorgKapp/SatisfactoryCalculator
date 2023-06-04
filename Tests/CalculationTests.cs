@@ -4,19 +4,19 @@ public class CalculationTests
 {
     private CalculationService _calculationService = new();
 
-    [Fact(DisplayName = "Calculate Cable Recipe")]
+    [Fact(DisplayName = "Calculate Cable RecipeItem")]
     public void CalculateCableRecipe() => CalculateRecipeProductionTime(RecipeModels.CableRecipe, BuildingModels.Constructor, 100, 2, 30, 4);
 
-    [Fact(DisplayName = "Calculate Cable Recipe with overlock(200%)")]
+    [Fact(DisplayName = "Calculate Cable RecipeItem with overlock(200%)")]
     public void CalculateCableOverclockRecipe() => CalculateRecipeProductionTime(RecipeModels.CableRecipe, BuildingModels.Constructor, 200, 1, 60, 10);
 
-    [Fact(DisplayName = "Calculate Cable Recipe with underclock(50%)")]
+    [Fact(DisplayName = "Calculate Cable RecipeItem with underclock(50%)")]
     public void CalculateCableUnderclockRecipe() => CalculateRecipeProductionTime(RecipeModels.CableRecipe, BuildingModels.Constructor, 50, 4, 15, 1.6);
 
-    [Fact(DisplayName = "Calculate Iron Plate Recipe")]
+    [Fact(DisplayName = "Calculate Iron Plate RecipeItem")]
     public void CalculateIronPlateRecipe() => CalculateRecipeProductionTime(RecipeModels.IronPlateRecipe, BuildingModels.Constructor, 100, 6, 10, 4);
 
-    [Fact(DisplayName = "Calculate Residual Plastic Recipe")]
+    [Fact(DisplayName = "Calculate Residual Plastic RecipeItem")]
     public void CalculateResidualPlasticRecipe() => CalculateRecipeProductionTime(RecipeModels.ResidualPlasticRecipe, BuildingModels.OilRefinery, 100, 6, 10, 30);
 
     [Fact(DisplayName = "Calculate Cable Item")]
@@ -41,7 +41,7 @@ public class CalculationTests
     public void CalculateWaterItem() => CalculateItemProduction(RecipeModels.ResidualPlasticRecipe, ItemModels.Water, BuildingModels.OilRefinery, 100, 2, 20);
 
   
-    private void CalculateRecipeProductionTime(RecipeModel recipe, BuildingModel buildingManufactorer, double overclock, double execptedTime, double expectedCyclesPerMinute, double expectedPowerConsumption)
+    private void CalculateRecipeProductionTime(Recipe recipe, Building buildingManufactorer, double overclock, double execptedTime, double expectedCyclesPerMinute, double expectedPowerConsumption)
     {
         var productionResult = _calculationService.CalculateRecipeBuildingProduction(recipe, buildingManufactorer, overclock);
         Assert.Equal(execptedTime, productionResult.Time);
@@ -49,14 +49,14 @@ public class CalculationTests
         Assert.Equal(expectedPowerConsumption, productionResult.PowerConsumption);
     }
 
-    private void CalculateItemProduction(RecipeModel recipe, ItemModel item, BuildingModel buildingManufactorer, double overclock, double execptedAmount, double exepectedAmountPerMinute)
+    private void CalculateItemProduction(Recipe recipe, Item item, Building buildingManufactorer, double overclock, double execptedAmount, double exepectedAmountPerMinute)
     {
         var productionResult = _calculationService.CalculateRecipeItemProduction(recipe, item, buildingManufactorer, overclock);
         Assert.Equal(execptedAmount, productionResult.Amount);
         Assert.Equal(exepectedAmountPerMinute, productionResult.AmountPerMinute);
     }
 
-    private void CalculateItemProduction(RecipeModel recipe, ItemModel item, BuildingModel buildingManufactorer, double overclock, double execptedAmount, double exepectedAmountPerMinute, double expectedEnergyConsumption)
+    private void CalculateItemProduction(Recipe recipe, Item item, Building buildingManufactorer, double overclock, double execptedAmount, double exepectedAmountPerMinute, double expectedEnergyConsumption)
     {
         var productionResult = _calculationService.CalculateRecipeItemProduction(recipe, item, buildingManufactorer, overclock);
         Assert.Equal(execptedAmount, productionResult.Amount);

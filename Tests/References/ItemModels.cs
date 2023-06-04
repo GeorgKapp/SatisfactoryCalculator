@@ -2,7 +2,7 @@
 
 internal class ItemModels
 {
-    public static ItemModel Wire = new ItemModel
+    public static Item Wire = new Item
     {
         ClassName = "Wire_C",
         Name = "Wire",
@@ -10,7 +10,7 @@ internal class ItemModels
         EnergyValue = 0
     };
 
-    public static ItemModel Cable = new ItemModel
+    public static Item Cable = new Item
     {
         ClassName = "Cable_C",
         Name = "Cable",
@@ -18,7 +18,7 @@ internal class ItemModels
         EnergyValue = 0
     };
 
-    public static ItemModel IronPlate = new ItemModel
+    public static Item IronPlate = new Item
     {
         ClassName = "IronPlate_C",
         Name = "Iron Plate",
@@ -26,7 +26,7 @@ internal class ItemModels
         EnergyValue = 0
     };
     
-    public static ItemModel IronRod = new ItemModel
+    public static Item IronRod = new Item
     {
         ClassName = "IronRod_C",
         Name = "Iron Rod",
@@ -34,7 +34,7 @@ internal class ItemModels
         EnergyValue = 0
     };
 
-    public static ItemModel IronIngot = new ItemModel
+    public static Item IronIngot = new Item
     {
         ClassName = "IronIngot_C",
         Name = "Iron Ingot",
@@ -42,7 +42,7 @@ internal class ItemModels
         EnergyValue = 0
     };
 
-    public static ItemModel PolymerResin = new ItemModel
+    public static Item PolymerResin = new Item
     {
         ClassName = "PolymerResin_C",
         Name = "Polymer Resin",
@@ -50,7 +50,7 @@ internal class ItemModels
         EnergyValue = 0
     };
 
-    public static ItemModel Plastic = new ItemModel
+    public static Item Plastic = new Item
     {
         ClassName = "Plastic_C",
         Name = "Plastic",
@@ -58,7 +58,7 @@ internal class ItemModels
         EnergyValue = 0
     };
 
-    public static ItemModel Water = new ItemModel
+    public static Item Water = new Item
     {
         ClassName = "Water_C",
         Name = "Water",
@@ -66,7 +66,7 @@ internal class ItemModels
         EnergyValue = 0
     };
 
-    public static ItemModel Rubber = new ItemModel
+    public static Item Rubber = new Item
     {
         ClassName = "Rubber_C",
         Name = "Rubber",
@@ -74,7 +74,7 @@ internal class ItemModels
         EnergyValue = 0
     };
 
-    public static ItemModel LiquidFuel = new ItemModel
+    public static Item LiquidFuel = new Item
     {
         ClassName = "LiquidFuel_C",
         Name = "LiquidFuel",
@@ -82,7 +82,7 @@ internal class ItemModels
         EnergyValue = 0.75
     };
 
-    public static ItemModel Coal = new ItemModel
+    public static Item Coal = new Item
     {
         ClassName = "Coal_C",
         Name = "Coal",
@@ -90,7 +90,7 @@ internal class ItemModels
         EnergyValue = 300
     };
 
-    public static ItemModel CompactedCoal = new ItemModel
+    public static Item CompactedCoal = new Item
     {
         ClassName = "CompactedCoal_C",
         Name = "Compacted Coal",
@@ -98,7 +98,7 @@ internal class ItemModels
         EnergyValue = 630
     };
 
-    public static ItemModel PetroleumCoke = new ItemModel
+    public static Item PetroleumCoke = new Item
     {
         ClassName = "PetroleumCoke_C",
         Name = "Petroleum Coke",
@@ -106,7 +106,7 @@ internal class ItemModels
         EnergyValue = 180
     };
 
-    public static ItemModel PackagedFuel = new ItemModel
+    public static Item PackagedFuel = new Item
     {
         ClassName = "Fuel_C",
         Name = "LiquidFuel",

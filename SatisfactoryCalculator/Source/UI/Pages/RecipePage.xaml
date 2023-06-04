@@ -24,12 +24,12 @@
         <u:FilterControl Grid.Column="0" 
                          ItemsSource="{Binding Recipes}"
                          SelectedItem="{Binding SelectedRecipe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         FilterMemberPath="RecipeName">
+                         FilterMemberPath="Name">
 
             <u:FilterControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:RecipeModel}">
+                <DataTemplate DataType="{x:Type models:Recipe}">
                     <StackPanel Orientation="Horizontal">
-                        <c:SatisfactoryTextBlock Text="{Binding RecipeName}" />
+                        <c:SatisfactoryTextBlock Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>
             </u:FilterControl.ItemTemplate>
@@ -44,10 +44,10 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedRecipe.RecipeName}" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="0"/>
+            <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedRecipe.Name}" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="0"/>
 
             <StackPanel Grid.Row="1" Margin="20">
-                <c:SatisfactoryTextBlock Text="Recipe" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
+                <c:SatisfactoryTextBlock Text="RecipeItem" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
                 <u:RecipeControl Recipe="{Binding SelectedRecipe}" Margin="0,0,0,15" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}"/>
             </StackPanel>
 

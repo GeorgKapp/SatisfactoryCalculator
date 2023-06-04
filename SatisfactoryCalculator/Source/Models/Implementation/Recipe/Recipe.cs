@@ -1,11 +1,13 @@
+using IRecipe = SatisfactoryCalculator.Source.Models.Interfaces.IRecipe;
+
 namespace SatisfactoryCalculator.Source.Models;
 
-internal class RecipeModel
+internal class Recipe : IRecipe
 {
-    public RecipeModel(string className, string recipeName, bool isAlternateRecipe, bool constructedByBuildGun, bool constructedInWorkbench, bool constructedInWorkshop, double manufactoringDuration, RecipeContentModel[] ingredients, RecipeContentModel[] products, RecipeBuildingModel[] buildings)
+    public Recipe(string className, string name, bool isAlternateRecipe, bool constructedByBuildGun, bool constructedInWorkbench, bool constructedInWorkshop, double manufactoringDuration, RecipeItem[] ingredients, RecipeItem[] products, RecipeBuilding[] buildings)
     {
         ClassName = className;
-        RecipeName = recipeName;
+        Name = name;
         IsAlternateRecipe = isAlternateRecipe;
         ConstructedByBuildGun = constructedByBuildGun;
         ConstructedInWorkbench = constructedInWorkbench;
@@ -14,16 +16,18 @@ internal class RecipeModel
         Ingredients = ingredients;
         Products = products;
         Buildings = buildings;
+        Image = null;
     }
 
     public string ClassName { get; set; }
-    public string RecipeName { get; set; }
+    public string Name { get; set; }
+    public BitmapImage? Image { get; set; }
     public bool IsAlternateRecipe { get; set; }
     public bool ConstructedByBuildGun { get; set; }
     public bool ConstructedInWorkshop { get; set; }
     public bool ConstructedInWorkbench { get; set; }
     public double ManufactoringDuration { get; set; }
-    public RecipeBuildingModel[] Buildings { get; set; } = Array.Empty<RecipeBuildingModel>();
-    public RecipeContentModel[] Ingredients { get; set; } = Array.Empty<RecipeContentModel>();
-    public RecipeContentModel[] Products { get; set; } = Array.Empty<RecipeContentModel>();
+    public RecipeBuilding[] Buildings { get; set; }
+    public RecipeItem[] Ingredients { get; set; }
+    public RecipeItem[] Products { get; set; }
 }

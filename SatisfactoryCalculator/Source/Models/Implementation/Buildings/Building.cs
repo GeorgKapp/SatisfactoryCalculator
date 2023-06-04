@@ -1,6 +1,8 @@
+using SatisfactoryCalculator.Source.Models.Interfaces;
+
 namespace SatisfactoryCalculator.Source.Models;
 
-internal class BuildingModel
+internal class Building : IBuilding
 {
     public string ClassName { get; set; }
     public string Name { get; set; }
@@ -10,17 +12,5 @@ internal class BuildingModel
     public double? PowerConsumption { get; set; }
     public double? PowerConsumptionExponent { get; set; }
     public PowerConsumptionRange? PowerConsumptionRange { get; set; }
-
-    private string _imagePath;
-    public string ImagePath
-    {
-        get => _imagePath;
-        set
-        {
-            _imagePath = value;
-            BitmapImage = Application.Current.Dispatcher.Invoke(() => BitmapImageCache.Fetch(value));
-        }
-    }
-
-    public BitmapImage BitmapImage { get; set; }
+    public BitmapImage Image { get; set; }
 }

@@ -1,9 +1,13 @@
+using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
+using Item = SatisfactoryCalculator.Source.Models.Item;
+using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
+
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class ItemViewModel : ObservableObject
 {
-    private ItemModel? _selectedItem;
-    public ItemModel? SelectedItem
+    private Item? _selectedItem;
+    public Item? SelectedItem
     {
         get => _selectedItem;
         set
@@ -19,16 +23,16 @@ internal class ItemViewModel : ObservableObject
             else
             {
                 var entityReference = _applicationState.Configuration.ReferenceDictionary[value.ClassName];
-                SelectedItemAsIngredientInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeIngredient);
-                SelectedItemAsBuildingIngredientInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeBuildingIngredient);
-                SelectedItemAsProductInRecipes = new ObservableCollection<RecipeModel>(entityReference.RecipeProduct);
-                SelectedItemAsFuels = new ObservableCollection<FuelModel>(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
+                SelectedItemAsIngredientInRecipes = new ObservableCollection<Recipe>(entityReference.RecipeIngredient);
+                SelectedItemAsBuildingIngredientInRecipes = new ObservableCollection<Recipe>(entityReference.RecipeBuildingIngredient);
+                SelectedItemAsProductInRecipes = new ObservableCollection<Recipe>(entityReference.RecipeProduct);
+                SelectedItemAsFuels = new ObservableCollection<Fuel>(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
             }
         }
     }
 
-    private ObservableCollection<RecipeModel> _selectedItemAsIngredientInRecipes = new();
-    public ObservableCollection<RecipeModel> SelectedItemAsIngredientInRecipes
+    private ObservableCollection<Recipe> _selectedItemAsIngredientInRecipes = new();
+    public ObservableCollection<Recipe> SelectedItemAsIngredientInRecipes
     {
         get => _selectedItemAsIngredientInRecipes;
         set
@@ -38,8 +42,8 @@ internal class ItemViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<RecipeModel> _selectedItemAsBuildingIngredientInRecipes = new();
-    public ObservableCollection<RecipeModel> SelectedItemAsBuildingIngredientInRecipes
+    private ObservableCollection<Recipe> _selectedItemAsBuildingIngredientInRecipes = new();
+    public ObservableCollection<Recipe> SelectedItemAsBuildingIngredientInRecipes
     {
         get => _selectedItemAsBuildingIngredientInRecipes;
         set
@@ -50,8 +54,8 @@ internal class ItemViewModel : ObservableObject
     }
 
 
-    private ObservableCollection<RecipeModel> _selectedItemAsProductInRecipes = new();
-    public ObservableCollection<RecipeModel> SelectedItemAsProductInRecipes
+    private ObservableCollection<Recipe> _selectedItemAsProductInRecipes = new();
+    public ObservableCollection<Recipe> SelectedItemAsProductInRecipes
     {
         get => _selectedItemAsProductInRecipes;
         set
@@ -61,8 +65,8 @@ internal class ItemViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<FuelModel> _selectedItemAsFuels = new();
-    public ObservableCollection<FuelModel> SelectedItemAsFuels
+    private ObservableCollection<Fuel> _selectedItemAsFuels = new();
+    public ObservableCollection<Fuel> SelectedItemAsFuels
     {
         get => _selectedItemAsFuels;
         set
@@ -72,7 +76,7 @@ internal class ItemViewModel : ObservableObject
         }
     }
 
-    public ObservableCollection<ItemModel> Items => _applicationState.Configuration.Items;
+    public ObservableCollection<Item> Items => _applicationState.Configuration.Items;
 
     public Thickness ProductsSectionMargin => CalculateMargin(false);
     public Thickness IngredientsSectionMargin => CalculateMargin(_selectedItemAsProductInRecipes.Count > 0);

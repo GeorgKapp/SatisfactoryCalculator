@@ -2,7 +2,7 @@
 
 internal class GeneratorModels
 {
-    public static GeneratorModel CoalGenerator = new GeneratorModel
+    public static Generator CoalGenerator = new Generator
     {
         ClassName = "GeneratorCoal_C",
         Name = "Coal Generator",
@@ -11,14 +11,14 @@ internal class GeneratorModels
         SupplementalLoadAmount = 1000
     };
     
-    public static GeneratorModel FuelGenerator = new GeneratorModel
+    public static Generator FuelGenerator = new Generator
     {
         ClassName = "GeneratorFuel_C",
         Name = "LiquidFuel Generator",
         PowerProduction = 150,
     };
     
-    public static GeneratorModel NuclearGenerator = new GeneratorModel
+    public static Generator NuclearGenerator = new Generator
     {
         ClassName = "GeneratorNuclear_C",
         Name = "Nuclear Generator",

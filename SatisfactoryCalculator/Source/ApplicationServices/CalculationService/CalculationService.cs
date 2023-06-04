@@ -1,4 +1,9 @@
-﻿namespace SatisfactoryCalculator.Source.ApplicationServices;
+﻿using Building = SatisfactoryCalculator.Source.Models.Building;
+using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
+using Item = SatisfactoryCalculator.Source.Models.Item;
+using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
+
+namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class CalculationService : ICalculationService
 {
@@ -18,9 +23,9 @@ internal class CalculationService : ICalculationService
             ? sourceInput / 1000
             : sourceInput;
     
-    public FuelCalculationResult CalculateRoundedFuelConsumption(FuelModel fuelModel, double overclock)
+    public FuelCalculationResult CalculateRoundedFuelConsumption(Fuel fuel, double overclock)
     {
-        var fuelConsumptionresult = CalculateFuelConsumption(fuelModel, overclock);
+        var fuelConsumptionresult = CalculateFuelConsumption(fuel, overclock);
         fuelConsumptionresult.AmountPerMinute = Math.Round(Math.Round(fuelConsumptionresult.AmountPerMinute, 4), 2);
         fuelConsumptionresult.PowerProduction = Math.Round(Math.Round(fuelConsumptionresult.PowerProduction, 4), 2);
         
@@ -30,41 +35,41 @@ internal class CalculationService : ICalculationService
         return fuelConsumptionresult;
     }
     
-    public FuelCalculationResult CalculateFuelConsumption(FuelModel fuelModel, double overclock)
+    public FuelCalculationResult CalculateFuelConsumption(Fuel fuel, double overclock)
     {
         if (overclock is < 0 or > 250)
             throw new ArgumentException("Overclock Parameter must be between 0 and 250");
         
         var overClockMultiplier = OverClockMultiplier(overclock);
-        var powerCapacity = fuelModel.Generator.PowerProduction * overClockMultiplier;
-        var fuelBurnTime = fuelModel.Ingredient.Item.EnergyValue / powerCapacity;
+        var powerCapacity = fuel.Generator.PowerProduction * overClockMultiplier;
+        var fuelBurnTime = fuel.Ingredient.Item.EnergyValue / powerCapacity;
         var amountPerMinute = secondsPerMinute / fuelBurnTime;
 
         var calculationResult = new FuelCalculationResult
         {
-            AmountPerMinute = NormalizeAmount(fuelModel.Ingredient.Item.Form, amountPerMinute),
+            AmountPerMinute = NormalizeAmount(fuel.Ingredient.Item.Form, amountPerMinute),
             PowerProduction = powerCapacity,
             FuelBurnTime = fuelBurnTime
         };
 
-        if (fuelModel.SupplementalIngredient is not null)
+        if (fuel.SupplementalIngredient is not null)
         {
             var supplementalAmountPerMinute = powerCapacity
-                                              * fuelModel.Generator.SupplementalToPowerRatio!.Value
+                                              * fuel.Generator.SupplementalToPowerRatio!.Value
                                               * secondsPerMinute
-                                              / fuelModel.Generator.SupplementalLoadAmount!.Value;
+                                              / fuel.Generator.SupplementalLoadAmount!.Value;
             
             calculationResult.SupplementalAmountPerMinute = supplementalAmountPerMinute;
         }
         
         //TODO: needs to be checked for nuclear fuel generators
-        if (fuelModel.ByProduct is not null)
-            calculationResult.ByProductAmountPerMinute = amountPerMinute * NormalizeAmount(fuelModel.ByProduct.Item.Form, fuelModel.ByProductAmount!.Value);
+        if (fuel.ByProduct is not null)
+            calculationResult.ByProductAmountPerMinute = amountPerMinute * NormalizeAmount(fuel.ByProduct.Item.Form, fuel.ByProductAmount!.Value);
 
         return calculationResult;
     }
 
-    public RecipeItemProductionResult CalculateRecipeItemProduction(RecipeModel recipe, ItemModel item, BuildingModel building, double overclock)
+    public RecipeItemProductionResult CalculateRecipeItemProduction(Recipe recipe, Item item, Building building, double overclock)
     {
         var buildingProductionResult = CalculateRecipeBuildingProduction(recipe, building, overclock);
 
@@ -84,7 +89,7 @@ internal class CalculationService : ICalculationService
         };
     }
 
-    public RecipeBuildingProductionResult CalculateRecipeBuildingProduction(RecipeModel recipe, BuildingModel building, double overclock)
+    public RecipeBuildingProductionResult CalculateRecipeBuildingProduction(Recipe recipe, Building building, double overclock)
     {
         var overclockMultiplier = OverClockMultiplier(overclock);
         var buildingSpeed = GetManufactoringBuildingSpeed(building);
@@ -110,7 +115,7 @@ internal class CalculationService : ICalculationService
         return Math.Round(result, 1);
     }
 
-    private double GetManufactoringBuildingSpeed(BuildingModel building) => 
+    private double GetManufactoringBuildingSpeed(Building building) => 
         building.ManufactoringSpeed.HasValue
             ? building.ManufactoringSpeed.Value
             : 1;

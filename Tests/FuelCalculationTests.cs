@@ -66,9 +66,9 @@ public class FuelCalculationTests
     [Fact(DisplayName = "Calculate Liquid LiquidFuel Consumption with overlock(200%)")]
     public void CalculateLiquidFuelConsumption200() => CalculateFuelConsumption(FuelModels.LiquidFuel, 200, 300, 24);
     
-    private void CalculateFuelConsumption(FuelModel fuelModel, double overclock, double expectedPowerProduction, double expectedAmountPerMinute, double? expectedSupplementalAmountPerMinute = null, double? expectedByProductAmountPerMinute = null)
+    private void CalculateFuelConsumption(Fuel fuel, double overclock, double expectedPowerProduction, double expectedAmountPerMinute, double? expectedSupplementalAmountPerMinute = null, double? expectedByProductAmountPerMinute = null)
     {
-        var result = _calculationService.CalculateRoundedFuelConsumption(fuelModel, overclock);
+        var result = _calculationService.CalculateRoundedFuelConsumption(fuel, overclock);
         
         Assert.Equal(expectedPowerProduction, result.PowerProduction);
         Assert.Equal(expectedAmountPerMinute, result.AmountPerMinute);

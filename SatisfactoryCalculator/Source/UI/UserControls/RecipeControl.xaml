@@ -16,7 +16,7 @@
             <p:ExtendedStackPanel Orientation="Horizontal" Spacing="8" />
         </ItemsPanelTemplate>
 
-        <DataTemplate DataType="{x:Type models:RecipeContentModel}">
+        <DataTemplate DataType="{x:Type models:RecipeItem}">
                 
                 <Grid MinHeight="50">
                     
@@ -31,7 +31,7 @@
                         <TextBlock HorizontalAlignment="Center" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding AmountPerMinuteText}" Visibility="{Binding AmountPerMinute, Converter={StaticResource StringToVisibilityConverter}}" />
                     </StackPanel>
                     
-                    <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Item.BitmapImage}">
+                    <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Item.Image}">
                         <FrameworkElement.ToolTip>
                             <ToolTip Background="#00FFFFFF" BorderThickness="0" Placement="Right">
                                 <Border BorderThickness="1" BorderBrush="#FFFFFFFF" CornerRadius="10" Background="{StaticResource PrimaryColor}">
@@ -44,8 +44,8 @@
                 </Grid>
             </DataTemplate>
 
-        <DataTemplate DataType="{x:Type models:RecipeBuildingModel}">
-            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Building.BitmapImage}">
+        <DataTemplate DataType="{x:Type models:RecipeBuilding}">
+            <Image Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Building.Image}">
                 <FrameworkElement.ToolTip>
                     <ToolTip Background="#00FFFFFF" BorderThickness="0" Placement="Right">
                         <Border BorderThickness="1" BorderBrush="#FFFFFFFF" CornerRadius="10" Background="{StaticResource PrimaryColor}">
@@ -59,7 +59,7 @@
     </UserControl.Resources>
     
     <StackPanel>
-        <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" FontWeight="Medium" Text="{Binding Recipe.RecipeName, ElementName=userControl}" />
+        <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" FontWeight="Medium" Text="{Binding Recipe.Name, ElementName=userControl}" />
         <ItemsControl ItemsPanel="{StaticResource RecipeItemsPanelTemplate}" Margin="10,0,0,0">
             <ItemsControl.ItemsSource>
                 <CompositeCollection>

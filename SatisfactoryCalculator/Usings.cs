@@ -34,3 +34,4 @@ global using System.Windows.Input;
 global using System.Windows.Media.Imaging;
 global using System.Diagnostics;
 global using SatisfactoryCalculator.Source.Utilities;
+global using SatisfactoryCalculator.Source.Models.Interfaces;

@@ -2,27 +2,27 @@
 
 internal class FuelModels
 {
-    public static FuelModel LiquidFuel = new FuelModel
+    public static Fuel LiquidFuel = new Fuel
     {
         Generator = GeneratorModels.FuelGenerator,
         Ingredient = FuelContentModels.LiquidFuel,
     };
     
-    public static FuelModel CoalFuel = new FuelModel
+    public static Fuel CoalFuel = new Fuel
     {
         Generator = GeneratorModels.CoalGenerator,
         Ingredient = FuelContentModels.Coal,
         SupplementalIngredient = FuelContentModels.Water,
     };
 
-    public static FuelModel CompactedCoalFuel = new FuelModel
+    public static Fuel CompactedCoalFuel = new Fuel
     {
         Generator = GeneratorModels.CoalGenerator,
         Ingredient = FuelContentModels.CompactedCoal,
         SupplementalIngredient = FuelContentModels.Water,
     };
 
-    public static FuelModel PetroleumCokeFuel = new FuelModel
+    public static Fuel PetroleumCokeFuel = new Fuel
     {
         Generator = GeneratorModels.CoalGenerator,
         Ingredient = FuelContentModels.PetroleumCoke,

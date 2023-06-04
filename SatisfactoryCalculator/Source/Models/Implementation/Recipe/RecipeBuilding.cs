@@ -1,7 +1,7 @@
 namespace SatisfactoryCalculator.Source.Models;
 
-internal class RecipeBuildingModel
+internal class RecipeBuilding
 {
-    public BuildingModel Building { get; set; }
+    public Building Building { get; set; }
     public PowerConsumptionRange? PowerConsumptionRange { get; set; }
 }

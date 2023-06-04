@@ -2,27 +2,27 @@
 
 internal class FuelContentModels
 {
-    public static FuelContentModel LiquidFuel = new FuelContentModel 
+    public static FuelItem LiquidFuel = new FuelItem 
     { 
         Item = ItemModels.LiquidFuel
     };
     
-    public static FuelContentModel Coal = new FuelContentModel 
+    public static FuelItem Coal = new FuelItem 
     { 
         Item = ItemModels.Coal
     };
 
-    public static FuelContentModel CompactedCoal = new FuelContentModel
+    public static FuelItem CompactedCoal = new FuelItem
     {
         Item = ItemModels.CompactedCoal
     };
 
-    public static FuelContentModel PetroleumCoke = new FuelContentModel
+    public static FuelItem PetroleumCoke = new FuelItem
     {
         Item = ItemModels.PetroleumCoke
     };
 
-    public static FuelContentModel Water = new FuelContentModel
+    public static FuelItem Water = new FuelItem
     {
         Item = ItemModels.Water
     };

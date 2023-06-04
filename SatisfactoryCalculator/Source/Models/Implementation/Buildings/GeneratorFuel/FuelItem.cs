@@ -1,9 +1,9 @@
 ﻿namespace SatisfactoryCalculator.Source.Models;
 
-internal class FuelContentModel : ObservableObject
+internal class FuelItem : ObservableObject
 {
-    private ItemModel _item;
-    public ItemModel Item
+    private Item _item;
+    public Item Item
     {
         get => _item;
         set => SetProperty(ref _item, value);

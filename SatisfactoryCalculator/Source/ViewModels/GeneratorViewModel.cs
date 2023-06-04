@@ -1,9 +1,13 @@
-﻿namespace SatisfactoryCalculator.Source.ViewModels;
+﻿using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
+using Generator = SatisfactoryCalculator.Source.Models.Generator;
+using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
+
+namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class GeneratorViewModel : ObservableObject
 {
-    private GeneratorModel? _selectedGenerator;
-    public GeneratorModel? SelectedGenerator
+    private Generator? _selectedGenerator;
+    public Generator? SelectedGenerator
     {
         get => _selectedGenerator;
         set
@@ -17,22 +21,22 @@ internal class GeneratorViewModel : ObservableObject
             }
             else
             {
-                SelectedGeneratorFuels = new ObservableCollection<FuelModel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator);
-                SelectedGeneratorRecipes = new ObservableCollection<RecipeModel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
+                SelectedGeneratorFuels = new ObservableCollection<Fuel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator);
+                SelectedGeneratorRecipes = new ObservableCollection<Recipe>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
                 SelectedGeneratorClockSpeed = "100";
             }
         }
     }
 
-    private ObservableCollection<FuelModel> _selectedGeneratorFuels = new();
-    public ObservableCollection<FuelModel> SelectedGeneratorFuels
+    private ObservableCollection<Fuel> _selectedGeneratorFuels = new();
+    public ObservableCollection<Fuel> SelectedGeneratorFuels
     {
         get => _selectedGeneratorFuels;
         set => SetProperty(ref _selectedGeneratorFuels, value);
     }
 
-    private ObservableCollection<RecipeModel> _selectedGeneratorRecipes = new();
-    public ObservableCollection<RecipeModel> SelectedGeneratorRecipes
+    private ObservableCollection<Recipe> _selectedGeneratorRecipes = new();
+    public ObservableCollection<Recipe> SelectedGeneratorRecipes
     {
         get => _selectedGeneratorRecipes;
         set => SetProperty(ref _selectedGeneratorRecipes, value);
@@ -65,7 +69,7 @@ internal class GeneratorViewModel : ObservableObject
         }
     }
 
-    public ObservableCollection<GeneratorModel> Generators => _applicationState.Configuration.Generators;
+    public ObservableCollection<Generator> Generators => _applicationState.Configuration.Generators;
 
     public GeneratorViewModel(ApplicationState applicationState, CalculationService calculationService)
     {

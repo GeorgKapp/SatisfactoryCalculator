@@ -2,7 +2,7 @@
 
 internal class BuildingModels
 {
-    public static BuildingModel Constructor = new BuildingModel
+    public static Building Constructor = new Building
     {
         ClassName = "ConstructorMk1_C",
         Name = "Constructor",
@@ -13,7 +13,7 @@ internal class BuildingModels
         PowerConsumptionRange = null
     };
 
-    public static BuildingModel OilRefinery = new BuildingModel
+    public static Building OilRefinery = new Building
     {
         ClassName = "OilRefinery_C",
         Name = "Refinery",

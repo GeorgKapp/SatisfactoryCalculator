@@ -1,13 +1,15 @@
-﻿namespace SatisfactoryCalculator.Source.UI.UserControls;
+﻿using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
+
+namespace SatisfactoryCalculator.Source.UI.UserControls;
 
 public partial class FuelControl : UserControl
 {
-    internal FuelModel Fuel
+    internal Fuel Fuel
     {
-        get => (FuelModel)GetValue(FuelProperty);
+        get => (Fuel)GetValue(FuelProperty);
         set => SetValue(FuelProperty, value);
     }
-    internal static readonly DependencyProperty FuelProperty = DependencyProperty.Register(nameof(Fuel), typeof(FuelModel), typeof(FuelControl), new PropertyMetadata(UpdateVisibilities));
+    internal static readonly DependencyProperty FuelProperty = DependencyProperty.Register(nameof(Fuel), typeof(Fuel), typeof(FuelControl), new PropertyMetadata(UpdateVisibilities));
 
     internal bool ShowFuelGenerator
     {
@@ -19,8 +21,8 @@ public partial class FuelControl : UserControl
     private static void UpdateVisibilities(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var control = (d as FuelControl);
-        //control.textBoxEqual.Visibility = (e.NewValue as RecipeModel)?.Products?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
-        //control.textBoxArrow.Visibility = (e.NewValue as RecipeModel)?.Buildings?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
+        //control.textBoxEqual.Visibility = (e.NewValue as Recipe)?.Products?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
+        //control.textBoxArrow.Visibility = (e.NewValue as Recipe)?.Buildings?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public FuelControl()

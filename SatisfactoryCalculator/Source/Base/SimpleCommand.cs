@@ -26,14 +26,14 @@ internal class SimpleCommand : ICommand
 		_canExecute = null;
 	}
 
-	public bool CanExecute(object parameter)
+	public bool CanExecute(object? parameter)
 	{
 		return _canExecute is null
 			? true 
 			: _canExecute!();
 	}
 
-	public void Execute(object parameter)
+	public void Execute(object? parameter)
 	{
 		_action();
 	}

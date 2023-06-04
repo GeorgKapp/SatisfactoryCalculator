@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SatisfactoryCalculator.Source.UI.Pages
 {
     /// <summary>
-    /// Interaction logic for GeneratorsPage.xaml
+    /// Interaction logic for GeneratorPage.xaml
     /// </summary>
-    public partial class GeneratorsPage : Page
+    public partial class GeneratorPage : Page
     {
-        public GeneratorsPage()
+        public GeneratorPage()
         {
             InitializeComponent();
         }

@@ -15,8 +15,9 @@ public class ItemModel
         set
         {
             _imagePath = value;
-            BitmapImage = Application.Current.Dispatcher.Invoke(() => BitmapImageUtility.ConvertPathToBitMapImage(value));
+            BitmapImage = Application.Current.Dispatcher.Invoke(() => BitmapImageCache.Fetch(value));
         }
     }
+    
     public BitmapImage BitmapImage { get; set; }
 }

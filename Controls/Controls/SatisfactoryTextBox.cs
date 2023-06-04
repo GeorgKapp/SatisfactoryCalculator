@@ -8,7 +8,11 @@ public class SatisfactoryTextBox : TextBox
 {
 	static SatisfactoryTextBox()
 	{
-		DefaultStyleKeyProperty.OverrideMetadata(typeof(SatisfactoryTextBox), new FrameworkPropertyMetadata(typeof(SatisfactoryTextBox)));
+		DefaultStyleKeyProperty.OverrideMetadata(
+			typeof(SatisfactoryTextBox), 
+			new FrameworkPropertyMetadata(
+				typeof(SatisfactoryTextBox)
+				));
 	}
 
 	public SatisfactoryTextBox()
@@ -30,7 +34,7 @@ public class SatisfactoryTextBox : TextBox
 			typeof(SatisfactoryTextBox), 
 			new PropertyMetadata(
 				false
-			));
+				));
 
 	private void OnPreviewTextInput(object sender, TextCompositionEventArgs e)
 	{

@@ -29,9 +29,20 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
                 <c:SatisfactoryButton Content="Items" Command="{Binding ShowItemsCommand}"/>
-                <c:SatisfactoryButton Content="Recipes" Command="{Binding ShowRecipesCommand}"/>
+                <c:SatisfactoryButton Content="Equipments" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Consumables" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Weapons" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Ammunition" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Resources" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Vehicles" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Buildings" Command="{Binding ShowBuildingsCommand}"/>
-                <c:SatisfactoryButton Content="Generators" Command="{Binding ShowGeneratorsCommand}"/>
+                <c:SatisfactoryButton Content="Generators" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowGeneratorsCommand}"/>
+                <c:SatisfactoryButton Content="Miners" Style="{StaticResource SubCategoryButtonButton}" />
+                <c:SatisfactoryButton Content="Statues" Style="{StaticResource SubCategoryButtonButton}" />
+                <c:SatisfactoryButton Content="Emotes" />
+                <c:SatisfactoryButton Content="Recipes" Command="{Binding ShowRecipesCommand}"/>
+                <c:SatisfactoryButton Content="Customization" Style="{StaticResource SubCategoryButtonButton}" />
+                <c:SatisfactoryButton Content="Schematics"/>
                 <c:SatisfactoryButton Content="Overview" Command="{Binding ShowOverviewCommand}"/>
                 <c:SatisfactoryButton Content="Data Import" Command="{Binding ShowDataImportCommand}"/>
             </StackPanel>

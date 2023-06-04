@@ -1,6 +1,6 @@
 namespace SatisfactoryCalculator.Source.ViewModels;
 
-internal class BuildingsViewModel : ObservableObject
+internal class BuildingViewModel : ObservableObject
 {
     private BuildingModel? _selectedBuilding;
     public BuildingModel? SelectedBuilding
@@ -25,7 +25,7 @@ internal class BuildingsViewModel : ObservableObject
 
     public ObservableCollection<BuildingModel> Buildings => _applicationState.Configuration.Buildings;
 
-    public BuildingsViewModel(ApplicationState applicationState)
+    public BuildingViewModel(ApplicationState applicationState)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
         Notify(nameof(Buildings));

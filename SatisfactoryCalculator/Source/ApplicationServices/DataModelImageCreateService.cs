@@ -2,24 +2,25 @@ namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelImageCreateService
 {
-    public async Task<Data> CreateImagesAsync(Data data, string ueModelExportPath, IExtendedProgress<string> progress = null, CancellationToken? token = null)
+    public async Task<Data> CreateImagesAsync(Data data, string ueModelExportPath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
     {
-        ProgressUtility.ReportOrThrow("Creating Images", progress, token);
-        Constants.ImageFilePath.CreateDirectoryIfNotExists();
+        progress?.ReportOrThrow("Creating Images", token);
+        if (!Directory.Exists(Constants.ImageFilePath))
+            Directory.CreateDirectory(Constants.ImageFilePath);
 
-        ProgressUtility.ReportOrThrow("Creating Item Images", progress, token);
+        progress?.ReportOrThrow("Creating Item Images", token);
         await CreateImagesAsync(data.Items, ueModelExportPath);
 
-        ProgressUtility.ReportOrThrow("Creating Building Images", progress, token);
+        progress?.ReportOrThrow("Creating Building Images", token);
         await CreateImagesAsync(data.Buildings, ueModelExportPath);
 
-        ProgressUtility.ReportOrThrow("Creating Schematic Images", progress, token);
+        progress?.ReportOrThrow("Creating Schematic Images", token);
         await CreateImagesAsync(data.Schematics, ueModelExportPath);
 
-        ProgressUtility.ReportOrThrow("Creating Emote Images", progress, token);
+        progress?.ReportOrThrow("Creating Emote Images", token);
         await CreateImagesAsync(data.Emotes, ueModelExportPath);
 
-        ProgressUtility.ReportOrThrow("Creating Statue Images", progress, token);
+        progress?.ReportOrThrow("Creating Statue Images", token);
         await CreateImagesAsync(data.Statues, ueModelExportPath);
 
         return data;

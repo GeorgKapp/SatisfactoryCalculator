@@ -7,10 +7,10 @@ internal class ViewModelViewLinker
 	public ViewModelViewLinker()
 	{
 		AddLink<MainView, MainViewModel>();
-		AddLink<ItemsPage, ItemsViewModel>();
-        AddLink<BuildingsPage, BuildingsViewModel>();
-        AddLink<GeneratorsPage, GeneratorsViewModel>();
-        AddLink<RecipesPage, RecipesViewModel>();
+		AddLink<ItemPage, ItemViewModel>();
+        AddLink<BuildingPage, BuildingViewModel>();
+        AddLink<GeneratorPage, GeneratorViewModel>();
+        AddLink<RecipePage, RecipeViewModel>();
 		AddLink<OverviewPage, OverviewViewModel>();
 		AddLink<DataImportPage, DataImportViewModel>();
 	}

@@ -1,6 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Shared.Common.Progress;
 
-public class ExtendedProgress<T> : IExtendedProgress<T>
+public sealed class ExtendedProgress<T> : IExtendedProgress<T>
 {
     /// <summary>Raised for each reported progress value.</summary>
     /// <remarks>
@@ -33,7 +33,13 @@ public class ExtendedProgress<T> : IExtendedProgress<T>
     public void ReportSuccess(T value) =>
         OnReport(new ReportState<T> { Value = value, ProgressState = ProgressState.Success });
 
-    protected virtual void OnReport(ReportState<T> value)
+    public void ReportOrThrow(T value, CancellationToken? token = null)
+    {
+        token?.ThrowIfCancellationRequested();
+        Report(value);
+    }
+
+    private void OnReport(ReportState<T> value)
     {
         Action<ReportState<T>>? handler = _handler;
         EventHandler<ReportState<T>>? changedEvent = ProgressChanged;
@@ -44,7 +50,7 @@ public class ExtendedProgress<T> : IExtendedProgress<T>
 
     private void InvokeHandlers(object? state)
     {
-        ReportState<T> value = (ReportState<T>)state!;
+        var value = (ReportState<T>)state!;
 
         Action<ReportState<T>>? handler = _handler;
         EventHandler<ReportState<T>>? changedEvent = ProgressChanged;

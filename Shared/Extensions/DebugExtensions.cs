@@ -4,7 +4,7 @@ public static class DebugExtensions
 {
     public static T Profile<T>(Func<T> func, string name)
     {
-        Stopwatch stopwatch = Stopwatch.StartNew();
+        var stopwatch = Stopwatch.StartNew();
         var result = func();
         stopwatch.Stop();
         Debug.WriteLine($"Ellapsed Time for {name}: {stopwatch.Elapsed}");
@@ -13,7 +13,7 @@ public static class DebugExtensions
 
     public static async Task<T> ProfileAsync<T>(Task<T> task, string name)
     {
-        Stopwatch stopwatch = Stopwatch.StartNew();
+        var stopwatch = Stopwatch.StartNew();
         var result = await task;
         stopwatch.Stop();
         Debug.WriteLine($"Ellapsed Time for {name}: {stopwatch.Elapsed}");

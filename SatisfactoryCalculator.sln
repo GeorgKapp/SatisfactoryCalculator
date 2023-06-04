@@ -5,8 +5,6 @@ VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calculator", "SatisfactoryCalculator\Calculator.csproj", "{EB98AE39-FCC4-442A-BD87-B2ED68574ADE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{61A3E5E0-CA55-4E0B-BA0A-D9272C443FAF}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocsServices", "DocsServices\DocsServices.csproj", "{1C5B3B09-7478-4989-9F17-63447A1ACEAC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{15E4F364-39DB-463C-87D6-C164CD0777C8}"
@@ -25,10 +23,6 @@ Global
 		{EB98AE39-FCC4-442A-BD87-B2ED68574ADE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB98AE39-FCC4-442A-BD87-B2ED68574ADE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB98AE39-FCC4-442A-BD87-B2ED68574ADE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{61A3E5E0-CA55-4E0B-BA0A-D9272C443FAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{61A3E5E0-CA55-4E0B-BA0A-D9272C443FAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{61A3E5E0-CA55-4E0B-BA0A-D9272C443FAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{61A3E5E0-CA55-4E0B-BA0A-D9272C443FAF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C5B3B09-7478-4989-9F17-63447A1ACEAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C5B3B09-7478-4989-9F17-63447A1ACEAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C5B3B09-7478-4989-9F17-63447A1ACEAC}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -6,3 +6,4 @@ global using System.Threading;
 global using SatisfactoryCalculator.Shared.Common.Progress;
 global using System.Diagnostics;
 global using System.Runtime.CompilerServices;
+global using System.Text.Json;

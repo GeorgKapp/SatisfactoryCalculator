@@ -7,14 +7,14 @@ public partial class DocsParserService
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
 	}
 
-	public async Task<Result<Data>> ParseDocsJsonAsync(string docsFilePath, IExtendedProgress<string> progress, CancellationToken? token = null)
+	public async Task<Result<Data>> ParseDocsJsonAsync(string docsFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
 	{
-		ProgressUtility.ReportOrThrow("Read docs.json file", progress, token);
+		progress?.ReportOrThrow("Read docs.json file", token);
 		var classes1 = await _jsonService.ReadJsonAsync<Class1[]>(docsFilePath);
 
 		var classesDictionary = classes1.SelectMany(p => p.Classes).ToDictionary(p => p.ClassName, p => p);
 
-		ProgressUtility.ReportOrThrow("Parse data", progress, token);
+		progress?.ReportOrThrow("Parse data", token);
 		var data = new Data();
 
         var biomassItems = Array.Empty<Item>();
@@ -185,28 +185,28 @@ public partial class DocsParserService
 			}
 		}
 
-		ProgressUtility.ReportOrThrow("Add missing items", progress, token);
-		data.Items.Add(CoffeeCup);
+        progress?.ReportOrThrow("Add missing items", token);
+        data.Items.Add(CoffeeCup);
 		data.Items.Add(GoldenCoffeeCup);
 		data.Items.Add(BoomBox);
 		data.Items.Add(FiscitCoupon);
 
-		ProgressUtility.ReportOrThrow("Add missing equipment", progress, token);
+		progress?.ReportOrThrow("Add missing equipment", token);
 		data.Equipments.Add(CoffeeCupEquipment);
 		data.Equipments.Add(GoldenCoffeeCupEquipment);
 		data.Equipments.Add(BoomBoxEquipment);
 
-		ProgressUtility.ReportOrThrow("Add missing vehicles", progress, token);
+		progress?.ReportOrThrow("Add missing vehicles", token);
 		data.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCart_C"]));
 		data.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCartGold_C"]));
 
-		ProgressUtility.ReportOrThrow("Add missing emotes", progress, token);
+		progress?.ReportOrThrow("Add missing emotes", token);
 		data.Emotes.AddRange(Emotes);
 
-		ProgressUtility.ReportOrThrow("Add missing statues", progress, token);
+		progress?.ReportOrThrow("Add missing statues", token);
 		data.Statues.AddRange(Statues);
 		
-		ProgressUtility.ReportOrThrow("Remove Generator Fuels with no energy value", progress, token);
+		progress?.ReportOrThrow("Remove Generator Fuels with no energy value", token);
 		foreach (var generator in data.Generators)
 		{
 			generator.Fuels = generator.Fuels
@@ -216,27 +216,27 @@ public partial class DocsParserService
 				.ToArray();
 		}
 
-		ProgressUtility.ReportOrThrow("Check for duplicates", progress, token);
+		progress?.ReportOrThrow("Check for duplicates", token);
 		var duplicateCheckResult = SeperatelyValidateDataForDuplicates(data);
         if (!duplicateCheckResult.IsSuccess)
 			return Result<Data>.Failure(duplicateCheckResult.Error);
 
-		ProgressUtility.ReportOrThrow("Check data references", progress, token);
+        progress?.ReportOrThrow("Check data references", token);
         var dataReferencesCheckResult = ValidateDataReferences(data);
         if (!dataReferencesCheckResult.IsSuccess)
             return Result<Data>.Failure(dataReferencesCheckResult.Error);
 
-		ProgressUtility.ReportOrThrow("Check if all items exist for recipe info", progress, token);
+        progress?.ReportOrThrow("Check if all items exist for recipe info", token);
         var validateItemExistenceInRecipesCheckResult = ValidateItemExistanceInRecipes(data);
         if (!validateItemExistenceInRecipesCheckResult.IsSuccess)
             return Result<Data>.Failure(validateItemExistenceInRecipesCheckResult.Error);
 
-		ProgressUtility.ReportOrThrow("Check if all items and all schematic references exist for schematic info", progress, token);
+        progress?.ReportOrThrow("Check if all items and all schematic references exist for schematic info", token);
         var validateItemExistenceInSchematicsCheckResult = ValidateItemExistanceInSchematics(data);
         if (!validateItemExistenceInSchematicsCheckResult.IsSuccess)
             return Result<Data>.Failure(validateItemExistenceInSchematicsCheckResult.Error);
 
-		progress.ReportSuccess("Data succesfully parsed");
+		progress?.ReportSuccess("Data succesfully parsed");
 		return Result<Data>.Success(data);
 	}
 

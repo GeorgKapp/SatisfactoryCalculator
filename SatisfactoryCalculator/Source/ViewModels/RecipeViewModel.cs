@@ -1,6 +1,6 @@
 namespace SatisfactoryCalculator.Source.ViewModels;
 
-internal class RecipesViewModel : ObservableObject
+internal class RecipeViewModel : ObservableObject
 {
     private RecipeModel? _selectedRecipe;
     public RecipeModel? SelectedRecipe
@@ -11,7 +11,7 @@ internal class RecipesViewModel : ObservableObject
 
     public ObservableCollection<RecipeModel> Recipes => _applicationState.Configuration.Recipes;
 
-    public RecipesViewModel(ApplicationState applicationState)
+    public RecipeViewModel(ApplicationState applicationState)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
         Notify(nameof(Recipes));

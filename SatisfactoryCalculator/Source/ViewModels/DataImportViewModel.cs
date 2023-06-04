@@ -98,7 +98,7 @@ internal class DataImportViewModel : ObservableObject
 
 	private void ReportMessage(ReportState<string> report)
 	{
-		Report = report.Value;
+		Report = report.Value!;
 	}
 
     private void ReportMessage(string report)
@@ -106,7 +106,7 @@ internal class DataImportViewModel : ObservableObject
         Report = report;
     }
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
     private CancellationTokenSource _cancellationTokenSource = new();
 
     private readonly ClipBoardService _clipBoardService;

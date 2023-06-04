@@ -1,8 +1,8 @@
 ﻿namespace SatisfactoryCalculator.Source.UI.Pages;
 
-public partial class BuildingsPage : Page
+public partial class RecipePage : Page
 {
-    public BuildingsPage()
+    public RecipePage()
     {
         InitializeComponent();
     }

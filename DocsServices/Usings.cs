@@ -2,7 +2,7 @@
 global using SatisfactoryCalculator.DocsServices.Models.DataModels;
 global using SatisfactoryCalculator.DocsServices.Models.JsonModels;
 global using SatisfactoryCalculator.DocsServices.Utility;
-global using SatisfactoryCalculator.Services.DataAccess;
+global using SatisfactoryCalculator.Shared.Services;
 global using SatisfactoryCalculator.Shared.Common.Progress;
 global using SatisfactoryCalculator.Shared.Enums;
 global using SatisfactoryCalculator.Shared.Extensions;

@@ -1,21 +1,22 @@
 namespace SatisfactoryCalculator.Source.Utilities;
 
-internal static class BitmapImageUtility
+public static class BitmapImageCache
 {
-    public static BitmapImage ConvertPathToBitMapImage(string filePath)
+    public static BitmapImage Fetch(string imagePath)
     {
-        BitmapImage bitmapImage = new BitmapImage();
-
-        if (string.IsNullOrEmpty(filePath))
-            return bitmapImage;
-
-        using FileStream streamSource = new FileStream(filePath, FileMode.Open, FileAccess.Read);
+        if(string.IsNullOrWhiteSpace(imagePath))
+            return new();
+        
+        using var streamSource = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
+        
+        var bitmapImage = new BitmapImage();
         bitmapImage.BeginInit();
         bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
         bitmapImage.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
         bitmapImage.StreamSource = streamSource;
         bitmapImage.EndInit();
         bitmapImage.Freeze();
+        
         return bitmapImage;
     }
 }

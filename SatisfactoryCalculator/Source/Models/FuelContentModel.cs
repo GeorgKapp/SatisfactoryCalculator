@@ -9,13 +9,6 @@ internal class FuelContentModel : ObservableObject
         set => SetProperty(ref _item, value);
     }
 
-    private string _itemName;
-    public string ItemName
-    {
-        get => _itemName;
-        set => SetProperty(ref _itemName, value);
-    }
-
     private double? _amountPerMinute;
     public double? AmountPerMinute
     {

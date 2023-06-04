@@ -17,7 +17,7 @@ internal class GeneratorModel
         set
         {
             _imagePath = value;
-            BitmapImage = Application.Current.Dispatcher.Invoke(() => BitmapImageUtility.ConvertPathToBitMapImage(value));
+            BitmapImage = Application.Current.Dispatcher.Invoke(() => BitmapImageCache.Fetch(value));
         }
     }
 

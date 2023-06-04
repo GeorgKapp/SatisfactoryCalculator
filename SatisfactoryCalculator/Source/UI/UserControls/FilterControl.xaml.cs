@@ -2,9 +2,9 @@
 
 public partial class FilterControl : UserControl
 {
-    public IEnumerable ItemsSource
+    public IEnumerable? ItemsSource
     {
-        get => (IEnumerable)GetValue(FilterProperty);
+        get => (IEnumerable?)GetValue(FilterProperty);
         set => SetValue(FilterProperty, value);
     }
     public static readonly DependencyProperty FilterProperty = DependencyProperty.Register(nameof(ItemsSource), typeof(IEnumerable), typeof(FilterControl), new PropertyMetadata(OnItemSourceUpdated));
@@ -51,7 +51,7 @@ public partial class FilterControl : UserControl
 
     private void RefreshFilter() => _itemsCollectionView?.Refresh();
 
-    private bool ApplyFilter(object filterObject)
+    private bool ApplyFilter(object? filterObject)
     {
         if (string.IsNullOrWhiteSpace(_filter))
             return true;
@@ -62,12 +62,12 @@ public partial class FilterControl : UserControl
         if (filterObject is null)
             return true;
 
-        var filterObjectValue = filterObject.GetType().GetProperty(FilterMemberPath).GetValue(filterObject)?.ToString();
+        var filterObjectValue = filterObject.GetType().GetProperty(FilterMemberPath)!.GetValue(filterObject)?.ToString();
         if (string.IsNullOrWhiteSpace(filterObjectValue))
             return false;
 
-        string[] array = _filter.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-        foreach (string value in array)
+        var array = _filter.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        foreach (var value in array)
         {
             if (!filterObjectValue.Contains(value, StringComparison.OrdinalIgnoreCase))
                 return false;
@@ -77,10 +77,10 @@ public partial class FilterControl : UserControl
 
     private void FilterTextChanged(object sender, TextChangedEventArgs e)
     {
-        _filter = (sender as TextBox).Text;
+        _filter = ((TextBox)sender).Text;
         RefreshFilter();
     }
 
-    private string _filter;
-    private ICollectionView _itemsCollectionView;
+    private string? _filter;
+    private ICollectionView? _itemsCollectionView;
 }

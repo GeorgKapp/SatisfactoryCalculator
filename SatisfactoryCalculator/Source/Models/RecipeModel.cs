@@ -2,6 +2,20 @@ namespace SatisfactoryCalculator.Source.Models;
 
 internal class RecipeModel
 {
+    public RecipeModel(string className, string recipeName, bool isAlternateRecipe, bool constructedByBuildGun, bool constructedInWorkbench, bool constructedInWorkshop, double manufactoringDuration, RecipeContentModel[] ingredients, RecipeContentModel[] products, RecipeBuildingModel[] buildings)
+    {
+        ClassName = className;
+        RecipeName = recipeName;
+        IsAlternateRecipe = isAlternateRecipe;
+        ConstructedByBuildGun = constructedByBuildGun;
+        ConstructedInWorkbench = constructedInWorkbench;
+        ConstructedInWorkshop = constructedInWorkshop;
+        ManufactoringDuration = manufactoringDuration;
+        Ingredients = ingredients;
+        Products = products;
+        Buildings = buildings;
+    }
+
     public string ClassName { get; set; }
     public string RecipeName { get; set; }
     public bool IsAlternateRecipe { get; set; }

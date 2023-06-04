@@ -9,12 +9,11 @@ internal class ApplicationState : ObservableObject
         set => SetProperty(ref _configuration, value);
     }
 
-    public Data Data { get; set; }
+    public Data? Data { get; set; }
 
 	public void SetConfig(Data data, DataModelMappingResult mappingResult)
 	{
         Data = data;
-        Configuration ??= new();
         Configuration.Items = new(mappingResult.Items);
         Configuration.Buildings = new(mappingResult.Buildings);
         Configuration.Generators = new(mappingResult.Generators);

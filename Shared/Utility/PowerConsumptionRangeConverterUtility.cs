@@ -4,23 +4,15 @@ public static class PowerConsumptionRangeConverterUtility
 {
 	public static PowerConsumptionRange? ConverToPowerConsumption(double? estimatedMininumPowerConsumption, double? estimatedMaximumPowerConsumption)
 	{
-		return (!estimatedMininumPowerConsumption.HasValue) ? null : new PowerConsumptionRange
-		{
-			StartPowerConsumption = estimatedMininumPowerConsumption.Value,
-			EndPowerConsumption = estimatedMaximumPowerConsumption.Value
-		};
+		return estimatedMininumPowerConsumption.HasValue
+			? new PowerConsumptionRange(estimatedMininumPowerConsumption.Value,estimatedMaximumPowerConsumption!.Value)
+			: null;
 	}
 
 	public static PowerConsumptionRange? ConverToPowerVariableConsumption(double variablePowerConsumptionConstant, double variablePowerConsumptionFactor)
 	{
-		if (variablePowerConsumptionConstant == 0.0)
-		{
-			return null;
-		}
-		return new PowerConsumptionRange
-		{
-			StartPowerConsumption = variablePowerConsumptionConstant,
-			EndPowerConsumption = variablePowerConsumptionConstant + variablePowerConsumptionFactor
-		};
+		return variablePowerConsumptionConstant != 0.0
+			? new PowerConsumptionRange(variablePowerConsumptionConstant, variablePowerConsumptionConstant + variablePowerConsumptionFactor)
+			: null;
 	}
 }

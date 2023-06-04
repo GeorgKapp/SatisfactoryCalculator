@@ -16,7 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Controls\Controls.csproj" />
     <ProjectReference Include="..\DocsServices\DocsServices.csproj" />
-    <ProjectReference Include="..\Services\Services.csproj" />
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 

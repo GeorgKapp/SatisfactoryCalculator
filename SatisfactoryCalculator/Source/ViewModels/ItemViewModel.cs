@@ -1,6 +1,6 @@
 namespace SatisfactoryCalculator.Source.ViewModels;
 
-internal class ItemsViewModel : ObservableObject
+internal class ItemViewModel : ObservableObject
 {
     private ItemModel? _selectedItem;
     public ItemModel? SelectedItem
@@ -79,7 +79,7 @@ internal class ItemsViewModel : ObservableObject
     public Thickness BuildingIngredientSectionMargin => CalculateMargin(_selectedItemAsIngredientInRecipes.Count > 0);
     public Thickness FuelsSectionMargin => CalculateMargin(_selectedItemAsBuildingIngredientInRecipes.Count > 0 || _selectedItemAsProductInRecipes.Count > 0);
 
-    public ItemsViewModel(ApplicationState applicationState)
+    public ItemViewModel(ApplicationState applicationState)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
         Notify(nameof(Items));

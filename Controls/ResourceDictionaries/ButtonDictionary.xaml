@@ -15,13 +15,13 @@
         <Setter Property="FontSize" Value="{StaticResource BaseFontSize}" />
         <Setter Property="FontStretch" Value="{StaticResource BaseFontStretch}" />
         <Setter Property="FontWeight" Value="{StaticResource BaseFontWeight}" />
-        <Setter Property="FrameworkElement.UseLayoutRounding" Value="True" />
+        <Setter Property="UseLayoutRounding" Value="True" />
         <Setter Property="RenderOptions.BitmapScalingMode" Value="NearestNeighbor" />
-        <Setter Property="UIElement.SnapsToDevicePixels" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="RenderOptions.ClearTypeHint" Value="Enabled" />
         <Setter Property="Background" Value="#00FFFFFF" />
         <Setter Property="Foreground" Value="#FFFFFFFF" />
-        <Setter Property="c:SatisfactoryButton.HoverColor" Value="{StaticResource SecondaryColor}" />
+        <Setter Property="HoverColor" Value="{StaticResource SecondaryColor}" />
         <Setter Property="Padding" Value="10,5,10,5" />
         <Setter Property="Template">
             <Setter.Value>
@@ -40,14 +40,19 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="SubCategoryButtonButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource {x:Type c:SatisfactoryButton}}">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Padding" Value="30,5,10,5" />
+    </Style>
 
     <Style x:Key="RoundedButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource {x:Type c:SatisfactoryButton}}">
-        <Setter Property="c:SatisfactoryButton.CornerRadius" Value="3" />
+        <Setter Property="CornerRadius" Value="3" />
     </Style>
 
     <Style x:Key="RoundedSecondaryButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource RoundedButton}">
         <Setter Property="Background" Value="{StaticResource SecondaryColor}" />
-        <Setter Property="c:SatisfactoryButton.HoverColor" Value="{StaticResource SecondaryLightColor}" />
+        <Setter Property="HoverColor" Value="{StaticResource SecondaryLightColor}" />
     </Style>
 
     <Style x:Key="LargeRoundedButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource RoundedButton}">
@@ -57,7 +62,7 @@
 
     <Style x:Key="LargeRoundedSecondaryButton" TargetType="{x:Type c:SatisfactoryButton}" BasedOn="{StaticResource LargeRoundedButton}">
         <Setter Property="Background" Value="{StaticResource SecondaryColor}" />
-        <Setter Property="c:SatisfactoryButton.HoverColor" Value="{StaticResource SecondaryLightColor}" />
+        <Setter Property="HoverColor" Value="{StaticResource SecondaryLightColor}" />
     </Style>
 
 </ResourceDictionary>

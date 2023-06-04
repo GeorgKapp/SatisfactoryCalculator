@@ -65,5 +65,5 @@ public class ConfigurationModel : ObservableObject
         set => SetProperty(ref _lastSyncDate, value);
     }
 
-    internal Dictionary<string, EntityReference> ReferenceDictionary { get; set; }
+    internal Dictionary<string, EntityReference> ReferenceDictionary { get; set; } = new();
 }

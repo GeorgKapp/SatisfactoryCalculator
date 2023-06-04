@@ -1,5 +1,6 @@
 ﻿using SatisfactoryCalculator.Source.Models.Refernces;
 
+// ReSharper disable once CheckNamespace
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelMappingResult

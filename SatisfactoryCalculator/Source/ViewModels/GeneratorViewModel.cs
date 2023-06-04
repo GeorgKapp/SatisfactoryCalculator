@@ -1,6 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Source.ViewModels;
 
-internal class GeneratorsViewModel : ObservableObject
+internal class GeneratorViewModel : ObservableObject
 {
     private GeneratorModel? _selectedGenerator;
     public GeneratorModel? SelectedGenerator
@@ -38,7 +38,7 @@ internal class GeneratorsViewModel : ObservableObject
         set => SetProperty(ref _selectedGeneratorRecipes, value);
     }
 
-    private string _selectedGeneratorClockSpeed;
+    private string _selectedGeneratorClockSpeed = string.Empty;
     public string SelectedGeneratorClockSpeed
     {
         get => _selectedGeneratorClockSpeed;
@@ -67,7 +67,7 @@ internal class GeneratorsViewModel : ObservableObject
 
     public ObservableCollection<GeneratorModel> Generators => _applicationState.Configuration.Generators;
 
-    public GeneratorsViewModel(ApplicationState applicationState, CalculationService calculationService)
+    public GeneratorViewModel(ApplicationState applicationState, CalculationService calculationService)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
         _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
@@ -75,6 +75,6 @@ internal class GeneratorsViewModel : ObservableObject
     }
 
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
     private readonly CalculationService _calculationService;
 }

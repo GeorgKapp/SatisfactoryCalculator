@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.Source.Base;
 
 internal class AsyncCommand : IAsyncCommand
 {
-	public event EventHandler CanExecuteChanged;
+	public event EventHandler? CanExecuteChanged;
 
 	public AsyncCommand(Func<Task> execute, bool canExecute = true)
 	{
@@ -39,12 +39,12 @@ internal class AsyncCommand : IAsyncCommand
 		CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 	}
 
-	bool ICommand.CanExecute(object parameter)
+	bool ICommand.CanExecute(object? parameter)
 	{
 		return CanExecute();
 	}
 
-	void ICommand.Execute(object parameter)
+	void ICommand.Execute(object? parameter)
 	{
 		ExecuteAsync().FireAndForgetSafeAsync();
 	}

@@ -2,6 +2,18 @@
 
 internal class EntityReference
 {
+    public EntityReference(string entityClassName, RecipeModel[] recipeIngredient, RecipeModel[] recipeBuildingIngredient, RecipeModel[] recipeProduct, RecipeModel[] recipeBuilding, FuelModel[] fuelIngredient, FuelModel[] fuelByProduct, FuelModel[] fuelGenerator)
+    {
+        EntityClassName = entityClassName;
+        RecipeIngredient = recipeIngredient;
+        RecipeBuildingIngredient = recipeBuildingIngredient;
+        RecipeProduct = recipeProduct;
+        RecipeBuilding = recipeBuilding;
+        FuelIngredient = fuelIngredient;
+        FuelByProduct = fuelByProduct;
+        FuelGenerator = fuelGenerator;
+    }
+
     public string EntityClassName { get; set; }
 
     public RecipeModel[] RecipeIngredient { get; set; } = Array.Empty<RecipeModel>();

@@ -8,7 +8,6 @@ public partial class App : Application
     {
         var mainViewModel = ServiceHost.Provider.GetRequiredService<MainViewModel>();
         var mainView = ServiceHost.Provider.GetRequiredService<MainView>();
-        mainView.DataContext = mainViewModel;
         Task.Run(() => mainViewModel.Load());
         mainView.Show();
     }

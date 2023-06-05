@@ -13,5 +13,6 @@ internal static class ServiceHost
 			ValidateOnBuild = true,
 			ValidateScopes = false
 		});
+		ViewDataContextLinker.LinkAll();
 	}
 }

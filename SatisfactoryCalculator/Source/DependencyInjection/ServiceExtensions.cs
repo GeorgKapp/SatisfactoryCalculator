@@ -27,7 +27,6 @@ internal static class ServiceExtensions
 			.AddTransient<DataModelMappingService>()
 			.AddTransient<MessageService>()
 			.AddTransient<PageService>()
-			.AddTransient<WindowService>()
 			.AddTransient<ClipBoardService>();
 
 		return services;
@@ -71,7 +70,7 @@ internal static class ServiceExtensions
             .AddSingleton<BuildingViewModel>()
             .AddSingleton<GeneratorViewModel>()
             .AddSingleton<RecipeViewModel>()
-			.AddTransient<OverviewViewModel>()
+			.AddSingleton<OverviewViewModel>()
 			.AddSingleton<DataImportViewModel>();
 
 		return services;

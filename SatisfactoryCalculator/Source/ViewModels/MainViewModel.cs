@@ -64,8 +64,8 @@ internal class MainViewModel : ObservableObject
     private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
     private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
     private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);
-	private void ShowOverview() => CurrentPage = _pageService.FetchPage<OverviewPage, OverviewViewModel>();
-	private void ShowDataImport() => CurrentPage = _pageService.FetchPage<DataImportPage, DataImportViewModel>();
+	private void ShowOverview() => CurrentPage = _pageService.FetchPage<OverviewPage>();
+	private void ShowDataImport() => CurrentPage = _pageService.FetchPage<DataImportPage>();
 
 	private void ShowFilterableEntityPage(IEnumerable<IEntity> entities)
 	{
@@ -94,7 +94,7 @@ internal class MainViewModel : ObservableObject
         var mappedData = DebugExtensions.Profile(() =>
             _dataModelMappingService.MapToConfigurationModel(data),
             "Map Data");
-
+        
         _applicationState.SetConfig(data, mappedData);
 
         IsInitializing = false;

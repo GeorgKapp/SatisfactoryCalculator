@@ -1,4 +1,5 @@
 using Building = SatisfactoryCalculator.Source.Models.Building;
+using Equipment = SatisfactoryCalculator.Source.Models.Equipment;
 using Generator = SatisfactoryCalculator.Source.Models.Generator;
 using Item = SatisfactoryCalculator.Source.Models.Item;
 using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
@@ -48,6 +49,11 @@ internal class FilterableEntityViewModel : ObservableObject
 
 	    switch (_selectedEntity)
 	    {
+		    case Equipment equipment:
+			    var equipmentFetchResult = _pageService.FetchPageWithViewModel<EquipmentPage, EquipmentViewModel>();
+			    equipmentFetchResult.Item2.SelectedEquipment = equipment;
+			    CurrentPage = equipmentFetchResult.Item1;
+			    break;
 		    case Item item:
 			    var itemFetchResult = _pageService.FetchPageWithViewModel<ItemPage, ItemViewModel>();
 			    itemFetchResult.Item2.SelectedItem = item;

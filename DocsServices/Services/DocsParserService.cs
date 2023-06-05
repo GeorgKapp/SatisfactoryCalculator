@@ -195,6 +195,9 @@ public partial class DocsParserService
 		data.Equipments.Add(CoffeeCupEquipment);
 		data.Equipments.Add(GoldenCoffeeCupEquipment);
 		data.Equipments.Add(BoomBoxEquipment);
+		
+		progress?.ReportOrThrow("Edit equipment description", token);
+		EditEquipmentDescription(data.Items);
 
 		progress?.ReportOrThrow("Add missing vehicles", token);
 		data.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCart_C"]));
@@ -207,14 +210,7 @@ public partial class DocsParserService
 		data.Statues.AddRange(Statues);
 		
 		progress?.ReportOrThrow("Remove Generator Fuels with no energy value", token);
-		foreach (var generator in data.Generators)
-		{
-			generator.Fuels = generator.Fuels
-				.Where(p =>  data.Items
-					.Where(i => i.ClassName == p.FuelClass)
-					.Single().EnergyValue > 0)
-				.ToArray();
-		}
+		RemoveGeneratorFuelsWithNoEnergy(data.Items, data.Generators);
 
 		progress?.ReportOrThrow("Check for duplicates", token);
 		var duplicateCheckResult = SeperatelyValidateDataForDuplicates(data);

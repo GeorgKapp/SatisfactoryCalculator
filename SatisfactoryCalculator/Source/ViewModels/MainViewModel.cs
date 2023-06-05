@@ -25,6 +25,9 @@ internal class MainViewModel : ObservableObject
 
     private ICommand? _showItemsCommand;
     public ICommand ShowItemsCommand => _showItemsCommand ??= new SimpleCommand(ShowItems);
+    
+    private ICommand? _showEquipmentsCommand;
+    public ICommand ShowEquipmentsCommand => _showEquipmentsCommand ??= new SimpleCommand(ShowEquipments);
 
     private ICommand? _showBuildingsCommand;
     public ICommand ShowBuildingsCommand => _showBuildingsCommand ??= new SimpleCommand(ShowBuildings);
@@ -53,6 +56,7 @@ internal class MainViewModel : ObservableObject
     }
 
     private void ShowItems() => ShowFilterableEntityPage(_applicationState.Configuration.Items);
+    private void ShowEquipments() => ShowFilterableEntityPage(_applicationState.Configuration.Equipments);
     private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
     private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
     private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);

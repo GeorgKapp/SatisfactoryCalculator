@@ -47,7 +47,7 @@
 
             <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedGenerator.Image}"/>
             <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
-                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Name}" />
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Description}" />
             </StackPanel>
 

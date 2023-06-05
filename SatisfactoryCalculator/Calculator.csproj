@@ -34,4 +34,13 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Source\UI\Assets\slots.png" />
+    <Resource Include="Source\UI\Assets\slots.png" />
+    <None Remove="Source\UI\Assets\slots2.png" />
+    <Resource Include="Source\UI\Assets\slots2.png" />
+    <None Remove="Source\UI\Assets\slots3.png" />
+    <Resource Include="Source\UI\Assets\slots3.png" />
+  </ItemGroup>
+
 </Project>

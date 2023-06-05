@@ -1,12 +1,73 @@
 <Page x:Class="SatisfactoryCalculator.Source.UI.Pages.EquipmentPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:SatisfactoryCalculator.Source.UI.Pages"
+      xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+      xmlns:models="clr-namespace:SatisfactoryCalculator.Source.Models"
+      xmlns:u="clr-namespace:SatisfactoryCalculator.Source.UI.UserControls"
+      xmlns:context="clr-namespace:SatisfactoryCalculator.Source.ViewModels"
       mc:Ignorable="d"
-      Title="EquipmentPage" Height="450" Width="800">
+      Background="Transparent"
+      d:Background="#202125"
+      d:DataContext="{d:DesignInstance Type=context:EquipmentViewModel}">
+
+    <Page.Resources>
+
+        <CollectionViewSource x:Key="ProductCollection" Source="{Binding SelectedEquipmentAsProductInRecipes}"/>
+        <CollectionViewSource x:Key="IngredientCollection" Source="{Binding SelectedEquipmentAsIngredientInRecipes}"/>
+
+        <DataTemplate DataType="{x:Type models:Fuel}">
+            <u:FuelControl Fuel="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type models:Recipe}">
+            <u:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+    </Page.Resources>
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedEquipment.Image}" />
+            <StackPanel Margin="5,0,0,0" Grid.Column="1">
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedEquipment.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedEquipment.Description}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}">
+                    <Run Text="EquipmentSlot: "/>
+                    <Run Text="{Binding SelectedEquipment.EquipmentSlot}"/>
+                </c:SatisfactoryTextBlock>
+            </StackPanel>
+            
+            <u:EquipmentSlotControl Grid.RowSpan="2" Grid.Column="2" Width="200" Height="300" Margin="0,5,5,0" VerticalAlignment="Top" EquipmentSlot="{Binding SelectedEquipment.EquipmentSlot}"/>
+        </Grid>
+
+        <c:VirtualizedItemsControl Grid.Row="1" Margin="20, 0, 20, 20">
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+
+                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedEquipmentAsProductInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding ProductsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Equipment used as Ingredient" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedEquipmentAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding IngredientsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource IngredientCollection}}"/>
+                    
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </c:VirtualizedItemsControl>
         
     </Grid>
 </Page>

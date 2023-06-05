@@ -1,0 +1,19 @@
+<UserControl x:Class="SatisfactoryCalculator.Source.UI.UserControls.EquipmentSlotControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    
+    <Viewbox Stretch="Fill">
+        <Grid>
+            <Image Source="../Assets/slots3.png"/>
+            <Rectangle x:Name="headSlot" Fill="White" Margin="47,129,291,423"/>
+            <Rectangle x:Name="legSlot" Fill="White" Margin="47,449,291,103"/>
+            <Rectangle x:Name="backSlot" Fill="White" Margin="291,290,47,262"/>
+            <Rectangle x:Name="handSlot" Fill="White" Margin="47,289,291,262"/>
+            <Rectangle x:Name="bodySlot" Fill="White" Margin="291,129,47,423"/>
+        </Grid>
+    </Viewbox>
+    
+</UserControl>

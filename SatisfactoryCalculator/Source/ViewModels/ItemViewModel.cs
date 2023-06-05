@@ -1,6 +1,4 @@
 using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
-using Item = SatisfactoryCalculator.Source.Models.Item;
-using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
 
 namespace SatisfactoryCalculator.Source.ViewModels;
 

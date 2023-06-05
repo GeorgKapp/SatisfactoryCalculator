@@ -24,6 +24,9 @@ internal class DataModelMappingService
         progress?.ReportOrThrow("Map Items", token);
         var items = MapToItemModels(data.Items);
         var itemDictionary = MapToItemDictionary(items);
+        
+        progress?.ReportOrThrow("Map Equipments", token);
+        var equipments = MapToEquipments(data.Equipments, itemDictionary);
 
         progress?.ReportOrThrow("Map Buildings", token);
         var buildings = MapToBuildingModels(data.Buildings);
@@ -45,7 +48,8 @@ internal class DataModelMappingService
         
         return new()
         {
-            Items = items,
+            Items = itemDictionary.Values.ToArray(),
+            Equipments = equipments,
             Buildings = buildingDictionary.Values.ToArray(),
             Generators = generators,
             Recipes = recipes,
@@ -65,6 +69,28 @@ internal class DataModelMappingService
         EnergyValue = p.EnergyValue,
         Image = BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath))
     }).Cast<IItem>().OrderBy(p => p.Name).ToArray();
+    
+    private IEquipment[] MapToEquipments(List<DocsServices.Models.DataModels.Equipment> equipments, Dictionary<string, IItem> itemDictionary) => equipments
+        .Select(p => MapToEquipment(p, itemDictionary))
+        .OrderBy(p => p.Name)
+        .ToArray();
+
+    private IEquipment MapToEquipment(DocsServices.Models.DataModels.Equipment equipment, Dictionary<string, IItem> itemDictionary)
+    {
+        var item = itemDictionary[equipment.ClassName];
+        var mappedEquipment = new Models.Equipment()
+        {
+            ClassName = item.ClassName,
+            Name = item.Name,
+            Description = item.Description,
+            EquipmentSlot = equipment.EquipmentSlot,
+            Form = item.Form,
+            EnergyValue = item.EnergyValue,
+            Image = item.Image
+        };
+        itemDictionary[equipment.ClassName] = mappedEquipment;
+        return mappedEquipment;
+    }
 
     private IBuilding[] MapToBuildingModels(List<Building> buildings)
     {
@@ -73,7 +99,6 @@ internal class DataModelMappingService
             ClassName = p.ClassName,
             Name = p.DisplayName,
             Description = p.Description,
-            Form = p.Form,
             Image = BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath)),
             ManufactoringSpeed = p.ManuFacturingSpeed,
             PowerConsumption = p.PowerConsumption,

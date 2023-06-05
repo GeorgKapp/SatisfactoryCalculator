@@ -29,7 +29,7 @@
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
                 <c:SatisfactoryButton Content="Items" Command="{Binding ShowItemsCommand}"/>
-                <c:SatisfactoryButton Content="Equipments" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Equipments" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowEquipmentsCommand}"/>
                 <c:SatisfactoryButton Content="Consumables" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Weapons" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Ammunition" Style="{StaticResource SubCategoryButtonButton}"/>

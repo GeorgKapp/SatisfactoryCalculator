@@ -60,8 +60,7 @@ public partial class DocsParserService
             PowerConsumption = NumberParseUtility.MapToNullableDouble(class2.mPowerConsumption),
             PowerConsumptionExponent = NumberParseUtility.MapToNullableDouble(class2.mPowerConsumptionExponent),
             ManuFacturingSpeed = NumberParseUtility.MapToNullableDouble(class2.mManufacturingSpeed),
-            PowerConsumptionRange = PowerConsumptionRangeConverterUtility.ConverToPowerConsumption(NumberParseUtility.MapToNullableDouble(class2.mEstimatedMininumPowerConsumption), NumberParseUtility.MapToNullableDouble(class2.mEstimatedMaximumPowerConsumption)),
-            Form = StringToEnumParseUtility.ParseFormStringToNNullableEnum(class2.mForm)
+            PowerConsumptionRange = PowerConsumptionRangeConverterUtility.ConverToPowerConsumption(NumberParseUtility.MapToNullableDouble(class2.mEstimatedMininumPowerConsumption), NumberParseUtility.MapToNullableDouble(class2.mEstimatedMaximumPowerConsumption))
         };
     }
 

@@ -9,11 +9,11 @@ public class DiameterAndThicknessToStrokeDashArrayConverter : IMultiValueConvert
 			return new DoubleCollection(new double[1]);
 		}
 
-		double num = Math.PI * (result - result2);
-		double num2 = num * 0.75;
-		double num3 = num - num2;
+		var num = Math.PI * (result - result2);
+		var num2 = num * 0.75;
+		var num3 = num - num2;
 
-		return new DoubleCollection(new double[2]
+		return new DoubleCollection(new[]
 		{
 			num2 / result2,
 			num3 / result2

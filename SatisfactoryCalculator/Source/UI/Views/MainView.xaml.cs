@@ -1,6 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Source.UI.Views;
 
-public partial class MainView : Window
+public partial class MainView
 {
     public MainView()
     {

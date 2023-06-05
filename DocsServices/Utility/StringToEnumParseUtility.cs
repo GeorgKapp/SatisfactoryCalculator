@@ -55,7 +55,7 @@ internal static class StringToEnumParseUtility
 	public static SchematicType ParseSchematicTypeStringToEnum(string input) => input switch
 	{
 		"EST_Custom" => SchematicType.Custom,
-		"EST_MAM" => SchematicType.MAM,
+		"EST_MAM" => SchematicType.Mam,
 		"EST_Tutorial" => SchematicType.Tutorial,
 		"EST_HardDrive" => SchematicType.HardDrive,
 		"EST_Milestone" => SchematicType.Milestone,

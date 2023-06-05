@@ -78,7 +78,7 @@ public class ExtendedStackPanel : Panel
 		var num = 0.0;
         for (var i = 0; i < InternalChildren.Count; i++)
         {
-			var uIElement = base.InternalChildren[i];
+			var uIElement = InternalChildren[i];
 			
 			if (uIElement is null) 
 				continue;

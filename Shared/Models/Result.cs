@@ -2,8 +2,8 @@ namespace SatisfactoryCalculator.Shared.Models;
 
 public class Result<T>
 {
-    public T Content { get; set; }
-    public string Error { get; set; }
+    public T? Content { get; set; }
+    public string? Error { get; set; }
     public bool IsSuccess { get; set; }
 
     public static Result<T> Success(T content) => new Result<T>
@@ -21,7 +21,7 @@ public class Result<T>
 
 public class Result
 {
-    public string Error { get; set; }
+    public string? Error { get; set; }
     public bool IsSuccess { get; set; }
 
     public static Result Success() => new Result

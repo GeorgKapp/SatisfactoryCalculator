@@ -1,8 +1,6 @@
-﻿using Building = SatisfactoryCalculator.Source.Models.Building;
-using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
-using Item = SatisfactoryCalculator.Source.Models.Item;
-using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
+﻿using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
 
+// ReSharper disable once CheckNamespace
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class CalculationService : ICalculationService
@@ -43,7 +41,7 @@ internal class CalculationService : ICalculationService
         var overClockMultiplier = OverClockMultiplier(overclock);
         var powerCapacity = fuel.Generator.PowerProduction * overClockMultiplier;
         var fuelBurnTime = fuel.Ingredient.Item.EnergyValue / powerCapacity;
-        var amountPerMinute = secondsPerMinute / fuelBurnTime;
+        var amountPerMinute = SecondsPerMinute / fuelBurnTime;
 
         var calculationResult = new FuelCalculationResult
         {
@@ -56,7 +54,7 @@ internal class CalculationService : ICalculationService
         {
             var supplementalAmountPerMinute = powerCapacity
                                               * fuel.Generator.SupplementalToPowerRatio!.Value
-                                              * secondsPerMinute
+                                              * SecondsPerMinute
                                               / fuel.Generator.SupplementalLoadAmount!.Value;
             
             calculationResult.SupplementalAmountPerMinute = supplementalAmountPerMinute;
@@ -73,13 +71,13 @@ internal class CalculationService : ICalculationService
     {
         var buildingProductionResult = CalculateRecipeBuildingProduction(recipe, building, overclock);
 
-        var foundItem = recipe.Ingredients.Concat(recipe.Products)
-            .Where(p => p.Part.ClassName == entity.ClassName)
-            .FirstOrDefault() ?? throw new ArgumentException("Part could not be found");
+        var foundItem = recipe.Ingredients
+            .Concat(recipe.Products)
+            .FirstOrDefault(p => p.Part.ClassName == entity.ClassName) 
+                        ?? throw new ArgumentException("Part could not be found");
 
-        var form = foundItem is IItem recipePartItem 
-            ? recipePartItem.Form 
-            : null;
+        var recipePartItem = foundItem.Part as IItem;
+        var form = recipePartItem?.Form;
         
         var amount = NormalizeAmount(form, foundItem.SourceAmount);
         var amountPerMinute = amount * buildingProductionResult.CyclesPerMinute;
@@ -100,7 +98,7 @@ internal class CalculationService : ICalculationService
         var powerConsumption = CalculatePowerConsumption(building.PowerConsumption, overclockMultiplier);
 
         var time = recipe.ManufactoringDuration / buildingSpeed / overclockMultiplier;
-        var cyclesPerMinute = secondsPerMinute / time;
+        var cyclesPerMinute = SecondsPerMinute / time;
 
         return new RecipeBuildingProductionResult
         {
@@ -115,7 +113,7 @@ internal class CalculationService : ICalculationService
         if (!powerConsumption.HasValue)
             return 0;
 
-        var result = powerConsumption.Value * Math.Pow(overclockMultiplier, powerConsumptionExponent) + double.Epsilon;
+        var result = powerConsumption.Value * Math.Pow(overclockMultiplier, PowerConsumptionExponent) + double.Epsilon;
         return Math.Round(result, 1);
     }
 
@@ -128,9 +126,9 @@ internal class CalculationService : ICalculationService
         form is not null && 
         (form == Form.Liquid || form == Form.Gas);
     
-    private double OverClockMultiplier(double overclock) => overclock / 100;
+    private double OverClockMultiplier(double overclock) => overclock / DefaultPercentage;
 
-    private const double defaultPercentage = 100;
-    private const double secondsPerMinute = 60;
-    private const double powerConsumptionExponent = 1.321928;
+    private const double DefaultPercentage = 100;
+    private const double SecondsPerMinute = 60;
+    private const double PowerConsumptionExponent = 1.321928;
 }

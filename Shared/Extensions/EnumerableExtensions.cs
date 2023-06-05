@@ -6,9 +6,13 @@ public static class EnumerableExtensions
 	{
 		foreach (var value in values)
 		{
-			if (Enumerable.Contains(source, value))
+			if (source is not null)
 			{
-				return true;
+				// ReSharper disable once PossibleMultipleEnumeration
+				if (Enumerable.Contains(source, value))
+				{
+					return true;
+				}
 			}
 		}
 		

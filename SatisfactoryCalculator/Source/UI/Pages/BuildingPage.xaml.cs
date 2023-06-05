@@ -1,6 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Source.UI.Pages;
 
-public partial class BuildingPage : Page
+public partial class BuildingPage
 {
     public BuildingPage()
     {

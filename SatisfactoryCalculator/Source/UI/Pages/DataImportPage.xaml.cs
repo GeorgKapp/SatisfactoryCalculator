@@ -1,6 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Source.UI.Pages;
 
-public partial class DataImportPage : Page
+public partial class DataImportPage
 {
     public DataImportPage()
     {

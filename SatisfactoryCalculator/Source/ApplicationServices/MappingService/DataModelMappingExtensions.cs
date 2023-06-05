@@ -1,7 +1,4 @@
 ﻿// ReSharper disable once CheckNamespace
-
-using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
-
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal static class DataModelMappingExtensions

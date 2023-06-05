@@ -3,7 +3,7 @@ namespace SatisfactoryCalculator.Shared.Enums;
 public enum SchematicType
 {
 	Custom,
-	MAM,
+	Mam,
 	Tutorial,
 	HardDrive,
 	Milestone,

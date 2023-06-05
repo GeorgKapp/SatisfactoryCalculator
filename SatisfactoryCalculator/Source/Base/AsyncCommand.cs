@@ -12,9 +12,7 @@ internal class AsyncCommand : IAsyncCommand
 
 	public bool CanExecute()
 	{
-		return !_isExecuting 
-			? _canExecute?.Invoke() 
-			?? true : false;
+		return !_isExecuting && (_canExecute?.Invoke() ?? true);
 	}
 
 	public async Task ExecuteAsync()
@@ -51,5 +49,5 @@ internal class AsyncCommand : IAsyncCommand
 
     private bool _isExecuting;
     private readonly Func<Task> _execute;
-    private readonly Func<bool> _canExecute;
+    private readonly Func<bool>? _canExecute;
 }

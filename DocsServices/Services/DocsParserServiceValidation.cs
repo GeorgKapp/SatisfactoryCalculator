@@ -29,7 +29,7 @@ public partial class DocsParserService
     private Result SeperatelyValidateDataForDuplicates(Data data)
     {
         return Result.Combine(
-            new Result[] 
+            new[] 
             {
                 ValidateForDuplicates(data.Items),
                 ValidateForDuplicates(data.Recipes),
@@ -90,7 +90,7 @@ public partial class DocsParserService
             .Concat(GetClassNames(data.Statues))
             .ToArray();
 
-        var recipes = data.Recipes.Cast<IRecipe>()
+        var recipes = data.Recipes
             .Concat(data.CustomizationRecipes.Cast<IRecipe>())
             .ToArray();
 

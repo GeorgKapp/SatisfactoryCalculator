@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.DocsServices.Utility;
 
 internal static class IconPathParseUtility
 {
-	public static string ConvertIconPathToUEPath(string iconPath)
+	public static string? ConvertIconPathToUePath(string iconPath)
 	{
 		if (iconPath == "None")
 		{
@@ -12,37 +12,39 @@ internal static class IconPathParseUtility
 		if (iconPath.Contains("CoffeeCup"))
 			_ = 1;
 		
-		string text = (iconPath.StartsWith("Texture2D") ? iconPath.Remove(0, "Texture2D".Length) : iconPath);
+		var text = (iconPath.StartsWith("Texture2D") ? iconPath.Remove(0, "Texture2D".Length) : iconPath);
 		text = text.Trim().Trim('\'').Trim('"');
-		string directoryName = Path.GetDirectoryName(text);
-		string text2 = Path.GetFileName(iconPath)!.Split('.')[0];
-		return Path.Combine(directoryName, text2 + ".png");
+		var directoryName = Path.GetDirectoryName(text);
+		var text2 = Path.GetFileName(iconPath).Split('.')[0];
+		return Path.Combine(directoryName!, text2 + ".png");
 	}
 
-	public static string ReadIconPathFromSchematicIcon(string schematicIcon)
+	public static string? ReadIconPathFromSchematicIcon(string schematicIcon)
 	{
 		if (schematicIcon == "None")
 		{
 			return null;
 		}
-		int num = schematicIcon.IndexOf("Texture2D");
+		
+		var num = schematicIcon.IndexOf("Texture2D", StringComparison.Ordinal);
 		if (num == -1)
 		{
 			return null;
 		}
-		int num2 = schematicIcon.IndexOf(',', num);
+		
+		var num2 = schematicIcon.IndexOf(',', num);
 		if (num2 == -1)
 		{
 			num2 = schematicIcon.Length;
 		}
-		string iconPath = schematicIcon.Substring(num, num2 - num);
-		return ConvertIconPathToUEPath(iconPath);
+		
+		var iconPath = schematicIcon.Substring(num, num2 - num);
+		return ConvertIconPathToUePath(iconPath);
 	}
 
-	public static string? ReplaceSmallIconPathFromClass(Class2 class2)
+	public static string ReplaceSmallIconPathFromClass(Class2 class2)
 	{
-		string className = class2.ClassName;
-		
+		var className = class2.ClassName;
 		var result = className switch
 		{
 			"Desc_Wall_Conveyor_8x4_04_C" => "None",
@@ -53,9 +55,9 @@ internal static class IconPathParseUtility
 		return result;
 	}
 
-	public static string? ReplaceBigIconPathFromClass(Class2 class2)
+	public static string ReplaceBigIconPathFromClass(Class2 class2)
 	{
-		string className = class2.ClassName;
+		var className = class2.ClassName;
 		
 		var result = className switch
 		{
@@ -65,14 +67,5 @@ internal static class IconPathParseUtility
 		};
 
 		return result;
-	}
-
-	private static bool IsIconEmpty(string icon)
-	{
-		if (!string.IsNullOrEmpty(icon) && !icon.Contains("01_White") && (icon != "None"))
-		{
-			throw new ArgumentException("Icon not empty: " + icon);
-		}
-		return true;
 	}
 }

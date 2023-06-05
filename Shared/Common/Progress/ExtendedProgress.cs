@@ -12,7 +12,7 @@ public sealed class ExtendedProgress<T> : IExtendedProgress<T>
     public ExtendedProgress()
     {
         _synchronizationContext = SynchronizationContext.Current ?? ProgressStatics.DefaultContext;
-        _invokeHandlers = new SendOrPostCallback(InvokeHandlers);
+        _invokeHandlers = InvokeHandlers;
     }
 
     public ExtendedProgress(Action<ReportState<T>> handler) : this()

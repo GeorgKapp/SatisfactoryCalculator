@@ -1,8 +1,11 @@
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedMember.Global
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.JsonModels;
 
 internal class Class2
 {
-    public string ClassName { get; set; }
+    public string? ClassName { get; set; }
     public string mDisplayName { get; set; }
     public string mDescription { get; set; }
     public string mAbbreviatedDisplayName { get; set; }
@@ -294,7 +297,7 @@ internal class Class2
     public string mCachedLoadPercentage { get; set; }
     public string mFuelClasses { get; set; }
     public string mDefaultFuelClasses { get; set; }
-    public Mfuel[] mFuel { get; set; }
+    public Mfuel[]? mFuel { get; set; }
     public string mAvailableFuelClasses { get; set; }
     public string mFuelResourceForm { get; set; }
     public string mFuelLoadAmount { get; set; }

@@ -1,3 +1,4 @@
+// ReSharper disable CheckNamespace
 namespace SatisfactoryCalculator.Source.Models;
 
 public class Configuration : ObservableObject

@@ -20,6 +20,7 @@ internal static class ReferenceParseUtility
 		var sanitizedInput = SanitizeInput(mClassReferenceInput);
 		var sanitizedSplitInput = sanitizedInput.Split(ArraySplitTag);
 
+		// ReSharper disable once HeapView.ObjectAllocation
 		return MapToReferenceIEnumerable(sanitizedSplitInput)
 			.ToArray();
 	}
@@ -32,6 +33,7 @@ internal static class ReferenceParseUtility
 		var sanitizedInput = SanitizeInput(mClassReferenceInput);
 		var sanitizedSplitInput = sanitizedInput.Split(ArraySplitTag);
 
+		// ReSharper disable once HeapView.ObjectAllocation
 		return MapToReferenceIEnumerable(sanitizedSplitInput)
 			.Where(p => !p.StartsWith(ResourceNodeTypeTag) && !p.StartsWith(AmountTag))
 			.ToArray();
@@ -39,13 +41,13 @@ internal static class ReferenceParseUtility
 
 	private static IEnumerable<string> MapToReferenceIEnumerable(string[] sanitizedSplitInput)
 	{
-		for (int i = 0; i < sanitizedSplitInput.Length; i++)
+		for (var i = 0; i < sanitizedSplitInput.Length; i++)
 			yield return MapToClassReference(sanitizedSplitInput[i]);
 	}
 
 	private static string MapToClassReference(string input)
 	{
-		return ClassNameParseUtility.CleanClassName(SanitizeItemName(input));
+		return ClassNameParseUtility.CleanClassName(SanitizeItemName(input))!;
 	}
 
 	public static Reference[] MapToReferenceWithAmountArray(string mClassReferenceWithAmountInput)
@@ -71,13 +73,9 @@ internal static class ReferenceParseUtility
 		if (!amountInput.StartsWith(AmountTag))
 			throw new NotImplementedException("Case not implemented for scraping missing amount in class reference");
 
-		string className = SanitizeItemName(nameInput);
-		double amount = SanitizeAmount(amountInput);
-		return new Reference
-		{
-			ClassName = ClassNameParseUtility.CleanClassName(className),
-			Amount = amount
-		};
+		var className = SanitizeItemName(nameInput);
+		var amount = SanitizeAmount(amountInput);
+		return new(className: ClassNameParseUtility.CleanClassName(className)!, amount: amount);
 	}
 
 	private static string SanitizeInput(string input)

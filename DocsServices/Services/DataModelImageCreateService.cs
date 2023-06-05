@@ -35,7 +35,7 @@ public class DataModelImageCreateService
         }
     }
 
-    private async Task<string> CreateImageAsync(string sourceRelativePath, string ueModelExportPath, string imageFilePath)
+    private async Task<string> CreateImageAsync(string? sourceRelativePath, string ueModelExportPath, string imageFilePath)
     {
         if (string.IsNullOrEmpty(sourceRelativePath))
             return string.Empty;

@@ -1,9 +1,7 @@
 ﻿namespace SatisfactoryCalculator;
 
-public partial class App : Application
+public partial class App
 {
-    public App() { }
-
     private void OnStartup(object sender, StartupEventArgs e)
     {
         var mainViewModel = ServiceHost.Provider.GetRequiredService<MainViewModel>();

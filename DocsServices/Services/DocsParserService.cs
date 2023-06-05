@@ -10,9 +10,13 @@ public partial class DocsParserService
 	public async Task<Result<Data>> ParseDocsJsonAsync(string docsFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
 	{
 		progress?.ReportOrThrow("Read docs.json file", token);
-		var classes1 = await _jsonService.ReadJsonAsync<Class1[]>(docsFilePath);
+		var classes1 = (await _jsonService.ReadJsonAsync<Class1[]>(docsFilePath))!;
 
-		var classesDictionary = classes1.SelectMany(p => p.Classes).ToDictionary(p => p.ClassName, p => p);
+		var classesDictionary = classes1
+			.SelectMany(p => p.Classes)
+#pragma warning disable CS8714
+			.ToDictionary(p => p.ClassName!, p => p);
+#pragma warning restore CS8714
 
 		progress?.ReportOrThrow("Parse data", token);
 		var data = new Data();
@@ -186,15 +190,15 @@ public partial class DocsParserService
 		}
 
         progress?.ReportOrThrow("Add missing items", token);
-        data.Items.Add(CoffeeCup);
-		data.Items.Add(GoldenCoffeeCup);
-		data.Items.Add(BoomBox);
-		data.Items.Add(FiscitCoupon);
+        data.Items.Add(_coffeeCup);
+		data.Items.Add(_goldenCoffeeCup);
+		data.Items.Add(_boomBox);
+		data.Items.Add(_fiscitCoupon);
 
 		progress?.ReportOrThrow("Add missing equipment", token);
-		data.Equipments.Add(CoffeeCupEquipment);
-		data.Equipments.Add(GoldenCoffeeCupEquipment);
-		data.Equipments.Add(BoomBoxEquipment);
+		data.Equipments.Add(_coffeeCupEquipment);
+		data.Equipments.Add(_goldenCoffeeCupEquipment);
+		data.Equipments.Add(_boomBoxEquipment);
 		
 		progress?.ReportOrThrow("Edit equipment description", token);
 		EditEquipmentDescription(data.Items);
@@ -204,10 +208,10 @@ public partial class DocsParserService
 		data.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCartGold_C"]));
 
 		progress?.ReportOrThrow("Add missing emotes", token);
-		data.Emotes.AddRange(Emotes);
+		data.Emotes.AddRange(_emotes);
 
 		progress?.ReportOrThrow("Add missing statues", token);
-		data.Statues.AddRange(Statues);
+		data.Statues.AddRange(_statues);
 		
 		progress?.ReportOrThrow("Remove Generator Fuels with no energy value", token);
 		RemoveGeneratorFuelsWithNoEnergy(data.Items, data.Generators);
@@ -215,22 +219,22 @@ public partial class DocsParserService
 		progress?.ReportOrThrow("Check for duplicates", token);
 		var duplicateCheckResult = SeperatelyValidateDataForDuplicates(data);
         if (!duplicateCheckResult.IsSuccess)
-			return Result<Data>.Failure(duplicateCheckResult.Error);
+			return Result<Data>.Failure(duplicateCheckResult.Error!);
 
         progress?.ReportOrThrow("Check data references", token);
         var dataReferencesCheckResult = ValidateDataReferences(data);
         if (!dataReferencesCheckResult.IsSuccess)
-            return Result<Data>.Failure(dataReferencesCheckResult.Error);
+            return Result<Data>.Failure(dataReferencesCheckResult.Error!);
 
         progress?.ReportOrThrow("Check if all items exist for recipe info", token);
         var validateItemExistenceInRecipesCheckResult = ValidateItemExistanceInRecipes(data);
         if (!validateItemExistenceInRecipesCheckResult.IsSuccess)
-            return Result<Data>.Failure(validateItemExistenceInRecipesCheckResult.Error);
+            return Result<Data>.Failure(validateItemExistenceInRecipesCheckResult.Error!);
 
         progress?.ReportOrThrow("Check if all items and all schematic references exist for schematic info", token);
         var validateItemExistenceInSchematicsCheckResult = ValidateItemExistanceInSchematics(data);
         if (!validateItemExistenceInSchematicsCheckResult.IsSuccess)
-            return Result<Data>.Failure(validateItemExistenceInSchematicsCheckResult.Error);
+            return Result<Data>.Failure(validateItemExistenceInSchematicsCheckResult.Error!);
 
 		progress?.ReportSuccess("Data succesfully parsed");
 		return Result<Data>.Success(data);

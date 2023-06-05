@@ -1,4 +1,5 @@
-﻿namespace SatisfactoryCalculator.Source.ApplicationServices;
+﻿// ReSharper disable once CheckNamespace
+namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class FuelCalculationResult
 {

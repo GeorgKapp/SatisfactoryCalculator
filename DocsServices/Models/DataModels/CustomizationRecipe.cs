@@ -1,6 +1,7 @@
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 
-public class CustomizationRecipe : IBase, IRecipe
+public class CustomizationRecipe : IRecipe
 {
 	public string ClassName { get; set; }
 	public string DisplayName { get; set; }

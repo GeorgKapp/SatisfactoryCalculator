@@ -1,6 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Source.UI.UserControls;
 
-internal partial class FilterControl : UserControl
+internal partial class FilterControl
 {
     public FilterControl()
     {
@@ -22,7 +22,7 @@ internal partial class FilterControl : UserControl
     
     public object SelectedItem
     {
-        get => (object)GetValue(SelectedItemProperty);
+        get => GetValue(SelectedItemProperty);
         set => SetValue(SelectedItemProperty, value);
     }
     public static readonly DependencyProperty SelectedItemProperty = 

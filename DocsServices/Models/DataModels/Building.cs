@@ -1,3 +1,5 @@
+#pragma warning disable CS8767
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 
 public class Building : IBase, IIcon

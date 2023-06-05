@@ -1,6 +1,3 @@
-using Building = SatisfactoryCalculator.Source.Models.Building;
-using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
-
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class BuildingViewModel : ObservableObject

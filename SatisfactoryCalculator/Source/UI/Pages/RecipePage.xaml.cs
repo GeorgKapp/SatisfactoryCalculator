@@ -1,6 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Source.UI.Pages;
 
-public partial class RecipePage : Page
+public partial class RecipePage
 {
     public RecipePage()
     {

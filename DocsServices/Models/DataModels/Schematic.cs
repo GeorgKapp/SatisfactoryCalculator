@@ -12,15 +12,15 @@ public class Schematic : IBase, IIcon
 	public double? TimeToComplete { get; set; }
 	public string? SmallIconPath { get; set; }
 	public string? BigIconPath { get; set; }
-	public string[] RelevantEvents { get; set; } = null!;
+	public string?[] RelevantEvents { get; set; } = null!;
 	
 	// ReSharper disable once PropertyCanBeMadeInitOnly.Global
 	public Reference[] Cost { get; set; } = null!;
-	public string[] UnlocksRecipes { get; set; } = null!;
+	public string?[] UnlocksRecipes { get; set; } = null!;
 	public ScannableObject UnlocksScannerObject { get; set; } = null!;
-	public string[] UnlocksScannerResources { get; set; } = null!;
-	public string[] UnlocksScannerResourcePairs { get; set; } = null!;
-	public string[] Emotes { get; set; } = null!;
+	public string?[] UnlocksScannerResources { get; set; } = null!;
+	public string?[] UnlocksScannerResourcePairs { get; set; } = null!;
+	public string?[] Emotes { get; set; } = null!;
 	public Reference[] ItemsToGive { get; set; } = null!;
 	public int? UnlocksArmEquipmentSlot { get; set; }
 	public int? UnlocksInventoryEquipmentSlot { get; set; }

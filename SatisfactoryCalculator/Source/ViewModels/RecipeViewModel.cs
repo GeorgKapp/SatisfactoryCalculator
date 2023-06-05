@@ -1,5 +1,3 @@
-using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
-
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class RecipeViewModel : ObservableObject

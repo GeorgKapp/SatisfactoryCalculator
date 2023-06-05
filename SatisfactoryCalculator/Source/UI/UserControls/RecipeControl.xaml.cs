@@ -2,7 +2,7 @@
 
 namespace SatisfactoryCalculator.Source.UI.UserControls;
 
-public partial class RecipeControl : UserControl
+public partial class RecipeControl
 {
     internal Recipe Recipe
     {
@@ -13,9 +13,8 @@ public partial class RecipeControl : UserControl
 
     private static void UpdateVisibilities(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        var control = (d as RecipeControl);
-        control.textBoxEqual.Visibility = (e.NewValue as Recipe)?.Products?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
-        control.textBoxArrow.Visibility = (e.NewValue as Recipe)?.Buildings?.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
+        ((RecipeControl)d).textBoxEqual.Visibility = (e.NewValue as Recipe)?.Products.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
+        ((RecipeControl)d).textBoxArrow.Visibility = (e.NewValue as Recipe)?.Buildings.Length > 0 ? Visibility.Visible : Visibility.Collapsed;
     }
 
     public RecipeControl()

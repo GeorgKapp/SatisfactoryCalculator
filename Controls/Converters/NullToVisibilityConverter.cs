@@ -3,8 +3,9 @@
 [ValueConversion(typeof(object), typeof(Visibility))]
 public class NullToVisibilityConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object parameter, CultureInfo culture)
     {
+        // ReSharper disable once HeapView.BoxingAllocation
         return value is null
             ? Visibility.Collapsed
             : Visibility.Visible;

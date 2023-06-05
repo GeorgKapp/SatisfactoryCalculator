@@ -1,4 +1,5 @@
 using IRecipe = SatisfactoryCalculator.Source.Models.Interfaces.IRecipe;
+// ReSharper disable CheckNamespace
 
 namespace SatisfactoryCalculator.Source.Models;
 

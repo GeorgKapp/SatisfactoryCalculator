@@ -1,4 +1,5 @@
 // ReSharper disable HeapView.BoxingAllocation
+
 using System.Linq;
 using System.Windows.Input;
 
@@ -94,6 +95,7 @@ public class SatisfactoryTextBox : TextBox
 		}
 
 		//Dont allow comma seperator on 250 because of limit
+		// ReSharper disable once CompareOfFloatsByEqualityOperator
 		if (parsedClockSpeed == 250 && proposedText.EndsWith(decimalSeperator))
 			return false;
 

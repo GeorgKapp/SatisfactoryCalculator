@@ -8,16 +8,16 @@ internal static class ScannableObjectParseUtility
 
 	public static ScannableObject MapToScannableObject(string mScannableObjects)
 	{
-		int bluePrintTagIndex = mScannableObjects.IndexOf(BluePrintTag) + BluePrintTag.Length;
-		int arraySplitTagIndex = mScannableObjects.IndexOf(ArraySplitTag, bluePrintTagIndex);
+		var bluePrintTagIndex = mScannableObjects.IndexOf(BluePrintTag, StringComparison.Ordinal) + BluePrintTag.Length;
+		var arraySplitTagIndex = mScannableObjects.IndexOf(ArraySplitTag, bluePrintTagIndex, StringComparison.Ordinal);
 
-		string mClassReferenceInput = mScannableObjects.Substring(bluePrintTagIndex, arraySplitTagIndex - bluePrintTagIndex);
-		string className = ReferenceParseUtility.MapToReferenceArray(mClassReferenceInput).First();
+		var mClassReferenceInput = mScannableObjects.Substring(bluePrintTagIndex, arraySplitTagIndex - bluePrintTagIndex);
+		var className = ReferenceParseUtility.MapToReferenceArray(mClassReferenceInput).First();
 
-		int startIndex = mScannableObjects.IndexOf(ActorsAllowedToScanTag);
-		string[] actorsAllowedToScan = ReferenceParseUtility.MapToReferenceArray(mScannableObjects.Substring(startIndex));
+		var startIndex = mScannableObjects.IndexOf(ActorsAllowedToScanTag, StringComparison.Ordinal);
+		string?[] actorsAllowedToScan = ReferenceParseUtility.MapToReferenceArray(mScannableObjects[startIndex..]);
 
-		return new ScannableObject
+		return new()
 		{
 			ItemClass = ClassNameParseUtility.CleanClassName(className),
 			ActorsAllowedToScan = actorsAllowedToScan

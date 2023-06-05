@@ -6,7 +6,7 @@ public class SquarePanel : Panel
 	{
 		var result = new Size();
 		
-		foreach (UIElement child in base.Children)
+		foreach (UIElement child in Children)
 		{
 			child.Measure(availableSize);
 			
@@ -25,9 +25,9 @@ public class SquarePanel : Panel
 		var num = Math.Min(finalSize.Height, finalSize.Width);
 		var size = new Size(num, num);
 		
-		foreach (UIElement child in base.Children)
+		foreach (UIElement child in Children)
 		{
-			child.Arrange(new Rect(size));
+			child.Arrange(new(size));
 		}
 		
 		return size;

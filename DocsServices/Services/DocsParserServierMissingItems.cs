@@ -4,7 +4,7 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-    private Item FiscitCoupon = new Item
+    private Item _fiscitCoupon = new Item
     {
         ClassName = "ResourceSinkCoupon_C",
         DisplayName = "FICSIT Coupon",
@@ -14,7 +14,7 @@ public partial class DocsParserService
         BigIconPath = "\\Game\\FactoryGame\\Resource\\Parts\\ResourceSinkCoupon\\UI\\IconDesc_Ficsit_Coupon_256.png"
     };
 
-    private Item CoffeeCup = new Item
+    private Item _coffeeCup = new Item
     {
         ClassName = "Cup_C",
         DisplayName = "FICSIT™ Coffee Cup",
@@ -23,7 +23,7 @@ public partial class DocsParserService
         BigIconPath = "\\Game\\FactoryGame\\Equipment\\Cup\\UI\\IconDesc_CoffeeCup_256.png"
     };
 
-    private Item GoldenCoffeeCup = new Item
+    private Item _goldenCoffeeCup = new Item
     {
         ClassName = "CupGold_C",
         DisplayName = "Employee of the Planet' Cup",
@@ -32,7 +32,7 @@ public partial class DocsParserService
         BigIconPath = "\\Game\\FactoryGame\\Equipment\\GoldenCup\\UI\\IconDesc_CupGold_256.png"
     };
 
-    private Item BoomBox = new Item
+    private Item _boomBox = new Item
     {
         ClassName = "BoomBox_C",
         DisplayName = "Boom Box",
@@ -41,25 +41,25 @@ public partial class DocsParserService
         BigIconPath = "\\Game\\FactoryGame\\Equipment\\BoomBox\\UI\\IconDesc_Boombox_256.png"
     };
 
-    private Equipment CoffeeCupEquipment = new Equipment
+    private Equipment _coffeeCupEquipment = new Equipment
     {
         ClassName = "Cup_C",
         EquipmentSlot = EquipmentSlot.Arms
     };
 
-    private Equipment GoldenCoffeeCupEquipment = new Equipment
+    private Equipment _goldenCoffeeCupEquipment = new Equipment
     {
         ClassName = "CupGold_C",
         EquipmentSlot = EquipmentSlot.Arms
     };
 
-    private Equipment BoomBoxEquipment = new Equipment
+    private Equipment _boomBoxEquipment = new Equipment
     {
         ClassName = "BoomBox_C",
         EquipmentSlot = EquipmentSlot.Arms
     };
 
-    private Emote[] Emotes = new Emote[]
+    private Emote[] _emotes = new Emote[]
     {
         new Emote
         {
@@ -133,7 +133,7 @@ public partial class DocsParserService
         }
     };
 
-    private Statue[] Statues = new Statue[]
+    private Statue[] _statues = new Statue[]
     {
         new Statue
         {

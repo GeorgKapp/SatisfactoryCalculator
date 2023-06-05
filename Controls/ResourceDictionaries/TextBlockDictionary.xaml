@@ -14,7 +14,7 @@
         <Setter Property="FontWeight" Value="{StaticResource BaseFontWeight}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="TextBlock.Padding" Value="10,5,10,5" />
+        <Setter Property="Padding" Value="10,5,10,5" />
     </Style>
 
     <Style x:Key="LargeTextBlock" TargetType="{x:Type c:SatisfactoryTextBlock}" BasedOn="{StaticResource {x:Type c:SatisfactoryTextBlock}}">
@@ -37,7 +37,7 @@
         <Setter Property="FontWeight" Value="{StaticResource BaseFontWeight}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="Foreground" Value="White" />
-        <Setter Property="TextBlock.Padding" Value="10,5,10,5" />
+        <Setter Property="Padding" Value="10,5,10,5" />
     </Style>
 
 </ResourceDictionary>

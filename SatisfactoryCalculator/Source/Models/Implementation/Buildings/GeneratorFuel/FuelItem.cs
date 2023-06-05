@@ -1,7 +1,20 @@
-﻿namespace SatisfactoryCalculator.Source.Models;
+﻿// ReSharper disable CheckNamespace
+#pragma warning disable CS8618
+namespace SatisfactoryCalculator.Source.Models;
 
 internal class FuelItem : ObservableObject
 {
+    public FuelItem(IItem item)
+    {
+        Item = item;
+    }
+
+    public FuelItem(IItem item, double? amountPerMinute)
+    {
+        Item = item;
+        AmountPerMinute = amountPerMinute;
+    }
+    
     private IItem _item;
     public IItem Item
     {
@@ -10,6 +23,7 @@ internal class FuelItem : ObservableObject
     }
 
     private double? _amountPerMinute;
+
     public double? AmountPerMinute
     {
         get => _amountPerMinute;

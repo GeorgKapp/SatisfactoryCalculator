@@ -9,7 +9,7 @@ internal class DataImportViewModel : ObservableObject
         set => SetProperty(ref _isLoading, value);
     }
 
-    private string _report;
+    private string _report = string.Empty;
     public string Report
     {
         get => _report;
@@ -36,10 +36,10 @@ internal class DataImportViewModel : ObservableObject
         }
     }
 
-    private IAsyncCommand _loadDataCommand;
+    private IAsyncCommand? _loadDataCommand;
     public IAsyncCommand LoadDataCommand => _loadDataCommand ??= new AsyncCommand(LoadData);
     
-	private ICommand _cancelLoadDataCommand;
+	private ICommand? _cancelLoadDataCommand;
     public ICommand CancelLoadDataCommand => _cancelLoadDataCommand ??= new SimpleCommand(CancelLoadData);
 
     public DataImportViewModel(ApplicationState applicationState, ClipBoardService clipBoardService, DataModelMappingService mappingService, DocsParserService docsParserService, DataModelImageCreateService dataModelImageCreateService)
@@ -65,11 +65,11 @@ internal class DataImportViewModel : ObservableObject
                 {
                     ReportMessage("Error occured: Error copied to clipboard");
                     await Task.Delay(1000);
-                    _clipBoardService.CopyToClipboard(result.Error);
+                    _clipBoardService.CopyToClipboard(result.Error!);
                     return;
                 }
 
-                var data = await _dataModelImageCreateService.CreateImagesAsync(result.Content, UeModelExportDirectoryPath, Constants.ImageFilePath, progress, _cancellationTokenSource.Token);
+                var data = await _dataModelImageCreateService.CreateImagesAsync(result.Content!, UeModelExportDirectoryPath, Constants.ImageFilePath, progress, _cancellationTokenSource.Token);
                 var mappingResult = _mappingService.MapToConfigurationModel(data, progress, _cancellationTokenSource.Token);
                 _applicationState.SetConfig(data, mappingResult);
 

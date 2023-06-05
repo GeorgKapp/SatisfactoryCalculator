@@ -10,7 +10,7 @@ internal static class Constants
 
 	public const string BuildPrefix = "Build";
 
-	public const string CBGPrefix = "CBG";
+	public const string CbgPrefix = "CBG";
 
 	public const string CustomizerUnlockPrefix = "CustomizerUnlock";
 

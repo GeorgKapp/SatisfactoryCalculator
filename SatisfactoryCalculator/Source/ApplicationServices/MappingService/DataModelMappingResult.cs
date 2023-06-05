@@ -1,10 +1,4 @@
-﻿using Building = SatisfactoryCalculator.Source.Models.Building;
-using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
-using Generator = SatisfactoryCalculator.Source.Models.Generator;
-using Item = SatisfactoryCalculator.Source.Models.Item;
-using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
-
-// ReSharper disable once CheckNamespace
+﻿// ReSharper disable once CheckNamespace
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelMappingResult

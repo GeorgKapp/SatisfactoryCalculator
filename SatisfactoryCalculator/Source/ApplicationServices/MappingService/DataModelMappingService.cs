@@ -1,10 +1,10 @@
-using System.Diagnostics.Eventing.Reader;
 using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
+using Consumable = SatisfactoryCalculator.DocsServices.Models.DataModels.Consumable;
+using Equipment = SatisfactoryCalculator.DocsServices.Models.DataModels.Equipment;
 using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
-using Generator = SatisfactoryCalculator.Source.Models.Generator;
+using Generator = SatisfactoryCalculator.DocsServices.Models.DataModels.Generator;
 using Item = SatisfactoryCalculator.DocsServices.Models.DataModels.Item;
 using Recipe = SatisfactoryCalculator.DocsServices.Models.DataModels.Recipe;
-using Reference = SatisfactoryCalculator.DocsServices.Models.DataModels.Reference;
 
 // ReSharper disable once CheckNamespace
 namespace SatisfactoryCalculator.Source.ApplicationServices;
@@ -64,44 +64,29 @@ internal class DataModelMappingService
 
     #region Model Methods
 
-    private IItem[] MapToItemModels(List<Item> items) => items.Select(p => new Models.Item
-    {
-        ClassName = p.ClassName,
-        Name = p.DisplayName,
-        Description = p.Description,
-        Form = p.Form,
-        EnergyValue = p.EnergyValue,
-        Image = BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath))
-    }).Cast<IItem>().OrderBy(p => p.Name).ToArray();
+    private IItem[] MapToItemModels(List<Item> items) => items.Select(p => new Models.Item(className: p.ClassName,
+        name: p.DisplayName, description: p.Description, form: p.Form, energyValue: p.EnergyValue,
+        image: BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath)))).Cast<IItem>().OrderBy(p => p.Name).ToArray();
     
-    private IEquipment[] MapToEquipments(List<DocsServices.Models.DataModels.Equipment> equipments, Dictionary<string, IItem> itemDictionary) => equipments
+    private IEquipment[] MapToEquipments(List<Equipment> equipments, Dictionary<string, IItem> itemDictionary) => equipments
         .Select(p => MapToEquipment(p, itemDictionary))
         .OrderBy(p => p.Name)
         .ToArray();
 
-    private IEquipment MapToEquipment(DocsServices.Models.DataModels.Equipment equipment, Dictionary<string, IItem> itemDictionary)
+    private IEquipment MapToEquipment(Equipment equipment, Dictionary<string, IItem> itemDictionary)
     {
         var item = itemDictionary[equipment.ClassName];
-        var mappedEquipment = new Models.Equipment()
-        {
-            ClassName = item.ClassName,
-            Name = item.Name,
-            Description = item.Description,
-            EquipmentSlot = equipment.EquipmentSlot,
-            Form = item.Form,
-            EnergyValue = item.EnergyValue,
-            Image = item.Image
-        };
+        var mappedEquipment = new Models.Equipment(item.ClassName, item.Name, item.Image, item.Description, item.Form, item.EnergyValue, equipment.EquipmentSlot);
         itemDictionary[equipment.ClassName] = mappedEquipment;
         return mappedEquipment;
     }
     
-    private IConsumable[] MapToConsumables(List<DocsServices.Models.DataModels.Consumable> consumables, Dictionary<string, IItem> itemDictionary) => consumables
+    private IConsumable[] MapToConsumables(List<Consumable> consumables, Dictionary<string, IItem> itemDictionary) => consumables
         .Select(p => MapToConsumable(p, itemDictionary))
         .OrderBy(p => p.Name)
         .ToArray();
 
-    private IConsumable MapToConsumable(DocsServices.Models.DataModels.Consumable consumable, Dictionary<string, IItem> itemDictionary)
+    private IConsumable MapToConsumable(Consumable consumable, Dictionary<string, IItem> itemDictionary)
     {
         var item = itemDictionary[consumable.ClassName];
         var mappedConsumable = new Models.Consumable()
@@ -132,15 +117,15 @@ internal class DataModelMappingService
         }).Cast<IBuilding>().OrderBy(p => p.Name).ToArray();
     }
 
-    private IGenerator[] MapToGeneratorModels(List<DocsServices.Models.DataModels.Generator> generators, Dictionary<string, IBuilding> buildingDictionary) => generators
+    private IGenerator[] MapToGeneratorModels(List<Generator> generators, Dictionary<string, IBuilding> buildingDictionary) => generators
             .Select(p => MapToGeneratorModel(p, buildingDictionary))
             .OrderBy(p => p.Name)
             .ToArray();
 
-    private IGenerator MapToGeneratorModel(DocsServices.Models.DataModels.Generator generator, Dictionary<string, IBuilding> buildingDictionary)
+    private IGenerator MapToGeneratorModel(Generator generator, Dictionary<string, IBuilding> buildingDictionary)
     {
         var buildingReference = buildingDictionary[generator.ClassName];
-        var mappedGenerator = new Generator
+        var mappedGenerator = new Models.Generator
         {
             ClassName = generator.ClassName,
             Name = buildingReference.Name,
@@ -154,7 +139,7 @@ internal class DataModelMappingService
         return mappedGenerator;
     }
 
-    private Fuel[] MapToFuelModels(List<DocsServices.Models.DataModels.Generator> generators, IGenerator[] generatorModels, Dictionary<string, IItem> itemDictionary)
+    private Fuel[] MapToFuelModels(List<Generator> generators, IGenerator[] generatorModels, Dictionary<string, IItem> itemDictionary)
     {
         List<Fuel> fuelModels = new();
         foreach (var generator in generators)
@@ -182,21 +167,12 @@ internal class DataModelMappingService
             byProductAmount = fuel.ByProductAmount;
         }
 
-        return new()
-        {
-            Ingredient = ingredient,
-            SupplementalIngredient = supplementalIngredient,
-            ByProduct = byProductItem,
-            ByProductAmount = byProductAmount,
-            Generator = generator
-        };
+        return new(ingredient: ingredient, supplementalIngredient: supplementalIngredient, byProduct: byProductItem,
+            byProductAmount: byProductAmount, generator: generator);
     }
 
-    private FuelItem MapToFuelContentModel(IItem item, double amount) => new FuelItem
-    {
-        Item = item,
-        AmountPerMinute = amount,
-    };
+    private FuelItem MapToFuelContentModel(IItem item, double amount) =>
+        new FuelItem(item: item, amountPerMinute: amount);
 
     private IRecipe[] MapToRecipeModels(List<Recipe> recipes, Dictionary<string, IItem> itemDictionary, Dictionary<string, IBuilding> buildingDictionary) =>
         recipes
@@ -237,7 +213,7 @@ internal class DataModelMappingService
 
     private RecipePart MapToRecipeContentModel(Reference recipeItem, double manufactoringDuration, Dictionary<string, IItem> itemDictionary, Dictionary<string, IBuilding> buildingDictionary, bool setOnlyAmount)
     {
-        IEntity? recipePart = null;
+        IEntity? recipePart;
         Form? form = null;
         if(itemDictionary.TryGetValue(recipeItem.ClassName, out var item))
         {
@@ -256,11 +232,8 @@ internal class DataModelMappingService
                 : _calculationService.CalculateAmountPerMinte(form, recipeItem.Amount, manufactoringDuration));
     }
 
-    private RecipeBuilding MapToRecipeBuildingModel(IBuilding building, PowerConsumptionRange? powerConsumptionRange) => new RecipeBuilding
-    {
-        Building = building,
-        PowerConsumptionRange = powerConsumptionRange
-    };
+    private RecipeBuilding MapToRecipeBuildingModel(IBuilding building, PowerConsumptionRange? powerConsumptionRange) =>
+        new RecipeBuilding(building: building, powerConsumptionRange: powerConsumptionRange);
 
     #endregion
 
@@ -270,7 +243,7 @@ internal class DataModelMappingService
         items.ToDictionary(p => p.ClassName, p => p);
 
     private Dictionary<string, IBuilding> MapToBuildingDictionary(IBuilding[] buildings) =>
-        buildings.ToDictionary(p => p.ClassName, p => p as IBuilding);
+        buildings.ToDictionary(p => p.ClassName, p => p);
 
     private Dictionary<string, EntityReference> MapToEntityReferenceDictionary(Dictionary<string, IItem> itemDictionary, Dictionary<string, IBuilding> buildingDictionary, Fuel[] fuels, IRecipe[] recipes)
     {

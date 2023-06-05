@@ -1,6 +1,8 @@
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 
-public class Recipe : IBase, IRecipe
+public class Recipe : IRecipe
 {
 	public string ClassName { get; set; }
 	public string DisplayName { get; set; }

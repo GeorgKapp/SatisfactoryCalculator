@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 namespace SatisfactoryCalculator.Tests;
 
 public class FuelCalculationTests

@@ -42,7 +42,7 @@ internal static class ServiceExtensions
 		return services;
 	}
 
-	private static ServiceCollection AddViews(this ServiceCollection services)
+	private static void AddViews(this ServiceCollection services)
 	{
 		services
 			.AddSingleton<FilterableEntityPage>()
@@ -55,8 +55,6 @@ internal static class ServiceExtensions
             .AddSingleton<RecipePage>()
 			.AddSingleton<OverviewPage>()
 			.AddSingleton<DataImportPage>();
-
-		return services;
 	}
 
 	private static ServiceCollection AddViewModels(this ServiceCollection services)

@@ -16,7 +16,7 @@
         <Setter Property="Foreground" Value="#FFFFFFFF" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="HorizontalContentAlignment" Value="Left" />
-        <Setter Property="TextBox.TextWrapping" Value="WrapWithOverflow" />
+        <Setter Property="TextWrapping" Value="WrapWithOverflow" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>

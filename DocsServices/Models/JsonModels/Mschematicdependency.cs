@@ -1,5 +1,8 @@
+// ReSharper disable InconsistentNaming
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.JsonModels;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal class Mschematicdependency
 {
 	public string Class { get; set; }

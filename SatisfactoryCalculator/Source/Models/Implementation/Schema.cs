@@ -1,4 +1,5 @@
-﻿namespace SatisfactoryCalculator.Source.Models;
+﻿// ReSharper disable CheckNamespace
+namespace SatisfactoryCalculator.Source.Models;
 
 internal class Schema : ISchema
 {

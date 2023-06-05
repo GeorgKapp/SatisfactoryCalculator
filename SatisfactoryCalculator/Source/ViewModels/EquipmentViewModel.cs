@@ -1,5 +1,3 @@
-using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
-
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class EquipmentViewModel : ObservableObject

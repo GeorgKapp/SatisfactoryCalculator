@@ -1,3 +1,8 @@
+// ReSharper disable InconsistentNaming
+// ReSharper disable ClassNeverInstantiated.Global
+#pragma warning disable CS8618
+#pragma warning disable CS8618
+
 namespace SatisfactoryCalculator.DocsServices.Models.JsonModels;
 
 internal class Munlock

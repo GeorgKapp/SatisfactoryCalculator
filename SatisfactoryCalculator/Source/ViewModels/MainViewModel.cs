@@ -2,8 +2,8 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class MainViewModel : ObservableObject
 {
-    private object _currentPage;
-    public object CurrentPage
+    private object? _currentPage;
+    public object? CurrentPage
 	{
 		get => _currentPage;
 		set => SetProperty(ref _currentPage, value);
@@ -16,8 +16,8 @@ internal class MainViewModel : ObservableObject
         set => SetProperty(ref _isInitializing, value);
     }
 
-    private string _initializingText;
-    public string InitializingText
+    private string? _initializingText;
+    public string? InitializingText
     {
         get => _initializingText;
         set => SetProperty(ref _initializingText, value);
@@ -87,9 +87,10 @@ internal class MainViewModel : ObservableObject
         InitializingText = "Initializing";
         IsInitializing = true;
 
-        var data = await DebugExtensions.ProfileAsync(
-            _jsonService.ReadUtf8JsonAsync<Data>(Constants.InformationFileName), 
-            "Read Data");
+        // ReSharper disable once HeapView.ClosureAllocation
+        var data = (await DebugExtensions.ProfileAsync(
+	        _jsonService.ReadUtf8JsonAsync<Data>(Constants.InformationFileName), 
+	        "Read Data"))!;
 
         var mappedData = DebugExtensions.Profile(() =>
             _dataModelMappingService.MapToConfigurationModel(data),

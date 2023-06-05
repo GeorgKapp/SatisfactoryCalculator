@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.DocsServices.Utility;
 
 internal static class ClassNameParseUtility
 {
-	private static string[] preFixesArray = new string[12]
+	private static string[] _preFixesArray = new[]
 	{
 		"BP", 
 		"Build", 
@@ -20,10 +20,10 @@ internal static class ClassNameParseUtility
 
 	public static string ConvertClassNameToDescClassName(string className)
 	{
-		for (int i = 0; i < preFixesArray.Length; i++)
+		for (var i = 0; i < _preFixesArray.Length; i++)
 		{
-			if (className.StartsWith(preFixesArray[i]))
-				return Constants.DescriptionPrefix + className.Substring(preFixesArray[i].Length);
+			if (className.StartsWith(_preFixesArray[i]))
+				return $"{Constants.DescriptionPrefix}{className[_preFixesArray[i].Length..]}";
 		}
 		throw new NotImplementedException("ClassName filtering not implemented: " + className);
 	}
@@ -31,49 +31,49 @@ internal static class ClassNameParseUtility
 	public static string ConvertClassNameToEquipmentClassName(string className)
 	{
 		if (className.StartsWith(Constants.BlueprintEquipmentDescriptorPrefix))
-			return "Equip_" + className.Substring(Constants.BlueprintEquipmentDescriptorPrefix.Length);
+			return $"Equip_{className[Constants.BlueprintEquipmentDescriptorPrefix.Length..]}";
 
-		for (int i = 0; i < preFixesArray.Length; i++)
+		for (var i = 0; i < _preFixesArray.Length; i++)
 		{
-			if (className.StartsWith(preFixesArray[i]))
-				return "Equip" + className.Substring(preFixesArray[i].Length);
+			if (className.StartsWith(_preFixesArray[i]))
+				return $"Equip{className[_preFixesArray[i].Length..]}";
 		}
-		throw new NotImplementedException("ClassName filtering not implemented: " + className);
+		throw new ArgumentException($"ClassName filtering not implemented: {className}");
 	}
 
 	public static string ConvertClassNameToEquipmentDescriptorClassName(string className)
 	{
-		for (int i = 0; i < preFixesArray.Length; i++)
+		for (var i = 0; i < _preFixesArray.Length; i++)
 		{
-			if (className.StartsWith(preFixesArray[i]))
-				return Constants.BlueprintEquipmentDescriptorPrefix + className.Substring(preFixesArray[i].Length + 1);
+			if (className.StartsWith(_preFixesArray[i]))
+				return string.Concat(Constants.BlueprintEquipmentDescriptorPrefix, className.AsSpan(_preFixesArray[i].Length + 1));
 		}
-		throw new NotImplementedException("ClassName filtering not implemented: " + className);
+		throw new ArgumentException("ClassName filtering not implemented: " + className);
 	}
 
-	public static string CleanClassName(string className)
+	public static string? CleanClassName(string? className)
 	{
 		className = CorrectClassName(className);
 		if (string.IsNullOrEmpty(className))
 			return className;
 
-		switch (className)
+		return className switch
 		{
-            case { } when className.StartsWith("Build_"): return className.Replace("Build_", "");
-            case { } when className.StartsWith("Desc_"): return className.Replace("Desc_", "");
-            case { } when className.StartsWith("Equip_"): return className.Replace("Equip_", "");
-            case { } when className.StartsWith("Schematic_"): return className.Replace("Schematic_", "");
-            case { } when className.StartsWith("Recipe_"): return className.Replace("Recipe_", "");
-            case { } when className.StartsWith("ResourceSink_Customizer_"): return className.Replace("ResourceSink_Customizer_", "");
-            case { } when className.StartsWith("ResourceSink_"): return className.Replace("ResourceSink_", "");
-            case { } when className.StartsWith("BP_EquipmentDescriptor"): return className.Replace("BP_EquipmentDescriptor", "");
-            case { } when className.StartsWith("BP_"): return className.Replace("BP_", "");
-            case { } when className.StartsWith("Emote_"): return className.Replace("Emote_", "");
-			default: return className;
-		}
+			not null when className.StartsWith("Build_") => className.Replace("Build_", ""),
+			not null when className.StartsWith("Desc_") => className.Replace("Desc_", ""),
+			not null when className.StartsWith("Equip_") => className.Replace("Equip_", ""),
+			not null when className.StartsWith("Schematic_") => className.Replace("Schematic_", ""),
+			not null when className.StartsWith("Recipe_") => className.Replace("Recipe_", ""),
+			not null when className.StartsWith("ResourceSink_Customizer_") => className.Replace("ResourceSink_Customizer_",""),
+			not null when className.StartsWith("ResourceSink_") => className.Replace("ResourceSink_", ""),
+			not null when className.StartsWith("BP_EquipmentDescriptor") => className.Replace("BP_EquipmentDescriptor", ""),
+			not null when className.StartsWith("BP_") => className.Replace("BP_", ""),
+			not null when className.StartsWith("Emote_") => className.Replace("Emote_", ""),
+			_ => className
+		};
 	}
 
-	public static string CorrectClassName(string className) => className switch
+	public static string? CorrectClassName(string? className) => className switch
 	{
 		"Desc_Geyser_C" => "Desc_NitrogenGas_C",
 		"BP_EqDescZipLine_C" => "Equip_Zipline_C",
@@ -115,7 +115,7 @@ internal static class ClassNameParseUtility
 		_ => className,
 	};
 
-	public static string CorrectClassNameForImageLookup(string className) => className switch
+	public static string? CorrectClassNameForImageLookup(string? className) => className switch
 	{
 		"Build_PowerPoleWall_Mk3_C" => "Desc_PowerPoleWallMk3_C",
 		"Build_PowerPoleWallDouble_Mk3_C" => "Desc_PowerPoleWallDoubleMk3_C",

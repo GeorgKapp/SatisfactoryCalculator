@@ -1,8 +1,6 @@
-using System.Windows.Controls;
-
 namespace SatisfactoryCalculator.Source.UI.Pages;
 
-public partial class ConsumablePage : Page
+public partial class ConsumablePage
 {
     public ConsumablePage()
     {

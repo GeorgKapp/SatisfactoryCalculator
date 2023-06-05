@@ -6,10 +6,7 @@ internal class RecipeModels
         manufactoringDuration: 2, constructedByBuildGun: false, constructedInWorkbench: false,
         constructedInWorkshop: false, isAlternateRecipe: false, buildings: new[]
         {
-            new RecipeBuilding
-            {
-                Building = BuildingModels.Constructor
-            }
+            new RecipeBuilding(building: BuildingModels.Constructor)
         }, ingredients: new[]
         {
             new RecipePart(part: ItemModels.Wire, sourceAmount: 2),
@@ -22,10 +19,7 @@ internal class RecipeModels
         manufactoringDuration: 6, constructedByBuildGun: false, constructedInWorkbench: true,
         constructedInWorkshop: false, isAlternateRecipe: false, buildings: new[]
         {
-            new RecipeBuilding
-            {
-                Building = BuildingModels.Constructor,
-            }
+            new RecipeBuilding(building: BuildingModels.Constructor)
         }, ingredients: new[]
         {
             new RecipePart(part: ItemModels.IronIngot, sourceAmount: 3),
@@ -38,10 +32,7 @@ internal class RecipeModels
         manufactoringDuration: 4, constructedByBuildGun: false, constructedInWorkbench: true,
         constructedInWorkshop: false, isAlternateRecipe: false, buildings: new[]
         {
-            new RecipeBuilding
-            {
-                Building = BuildingModels.Constructor
-            }
+            new RecipeBuilding(building: BuildingModels.Constructor)
         }, ingredients: new[]
         {
             new RecipePart(part: ItemModels.IronIngot, sourceAmount: 1),
@@ -54,10 +45,7 @@ internal class RecipeModels
         name: "Residual Plastic", manufactoringDuration: 6, constructedByBuildGun: false,
         constructedInWorkbench: false, constructedInWorkshop: false, isAlternateRecipe: false, buildings: new[]
         {
-            new RecipeBuilding
-            {
-                Building = BuildingModels.OilRefinery,
-            }
+            new RecipeBuilding(building: BuildingModels.OilRefinery)
         }, ingredients: new[]
         {
             new RecipePart(part: ItemModels.PolymerResin, sourceAmount: 6),

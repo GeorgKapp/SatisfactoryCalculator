@@ -1,6 +1,6 @@
 namespace SatisfactoryCalculator.Source.UI.UserControls;
 
-public partial class EquipmentSlotControl : UserControl
+public partial class EquipmentSlotControl
 {
     public EquipmentSlotControl()
     {

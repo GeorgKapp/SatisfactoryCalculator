@@ -4,40 +4,40 @@ public class CalculationTests
 {
     private CalculationService _calculationService = new();
 
-    [Fact(DisplayName = "Calculate Cable RecipeItem")]
+    [Fact(DisplayName = "Calculate Cable RecipePart")]
     public void CalculateCableRecipe() => CalculateRecipeProductionTime(RecipeModels.CableRecipe, BuildingModels.Constructor, 100, 2, 30, 4);
 
-    [Fact(DisplayName = "Calculate Cable RecipeItem with overlock(200%)")]
+    [Fact(DisplayName = "Calculate Cable RecipePart with overlock(200%)")]
     public void CalculateCableOverclockRecipe() => CalculateRecipeProductionTime(RecipeModels.CableRecipe, BuildingModels.Constructor, 200, 1, 60, 10);
 
-    [Fact(DisplayName = "Calculate Cable RecipeItem with underclock(50%)")]
+    [Fact(DisplayName = "Calculate Cable RecipePart with underclock(50%)")]
     public void CalculateCableUnderclockRecipe() => CalculateRecipeProductionTime(RecipeModels.CableRecipe, BuildingModels.Constructor, 50, 4, 15, 1.6);
 
-    [Fact(DisplayName = "Calculate Iron Plate RecipeItem")]
+    [Fact(DisplayName = "Calculate Iron Plate RecipePart")]
     public void CalculateIronPlateRecipe() => CalculateRecipeProductionTime(RecipeModels.IronPlateRecipe, BuildingModels.Constructor, 100, 6, 10, 4);
 
-    [Fact(DisplayName = "Calculate Residual Plastic RecipeItem")]
+    [Fact(DisplayName = "Calculate Residual Plastic RecipePart")]
     public void CalculateResidualPlasticRecipe() => CalculateRecipeProductionTime(RecipeModels.ResidualPlasticRecipe, BuildingModels.OilRefinery, 100, 6, 10, 30);
 
-    [Fact(DisplayName = "Calculate Cable Item")]
+    [Fact(DisplayName = "Calculate Cable Part")]
     public void CalculateCableItem() => CalculateItemProduction(RecipeModels.CableRecipe, ItemModels.Cable, BuildingModels.Constructor, 100, 1, 30);
 
-    [Fact(DisplayName = "Calculate Iron Rod Item")]
+    [Fact(DisplayName = "Calculate Iron Rod Part")]
     public void CalculateIronRodProduction() => CalculateItemProduction(RecipeModels.IronRodRecipe, ItemModels.IronRod, BuildingModels.Constructor, 100, 1, 15, 4);
     
-    [Fact(DisplayName = "Calculate Iron Rod Item with underclock(50%)")]
+    [Fact(DisplayName = "Calculate Iron Rod Part with underclock(50%)")]
     public void CalculateIronRodUnderclock50Production() => CalculateItemProduction(RecipeModels.IronRodRecipe, ItemModels.IronRod, BuildingModels.Constructor, 50, 1, 7.5, 1.6);
     
-    [Fact(DisplayName = "Calculate Iron Rod Item with overclock(200%)")]
+    [Fact(DisplayName = "Calculate Iron Rod Part with overclock(200%)")]
     public void CalculateIronRodOverclock200Production() => CalculateItemProduction(RecipeModels.IronRodRecipe, ItemModels.IronRod, BuildingModels.Constructor, 200, 1, 30, 10);
 
-    [Fact(DisplayName = "Calculate Iron Rod Item with overclock(250%)")]
+    [Fact(DisplayName = "Calculate Iron Rod Part with overclock(250%)")]
     public void CalculateIronRodOverclock250Production() => CalculateItemProduction(RecipeModels.IronRodRecipe, ItemModels.IronRod, BuildingModels.Constructor, 250, 1, 37.5, 13.4);
 
-    [Fact(DisplayName = "Calculate Wire Item")]
+    [Fact(DisplayName = "Calculate Wire Part")]
     public void CalculateWireItem() => CalculateItemProduction(RecipeModels.CableRecipe, ItemModels.Wire, BuildingModels.Constructor, 100, 2, 60);
 
-    [Fact(DisplayName = "Calculate Water Item")]
+    [Fact(DisplayName = "Calculate Water Part")]
     public void CalculateWaterItem() => CalculateItemProduction(RecipeModels.ResidualPlasticRecipe, ItemModels.Water, BuildingModels.OilRefinery, 100, 2, 20);
 
   

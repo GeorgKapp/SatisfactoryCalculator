@@ -74,10 +74,10 @@ internal class CalculationService : ICalculationService
         var buildingProductionResult = CalculateRecipeBuildingProduction(recipe, building, overclock);
 
         var foundItem = recipe.Ingredients.Concat(recipe.Products)
-            .Where(p => p.Item.ClassName == item.ClassName)
-            .FirstOrDefault() ?? throw new ArgumentException("Item could not be found");
+            .Where(p => p.Part.ClassName == item.ClassName)
+            .FirstOrDefault() ?? throw new ArgumentException("Part could not be found");
 
-        var amount = NormalizeAmount(foundItem.Item.Form, foundItem.SourceAmount);
+        var amount = NormalizeAmount(null, foundItem.SourceAmount);
         var amountPerMinute = amount * buildingProductionResult.CyclesPerMinute;
 
         return new RecipeItemProductionResult

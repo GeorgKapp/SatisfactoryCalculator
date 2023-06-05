@@ -1,22 +1,22 @@
 namespace SatisfactoryCalculator.Source.Models;
 
-internal class RecipeItem
+internal class RecipePart
 {
-    public RecipeItem(IItem item, double amount, double sourceAmount, double? amountPerMinute)
+    public RecipePart(IEntity part, double amount, double sourceAmount, double? amountPerMinute)
     {
-        Item = item;
+        Part = part;
         Amount = amount;
         SourceAmount = sourceAmount;
         AmountPerMinute = amountPerMinute;
     }
 
-    public RecipeItem(IItem item, double sourceAmount)
+    public RecipePart(IEntity part, double sourceAmount)
     {
-        Item = item;
+        Part = part;
         SourceAmount = sourceAmount;
     }
 
-    public IItem Item { get; set; }
+    public IEntity Part { get; set; }
     public double? AmountPerMinute { get; set; }
     public string AmountPerMinuteText => $"{AmountPerMinute} p/m";
     public double CurrentAmount { get; set; }

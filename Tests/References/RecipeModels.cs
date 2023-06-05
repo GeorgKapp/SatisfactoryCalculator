@@ -12,10 +12,10 @@ internal class RecipeModels
             }
         }, ingredients: new[]
         {
-            new RecipeItem(item: ItemModels.Wire, sourceAmount: 2),
+            new RecipePart(part: ItemModels.Wire, sourceAmount: 2),
         }, products: new[]
         {
-            new RecipeItem(item: ItemModels.Cable, sourceAmount: 1),
+            new RecipePart(part: ItemModels.Cable, sourceAmount: 1),
         });
 
     public static Recipe IronPlateRecipe = new Recipe(className: "IronPlate_C", name: "Iron Plate",
@@ -28,10 +28,10 @@ internal class RecipeModels
             }
         }, ingredients: new[]
         {
-            new RecipeItem(item: ItemModels.IronIngot, sourceAmount: 3),
+            new RecipePart(part: ItemModels.IronIngot, sourceAmount: 3),
         }, products: new[]
         {
-            new RecipeItem(item: ItemModels.IronPlate, sourceAmount: 2),
+            new RecipePart(part: ItemModels.IronPlate, sourceAmount: 2),
         });
     
     public static Recipe IronRodRecipe = new Recipe(className: "IronRod_C", name: "Iron Rod",
@@ -44,10 +44,10 @@ internal class RecipeModels
             }
         }, ingredients: new[]
         {
-            new RecipeItem(item: ItemModels.IronIngot, sourceAmount: 1),
+            new RecipePart(part: ItemModels.IronIngot, sourceAmount: 1),
         }, products: new[]
         {
-            new RecipeItem(item: ItemModels.IronRod, sourceAmount: 1),
+            new RecipePart(part: ItemModels.IronRod, sourceAmount: 1),
         });
 
     public static Recipe ResidualPlasticRecipe = new Recipe(className: "ResidualPlastic_C",
@@ -60,10 +60,10 @@ internal class RecipeModels
             }
         }, ingredients: new[]
         {
-            new RecipeItem(item: ItemModels.PolymerResin, sourceAmount: 6),
-            new RecipeItem(item: ItemModels.Water, sourceAmount: 2000),
+            new RecipePart(part: ItemModels.PolymerResin, sourceAmount: 6),
+            new RecipePart(part: ItemModels.Water, sourceAmount: 2000),
         }, products: new[]
         {
-            new RecipeItem(item: ItemModels.Plastic, sourceAmount: 2),
+            new RecipePart(part: ItemModels.Plastic, sourceAmount: 2),
         });
 }

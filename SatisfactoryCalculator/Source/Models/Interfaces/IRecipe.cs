@@ -8,6 +8,6 @@ internal interface IRecipe : IEntity
     bool ConstructedInWorkbench { get; set; }
     double ManufactoringDuration { get; set; }
     RecipeBuilding[] Buildings { get; set; }
-    RecipeItem[] Ingredients { get; set; }
-    RecipeItem[] Products { get; set; }
+    RecipePart[] Ingredients { get; set; }
+    RecipePart[] Products { get; set; }
 }

@@ -16,6 +16,13 @@ public class Configuration : ObservableObject
         set => SetProperty(ref _equipments, value);
     }
     
+    private ObservableCollection<IConsumable> _consumables = new();
+    internal ObservableCollection<IConsumable> Consumables
+    {
+        get => _consumables;
+        set => SetProperty(ref _consumables, value);
+    }
+    
     private ObservableCollection<IBuilding> _buildings = new();
     internal ObservableCollection<IBuilding> Buildings
     {

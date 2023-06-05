@@ -27,6 +27,9 @@ internal class DataModelMappingService
         
         progress?.ReportOrThrow("Map Equipments", token);
         var equipments = MapToEquipments(data.Equipments, itemDictionary);
+        
+        progress?.ReportOrThrow("Map Consumables", token);
+        var consumables = MapToConsumables(data.Consumables, itemDictionary);
 
         progress?.ReportOrThrow("Map Buildings", token);
         var buildings = MapToBuildingModels(data.Buildings);
@@ -50,6 +53,7 @@ internal class DataModelMappingService
         {
             Items = itemDictionary.Values.ToArray(),
             Equipments = equipments,
+            Consumables = consumables,
             Buildings = buildingDictionary.Values.ToArray(),
             Generators = generators,
             Recipes = recipes,
@@ -90,6 +94,28 @@ internal class DataModelMappingService
         };
         itemDictionary[equipment.ClassName] = mappedEquipment;
         return mappedEquipment;
+    }
+    
+    private IConsumable[] MapToConsumables(List<DocsServices.Models.DataModels.Consumable> consumables, Dictionary<string, IItem> itemDictionary) => consumables
+        .Select(p => MapToConsumable(p, itemDictionary))
+        .OrderBy(p => p.Name)
+        .ToArray();
+
+    private IConsumable MapToConsumable(DocsServices.Models.DataModels.Consumable consumable, Dictionary<string, IItem> itemDictionary)
+    {
+        var item = itemDictionary[consumable.ClassName];
+        var mappedConsumable = new Models.Consumable()
+        {
+            ClassName = item.ClassName,
+            Name = item.Name,
+            Description = item.Description,
+            Form = item.Form,
+            EnergyValue = item.EnergyValue,
+            Image = item.Image,
+            HealthGain = consumable.HealthGain
+        };
+        itemDictionary[consumable.ClassName] = mappedConsumable;
+        return mappedConsumable;
     }
 
     private IBuilding[] MapToBuildingModels(List<Building> buildings)

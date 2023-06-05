@@ -1,3 +1,4 @@
+using System.Diagnostics.Eventing.Reader;
 using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
 using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
 using Generator = SatisfactoryCalculator.Source.Models.Generator;
@@ -185,15 +186,23 @@ internal class DataModelMappingService
 
     private RecipePart MapToRecipeContentModel(Reference recipeItem, double manufactoringDuration, Dictionary<string, IItem> itemDictionary, Dictionary<string, IBuilding> buildingDictionary, bool setOnlyAmount)
     {
-        IEntity recipePart = itemDictionary.TryGetValue(recipeItem.ClassName, out var value)
-            ? value
-            : buildingDictionary[recipeItem.ClassName];
+        IEntity? recipePart = null;
+        Form? form = null;
+        if(itemDictionary.TryGetValue(recipeItem.ClassName, out var item))
+        {
+            recipePart = item;
+            form = item.Form;
+        }
+        else
+        {
+            recipePart = buildingDictionary[recipeItem.ClassName];
+        }
 
         return new(part: recipePart,
-            amount: _calculationService.NormalizeAmount(null, recipeItem.Amount), sourceAmount: recipeItem.Amount,
+            amount: _calculationService.NormalizeAmount(form, recipeItem.Amount), sourceAmount: recipeItem.Amount,
             amountPerMinute: setOnlyAmount
                 ? null
-                : _calculationService.CalculateAmountPerMinte(null, recipeItem.Amount, manufactoringDuration));
+                : _calculationService.CalculateAmountPerMinte(form, recipeItem.Amount, manufactoringDuration));
     }
 
     private RecipeBuilding MapToRecipeBuildingModel(IBuilding building, PowerConsumptionRange? powerConsumptionRange) => new RecipeBuilding
@@ -226,7 +235,7 @@ internal class DataModelMappingService
     }
 
     private EntityReference CreateEntityReference(string entityClassName, Dictionary<string, IBuilding> buildingDictionary, Fuel[] fuels, IRecipe[] recipes) =>
-        new EntityReference(entityClassName: entityClassName,
+        new(entityClassName: entityClassName,
             recipeIngredient: GetRecipeIngredientReferences(entityClassName, recipes, buildingDictionary),
             recipeBuildingIngredient: GetRecipeBuildingIngredientReferences(entityClassName, recipes, buildingDictionary), 
             recipeProduct: GetRecipeProductReferences(entityClassName, recipes),

@@ -69,15 +69,19 @@ internal class CalculationService : ICalculationService
         return calculationResult;
     }
 
-    public RecipeItemProductionResult CalculateRecipeItemProduction(Recipe recipe, Item item, Building building, double overclock)
+    public RecipeItemProductionResult CalculateRecipeItemProduction(IRecipe recipe, IEntity entity, IBuilding building, double overclock)
     {
         var buildingProductionResult = CalculateRecipeBuildingProduction(recipe, building, overclock);
 
         var foundItem = recipe.Ingredients.Concat(recipe.Products)
-            .Where(p => p.Part.ClassName == item.ClassName)
+            .Where(p => p.Part.ClassName == entity.ClassName)
             .FirstOrDefault() ?? throw new ArgumentException("Part could not be found");
 
-        var amount = NormalizeAmount(null, foundItem.SourceAmount);
+        var form = foundItem is IItem recipePartItem 
+            ? recipePartItem.Form 
+            : null;
+        
+        var amount = NormalizeAmount(form, foundItem.SourceAmount);
         var amountPerMinute = amount * buildingProductionResult.CyclesPerMinute;
 
         return new RecipeItemProductionResult
@@ -89,7 +93,7 @@ internal class CalculationService : ICalculationService
         };
     }
 
-    public RecipeBuildingProductionResult CalculateRecipeBuildingProduction(Recipe recipe, Building building, double overclock)
+    public RecipeBuildingProductionResult CalculateRecipeBuildingProduction(IRecipe recipe, IBuilding building, double overclock)
     {
         var overclockMultiplier = OverClockMultiplier(overclock);
         var buildingSpeed = GetManufactoringBuildingSpeed(building);
@@ -115,7 +119,7 @@ internal class CalculationService : ICalculationService
         return Math.Round(result, 1);
     }
 
-    private double GetManufactoringBuildingSpeed(Building building) => 
+    private double GetManufactoringBuildingSpeed(IBuilding building) => 
         building.ManufactoringSpeed.HasValue
             ? building.ManufactoringSpeed.Value
             : 1;

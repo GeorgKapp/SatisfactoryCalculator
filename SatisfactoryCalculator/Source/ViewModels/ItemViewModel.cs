@@ -6,8 +6,8 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class ItemViewModel : ObservableObject
 {
-    private Item? _selectedItem;
-    public Item? SelectedItem
+    private IItem? _selectedItem;
+    public IItem? SelectedItem
     {
         get => _selectedItem;
         set
@@ -23,16 +23,16 @@ internal class ItemViewModel : ObservableObject
             else
             {
                 var entityReference = _applicationState.Configuration.ReferenceDictionary[value.ClassName];
-                SelectedItemAsIngredientInRecipes = new ObservableCollection<Recipe>(entityReference.RecipeIngredient);
-                SelectedItemAsBuildingIngredientInRecipes = new ObservableCollection<Recipe>(entityReference.RecipeBuildingIngredient);
-                SelectedItemAsProductInRecipes = new ObservableCollection<Recipe>(entityReference.RecipeProduct);
-                SelectedItemAsFuels = new ObservableCollection<Fuel>(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
+                SelectedItemAsIngredientInRecipes = new(entityReference.RecipeIngredient);
+                SelectedItemAsBuildingIngredientInRecipes = new(entityReference.RecipeBuildingIngredient);
+                SelectedItemAsProductInRecipes = new(entityReference.RecipeProduct);
+                SelectedItemAsFuels = new(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
             }
         }
     }
 
-    private ObservableCollection<Recipe> _selectedItemAsIngredientInRecipes = new();
-    public ObservableCollection<Recipe> SelectedItemAsIngredientInRecipes
+    private ObservableCollection<IRecipe> _selectedItemAsIngredientInRecipes = new();
+    public ObservableCollection<IRecipe> SelectedItemAsIngredientInRecipes
     {
         get => _selectedItemAsIngredientInRecipes;
         set
@@ -42,8 +42,8 @@ internal class ItemViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Recipe> _selectedItemAsBuildingIngredientInRecipes = new();
-    public ObservableCollection<Recipe> SelectedItemAsBuildingIngredientInRecipes
+    private ObservableCollection<IRecipe> _selectedItemAsBuildingIngredientInRecipes = new();
+    public ObservableCollection<IRecipe> SelectedItemAsBuildingIngredientInRecipes
     {
         get => _selectedItemAsBuildingIngredientInRecipes;
         set
@@ -54,8 +54,8 @@ internal class ItemViewModel : ObservableObject
     }
 
 
-    private ObservableCollection<Recipe> _selectedItemAsProductInRecipes = new();
-    public ObservableCollection<Recipe> SelectedItemAsProductInRecipes
+    private ObservableCollection<IRecipe> _selectedItemAsProductInRecipes = new();
+    public ObservableCollection<IRecipe> SelectedItemAsProductInRecipes
     {
         get => _selectedItemAsProductInRecipes;
         set

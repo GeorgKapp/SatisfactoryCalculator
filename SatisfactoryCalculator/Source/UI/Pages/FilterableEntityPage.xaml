@@ -25,7 +25,17 @@
             <userControls:FilterControl.ItemTemplate>
                 <DataTemplate DataType="{x:Type interfaces:IEntity}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="28" Height="28" Source="{Binding Image}" />
+                        <Image Source="{Binding Image}" Width="28" Height="28">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Image}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
                         <controls:SatisfactoryTextBlock Text="{Binding Name}" />
                     </StackPanel>
                 </DataTemplate>

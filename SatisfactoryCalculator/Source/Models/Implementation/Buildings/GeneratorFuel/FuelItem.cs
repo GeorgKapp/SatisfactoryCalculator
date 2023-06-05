@@ -2,8 +2,8 @@
 
 internal class FuelItem : ObservableObject
 {
-    private Item _item;
-    public Item Item
+    private IItem _item;
+    public IItem Item
     {
         get => _item;
         set => SetProperty(ref _item, value);

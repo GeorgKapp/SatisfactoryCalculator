@@ -11,10 +11,9 @@ internal class DataModelMappingResult
 {
     public Dictionary<string, EntityReference> ReferenceDictionary { get; set; } = new();
 
-    public Item[] Items { get; set; } = Array.Empty<Item>();
-    public Building[] Buildings { get; set; } = Array.Empty<Building>();
-    public Generator[] Generators { get; set; } = Array.Empty<Generator>();
-    public Fuel[] Fuels { get; set; } = Array.Empty<Fuel>();
-    public Recipe[] Recipes { get; set; } = Array.Empty<Recipe>();
+    public IItem[] Items { get; set; } = Array.Empty<IItem>();
+    public IBuilding[] Buildings { get; set; } = Array.Empty<IBuilding>();
+    public IGenerator[] Generators { get; set; } = Array.Empty<IGenerator>();
+    public IRecipe[] Recipes { get; set; } = Array.Empty<IRecipe>();
     public DateTime? LastSyncDate { get; set; }
 }

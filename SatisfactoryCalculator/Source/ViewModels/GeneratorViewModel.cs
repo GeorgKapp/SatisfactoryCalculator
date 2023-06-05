@@ -6,8 +6,8 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class GeneratorViewModel : ObservableObject
 {
-    private Generator? _selectedGenerator;
-    public Generator? SelectedGenerator
+    private IGenerator? _selectedGenerator;
+    public IGenerator? SelectedGenerator
     {
         get => _selectedGenerator;
         set
@@ -21,8 +21,8 @@ internal class GeneratorViewModel : ObservableObject
             }
             else
             {
-                SelectedGeneratorFuels = new ObservableCollection<Fuel>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator);
-                SelectedGeneratorRecipes = new ObservableCollection<Recipe>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
+                SelectedGeneratorFuels = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator);
+                SelectedGeneratorRecipes = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
                 SelectedGeneratorClockSpeed = "100";
             }
         }
@@ -35,8 +35,8 @@ internal class GeneratorViewModel : ObservableObject
         set => SetProperty(ref _selectedGeneratorFuels, value);
     }
 
-    private ObservableCollection<Recipe> _selectedGeneratorRecipes = new();
-    public ObservableCollection<Recipe> SelectedGeneratorRecipes
+    private ObservableCollection<IRecipe> _selectedGeneratorRecipes = new();
+    public ObservableCollection<IRecipe> SelectedGeneratorRecipes
     {
         get => _selectedGeneratorRecipes;
         set => SetProperty(ref _selectedGeneratorRecipes, value);

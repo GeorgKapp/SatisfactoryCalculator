@@ -2,7 +2,7 @@
 
 internal class EntityReference
 {
-    public EntityReference(string entityClassName, Recipe[] recipeIngredient, Recipe[] recipeBuildingIngredient, Recipe[] recipeProduct, Recipe[] recipeBuilding, Fuel[] fuelIngredient, Fuel[] fuelByProduct, Fuel[] fuelGenerator)
+    public EntityReference(string entityClassName, IRecipe[] recipeIngredient, IRecipe[] recipeBuildingIngredient, IRecipe[] recipeProduct, IRecipe[] recipeBuilding, Fuel[] fuelIngredient, Fuel[] fuelByProduct, Fuel[] fuelGenerator)
     {
         EntityClassName = entityClassName;
         RecipeIngredient = recipeIngredient;
@@ -16,16 +16,16 @@ internal class EntityReference
 
     public string EntityClassName { get; set; }
 
-    public Recipe[] RecipeIngredient { get; set; } = Array.Empty<Recipe>();
-    public Recipe[] RecipeProduct { get; set; } = Array.Empty<Recipe>();
-    public Recipe[] RecipeBuildingIngredient { get; set; } = Array.Empty<Recipe>();
-    public Recipe[] RecipeBuilding { get; set; } = Array.Empty<Recipe>();
-    public Recipe[] RecipeFuels { get; set; } = Array.Empty<Recipe>(); 
+    public IRecipe[] RecipeIngredient { get; set; } = Array.Empty<IRecipe>();
+    public IRecipe[] RecipeProduct { get; set; } = Array.Empty<IRecipe>();
+    public IRecipe[] RecipeBuildingIngredient { get; set; } = Array.Empty<IRecipe>();
+    public IRecipe[] RecipeBuilding { get; set; } = Array.Empty<IRecipe>();
+    public IRecipe[] RecipeFuels { get; set; } = Array.Empty<IRecipe>(); 
     public Fuel[] FuelIngredient { get; set; } = Array.Empty<Fuel>();
     public Fuel[] FuelByProduct { get; set; } = Array.Empty<Fuel>();
     public Fuel[] FuelGenerator { get; set; } = Array.Empty<Fuel>();
 
-    public Schema[] SchemaIngredient { get; set; } = Array.Empty<Schema>();
-    public Schema[] SchemaUnlock { get; set; } = Array.Empty<Schema>();
-    public Schema[] SchemaBuilding { get; set; } = Array.Empty<Schema>();
+    public ISchema[] SchemaIngredient { get; set; } = Array.Empty<ISchema>();
+    public ISchema[] SchemaUnlock { get; set; } = Array.Empty<ISchema>();
+    public ISchema[] SchemaBuilding { get; set; } = Array.Empty<ISchema>();
 }

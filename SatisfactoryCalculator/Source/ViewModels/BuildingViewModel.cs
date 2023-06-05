@@ -5,8 +5,8 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class BuildingViewModel : ObservableObject
 {
-    private Building? _selectedBuilding;
-    public Building? SelectedBuilding
+    private IBuilding? _selectedBuilding;
+    public IBuilding? SelectedBuilding
     {
         get => _selectedBuilding;
         set
@@ -14,13 +14,13 @@ internal class BuildingViewModel : ObservableObject
             SetProperty(ref _selectedBuilding, value);
 
             SelectedBuildingRecipes = value is not null
-                ? new ObservableCollection<Recipe>(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct)
+                ? new (_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct)
                 : new();
         }
     }
 
-    private ObservableCollection<Recipe> _selectedBuildingRecipes = new();
-    public ObservableCollection<Recipe> SelectedBuildingRecipes
+    private ObservableCollection<IRecipe> _selectedBuildingRecipes = new();
+    public ObservableCollection<IRecipe> SelectedBuildingRecipes
     {
         get => _selectedBuildingRecipes;
         set => SetProperty(ref _selectedBuildingRecipes, value);

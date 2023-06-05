@@ -2,10 +2,10 @@ namespace SatisfactoryCalculator.Source.Utilities;
 
 public static class BitmapImageCache
 {
-    public static BitmapImage Fetch(string imagePath)
+    public static BitmapImage? Fetch(string imagePath)
     {
-        if(string.IsNullOrWhiteSpace(imagePath))
-            return new();
+        if (string.IsNullOrWhiteSpace(imagePath))
+            return null;
         
         using var streamSource = new FileStream(imagePath, FileMode.Open, FileAccess.Read);
         

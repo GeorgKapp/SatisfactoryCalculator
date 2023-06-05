@@ -2,7 +2,7 @@
 
 internal class Fuel
 {
-    public Generator Generator { get; set; }
+    public IGenerator Generator { get; set; }
     public FuelItem Ingredient { get; set; }
     public FuelItem? SupplementalIngredient { get; set; }
     public FuelItem? ByProduct { get; set; }

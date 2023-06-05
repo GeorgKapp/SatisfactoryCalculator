@@ -1,5 +1,3 @@
-using SatisfactoryCalculator.Source.Models.Interfaces;
-
 namespace SatisfactoryCalculator.Source.Models;
 
 internal class Building : IBuilding
@@ -12,5 +10,5 @@ internal class Building : IBuilding
     public double? PowerConsumption { get; set; }
     public double? PowerConsumptionExponent { get; set; }
     public PowerConsumptionRange? PowerConsumptionRange { get; set; }
-    public BitmapImage Image { get; set; }
+    public BitmapImage? Image { get; set; }
 }

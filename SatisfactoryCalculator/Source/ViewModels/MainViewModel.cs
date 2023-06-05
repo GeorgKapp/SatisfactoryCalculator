@@ -44,21 +44,28 @@ internal class MainViewModel : ObservableObject
     private ICommand? _saveCommand;
     public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(Save);
 
-	public MainViewModel(ApplicationState applicationState, JsonService jsonService, ViewModelViewLinker viewModelViewLinker, DataModelMappingService dataModelMappingService)
+	public MainViewModel(ApplicationState applicationState, JsonService jsonService, PageService pageService, DataModelMappingService dataModelMappingService)
 	{
 		_applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
-		_viewModelViewLinker = viewModelViewLinker ?? throw new ArgumentNullException(nameof(viewModelViewLinker));
+		_pageService = pageService ?? throw new ArgumentNullException(nameof(pageService));
         _dataModelMappingService = dataModelMappingService ?? throw new ArgumentNullException(nameof(dataModelMappingService));
     }
 
-    private void ShowItems() => CurrentPage = _viewModelViewLinker.GetPageByType<ItemPage>();
-    private void ShowBuildings() => CurrentPage = _viewModelViewLinker.GetPageByType<BuildingPage>();
-    private void ShowGenerators() => CurrentPage = _viewModelViewLinker.GetPageByType<GeneratorPage>();
-    private void ShowRecipes() => CurrentPage = _viewModelViewLinker.GetPageByType<RecipePage>();
-	private void ShowOverview() => CurrentPage = _viewModelViewLinker.GetPageByType<OverviewPage>();
-	private void ShowDataImport() => CurrentPage = _viewModelViewLinker.GetPageByType<DataImportPage>();
+    private void ShowItems() => ShowFilterableEntityPage(_applicationState.Configuration.Items);
+    private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
+    private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
+    private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);
+	private void ShowOverview() => CurrentPage = _pageService.FetchPage<OverviewPage, OverviewViewModel>();
+	private void ShowDataImport() => CurrentPage = _pageService.FetchPage<DataImportPage, DataImportViewModel>();
 
+	private void ShowFilterableEntityPage(IEnumerable<IEntity> entities)
+	{
+		var fetchResult = _pageService.FetchPageWithViewModel<FilterableEntityPage, FilterableEntityViewModel>();
+		fetchResult.Item2.Entities = new(entities);
+		CurrentPage = fetchResult.Item1;
+	}
+	
 	private void Save()
 	{
 		if (!Directory.Exists(Constants.DataFilePath))
@@ -89,6 +96,6 @@ internal class MainViewModel : ObservableObject
     private ApplicationState _applicationState;
 
     private readonly JsonService _jsonService;
-    private readonly ViewModelViewLinker _viewModelViewLinker;
+    private readonly PageService _pageService;
     private readonly DataModelMappingService _dataModelMappingService;
 }

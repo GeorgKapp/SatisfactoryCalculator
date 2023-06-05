@@ -75,9 +75,7 @@ internal class ItemViewModel : ObservableObject
             NotifyMarginUpdates();
         }
     }
-
-    public ObservableCollection<Item> Items => _applicationState.Configuration.Items;
-
+    
     public Thickness ProductsSectionMargin => CalculateMargin(false);
     public Thickness IngredientsSectionMargin => CalculateMargin(_selectedItemAsProductInRecipes.Count > 0);
     public Thickness BuildingIngredientSectionMargin => CalculateMargin(_selectedItemAsIngredientInRecipes.Count > 0);
@@ -86,7 +84,6 @@ internal class ItemViewModel : ObservableObject
     public ItemViewModel(ApplicationState applicationState)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
-        Notify(nameof(Items));
     }
 
     private Thickness CalculateMargin(bool isPreviousControlVisible) => 

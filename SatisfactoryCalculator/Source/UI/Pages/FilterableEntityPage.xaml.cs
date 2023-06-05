@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace SatisfactoryCalculator.Source.UI.Pages;
 
-public partial class FilterablePage : Page
+public partial class FilterableEntityPage : Page
 {
-    public FilterablePage()
+    public FilterableEntityPage()
     {
         InitializeComponent();
     }

@@ -8,8 +8,8 @@
       xmlns:u="clr-namespace:SatisfactoryCalculator.Source.UI.UserControls"
       xmlns:context="clr-namespace:SatisfactoryCalculator.Source.ViewModels"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="GeneratorPage"
+      Background="Transparent"
+      d:Background="#202125"
       d:DataContext="{d:DesignInstance Type=context:GeneratorViewModel}">
 
     <Page.Resources>
@@ -26,84 +26,58 @@
         </DataTemplate>
 
     </Page.Resources>
-
+    
     <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <u:FilterControl Grid.Column="0" 
-                         ItemsSource="{Binding Generators}"
-                         SelectedItem="{Binding SelectedGenerator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         FilterMemberPath="Name">
-
-            <u:FilterControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:Generator}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="28" Height="28" Source="{Binding Image}" />
-                        <c:SatisfactoryTextBlock Text="{Binding Name}" />
-                    </StackPanel>
-                </DataTemplate>
-            </u:FilterControl.ItemTemplate>
-
-        </u:FilterControl>
-
-
-        <Grid Column="1" Margin="20">
-
+        <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedGenerator.Image}"/>
+            <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Description}" />
+            </StackPanel>
 
-                <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedGenerator.Image}"/>
-                <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
-                    <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Name}" />
-                    <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Description}" />
-                </StackPanel>
-
-                <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,20,0,0" Visibility="{Binding SelectedGenerator, Converter={StaticResource NullToVisibilityConverter}}">
-                    <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Text="Clock Speed"/>
-                    <Grid Margin="9,0,0,0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <c:SatisfactoryTextBox Width="80" IsOverclock="True" Text="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <c:SatisfactorySlider Value="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" Margin="10,0,10,0" Grid.Column="1"/>
-                    </Grid>
-                </StackPanel>
-            </Grid>
-            
-            <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
-
-                <ItemsControl.ItemsSource>
-                    <CompositeCollection>
-
-                        <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedGeneratorRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
-                        <CollectionContainer Collection="{Binding Source={StaticResource RecipeCollection}}"/>
-
-                        <c:SatisfactoryTextBlock Text="Fuels" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedGeneratorFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
-                        <CollectionContainer Collection="{Binding Source={StaticResource GeneratorCollection}}"/>
-
-                    </CompositeCollection>
-                </ItemsControl.ItemsSource>
-            </c:VirtualizedItemsControl>
-
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,20,0,0" Visibility="{Binding SelectedGenerator, Converter={StaticResource NullToVisibilityConverter}}">
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Text="Clock Speed"/>
+                <Grid Margin="9,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <c:SatisfactoryTextBox Width="80" IsOverclock="True" Text="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <c:SatisfactorySlider Value="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" Margin="10,0,10,0" Grid.Column="1"/>
+                </Grid>
+            </StackPanel>
         </Grid>
+        
+        <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+
+                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedGeneratorRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource RecipeCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Fuels" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedGeneratorFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource GeneratorCollection}}"/>
+
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </c:VirtualizedItemsControl>
 
     </Grid>
 </Page>

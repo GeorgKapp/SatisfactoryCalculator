@@ -4,55 +4,26 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
-      xmlns:models="clr-namespace:SatisfactoryCalculator.Source.Models"
       xmlns:u="clr-namespace:SatisfactoryCalculator.Source.UI.UserControls"
       xmlns:context="clr-namespace:SatisfactoryCalculator.Source.ViewModels"
       mc:Ignorable="d"
-      d:Width="800"
-      d:Height="600"
       Background="Transparent"
       d:Background="#202125"
       d:DataContext="{d:DesignInstance Type=context:RecipeViewModel}">
 
     <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedRecipe.Name}" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="0"/>
 
-        <u:FilterControl Grid.Column="0" 
-                         ItemsSource="{Binding Recipes}"
-                         SelectedItem="{Binding SelectedRecipe, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         FilterMemberPath="Name">
-
-            <u:FilterControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:Recipe}">
-                    <StackPanel Orientation="Horizontal">
-                        <c:SatisfactoryTextBlock Text="{Binding Name}" />
-                    </StackPanel>
-                </DataTemplate>
-            </u:FilterControl.ItemTemplate>
-
-        </u:FilterControl>
-
-
-        <Grid Column="1" Margin="20">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedRecipe.Name}" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="0"/>
-
-            <StackPanel Grid.Row="1" Margin="20">
-                <c:SatisfactoryTextBlock Text="RecipeItem" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
-                <u:RecipeControl Recipe="{Binding SelectedRecipe}" Margin="0,0,0,15" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}"/>
-            </StackPanel>
-
-        </Grid>
+        <StackPanel Grid.Row="1" Margin="20">
+            <c:SatisfactoryTextBlock Text="RecipeItem" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
+            <u:RecipeControl Recipe="{Binding SelectedRecipe}" Margin="0,0,0,15" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}"/>
+        </StackPanel>
 
     </Grid>
-
 </Page>

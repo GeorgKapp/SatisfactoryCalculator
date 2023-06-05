@@ -25,13 +25,10 @@ internal class BuildingViewModel : ObservableObject
         get => _selectedBuildingRecipes;
         set => SetProperty(ref _selectedBuildingRecipes, value);
     }
-
-    public ObservableCollection<Building> Buildings => _applicationState.Configuration.Buildings;
-
+    
     public BuildingViewModel(ApplicationState applicationState)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
-        Notify(nameof(Buildings));
     }
 
     private ApplicationState _applicationState;

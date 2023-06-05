@@ -6,7 +6,7 @@ internal static class ServiceHost
 
 	static ServiceHost()
 	{
-		ServiceCollection services = new ServiceCollection();
+		var services = new ServiceCollection();
 		services.ConfigureServices();
 		Provider = services.BuildServiceProvider(new ServiceProviderOptions
 		{

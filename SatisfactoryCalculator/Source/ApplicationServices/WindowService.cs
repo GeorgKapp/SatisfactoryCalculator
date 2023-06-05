@@ -1,3 +1,4 @@
+// ReSharper disable HeapView.PossibleBoxingAllocation
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class WindowService

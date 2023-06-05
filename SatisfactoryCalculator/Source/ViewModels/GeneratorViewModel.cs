@@ -68,16 +68,12 @@ internal class GeneratorViewModel : ObservableObject
             }
         }
     }
-
-    public ObservableCollection<Generator> Generators => _applicationState.Configuration.Generators;
-
+    
     public GeneratorViewModel(ApplicationState applicationState, CalculationService calculationService)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
         _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
-        Notify(nameof(Generators));
     }
-
 
     private readonly ApplicationState _applicationState;
     private readonly CalculationService _calculationService;

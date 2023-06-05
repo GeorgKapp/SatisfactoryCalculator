@@ -23,11 +23,10 @@ internal static class ServiceExtensions
 	private static ServiceCollection AddApplicationServices(this ServiceCollection services)
 	{
 		services
-			.AddSingleton<ViewModelViewLinker>()
 			.AddTransient<CalculationService>()
 			.AddTransient<DataModelMappingService>()
-			.AddTransient<DataModelImageCreateService>()
 			.AddTransient<MessageService>()
+			.AddTransient<PageService>()
 			.AddTransient<WindowService>()
 			.AddTransient<ClipBoardService>();
 
@@ -38,7 +37,8 @@ internal static class ServiceExtensions
 	{
 		services
 			.AddTransient<JsonService>()
-			.AddTransient<DocsParserService>();
+			.AddTransient<DocsParserService>()
+			.AddTransient<DataModelImageCreateService>();
 
 		return services;
 	}
@@ -46,6 +46,7 @@ internal static class ServiceExtensions
 	private static ServiceCollection AddViews(this ServiceCollection services)
 	{
 		services
+			.AddSingleton<FilterableEntityPage>()
 			.AddSingleton<MainView>()
             .AddSingleton<ItemPage>()
             .AddSingleton<BuildingPage>()
@@ -60,6 +61,7 @@ internal static class ServiceExtensions
 	private static ServiceCollection AddViewModels(this ServiceCollection services)
 	{
 		services
+			.AddSingleton<FilterableEntityViewModel>()
 			.AddSingleton<MainViewModel>()
             .AddSingleton<ItemViewModel>()
             .AddSingleton<BuildingViewModel>()

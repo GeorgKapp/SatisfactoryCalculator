@@ -1,6 +1,6 @@
 namespace SatisfactoryCalculator.Source.ViewModels;
 
-public class EquipmentViewModel
+internal class EquipmentViewModel : ObservableObject
 {
     
 }

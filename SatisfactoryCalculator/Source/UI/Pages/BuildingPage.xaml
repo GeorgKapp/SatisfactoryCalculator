@@ -24,65 +24,39 @@
         </DataTemplate>
 
     </Page.Resources>
-
+    
     <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-        <u:FilterControl Grid.Column="0" 
-                         ItemsSource="{Binding Buildings}"
-                         SelectedItem="{Binding SelectedBuilding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                         FilterMemberPath="Name">
+        <Grid Grid.Row="0">
 
-            <u:FilterControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:Building}">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="28" Height="28" Source="{Binding Image}" />
-                        <c:SatisfactoryTextBlock Text="{Binding Name}" />
-                    </StackPanel>
-                </DataTemplate>
-            </u:FilterControl.ItemTemplate>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        </u:FilterControl>
-
-
-        <Grid Column="1" Margin="20">
-
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0">
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedBuilding.Image}" />
-                <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
-                    <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedBuilding.Name}" />
-                    <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedBuilding.Description}" />
-                </StackPanel>
-            </Grid>
-
-            <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
-
-                <ItemsControl.ItemsSource>
-                    <CompositeCollection>
-
-                        <c:SatisfactoryTextBlock Text="Building Recipes" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedBuildingRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
-                        <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
-
-                    </CompositeCollection>
-                </ItemsControl.ItemsSource>
-            </c:VirtualizedItemsControl>
-
+            <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedBuilding.Image}" />
+            <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" HorizontalAlignment="Left" Text="{Binding SelectedBuilding.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedBuilding.Description}" />
+            </StackPanel>
         </Grid>
+
+        <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+
+                    <c:SatisfactoryTextBlock Text="Building Recipes" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedBuildingRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="-10,0,0,0"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
+
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </c:VirtualizedItemsControl>
 
     </Grid>
 

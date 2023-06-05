@@ -6,10 +6,4 @@ public partial class ItemPage : Page
     {
         InitializeComponent();
     }
-
-    private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        //scrollViewer.ScrollToTop();
-        //scrollViewer.ScrollToLeftEnd();
-    }
 }

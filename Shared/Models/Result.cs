@@ -2,17 +2,17 @@ namespace SatisfactoryCalculator.Shared.Models;
 
 public class Result<T>
 {
-    public T? Content { get; set; }
-    public string? Error { get; set; }
-    public bool IsSuccess { get; set; }
+    public T? Content { get; private init; }
+    public string? Error { get; private init; }
+    public bool IsSuccess { get; private init; }
 
-    public static Result<T> Success(T content) => new Result<T>
+    public static Result<T> Success(T content) => new()
     {
         Content = content,
         IsSuccess = true
     };
 
-    public static Result<T> Failure(string error) => new Result<T>
+    public static Result<T> Failure(string error) => new()
     {
         Error = error,
         IsSuccess = false
@@ -21,15 +21,15 @@ public class Result<T>
 
 public class Result
 {
-    public string? Error { get; set; }
-    public bool IsSuccess { get; set; }
+    public string? Error { get; private init; }
+    public bool IsSuccess { get; private init; }
 
-    public static Result Success() => new Result
+    public static Result Success() => new()
     {
         IsSuccess = true
     };
 
-    public static Result Failure(string error) => new Result
+    public static Result Failure(string error) => new()
     {
         Error = error,
         IsSuccess = false

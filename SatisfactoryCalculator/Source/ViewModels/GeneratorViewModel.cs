@@ -30,14 +30,14 @@ internal class GeneratorViewModel : ObservableObject
     public ObservableCollection<Fuel> SelectedGeneratorFuels
     {
         get => _selectedGeneratorFuels;
-        set => SetProperty(ref _selectedGeneratorFuels, value);
+        private set => SetProperty(ref _selectedGeneratorFuels, value);
     }
 
     private ObservableCollection<IRecipe> _selectedGeneratorRecipes = new();
     public ObservableCollection<IRecipe> SelectedGeneratorRecipes
     {
         get => _selectedGeneratorRecipes;
-        set => SetProperty(ref _selectedGeneratorRecipes, value);
+        private set => SetProperty(ref _selectedGeneratorRecipes, value);
     }
 
     private string _selectedGeneratorClockSpeed = string.Empty;

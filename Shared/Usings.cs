@@ -1,9 +1,5 @@
-﻿global using SatisfactoryCalculator.Shared.Common;
-global using SatisfactoryCalculator.Shared.Models;
+﻿global using SatisfactoryCalculator.Shared.Models;
 global using System;
-global using System.Collections;
 global using System.Threading;
-global using SatisfactoryCalculator.Shared.Common.Progress;
 global using System.Diagnostics;
-global using System.Runtime.CompilerServices;
 global using System.Text.Json;

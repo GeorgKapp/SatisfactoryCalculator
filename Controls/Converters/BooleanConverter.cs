@@ -6,7 +6,7 @@ public class BooleanConverter<T> : IValueConverter
 
 	public T False { get; set; }
 
-	public BooleanConverter(T trueValue, T falseValue)
+	protected BooleanConverter(T trueValue, T falseValue)
 	{
 		True = trueValue;
 		False = falseValue;
@@ -14,11 +14,13 @@ public class BooleanConverter<T> : IValueConverter
 
 	public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 	{
-		return ((value is bool b && b) ? True : False)!;
+		// ReSharper disable once HeapView.PossibleBoxingAllocation
+		return (value is true ? True : False)!;
 	}
 
 	public virtual object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 	{
-		return value is T && EqualityComparer<T>.Default.Equals((T)value, True);
+		// ReSharper disable once HeapView.BoxingAllocation
+		return value is T value1 && EqualityComparer<T>.Default.Equals(value1, True);
 	}
 }

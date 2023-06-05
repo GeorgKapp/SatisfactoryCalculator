@@ -65,11 +65,11 @@ internal class DataImportViewModel : ObservableObject
                 {
                     ReportMessage("Error occured: Error copied to clipboard");
                     await Task.Delay(1000);
-                    _clipBoardService.CopyToClipboard(result.Error!);
+                    ClipBoardService.CopyToClipboard(result.Error!);
                     return;
                 }
 
-                var data = await _dataModelImageCreateService.CreateImagesAsync(result.Content!, UeModelExportDirectoryPath, Constants.ImageFilePath, progress, _cancellationTokenSource.Token);
+                var data = await DataModelImageCreateService.CreateImagesAsync(result.Content!, UeModelExportDirectoryPath, Constants.ImageFilePath, progress, _cancellationTokenSource.Token);
                 var mappingResult = _mappingService.MapToConfigurationModel(data, progress, _cancellationTokenSource.Token);
                 _applicationState.SetConfig(data, mappingResult);
 
@@ -81,12 +81,12 @@ internal class DataImportViewModel : ObservableObject
         {
             ReportMessage("Exception occured: Exception copied to clipboard");
             await Task.Delay(1000);
-            _clipBoardService.CopyToClipboard(exception.ToString());
+            ClipBoardService.CopyToClipboard(exception.ToString());
         }
         finally
         {
             _cancellationTokenSource.Dispose();
-            _cancellationTokenSource = new CancellationTokenSource();
+            _cancellationTokenSource = new();
             IsLoading = false;
         }
 	}

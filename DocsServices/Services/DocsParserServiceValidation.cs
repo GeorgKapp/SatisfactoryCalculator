@@ -1,8 +1,9 @@
-﻿namespace SatisfactoryCalculator.DocsServices.Services;
+﻿// ReSharper disable HeapView.ObjectAllocation
+namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-    private Result ValidateForDuplicates<T>(IEnumerable<T> source) where T : IBase
+    private static Result ValidateForDuplicates<T>(IEnumerable<T> source) where T : IBase
     {
         var duplicates = source
             .GroupBy(p => p.ClassName)
@@ -15,7 +16,7 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private Result ValidateReferencesByTarget<T>(IEnumerable<T> source, IEnumerable<T> target) where T : IBase
+    private static Result ValidateReferencesByTarget<T>(IEnumerable<T> source, IEnumerable<T> target) where T : IBase
     {
         var missingReferences = target.Select(p => p.ClassName)
             .Except(source.Select(p => p.ClassName))
@@ -26,7 +27,7 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private Result SeperatelyValidateDataForDuplicates(Data data)
+    private static Result SeperatelyValidateDataForDuplicates(Data data)
     {
         return Result.Combine(
             new[] 
@@ -49,7 +50,7 @@ public partial class DocsParserService
             );
     }
 
-    private Result ValidateDataReferences(Data data)
+    private static Result ValidateDataReferences(Data data)
     {
         var items = data.Items.Cast<IBase>();
 
@@ -68,15 +69,15 @@ public partial class DocsParserService
             .Concat(data.Miners);
 
         var buildingValidationResult = ValidateReferencesByTarget(buildings, buildingReferences);
-        if (!buildingValidationResult.IsSuccess)
-            return buildingValidationResult;
-
-        return Result.Success();
+        
+        return !buildingValidationResult.IsSuccess 
+            ? buildingValidationResult 
+            : Result.Success();
     }
 
-    private Result ValidateItemExistanceInRecipes(Data data)
+    private static Result ValidateItemExistanceInRecipes(Data data)
     {
-        string[] sources = GetClassNames(data.Items)
+        var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
             .Concat(GetClassNames(data.Consumables))
             .Concat(GetClassNames(data.Resources))
@@ -95,9 +96,10 @@ public partial class DocsParserService
             .ToArray();
 
         var results = new List<Result>();
+        // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var recipe in recipes)
         {
-            string[] recipeContentNames = GetClassNames(recipe.Ingredients)
+            var recipeContentNames = GetClassNames(recipe.Ingredients)
                 .Concat(GetClassNames(recipe.Products))
                 .ToArray();
 
@@ -111,7 +113,7 @@ public partial class DocsParserService
         return Result.Combine(results);
     }
 
-    private Result ValidateItemExistanceInSchematics(Data data)
+    private static Result ValidateItemExistanceInSchematics(Data data)
     {
         var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
@@ -128,7 +130,8 @@ public partial class DocsParserService
             .ToArray();
 
         var results = new List<Result>();
-        foreach (Schematic schematic in data.Schematics)
+        // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
+        foreach (var schematic in data.Schematics)
         {
             var controlEntities =
                 GetClassNames(schematic.Cost)
@@ -149,6 +152,6 @@ public partial class DocsParserService
         return Result.Combine(results);
     }
 
-    private IEnumerable<string> GetClassNames<T>(IEnumerable<T> source) where T : IBase =>
+    private static IEnumerable<string> GetClassNames<T>(IEnumerable<T> source) where T : IBase =>
         source.Select(p => p.ClassName);
 }

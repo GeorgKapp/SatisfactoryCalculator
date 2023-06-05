@@ -18,7 +18,7 @@ internal class FilterableEntityViewModel : ObservableObject
     public object? CurrentPage
 	{
 		get => _currentPage;
-		set => SetProperty(ref _currentPage, value);
+		private set => SetProperty(ref _currentPage, value);
 	}
     
     private IEntity? _selectedEntity;
@@ -51,32 +51,32 @@ internal class FilterableEntityViewModel : ObservableObject
 	    switch (_selectedEntity)
 	    {
 		    case Equipment equipment:
-			    var equipmentFetchResult = _pageService.FetchPageWithViewModel<EquipmentPage, EquipmentViewModel>();
+			    var equipmentFetchResult = PageService.FetchPageWithViewModel<EquipmentPage, EquipmentViewModel>();
 			    equipmentFetchResult.Item2.SelectedEquipment = equipment;
 			    CurrentPage = equipmentFetchResult.Item1;
 			    break;
 		    case Consumable consumable:
-			    var consumableFetchResult = _pageService.FetchPageWithViewModel<ConsumablePage, ConsumableViewModel>();
+			    var consumableFetchResult = PageService.FetchPageWithViewModel<ConsumablePage, ConsumableViewModel>();
 			    consumableFetchResult.Item2.SelectedConsumable = consumable;
 			    CurrentPage = consumableFetchResult.Item1;
 			    break;
 		    case Item item:
-			    var itemFetchResult = _pageService.FetchPageWithViewModel<ItemPage, ItemViewModel>();
+			    var itemFetchResult = PageService.FetchPageWithViewModel<ItemPage, ItemViewModel>();
 			    itemFetchResult.Item2.SelectedItem = item;
 			    CurrentPage = itemFetchResult.Item1;
 			    break;
 		    case Generator generator:
-			    var generatorFetchResult = _pageService.FetchPageWithViewModel<GeneratorPage, GeneratorViewModel>();
+			    var generatorFetchResult = PageService.FetchPageWithViewModel<GeneratorPage, GeneratorViewModel>();
 			    generatorFetchResult.Item2.SelectedGenerator = generator;
 			    CurrentPage = generatorFetchResult.Item1;
 			    break;
 		    case Building building:
-			    var buildingFetchResult = _pageService.FetchPageWithViewModel<BuildingPage, BuildingViewModel>();
+			    var buildingFetchResult = PageService.FetchPageWithViewModel<BuildingPage, BuildingViewModel>();
 			    buildingFetchResult.Item2.SelectedBuilding = building;
 			    CurrentPage = buildingFetchResult.Item1;
 			    break;
 		    case Recipe recipe:
-			    var recipeFetchResult = _pageService.FetchPageWithViewModel<RecipePage, RecipeViewModel>();
+			    var recipeFetchResult = PageService.FetchPageWithViewModel<RecipePage, RecipeViewModel>();
 			    recipeFetchResult.Item2.SelectedRecipe = recipe;
 			    CurrentPage = recipeFetchResult.Item1;
 			    break;

@@ -39,10 +39,11 @@ internal static class ReferenceParseUtility
 			.ToArray();
 	}
 
-	private static IEnumerable<string> MapToReferenceIEnumerable(string[] sanitizedSplitInput)
+	private static IEnumerable<string> MapToReferenceIEnumerable(IEnumerable<string> sanitizedSplitInput)
 	{
-		for (var i = 0; i < sanitizedSplitInput.Length; i++)
-			yield return MapToClassReference(sanitizedSplitInput[i]);
+		return sanitizedSplitInput.Select(p => 
+			// ReSharper disable once ConvertClosureToMethodGroup
+			MapToClassReference(p));
 	}
 
 	private static string MapToClassReference(string input)
@@ -58,13 +59,14 @@ internal static class ReferenceParseUtility
 		var sanitizedInput = SanitizeInput(mClassReferenceWithAmountInput);
 		var sanitizedSplitInput = sanitizedInput.Split(ArraySplitTag);
 
+		// ReSharper disable once HeapView.ObjectAllocation
 		return MapToReferenceWithAmountIEnumerable(sanitizedSplitInput)
 			.ToArray();
 	}
 
-	private static IEnumerable<Reference> MapToReferenceWithAmountIEnumerable(string[] sanitizedSplitInput)
+	private static IEnumerable<Reference> MapToReferenceWithAmountIEnumerable(IReadOnlyList<string> sanitizedSplitInput)
 	{
-		for (int i = 0; i < sanitizedSplitInput.Length; i += 2)
+		for (var i = 0; i < sanitizedSplitInput.Count; i += 2)
 			yield return MapToReferenceWithAmount(sanitizedSplitInput[i], sanitizedSplitInput[i + 1]);
 	}
 
@@ -75,7 +77,7 @@ internal static class ReferenceParseUtility
 
 		var className = SanitizeItemName(nameInput);
 		var amount = SanitizeAmount(amountInput);
-		return new(className: ClassNameParseUtility.CleanClassName(className)!, amount: amount);
+		return new(ClassNameParseUtility.CleanClassName(className)!, amount);
 	}
 
 	private static string SanitizeInput(string input)

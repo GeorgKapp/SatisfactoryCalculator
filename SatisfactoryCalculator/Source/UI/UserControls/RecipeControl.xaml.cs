@@ -9,7 +9,7 @@ public partial class RecipeControl
         get => (Recipe)GetValue(RecipeProperty);
         set => SetValue(RecipeProperty, value);
     }
-    internal static readonly DependencyProperty RecipeProperty = DependencyProperty.Register(nameof(Recipe), typeof(Recipe), typeof(RecipeControl), new PropertyMetadata(UpdateVisibilities));
+    internal static readonly DependencyProperty RecipeProperty = DependencyProperty.Register(nameof(Recipe), typeof(Recipe), typeof(RecipeControl), new(UpdateVisibilities));
 
     private static void UpdateVisibilities(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

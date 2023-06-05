@@ -1,10 +1,11 @@
 ﻿using Item = SatisfactoryCalculator.DocsServices.Models.DataModels.Item;
+// ReSharper disable HeapView.ObjectAllocation
 
 namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-    private Item _fiscitCoupon = new Item
+    private readonly Item _fiscitCoupon = new()
     {
         ClassName = "ResourceSinkCoupon_C",
         DisplayName = "FICSIT Coupon",
@@ -14,7 +15,7 @@ public partial class DocsParserService
         BigIconPath = "\\Game\\FactoryGame\\Resource\\Parts\\ResourceSinkCoupon\\UI\\IconDesc_Ficsit_Coupon_256.png"
     };
 
-    private Item _coffeeCup = new Item
+    private readonly Item _coffeeCup = new()
     {
         ClassName = "Cup_C",
         DisplayName = "FICSIT™ Coffee Cup",
@@ -23,7 +24,7 @@ public partial class DocsParserService
         BigIconPath = "\\Game\\FactoryGame\\Equipment\\Cup\\UI\\IconDesc_CoffeeCup_256.png"
     };
 
-    private Item _goldenCoffeeCup = new Item
+    private readonly Item _goldenCoffeeCup = new()
     {
         ClassName = "CupGold_C",
         DisplayName = "Employee of the Planet' Cup",
@@ -32,7 +33,7 @@ public partial class DocsParserService
         BigIconPath = "\\Game\\FactoryGame\\Equipment\\GoldenCup\\UI\\IconDesc_CupGold_256.png"
     };
 
-    private Item _boomBox = new Item
+    private readonly Item _boomBox = new()
     {
         ClassName = "BoomBox_C",
         DisplayName = "Boom Box",
@@ -41,90 +42,89 @@ public partial class DocsParserService
         BigIconPath = "\\Game\\FactoryGame\\Equipment\\BoomBox\\UI\\IconDesc_Boombox_256.png"
     };
 
-    private Equipment _coffeeCupEquipment = new Equipment
+    private readonly Equipment _coffeeCupEquipment = new()
     {
         ClassName = "Cup_C",
         EquipmentSlot = EquipmentSlot.Arms
     };
 
-    private Equipment _goldenCoffeeCupEquipment = new Equipment
+    private readonly Equipment _goldenCoffeeCupEquipment = new()
     {
         ClassName = "CupGold_C",
         EquipmentSlot = EquipmentSlot.Arms
     };
 
-    private Equipment _boomBoxEquipment = new Equipment
+    private readonly Equipment _boomBoxEquipment = new()
     {
         ClassName = "BoomBox_C",
         EquipmentSlot = EquipmentSlot.Arms
     };
 
-    private Emote[] _emotes = new Emote[]
-    {
-        new Emote
+    private readonly Emote[] _emotes = {
+        new()
         {
             ClassName = "Clap_C",
             DisplayName = "Clap",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\Emote_Clap_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\Emote_Clap_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "BuildGunSpin_C",
             DisplayName = "Twirl It",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\Emote_BuildGunSpin_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\Emote_BuildGunSpin_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "FacePalm_C",
             DisplayName = "Facepalm",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteFacepalm_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteFacepalm_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "Rock_C",
             DisplayName = "Rock",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteRock2_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteRock_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "Paper_C",
             DisplayName = "Paper",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmotePaper2_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmotePaper_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "Scissors_C",
             DisplayName = "Scissors",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteScissors2_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteScissors_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "Point_C",
             DisplayName = "Point",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmotePoint_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmotePoint_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "Wave_C",
             DisplayName = "Wave",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteWave_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteWave_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "Heart_C",
             DisplayName = "Heart",
             SmallIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteHeart_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Interface\\UI\\Assets\\EmoteIcons\\IconDesc_EmoteHeart_256.png"
         },
-        new Emote
+        new()
         {
             ClassName = "Fingerguns_C",
             DisplayName = "Finger Guns",
@@ -133,9 +133,8 @@ public partial class DocsParserService
         }
     };
 
-    private Statue[] _statues = new Statue[]
-    {
-        new Statue
+    private readonly Statue[] _statues = {
+        new()
         {
             ClassName = "Hog_Statue_C",
             DisplayName = "Silver Hog",
@@ -143,7 +142,7 @@ public partial class DocsParserService
             SmallIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_Hog_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_Hog_256.png"
         },
-        new Statue
+        new()
         {
             ClassName = "SpaceGiraffeStatue_C",
             DisplayName = "Confusing Creature",
@@ -151,7 +150,7 @@ public partial class DocsParserService
             SmallIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_SpaceGiraffe_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_SpaceGiraffe_256.png"
         },
-        new Statue
+        new()
         {
             ClassName = "DoggoStatue_C",
             DisplayName = "Lizard Doggo Statue",
@@ -159,7 +158,7 @@ public partial class DocsParserService
             SmallIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_LizardDoggo_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_LizardDoggo_256.png"
         },
-        new Statue
+        new()
         {
             ClassName = "GoldenNut_Statue_C",
             DisplayName = "Golden Nut",
@@ -167,7 +166,7 @@ public partial class DocsParserService
             SmallIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_Nut_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_Nut_256.png"
         },
-        new Statue
+        new()
         {
             ClassName = "CharacterClap_Statue_C",
             DisplayName = "Pretty Good Pioneering",
@@ -175,7 +174,7 @@ public partial class DocsParserService
             SmallIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_CharSilver_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\IconDesc_AwardStatue_Char_256.png"
         },
-        new Statue
+        new()
         {
             ClassName = "CharacterRunStatue_C",
             DisplayName = "Adequate Pioneering",
@@ -183,7 +182,7 @@ public partial class DocsParserService
             SmallIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_CharBronze_64.png",
             BigIconPath = "\\Game\\FactoryGame\\Buildable\\Building\\Decor\\Statues\\UI\\TXUI_Award_CharBronze_256.png"
         },
-        new Statue
+        new()
         {
             ClassName = "CharacterSpin_Statue_C",
             DisplayName = "Satisfactory Pioneering",

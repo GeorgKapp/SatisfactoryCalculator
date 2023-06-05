@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public class DataModelImageCreateService
 {
-    public async Task<Data> CreateImagesAsync(Data data, string ueModelExportPath, string imageFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
+    public static async Task<Data> CreateImagesAsync(Data data, string ueModelExportPath, string imageFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
     {
         progress?.ReportOrThrow("Creating Images", token);
         if (!Directory.Exists(imageFilePath))
@@ -26,7 +26,7 @@ public class DataModelImageCreateService
         return data;
     }
 
-    private async Task CreateImagesAsync(IEnumerable<IIcon> iconObjects, string ueModelExportPath, string imageFilePath)
+    private static async Task CreateImagesAsync(IEnumerable<IIcon> iconObjects, string ueModelExportPath, string imageFilePath)
     {
         foreach (var iconObject in iconObjects)
         {
@@ -35,7 +35,7 @@ public class DataModelImageCreateService
         }
     }
 
-    private async Task<string> CreateImageAsync(string? sourceRelativePath, string ueModelExportPath, string imageFilePath)
+    private static async Task<string> CreateImageAsync(string? sourceRelativePath, string ueModelExportPath, string imageFilePath)
     {
         if (string.IsNullOrEmpty(sourceRelativePath))
             return string.Empty;
@@ -46,6 +46,7 @@ public class DataModelImageCreateService
         
         if (!File.Exists(sourceFile))
         {
+            // ReSharper disable once HeapView.ObjectAllocation
             Debug.Print($"File missing: {sourceFile}");
             return string.Empty;
         }
@@ -54,7 +55,7 @@ public class DataModelImageCreateService
         return targetPath;
     }
 
-    private async Task CopyFileAsync(string sourceFile, string destinationFile, CancellationToken? token = null)
+    private static async Task CopyFileAsync(string sourceFile, string destinationFile, CancellationToken? token = null)
     {
         await using var sourceStream = new FileStream(sourceFile, FileMode.Open, FileAccess.Read, FileShare.Read);
         await using var destinationStream = new FileStream(destinationFile, FileMode.Create, FileAccess.Write, FileShare.None);

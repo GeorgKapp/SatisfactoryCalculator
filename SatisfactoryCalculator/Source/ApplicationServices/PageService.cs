@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class PageService
 {
-    public (TPage, TViewModel) FetchPageWithViewModel<TPage, TViewModel>() 
+    public static (TPage, TViewModel) FetchPageWithViewModel<TPage, TViewModel>() 
         where TPage : Page
         where TViewModel : ObservableObject
     {
@@ -12,7 +12,7 @@ internal class PageService
         return (page, viewModel);
     }
     
-    public TPage FetchPage<TPage>() 
+    public static TPage FetchPage<TPage>() 
         where TPage : Page
     {
         return ServiceHost.Provider.GetRequiredService<TPage>();

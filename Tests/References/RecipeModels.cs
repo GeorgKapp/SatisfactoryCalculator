@@ -1,57 +1,49 @@
 ﻿namespace SatisfactoryCalculator.Tests.References;
 
-internal class RecipeModels
+internal static class RecipeModels
 {
-    public static Recipe CableRecipe = new Recipe(className: "Cable_C", name: "Cable",
-        manufactoringDuration: 2, constructedByBuildGun: false, constructedInWorkbench: false,
-        constructedInWorkshop: false, isAlternateRecipe: false, buildings: new[]
-        {
-            new RecipeBuilding(building: BuildingModels.Constructor)
-        }, ingredients: new[]
-        {
-            new RecipePart(part: ItemModels.Wire, sourceAmount: 2),
-        }, products: new[]
-        {
-            new RecipePart(part: ItemModels.Cable, sourceAmount: 1),
-        });
-
-    public static Recipe IronPlateRecipe = new Recipe(className: "IronPlate_C", name: "Iron Plate",
-        manufactoringDuration: 6, constructedByBuildGun: false, constructedInWorkbench: true,
-        constructedInWorkshop: false, isAlternateRecipe: false, buildings: new[]
-        {
-            new RecipeBuilding(building: BuildingModels.Constructor)
-        }, ingredients: new[]
-        {
-            new RecipePart(part: ItemModels.IronIngot, sourceAmount: 3),
-        }, products: new[]
-        {
-            new RecipePart(part: ItemModels.IronPlate, sourceAmount: 2),
-        });
+    public static readonly Recipe CableRecipe = new(
+        "Cable_C", 
+        "Cable", 
+        false, 
+        false, 
+        true,
+        false, 2,
+        new[] { new RecipePart(ItemModels.Wire, 2) },
+        new[] { new RecipePart(ItemModels.Cable, 1) },
+        new[] { new RecipeBuilding(BuildingModels.Constructor) });
     
-    public static Recipe IronRodRecipe = new Recipe(className: "IronRod_C", name: "Iron Rod",
-        manufactoringDuration: 4, constructedByBuildGun: false, constructedInWorkbench: true,
-        constructedInWorkshop: false, isAlternateRecipe: false, buildings: new[]
-        {
-            new RecipeBuilding(building: BuildingModels.Constructor)
-        }, ingredients: new[]
-        {
-            new RecipePart(part: ItemModels.IronIngot, sourceAmount: 1),
-        }, products: new[]
-        {
-            new RecipePart(part: ItemModels.IronRod, sourceAmount: 1),
-        });
+    public static readonly Recipe IronPlateRecipe = new(
+        "IronPlate_C", 
+        "Iron Plate", 
+        false, 
+        false, 
+        true,
+        false, 6,
+        new[] { new RecipePart(ItemModels.IronIngot, 3) },
+        new[] { new RecipePart(ItemModels.IronPlate, 2) },
+        new[] { new RecipeBuilding(BuildingModels.Constructor) });
 
-    public static Recipe ResidualPlasticRecipe = new Recipe(className: "ResidualPlastic_C",
-        name: "Residual Plastic", manufactoringDuration: 6, constructedByBuildGun: false,
-        constructedInWorkbench: false, constructedInWorkshop: false, isAlternateRecipe: false, buildings: new[]
-        {
-            new RecipeBuilding(building: BuildingModels.OilRefinery)
-        }, ingredients: new[]
-        {
-            new RecipePart(part: ItemModels.PolymerResin, sourceAmount: 6),
-            new RecipePart(part: ItemModels.Water, sourceAmount: 2000),
-        }, products: new[]
-        {
-            new RecipePart(part: ItemModels.Plastic, sourceAmount: 2),
-        });
+    public static readonly Recipe IronRodRecipe = new(
+        "IronRod_C", 
+        "Iron Rod", 
+        false, 
+        false, 
+        true,
+        false, 4,
+        new[] { new RecipePart(ItemModels.IronIngot, 1) },
+        new[] { new RecipePart(ItemModels.IronRod, 1) },
+        new[] { new RecipeBuilding(BuildingModels.Constructor) });
+    
+    public static readonly Recipe ResidualPlasticRecipe = new(
+        "ResidualPlastic_C", 
+        "Residual Plastic", 
+        false, 
+        false, 
+        false,
+        false, 6,
+        new[] { new RecipePart(ItemModels.PolymerResin, 6), 
+                         new RecipePart(ItemModels.Water, 2000) },
+        new[] { new RecipePart(ItemModels.Plastic, 2) },
+        new[] { new RecipeBuilding(BuildingModels.OilRefinery) });
 }

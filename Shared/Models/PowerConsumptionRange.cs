@@ -1,3 +1,4 @@
+// ReSharper disable NotAccessedPositionalProperty.Global
 namespace SatisfactoryCalculator.Shared.Models;
 
 public record PowerConsumptionRange(

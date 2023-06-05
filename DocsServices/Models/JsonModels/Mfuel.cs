@@ -1,4 +1,5 @@
 // ReSharper disable InconsistentNaming
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 #pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.JsonModels;
 

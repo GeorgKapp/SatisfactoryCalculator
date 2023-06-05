@@ -23,7 +23,7 @@ public class SatisfactoryButton : Button
 			nameof(CornerRadius), 
 			typeof(CornerRadius), 
 			typeof(SatisfactoryButton),
-			new PropertyMetadata(
+			new(
 				new CornerRadius(0)
 				));
 
@@ -38,6 +38,6 @@ public class SatisfactoryButton : Button
 		    nameof(HoverColor), 
 		    typeof(SolidColorBrush), 
 		    typeof(SatisfactoryButton), 
-		    new PropertyMetadata(null)
+		    new(null)
 		    );
 }

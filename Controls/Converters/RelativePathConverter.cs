@@ -6,8 +6,9 @@ public class RelativePathConverter : IValueConverter
 {
 	public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 	{
-		return value is string 
-			? AppDomain.CurrentDomain.BaseDirectory + (value as string) 
+		return value is string s
+			// ReSharper disable once HeapView.ObjectAllocation
+			? $"{AppDomain.CurrentDomain.BaseDirectory}{s}"
 			: value;
 	}
 

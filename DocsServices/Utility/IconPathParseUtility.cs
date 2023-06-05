@@ -12,10 +12,11 @@ internal static class IconPathParseUtility
 		if (iconPath.Contains("CoffeeCup"))
 			_ = 1;
 		
-		var text = (iconPath.StartsWith("Texture2D") ? iconPath.Remove(0, "Texture2D".Length) : iconPath);
+		var text = iconPath.StartsWith("Texture2D") ? iconPath.Remove(0, "Texture2D".Length) : iconPath;
 		text = text.Trim().Trim('\'').Trim('"');
 		var directoryName = Path.GetDirectoryName(text);
 		var text2 = Path.GetFileName(iconPath).Split('.')[0];
+		// ReSharper disable once HeapView.ObjectAllocation
 		return Path.Combine(directoryName!, text2 + ".png");
 	}
 

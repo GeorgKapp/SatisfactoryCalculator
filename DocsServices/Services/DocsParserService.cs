@@ -23,13 +23,13 @@ public partial class DocsParserService
 
         var biomassItems = Array.Empty<Item>();
         foreach (var class1 in classes1)
-		{
-			if (class1.NativeClass == "Class'/Script/FactoryGame.FGItemDescriptorBiomass'")
-			{
-                biomassItems = ParseItems(class1.Classes);
-				break;
-			}
-		}
+        {
+	        if (class1.NativeClass != "Class'/Script/FactoryGame.FGItemDescriptorBiomass'") 
+		        continue;
+	        
+	        biomassItems = ParseItems(class1.Classes);
+	        break;
+        }
 		data.Items.AddRange(biomassItems);
 
         foreach (var class1 in classes1)
@@ -185,6 +185,7 @@ public partial class DocsParserService
                     break;
 
 				default:
+					// ReSharper disable once HeapView.ObjectAllocation
 					return Result<Data>.Failure($"{class1.NativeClass} not parsed");
 			}
 		}
@@ -201,7 +202,7 @@ public partial class DocsParserService
 		data.Equipments.Add(_boomBoxEquipment);
 		
 		progress?.ReportOrThrow("Edit equipment description", token);
-		EditEquipmentDescription(data.Items);
+        EditEquipmentDescription(data.Items);
 
 		progress?.ReportOrThrow("Add missing vehicles", token);
 		data.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCart_C"]));
@@ -214,7 +215,7 @@ public partial class DocsParserService
 		data.Statues.AddRange(_statues);
 		
 		progress?.ReportOrThrow("Remove Generator Fuels with no energy value", token);
-		RemoveGeneratorFuelsWithNoEnergy(data.Items, data.Generators);
+        RemoveGeneratorFuelsWithNoEnergy(data.Items, data.Generators);
 
 		progress?.ReportOrThrow("Check for duplicates", token);
 		var duplicateCheckResult = SeperatelyValidateDataForDuplicates(data);

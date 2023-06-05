@@ -2,28 +2,26 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-    public void RemoveGeneratorFuelsWithNoEnergy(List<Item> items, List<Generator> generators)
+    // ReSharper disable once HeapView.ClosureAllocation
+    private static void RemoveGeneratorFuelsWithNoEnergy(IEnumerable<Item> items, List<Generator> generators)
     {
         foreach (var generator in generators)
         {
             generator.Fuels = generator.Fuels
+                // ReSharper disable once HeapView.ClosureAllocation
                 .Where(p =>  items
-                    .Where(i => i.ClassName == p.FuelClass)
-                    .Single().EnergyValue > 0)
+                    .Single(i => i.ClassName == p.FuelClass).EnergyValue > 0)
                 .ToArray();
         }
     }
-    
-    public void EditEquipmentDescription(List<Item> items)
+
+    private static void EditEquipmentDescription(IEnumerable<Item> items)
     {
-        foreach (var item in items)
+        foreach (var item in items.Where(item => item.ClassName == "Chainsaw_C"))
         {
-            if (item.ClassName == "Chainsaw_C")
-            {
-                item.Description = item.Description
-                    .Replace("Slot: Hands", "")
-                    .Trim();
-            }
+            item.Description = item.Description
+                .Replace("Slot: Hands", "")
+                .Trim();
         }
     }
 }

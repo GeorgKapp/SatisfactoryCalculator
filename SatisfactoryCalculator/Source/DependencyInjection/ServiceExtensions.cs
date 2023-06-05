@@ -25,7 +25,6 @@ internal static class ServiceExtensions
 		services
 			.AddTransient<CalculationService>()
 			.AddTransient<DataModelMappingService>()
-			.AddTransient<MessageService>()
 			.AddTransient<PageService>()
 			.AddTransient<ClipBoardService>();
 

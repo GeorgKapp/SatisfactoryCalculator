@@ -37,7 +37,7 @@ public partial class LoadingControl
             nameof(AllowCancel), 
             typeof(bool), 
             typeof(LoadingControl), 
-            new PropertyMetadata(true)
+            new(true)
             );
 
     public ICommand CancelCommand

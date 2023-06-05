@@ -1,46 +1,89 @@
-﻿namespace SatisfactoryCalculator.Tests.References;
+﻿// ReSharper disable UnusedMember.Global
+namespace SatisfactoryCalculator.Tests.References;
 
-internal class ItemModels
+internal static class ItemModels
 {
-    public static Item Wire = new Item(className: "Wire_C", name: "Wire", form: Shared.Enums.Form.Solid,
-        energyValue: 0);
+    public static readonly Item Wire = new(
+        "Wire_C", 
+        "Wire", 
+        Shared.Enums.Form.Solid,
+        0);
 
-    public static Item Cable = new Item(className: "Cable_C", name: "Cable", form: Shared.Enums.Form.Solid,
-        energyValue: 0);
+    public static readonly Item Cable = new(
+        "Cable_C", 
+        "Cable",
+        Shared.Enums.Form.Solid,
+        0);
 
-    public static Item IronPlate = new Item(className: "IronPlate_C", name: "Iron Plate", form: Shared.Enums.Form.Solid,
-        energyValue: 0);
+    public static readonly Item IronPlate = new(
+        "IronPlate_C", 
+        "Iron Plate", 
+        Shared.Enums.Form.Solid,
+        0);
     
-    public static Item IronRod = new Item(className: "IronRod_C", name: "Iron Rod", form: Shared.Enums.Form.Solid,
-        energyValue: 0);
+    public static readonly Item IronRod = new(
+        "IronRod_C", 
+        "Iron Rod", 
+        Shared.Enums.Form.Solid,
+        0);
 
-    public static Item IronIngot = new Item(className: "IronIngot_C", name: "Iron Ingot", form: Shared.Enums.Form.Solid,
-        energyValue: 0);
+    public static readonly Item IronIngot = new(
+        "IronIngot_C", 
+        "Iron Ingot", 
+        Shared.Enums.Form.Solid,
+        0);
 
-    public static Item PolymerResin = new Item(className: "PolymerResin_C", name: "Polymer Resin",
-        form: Shared.Enums.Form.Solid, energyValue: 0);
+    public static readonly Item PolymerResin = new(
+        "PolymerResin_C", 
+        "Polymer Resin",
+        Shared.Enums.Form.Solid, 
+        0);
 
-    public static Item Plastic = new Item(className: "Plastic_C", name: "Plastic", form: Shared.Enums.Form.Solid,
-        energyValue: 0);
+    public static readonly Item Plastic = new(
+        "Plastic_C", 
+        "Plastic", 
+        Shared.Enums.Form.Solid,
+        0);
 
-    public static Item Water = new Item(className: "Water_C", name: "Water", form: Shared.Enums.Form.Liquid,
-        energyValue: 0);
+    public static readonly Item Water = new(
+        "Water_C", 
+        "Water", 
+        Shared.Enums.Form.Liquid,
+        0);
 
-    public static Item Rubber = new Item(className: "Rubber_C", name: "Rubber", form: Shared.Enums.Form.Solid,
-        energyValue: 0);
+    public static readonly Item Rubber = new(
+        "Rubber_C", 
+        "Rubber", 
+        Shared.Enums.Form.Solid,
+        0);
 
-    public static Item LiquidFuel = new Item(className: "LiquidFuel_C", name: "LiquidFuel",
-        form: Shared.Enums.Form.Liquid, energyValue: 0.75);
+    public static readonly Item LiquidFuel = new(
+        "LiquidFuel_C", 
+        "LiquidFuel",
+        Shared.Enums.Form.Liquid, 
+        0.75);
 
-    public static Item Coal = new Item(className: "Coal_C", name: "Coal", form: Shared.Enums.Form.Solid,
-        energyValue: 300);
+    public static readonly Item Coal = new(
+        "Coal_C", 
+        "Coal",
+        Shared.Enums.Form.Solid,
+        300);
 
-    public static Item CompactedCoal = new Item(className: "CompactedCoal_C", name: "Compacted Coal",
-        form: Shared.Enums.Form.Solid, energyValue: 630);
+    public static readonly Item CompactedCoal = new(
+        "CompactedCoal_C", 
+        "Compacted Coal",
+        Shared.Enums.Form.Solid, 
+        630);
 
-    public static Item PetroleumCoke = new Item(className: "PetroleumCoke_C", name: "Petroleum Coke",
-        form: Shared.Enums.Form.Solid, energyValue: 180);
+    public static readonly Item PetroleumCoke = new(
+        "PetroleumCoke_C", 
+        "Petroleum Coke",
+        Shared.Enums.Form.Solid, 
+        180);
 
-    public static Item PackagedFuel = new Item(className: "Fuel_C", name: "LiquidFuel", form: Shared.Enums.Form.Solid,
-        energyValue: 750);
+    public static readonly Item PackagedFuel = new(
+        "Fuel_C", 
+        "LiquidFuel", 
+        Shared.Enums.Form.Solid,
+        750);
 }

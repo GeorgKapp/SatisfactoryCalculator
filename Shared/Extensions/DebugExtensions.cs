@@ -7,6 +7,7 @@ public static class DebugExtensions
         var stopwatch = Stopwatch.StartNew();
         var result = func();
         stopwatch.Stop();
+        // ReSharper disable once HeapView.ObjectAllocation
         Debug.WriteLine($"Ellapsed Time for {name}: {stopwatch.Elapsed}");
         return result;
     }
@@ -16,6 +17,7 @@ public static class DebugExtensions
         var stopwatch = Stopwatch.StartNew();
         var result = await task;
         stopwatch.Stop();
+        // ReSharper disable once HeapView.ObjectAllocation
         Debug.WriteLine($"Ellapsed Time for {name}: {stopwatch.Elapsed}");
         return result;
     }

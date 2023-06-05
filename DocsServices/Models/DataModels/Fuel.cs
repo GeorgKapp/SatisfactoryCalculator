@@ -3,8 +3,8 @@ namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 
 public class Fuel
 {
-	public string FuelClass { get; set; }
-	public string? SupplementalResourceClass { get; set; }
-	public string? ByProduct { get; set; }
-	public int? ByProductAmount { get; set; }
+	public string FuelClass { get; init; }
+	public string? SupplementalResourceClass { get; init; }
+	public string? ByProduct { get; init; }
+	public int? ByProductAmount { get; init; }
 }

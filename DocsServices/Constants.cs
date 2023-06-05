@@ -1,3 +1,4 @@
+// ReSharper disable UnusedMember.Global
 namespace SatisfactoryCalculator.DocsServices;
 
 internal static class Constants

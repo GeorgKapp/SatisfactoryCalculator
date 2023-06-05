@@ -1,3 +1,5 @@
+// ReSharper disable UnusedType.Global
+// ReSharper disable UnusedMember.Global
 #pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.JsonModels;
 

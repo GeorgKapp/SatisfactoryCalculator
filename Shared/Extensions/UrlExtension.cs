@@ -1,3 +1,4 @@
+// ReSharper disable HeapView.ObjectAllocation
 namespace SatisfactoryCalculator.Shared.Extensions;
 
 public static class UrlExtension

@@ -30,7 +30,7 @@ internal partial class FilterControl
             nameof(SelectedItem), 
             typeof(object), 
             typeof(FilterControl), 
-            new PropertyMetadata(null));
+            new(null));
 
     public DataTemplate ItemTemplate
     {
@@ -43,7 +43,7 @@ internal partial class FilterControl
             nameof(ItemTemplate), 
             typeof(DataTemplate), 
             typeof(FilterControl), 
-            new PropertyMetadata(OnItemSourceUpdated));
+            new(OnItemSourceUpdated));
     
     private static void OnItemSourceUpdated(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -55,12 +55,12 @@ internal partial class FilterControl
     
     private void UpdateCollectionView()
     {
-        if (ItemsSource is not null)
-        {
-            _collectionView = CollectionViewSource.GetDefaultView(ItemsSource);
-            _collectionView.Filter = ApplyFilter;
-            listView.FindVisualChild<ScrollViewer>()?.ScrollToTop();
-        }
+        if (ItemsSource is null) 
+            return;
+        
+        _collectionView = CollectionViewSource.GetDefaultView(ItemsSource);
+        _collectionView.Filter = ApplyFilter;
+        listView.FindVisualChild<ScrollViewer>()?.ScrollToTop();
     }
 
     private void RefreshFilter()

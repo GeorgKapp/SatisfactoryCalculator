@@ -1,15 +1,15 @@
 ﻿namespace SatisfactoryCalculator.Tests.References;
 
-internal class FuelContentModels
+internal static class FuelContentModels
 {
-    public static FuelItem LiquidFuel = new FuelItem(item: ItemModels.LiquidFuel);
+    public static readonly FuelItem LiquidFuel = new(ItemModels.LiquidFuel);
     
-    public static FuelItem Coal = new FuelItem(item: ItemModels.Coal);
+    public static readonly FuelItem Coal = new(ItemModels.Coal);
 
-    public static FuelItem CompactedCoal = new FuelItem(item: ItemModels.CompactedCoal);
+    public static readonly FuelItem CompactedCoal = new(ItemModels.CompactedCoal);
 
-    public static FuelItem PetroleumCoke = new FuelItem(item: ItemModels.PetroleumCoke);
+    public static readonly FuelItem PetroleumCoke = new(ItemModels.PetroleumCoke);
 
-    public static FuelItem Water = new FuelItem(item: ItemModels.Water);
+    public static readonly FuelItem Water = new(ItemModels.Water);
 }
 

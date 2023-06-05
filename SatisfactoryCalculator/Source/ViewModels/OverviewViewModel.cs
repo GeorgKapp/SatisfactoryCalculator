@@ -21,5 +21,5 @@ internal class OverviewViewModel : ObservableObject
 		Notify(nameof(LastSyncDate));
 	}
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
 }

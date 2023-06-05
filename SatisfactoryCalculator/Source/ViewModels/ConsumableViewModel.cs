@@ -33,7 +33,7 @@ internal class ConsumableViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedConsumableAsIngredientInRecipes
     {
         get => _selectedConsumableAsIngredientInRecipes;
-        set
+        private set
         {
             SetProperty(ref _selectedConsumableAsIngredientInRecipes, value);
             NotifyMarginUpdates();
@@ -44,7 +44,7 @@ internal class ConsumableViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedConsumableAsBuildingIngredientInRecipes
     {
         get => _selectedConsumableAsBuildingIngredientInRecipes;
-        set
+        private set
         {
             SetProperty(ref _selectedConsumableAsBuildingIngredientInRecipes, value);
             NotifyMarginUpdates();
@@ -56,7 +56,7 @@ internal class ConsumableViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedConsumableAsProductInRecipes
     {
         get => _selectedConsumableAsProductInRecipes;
-        set
+        private set
         {
             SetProperty(ref _selectedConsumableAsProductInRecipes, value);
             NotifyMarginUpdates();
@@ -67,7 +67,7 @@ internal class ConsumableViewModel : ObservableObject
     public ObservableCollection<Fuel> SelectedConsumableAsFuels
     {
         get => _selectedConsumableAsFuels;
-        set
+        private set
         {
             SetProperty(ref _selectedConsumableAsFuels, value);
             NotifyMarginUpdates();
@@ -84,9 +84,9 @@ internal class ConsumableViewModel : ObservableObject
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
     }
 
-    private Thickness CalculateMargin(bool isPreviousControlVisible) => 
+    private static Thickness CalculateMargin(bool isPreviousControlVisible) => 
         isPreviousControlVisible
-            ? new Thickness(-10, 50, 0, 0)
+            ? new(-10, 50, 0, 0)
             : new Thickness(-10, 0, 0, 0);
 
     private void NotifyMarginUpdates()
@@ -97,5 +97,5 @@ internal class ConsumableViewModel : ObservableObject
         Notify(nameof(FuelsSectionMargin));
     }
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
 }

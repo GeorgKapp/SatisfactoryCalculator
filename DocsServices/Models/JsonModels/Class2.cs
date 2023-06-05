@@ -1,8 +1,10 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 #pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.JsonModels;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal class Class2
 {
     public string? ClassName { get; set; }

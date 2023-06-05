@@ -1,3 +1,4 @@
+// ReSharper disable HeapView.ObjectAllocation
 namespace SatisfactoryCalculator.DocsServices.Utility;
 
 internal static class ScannableObjectParseUtility
@@ -15,7 +16,7 @@ internal static class ScannableObjectParseUtility
 		var className = ReferenceParseUtility.MapToReferenceArray(mClassReferenceInput).First();
 
 		var startIndex = mScannableObjects.IndexOf(ActorsAllowedToScanTag, StringComparison.Ordinal);
-		string?[] actorsAllowedToScan = ReferenceParseUtility.MapToReferenceArray(mScannableObjects[startIndex..]);
+		var actorsAllowedToScan = ReferenceParseUtility.MapToReferenceArray(mScannableObjects[startIndex..]);
 
 		return new()
 		{

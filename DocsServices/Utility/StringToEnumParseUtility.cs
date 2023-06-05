@@ -8,15 +8,8 @@ internal static class StringToEnumParseUtility
 		"RF_LIQUID" => Form.Liquid,
 		"RF_GAS" => Form.Gas,
 		"RF_INVALID" => Form.Invalid,
-		_ => throw new NotImplementedException("Form: " + input),
+		_ => throw new ArgumentOutOfRangeException("Form: " + input)
 	};
-
-	public static Form? ParseFormStringToNNullableEnum(string input)
-	{
-		return string.IsNullOrEmpty(input) 
-			? null 
-			: ParseFormStringToEnum(input);
-	}
 
 	public static StackSize ParseStackSizeStringToEnum(string input) => input switch
 	{
@@ -26,14 +19,8 @@ internal static class StringToEnumParseUtility
 		"SS_MEDIUM" => StackSize.Medium,
 		"SS_ONE" => StackSize.One,
 		"SS_FLUID" => StackSize.Fluid,
-		_ => throw new NotImplementedException("StackSize: " + input),
+		_ => throw new ArgumentOutOfRangeException("StackSize: " + input)
 	};
-
-	public static StackSize? ParseStackSizeStringToNullableEnum(string input)
-	{
-		return string.IsNullOrEmpty(input) 
-			? null : ParseStackSizeStringToEnum(input);
-	}
 
     public static EquipmentSlot ParseEquipmentSlotStringToEnum(string input) => input switch
     {
@@ -42,17 +29,10 @@ internal static class StringToEnumParseUtility
         "ES_BODY" => EquipmentSlot.Body,
         "ES_HEAD" => EquipmentSlot.Head,
         "ES_LEGS" => EquipmentSlot.Legs,
-        _ => throw new NotImplementedException("EquipmentSlot: " + input)
+        _ => throw new ArgumentOutOfRangeException("EquipmentSlot: " + input)
     };
 
-    public static EquipmentSlot? ParseEquipmentSlotStringToNullableEnum(string input)
-	{
-		return string.IsNullOrEmpty(input) 
-			? null 
-			: ParseEquipmentSlotStringToEnum(input);
-	}
-
-	public static SchematicType ParseSchematicTypeStringToEnum(string input) => input switch
+    public static SchematicType ParseSchematicTypeStringToEnum(string input) => input switch
 	{
 		"EST_Custom" => SchematicType.Custom,
 		"EST_MAM" => SchematicType.Mam,
@@ -61,13 +41,6 @@ internal static class StringToEnumParseUtility
 		"EST_Milestone" => SchematicType.Milestone,
 		"EST_Alternate" => SchematicType.Alternate,
 		"EST_ResourceSink" => SchematicType.ResourceSink,
-		_ => throw new NotImplementedException("SchematicType: " + input),
+		_ => throw new ArgumentOutOfRangeException("SchematicType: " + input)
 	};
-
-	public static SchematicType? ParseSchematicTypeStringToNullableEnum(string input)
-	{
-		return string.IsNullOrEmpty(input) 
-			? null 
-			: ParseSchematicTypeStringToEnum(input);
-	}
 }

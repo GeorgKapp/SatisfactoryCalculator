@@ -64,16 +64,17 @@ internal class DataModelMappingService
 
     #region Model Methods
 
-    private IItem[] MapToItemModels(List<Item> items) => items.Select(p => new Models.Item(className: p.ClassName,
-        name: p.DisplayName, description: p.Description, form: p.Form, energyValue: p.EnergyValue,
-        image: BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath)))).Cast<IItem>().OrderBy(p => p.Name).ToArray();
+    private IItem[] MapToItemModels(IEnumerable<Item> items) => items.Select(p => new Models.Item(p.ClassName,
+        p.DisplayName, p.Description, p.Form, p.EnergyValue,
+        BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath)))).Cast<IItem>().OrderBy(p => p.Name).ToArray();
     
-    private IEquipment[] MapToEquipments(List<Equipment> equipments, Dictionary<string, IItem> itemDictionary) => equipments
+    // ReSharper disable once HeapView.ClosureAllocation
+    private IEquipment[] MapToEquipments(IEnumerable<Equipment> equipments, IDictionary<string, IItem> itemDictionary) => equipments
         .Select(p => MapToEquipment(p, itemDictionary))
         .OrderBy(p => p.Name)
         .ToArray();
 
-    private IEquipment MapToEquipment(Equipment equipment, Dictionary<string, IItem> itemDictionary)
+    private IEquipment MapToEquipment(Equipment equipment, IDictionary<string, IItem> itemDictionary)
     {
         var item = itemDictionary[equipment.ClassName];
         var mappedEquipment = new Models.Equipment(item.ClassName, item.Name, item.Image, item.Description, item.Form, item.EnergyValue, equipment.EquipmentSlot);
@@ -117,12 +118,13 @@ internal class DataModelMappingService
         }).Cast<IBuilding>().OrderBy(p => p.Name).ToArray();
     }
 
-    private IGenerator[] MapToGeneratorModels(List<Generator> generators, Dictionary<string, IBuilding> buildingDictionary) => generators
+    // ReSharper disable once HeapView.ClosureAllocation
+    private IGenerator[] MapToGeneratorModels(IEnumerable<Generator> generators, IDictionary<string, IBuilding> buildingDictionary) => generators
             .Select(p => MapToGeneratorModel(p, buildingDictionary))
             .OrderBy(p => p.Name)
             .ToArray();
 
-    private IGenerator MapToGeneratorModel(Generator generator, Dictionary<string, IBuilding> buildingDictionary)
+    private static IGenerator MapToGeneratorModel(Generator generator, IDictionary<string, IBuilding> buildingDictionary)
     {
         var buildingReference = buildingDictionary[generator.ClassName];
         var mappedGenerator = new Models.Generator
@@ -133,13 +135,13 @@ internal class DataModelMappingService
             Image = buildingReference.Image,
             SupplementalToPowerRatio = generator.SupplementToPowerRatio,
             SupplementalLoadAmount = generator.SupplementalLoadAmount,
-            PowerProduction = generator.PowerProduction,
+            PowerProduction = generator.PowerProduction
         };
         buildingDictionary[generator.ClassName] = mappedGenerator;
         return mappedGenerator;
     }
 
-    private Fuel[] MapToFuelModels(List<Generator> generators, IGenerator[] generatorModels, Dictionary<string, IItem> itemDictionary)
+    private Fuel[] MapToFuelModels(IEnumerable<Generator> generators, IGenerator[] generatorModels, IDictionary<string, IItem> itemDictionary)
     {
         List<Fuel> fuelModels = new();
         foreach (var generator in generators)
@@ -151,7 +153,7 @@ internal class DataModelMappingService
         return fuelModels.ToArray();
     }
 
-    private Fuel MapToFuelModel(DocsServices.Models.DataModels.Fuel fuel, IGenerator generator, Dictionary<string, IItem> itemDictionary)
+    private Fuel MapToFuelModel(DocsServices.Models.DataModels.Fuel fuel, IGenerator generator, IDictionary<string, IItem> itemDictionary)
     {
         var ingredient = MapToFuelContentModel(itemDictionary[fuel.FuelClass], 0);
 
@@ -171,8 +173,7 @@ internal class DataModelMappingService
             byProductAmount: byProductAmount, generator: generator);
     }
 
-    private FuelItem MapToFuelContentModel(IItem item, double amount) =>
-        new FuelItem(item: item, amountPerMinute: amount);
+    private FuelItem MapToFuelContentModel(IItem item, double amount) => new(item, amount);
 
     private IRecipe[] MapToRecipeModels(List<Recipe> recipes, Dictionary<string, IItem> itemDictionary, Dictionary<string, IBuilding> buildingDictionary) =>
         recipes
@@ -203,12 +204,12 @@ internal class DataModelMappingService
             .ToArray();
         
         return new Models.Recipe(
-            className: recipe.ClassName, 
-            name: recipe.DisplayName,
-            isAlternateRecipe: recipe.IsAlternate, constructedByBuildGun: recipe.ConstructedByBuildGun,
-            constructedInWorkbench: recipe.ConstructedInWorkbench, constructedInWorkshop: recipe.ConstructedInWorkshop,
-            manufactoringDuration: recipe.ManufactoringDuration, ingredients: ingredients, products: products,
-            buildings: buildings.ToArray());
+            recipe.ClassName, 
+            recipe.DisplayName,
+            recipe.IsAlternate, recipe.ConstructedByBuildGun,
+            recipe.ConstructedInWorkbench, recipe.ConstructedInWorkshop,
+            recipe.ManufactoringDuration, ingredients, products,
+            buildings.ToArray());
     }
 
     private RecipePart MapToRecipeContentModel(Reference recipeItem, double manufactoringDuration, Dictionary<string, IItem> itemDictionary, Dictionary<string, IBuilding> buildingDictionary, bool setOnlyAmount)
@@ -225,15 +226,15 @@ internal class DataModelMappingService
             recipePart = buildingDictionary[recipeItem.ClassName];
         }
 
-        return new(part: recipePart,
-            amount: _calculationService.NormalizeAmount(form, recipeItem.Amount), sourceAmount: recipeItem.Amount,
-            amountPerMinute: setOnlyAmount
+        return new(recipePart,
+            _calculationService.NormalizeAmount(form, recipeItem.Amount), recipeItem.Amount,
+            setOnlyAmount
                 ? null
                 : _calculationService.CalculateAmountPerMinte(form, recipeItem.Amount, manufactoringDuration));
     }
 
     private RecipeBuilding MapToRecipeBuildingModel(IBuilding building, PowerConsumptionRange? powerConsumptionRange) =>
-        new RecipeBuilding(building: building, powerConsumptionRange: powerConsumptionRange);
+        new(building, powerConsumptionRange);
 
     #endregion
 
@@ -259,14 +260,14 @@ internal class DataModelMappingService
     }
 
     private EntityReference CreateEntityReference(string entityClassName, Dictionary<string, IBuilding> buildingDictionary, Fuel[] fuels, IRecipe[] recipes) =>
-        new(entityClassName: entityClassName,
-            recipeIngredient: GetRecipeIngredientReferences(entityClassName, recipes, buildingDictionary),
-            recipeBuildingIngredient: GetRecipeBuildingIngredientReferences(entityClassName, recipes, buildingDictionary), 
-            recipeProduct: GetRecipeProductReferences(entityClassName, recipes),
-            recipeBuilding: GetRecipeBuildingReferences(entityClassName, recipes),
-            fuelIngredient: GetFuelIngredientReferences(entityClassName, fuels),
-            fuelByProduct: GetFuelByProductReferences(entityClassName, fuels),
-            fuelGenerator: GetFuelGeneratorReferences(entityClassName, fuels));
+        new(entityClassName,
+            GetRecipeIngredientReferences(entityClassName, recipes, buildingDictionary),
+            GetRecipeBuildingIngredientReferences(entityClassName, recipes, buildingDictionary), 
+            GetRecipeProductReferences(entityClassName, recipes),
+            GetRecipeBuildingReferences(entityClassName, recipes),
+            GetFuelIngredientReferences(entityClassName, fuels),
+            GetFuelByProductReferences(entityClassName, fuels),
+            GetFuelGeneratorReferences(entityClassName, fuels));
 
     private IRecipe[] GetRecipeIngredientReferences(string entityClassName, IRecipe[] recipes, Dictionary<string, IBuilding> buildingDictionary) => recipes
         .Where(recipe => recipe.Ingredients.Any(p => p.Part.ClassName == entityClassName) &&

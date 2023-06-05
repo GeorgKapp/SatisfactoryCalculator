@@ -20,7 +20,7 @@ internal class BuildingViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedBuildingRecipes
     {
         get => _selectedBuildingRecipes;
-        set => SetProperty(ref _selectedBuildingRecipes, value);
+        private set => SetProperty(ref _selectedBuildingRecipes, value);
     }
     
     public BuildingViewModel(ApplicationState applicationState)
@@ -28,5 +28,5 @@ internal class BuildingViewModel : ObservableObject
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
     }
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
 }

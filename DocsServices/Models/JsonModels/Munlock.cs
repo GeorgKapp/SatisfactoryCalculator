@@ -1,5 +1,7 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedMember.Global
 #pragma warning disable CS8618
 #pragma warning disable CS8618
 

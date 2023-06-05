@@ -6,6 +6,7 @@ public class IntToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
+        // ReSharper disable once HeapView.BoxingAllocation
         return (int)value == 0
             ? Visibility.Collapsed
             : Visibility.Visible;

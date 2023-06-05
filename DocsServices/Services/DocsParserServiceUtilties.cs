@@ -3,7 +3,7 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-    private string[] GetAllClassPrefixes(Class1[] classes1)
+    private static string[] GetAllClassPrefixes(IEnumerable<Class1> classes1)
     {
         return classes1
             .SelectMany(p => p.Classes)
@@ -12,7 +12,7 @@ public partial class DocsParserService
             .ToArray();
     }
 
-    private string[] GetAllForms(Class1[] classes1)
+    private static string[] GetAllForms(IEnumerable<Class1> classes1)
     {
         return classes1
            .SelectMany(p => p.Classes)
@@ -21,7 +21,7 @@ public partial class DocsParserService
            .ToArray();
     }
 
-    private string[] GetAllStackSizes(Class1[] classes1)
+    private static string[] GetAllStackSizes(IEnumerable<Class1> classes1)
     {
         return classes1
            .SelectMany(p => p.Classes)
@@ -30,7 +30,7 @@ public partial class DocsParserService
            .ToArray();
     }
 
-    private string[] GetAllEquipmentSlots(Class1[] classes1)
+    private static string[] GetAllEquipmentSlots(IEnumerable<Class1> classes1)
     {
         return classes1
            .SelectMany(p => p.Classes)
@@ -39,7 +39,7 @@ public partial class DocsParserService
            .ToArray();
     }
 
-    private string[] GetAllTypes(Class1[] classes1)
+    private static string[] GetAllTypes(IEnumerable<Class1> classes1)
     {
         return classes1
            .SelectMany(p => p.Classes)
@@ -48,7 +48,7 @@ public partial class DocsParserService
            .ToArray();
     }
 
-    private string[] GetAllSchematicIcons(Class1[] classes1)
+    private static string[] GetAllSchematicIcons(IEnumerable<Class1> classes1)
     {
         return classes1
            .SelectMany(p => p.Classes)
@@ -57,7 +57,7 @@ public partial class DocsParserService
            .ToArray();
     }
 
-    private string[] GetAllSmallSchematicIcons(Class1[] classes1)
+    private static string[] GetAllSmallSchematicIcons(IEnumerable<Class1> classes1)
     {
         return classes1
            .SelectMany(p => p.Classes)
@@ -66,7 +66,7 @@ public partial class DocsParserService
            .ToArray();
     }
 
-    private string[] GetAllSmallSchematicDependencyClasses(Class1[] classes1)
+    private static string[] GetAllSmallSchematicDependencyClasses(IEnumerable<Class1> classes1)
     {
         return classes1
           .SelectMany(p => p.Classes)

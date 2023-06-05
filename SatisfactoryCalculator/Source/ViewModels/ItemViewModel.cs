@@ -33,7 +33,7 @@ internal class ItemViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedItemAsIngredientInRecipes
     {
         get => _selectedItemAsIngredientInRecipes;
-        set
+        private set
         {
             SetProperty(ref _selectedItemAsIngredientInRecipes, value);
             NotifyMarginUpdates();
@@ -44,7 +44,7 @@ internal class ItemViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedItemAsBuildingIngredientInRecipes
     {
         get => _selectedItemAsBuildingIngredientInRecipes;
-        set
+        private set
         {
             SetProperty(ref _selectedItemAsBuildingIngredientInRecipes, value);
             NotifyMarginUpdates();
@@ -56,7 +56,7 @@ internal class ItemViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedItemAsProductInRecipes
     {
         get => _selectedItemAsProductInRecipes;
-        set
+        private set
         {
             SetProperty(ref _selectedItemAsProductInRecipes, value);
             NotifyMarginUpdates();
@@ -67,7 +67,7 @@ internal class ItemViewModel : ObservableObject
     public ObservableCollection<Fuel> SelectedItemAsFuels
     {
         get => _selectedItemAsFuels;
-        set
+        private set
         {
             SetProperty(ref _selectedItemAsFuels, value);
             NotifyMarginUpdates();
@@ -84,9 +84,9 @@ internal class ItemViewModel : ObservableObject
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
     }
 
-    private Thickness CalculateMargin(bool isPreviousControlVisible) => 
+    private static Thickness CalculateMargin(bool isPreviousControlVisible) => 
         isPreviousControlVisible
-            ? new Thickness(-10, 50, 0, 0)
+            ? new(-10, 50, 0, 0)
             : new Thickness(-10, 0, 0, 0);
 
     private void NotifyMarginUpdates()
@@ -97,5 +97,5 @@ internal class ItemViewModel : ObservableObject
         Notify(nameof(FuelsSectionMargin));
     }
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
 }

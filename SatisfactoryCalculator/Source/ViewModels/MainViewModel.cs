@@ -6,7 +6,7 @@ internal class MainViewModel : ObservableObject
     public object? CurrentPage
 	{
 		get => _currentPage;
-		set => SetProperty(ref _currentPage, value);
+		private set => SetProperty(ref _currentPage, value);
 	}
 
     private bool _isInitializing;
@@ -64,12 +64,12 @@ internal class MainViewModel : ObservableObject
     private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
     private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
     private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);
-	private void ShowOverview() => CurrentPage = _pageService.FetchPage<OverviewPage>();
-	private void ShowDataImport() => CurrentPage = _pageService.FetchPage<DataImportPage>();
+	private void ShowOverview() => CurrentPage = PageService.FetchPage<OverviewPage>();
+	private void ShowDataImport() => CurrentPage = PageService.FetchPage<DataImportPage>();
 
 	private void ShowFilterableEntityPage(IEnumerable<IEntity> entities)
 	{
-		var fetchResult = _pageService.FetchPageWithViewModel<FilterableEntityPage, FilterableEntityViewModel>();
+		var fetchResult = PageService.FetchPageWithViewModel<FilterableEntityPage, FilterableEntityViewModel>();
 		fetchResult.Item2.Entities = new(entities);
 		CurrentPage = fetchResult.Item1;
 	}
@@ -102,7 +102,7 @@ internal class MainViewModel : ObservableObject
         InitializingText = string.Empty;
     }
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
 
     private readonly JsonService _jsonService;
     private readonly PageService _pageService;

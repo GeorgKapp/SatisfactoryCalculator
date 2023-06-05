@@ -8,17 +8,17 @@ internal static class MultiFormParseUtility
 
 	public static Form[] MapToForms(string mAllowedResourceForms)
 	{
-		string text = SanitizeInput(mAllowedResourceForms);
-		string[] sanitizedSplitInput = text.Split(ArraySplitTag);
+		var text = SanitizeInput(mAllowedResourceForms);
+		var sanitizedSplitInput = text.Split(ArraySplitTag);
+		// ReSharper disable once HeapView.ObjectAllocation
 		return MapToFormsIEnumerable(sanitizedSplitInput).ToArray();
 	}
 
-	private static IEnumerable<Form> MapToFormsIEnumerable(string[] sanitizedSplitInput)
+	private static IEnumerable<Form> MapToFormsIEnumerable(IEnumerable<string> sanitizedSplitInput)
 	{
-		for (int i = 0; i < sanitizedSplitInput.Length; i++)
-		{
-			yield return StringToEnumParseUtility.ParseFormStringToEnum(sanitizedSplitInput[i]);
-		}
+		return sanitizedSplitInput
+			// ReSharper disable once ConvertClosureToMethodGroup
+			.Select(p => StringToEnumParseUtility.ParseFormStringToEnum(p));
 	}
 
 	private static string SanitizeInput(string input)

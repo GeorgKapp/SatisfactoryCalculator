@@ -1,9 +1,9 @@
+// ReSharper disable HeapView.ObjectAllocation
 namespace SatisfactoryCalculator.DocsServices.Utility;
 
 internal static class ClassNameParseUtility
 {
-	private static string[] _preFixesArray = new[]
-	{
+	private static readonly string[] PreFixesArray = {
 		"BP", 
 		"Build", 
 		"CBG", 
@@ -20,35 +20,13 @@ internal static class ClassNameParseUtility
 
 	public static string ConvertClassNameToDescClassName(string className)
 	{
-		for (var i = 0; i < _preFixesArray.Length; i++)
+		foreach (var preFix in PreFixesArray)
 		{
-			if (className.StartsWith(_preFixesArray[i]))
-				return $"{Constants.DescriptionPrefix}{className[_preFixesArray[i].Length..]}";
+			if (className.StartsWith(preFix))
+				return $"{Constants.DescriptionPrefix}{className[preFix.Length..]}";
 		}
+
 		throw new NotImplementedException("ClassName filtering not implemented: " + className);
-	}
-
-	public static string ConvertClassNameToEquipmentClassName(string className)
-	{
-		if (className.StartsWith(Constants.BlueprintEquipmentDescriptorPrefix))
-			return $"Equip_{className[Constants.BlueprintEquipmentDescriptorPrefix.Length..]}";
-
-		for (var i = 0; i < _preFixesArray.Length; i++)
-		{
-			if (className.StartsWith(_preFixesArray[i]))
-				return $"Equip{className[_preFixesArray[i].Length..]}";
-		}
-		throw new ArgumentException($"ClassName filtering not implemented: {className}");
-	}
-
-	public static string ConvertClassNameToEquipmentDescriptorClassName(string className)
-	{
-		for (var i = 0; i < _preFixesArray.Length; i++)
-		{
-			if (className.StartsWith(_preFixesArray[i]))
-				return string.Concat(Constants.BlueprintEquipmentDescriptorPrefix, className.AsSpan(_preFixesArray[i].Length + 1));
-		}
-		throw new ArgumentException("ClassName filtering not implemented: " + className);
 	}
 
 	public static string? CleanClassName(string? className)
@@ -73,7 +51,7 @@ internal static class ClassNameParseUtility
 		};
 	}
 
-	public static string? CorrectClassName(string? className) => className switch
+	private static string? CorrectClassName(string? className) => className switch
 	{
 		"Desc_Geyser_C" => "Desc_NitrogenGas_C",
 		"BP_EqDescZipLine_C" => "Equip_Zipline_C",
@@ -112,7 +90,7 @@ internal static class ClassNameParseUtility
 		"Desc_QuarterPipeMiddle_Ficsit_4x1_C" => "Build_QuarterPipeMiddle_Ficsit_8x1_C",
 		"Desc_QuarterPipeMiddle_Ficsit_4x2_C" => "Build_QuarterPipeMiddle_Ficsit_8x2_C",
 		"Desc_QuarterPipeMiddle_Ficsit_4x4_C" => "Build_QuarterPipeMiddle_Ficsit_8x4_C",
-		_ => className,
+		_ => className
 	};
 
 	public static string? CorrectClassNameForImageLookup(string? className) => className switch
@@ -146,6 +124,6 @@ internal static class ClassNameParseUtility
 		"Build_QuarterPipeMiddle_Ficsit_8x1_C" => "Desc_QuarterPipeMiddle_Ficsit_4x1_C",
 		"Build_QuarterPipeMiddle_Ficsit_8x2_C" => "Desc_QuarterPipeMiddle_Ficsit_4x2_C",
 		"Build_QuarterPipeMiddle_Ficsit_8x4_C" => "Desc_QuarterPipeMiddle_Ficsit_4x4_C",
-		_ => className,
+		_ => className
 	};
 }

@@ -1,3 +1,4 @@
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 
 public class Schematic : IBase, IIcon

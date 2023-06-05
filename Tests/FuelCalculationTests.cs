@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.Tests;
 
 public class FuelCalculationTests
 {
-    private CalculationService _calculationService = new();
+    private readonly CalculationService _calculationService = new();
     
     [Fact(DisplayName = "Calculate Coal Consumption with underlock(1%)")]
     public void CalculateCoalConsumption1() => CalculateFuelConsumption(FuelModels.CoalFuel, 1, 0.75, 0.15, 0);
@@ -19,7 +19,9 @@ public class FuelCalculationTests
     [Fact(DisplayName = "Calculate Coal Consumption with underlock(5%)")]
     public void CalculateCoalConsumption5() => CalculateFuelConsumption(FuelModels.CoalFuel, 5, 3.75, 0.75, 2);
     
+#pragma warning disable xUnit1004
     [Fact(DisplayName = "Calculate Coal Consumption with underlock(10%)", Skip = "Expected Supplemental Amount is actually 4 instead of 5 (why?, ive got no clue)")]
+#pragma warning restore xUnit1004
     public void CalculateCoalConsumption10() => CalculateFuelConsumption(FuelModels.CoalFuel, 10, 7.5, 1.5, 4);
 
     [Fact(DisplayName = "Calculate Coal Consumption with underlock(10.1%)")]

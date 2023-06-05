@@ -12,7 +12,7 @@ internal class CalculationService : ICalculationService
 
         amount = NormalizeAmount(form, amount.Value);
 
-        double factor = 60.0 / manufactoringDuration;
+        var factor = 60.0 / manufactoringDuration;
         return amount * factor;
     }
 
@@ -82,7 +82,7 @@ internal class CalculationService : ICalculationService
         var amount = NormalizeAmount(form, foundItem.SourceAmount);
         var amountPerMinute = amount * buildingProductionResult.CyclesPerMinute;
 
-        return new RecipeItemProductionResult
+        return new()
         {
             Amount = amount,
             AmountPerMinute = amountPerMinute,
@@ -100,7 +100,7 @@ internal class CalculationService : ICalculationService
         var time = recipe.ManufactoringDuration / buildingSpeed / overclockMultiplier;
         var cyclesPerMinute = SecondsPerMinute / time;
 
-        return new RecipeBuildingProductionResult
+        return new()
         {
             Time = time,
             CyclesPerMinute = cyclesPerMinute,

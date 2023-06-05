@@ -23,7 +23,7 @@ public class Spinner : Control
             nameof(IsSpinning), 
             typeof(bool), 
             typeof(Spinner), 
-            new PropertyMetadata(false)
+            new(false)
             );
 
     public double Diameter
@@ -37,7 +37,7 @@ public class Spinner : Control
             nameof(Diameter), 
             typeof(double), 
             typeof(Spinner), 
-            new PropertyMetadata(100.0)
+            new(100.0)
             );
 
     public double Thickness
@@ -51,7 +51,7 @@ public class Spinner : Control
             nameof(Thickness), 
             typeof(double), 
             typeof(Spinner), 
-            new PropertyMetadata(1.0)
+            new(1.0)
             );
 
     public Brush Color
@@ -65,7 +65,7 @@ public class Spinner : Control
             nameof(Color), 
             typeof(Brush), 
             typeof(Spinner), 
-            new PropertyMetadata(Brushes.Black)
+            new(Brushes.Black)
             );
 
     public PenLineCap Cap
@@ -79,6 +79,6 @@ public class Spinner : Control
             nameof(Cap), 
             typeof(PenLineCap), 
             typeof(Spinner), 
-            new PropertyMetadata(PenLineCap.Flat)
+            new(PenLineCap.Flat)
             );
 }

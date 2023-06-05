@@ -27,7 +27,7 @@ internal class EquipmentViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedEquipmentAsIngredientInRecipes
     {
         get => _selectedEquipmentAsIngredientInRecipes;
-        set
+        private set
         {
             SetProperty(ref _selectedEquipmentAsIngredientInRecipes, value);
             NotifyMarginUpdates();
@@ -38,7 +38,7 @@ internal class EquipmentViewModel : ObservableObject
     public ObservableCollection<IRecipe> SelectedEquipmentAsProductInRecipes
     {
         get => _selectedEquipmentAsProductInRecipes;
-        set
+        private set
         {
             SetProperty(ref _selectedEquipmentAsProductInRecipes, value);
             NotifyMarginUpdates();
@@ -53,9 +53,9 @@ internal class EquipmentViewModel : ObservableObject
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
     }
 
-    private Thickness CalculateMargin(bool isPreviousControlVisible) => 
+    private static Thickness CalculateMargin(bool isPreviousControlVisible) => 
         isPreviousControlVisible
-            ? new Thickness(-10, 50, 0, 0)
+            ? new(-10, 50, 0, 0)
             : new Thickness(-10, 0, 0, 0);
 
     private void NotifyMarginUpdates()
@@ -64,5 +64,5 @@ internal class EquipmentViewModel : ObservableObject
         Notify(nameof(IngredientsSectionMargin));
     }
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
 }

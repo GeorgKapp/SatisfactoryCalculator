@@ -9,7 +9,7 @@ public abstract class ObservableObject : INotifyPropertyChanged
         if (!EqualityComparer<T>.Default.Equals(field, newValue))
         {
             field = newValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new(propertyName));
             return true;
         }
         return false;
@@ -17,6 +17,6 @@ public abstract class ObservableObject : INotifyPropertyChanged
 
     protected void Notify(string propertyName)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        PropertyChanged?.Invoke(this, new(propertyName));
     }
 }

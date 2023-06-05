@@ -1,8 +1,9 @@
-﻿namespace SatisfactoryCalculator.Tests.References;
+﻿// ReSharper disable UnusedMember.Global
+namespace SatisfactoryCalculator.Tests.References;
 
-internal class GeneratorModels
+internal static class GeneratorModels
 {
-    public static Generator CoalGenerator = new Generator
+    public static readonly Generator CoalGenerator = new()
     {
         ClassName = "GeneratorCoal_C",
         Name = "Coal Generator",
@@ -11,14 +12,14 @@ internal class GeneratorModels
         SupplementalLoadAmount = 1000
     };
     
-    public static Generator FuelGenerator = new Generator
+    public static readonly Generator FuelGenerator = new()
     {
         ClassName = "GeneratorFuel_C",
         Name = "LiquidFuel Generator",
-        PowerProduction = 150,
+        PowerProduction = 150
     };
     
-    public static Generator NuclearGenerator = new Generator
+    public static readonly Generator NuclearGenerator = new()
     {
         ClassName = "GeneratorNuclear_C",
         Name = "Nuclear Generator",

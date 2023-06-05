@@ -1,3 +1,4 @@
+// ReSharper disable UnusedMemberInSuper.Global
 namespace SatisfactoryCalculator.DocsServices.Models.Base;
 
 public interface IRecipe : IBase

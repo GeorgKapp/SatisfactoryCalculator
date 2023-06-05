@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.DocsServices.Utility;
 
 internal static class NumberParseUtility
 {
-	private static NumberFormatInfo _englishFormat = new NumberFormatInfo
+	private static readonly NumberFormatInfo EnglishFormat = new()
 	{
 		NumberDecimalSeparator = "."
 	};
@@ -11,7 +11,7 @@ internal static class NumberParseUtility
 	{
 		try
 		{
-			return Convert.ToDouble(input, _englishFormat);
+			return Convert.ToDouble(input, EnglishFormat);
 		}
 		catch
 		{

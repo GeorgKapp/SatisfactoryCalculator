@@ -4,8 +4,8 @@ namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 public class Generator : IBase
 {
 	public string ClassName { get; set; }
-	public double PowerProduction { get; set; }
-	public double? SupplementToPowerRatio { get; set; }
-	public double? SupplementalLoadAmount { get; set; }
+	public double PowerProduction { get; init; }
+	public double? SupplementToPowerRatio { get; init; }
+	public double? SupplementalLoadAmount { get; init; }
 	public Fuel[] Fuels { get; set; }
 }

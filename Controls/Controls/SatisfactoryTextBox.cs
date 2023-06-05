@@ -2,6 +2,7 @@
 
 using System.Linq;
 using System.Windows.Input;
+// ReSharper disable HeapView.ObjectAllocation
 
 namespace SatisfactoryCalculator.Controls.Controls;
 
@@ -33,7 +34,7 @@ public class SatisfactoryTextBox : TextBox
 			nameof(IsOverclock), 
 			typeof(bool), 
 			typeof(SatisfactoryTextBox), 
-			new PropertyMetadata(
+			new(
 				false
 				));
 
@@ -64,7 +65,7 @@ public class SatisfactoryTextBox : TextBox
 		}
 	}
 	
-	private bool IsValidOverclockText(string proposedText)
+	private static bool IsValidOverclockText(string proposedText)
 	{
 		//Allow empty strings
 		if (string.IsNullOrEmpty(proposedText))
@@ -87,6 +88,7 @@ public class SatisfactoryTextBox : TextBox
 		//Dont allow doubles with more than 4 decimal digits
 		// ReSharper disable once StringIndexOfIsCultureSpecific.1
 		var decimalSeparatorIndex = proposedText.IndexOf(decimalSeperator);
+		// ReSharper disable once InvertIf
 		if (decimalSeparatorIndex >= 0)
 		{
 			var decimalPlaces = proposedText.Length - decimalSeparatorIndex - 1;
@@ -96,25 +98,22 @@ public class SatisfactoryTextBox : TextBox
 
 		//Dont allow comma seperator on 250 because of limit
 		// ReSharper disable once CompareOfFloatsByEqualityOperator
-		if (parsedClockSpeed == 250 && proposedText.EndsWith(decimalSeperator))
-			return false;
-
-		return true;
+		return parsedClockSpeed != 250 || !proposedText.EndsWith(decimalSeperator);
 	}
 	
 	#region ParseIncomingText
-	private string GetProposedText(object sender, DataObjectPastingEventArgs e)
+	private static string GetProposedText(object sender, DataObjectPastingEventArgs e)
 	{
 		var clipboardText = (e.DataObject.GetData(DataFormats.Text) as string)!;
 		return GetProposedText(sender, clipboardText);
 	}
 	
-	private string GetProposedText(object sender, TextCompositionEventArgs e)
+	private static string GetProposedText(object sender, TextCompositionEventArgs e)
 	{
 		return GetProposedText(sender, e.Text);
 	}
 	
-	private string GetProposedText(object sender, string inputText)
+	private static string GetProposedText(object sender, string inputText)
 	{
 		var textBox = (TextBox)sender;
 

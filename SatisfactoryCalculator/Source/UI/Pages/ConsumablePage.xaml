@@ -43,12 +43,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
+            <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
             <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedConsumable.Image}" />
             <StackPanel Margin="5,0,0,0" Grid.Column="1">
                 <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedConsumable.Name}" />
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedConsumable.Description}" />
+                <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedConsumable.HealthGain, Converter={StaticResource NullToVisibilityConverter}}">
                     <Run Text="Health Gain: "/>
+                    <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
                     <Run Text="{Binding SelectedConsumable.HealthGain}"/>
                 </c:SatisfactoryTextBlock>
             </StackPanel>

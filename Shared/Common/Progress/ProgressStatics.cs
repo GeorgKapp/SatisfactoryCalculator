@@ -2,5 +2,5 @@
 
 internal static class ProgressStatics
 {
-    internal static readonly SynchronizationContext DefaultContext = new SynchronizationContext();
+    internal static readonly SynchronizationContext DefaultContext = new();
 }

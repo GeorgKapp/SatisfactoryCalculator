@@ -17,5 +17,5 @@ internal class RecipeViewModel : ObservableObject
         Notify(nameof(Recipes));
     }
 
-    private ApplicationState _applicationState;
+    private readonly ApplicationState _applicationState;
 }

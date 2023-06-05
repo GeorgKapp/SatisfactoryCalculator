@@ -27,7 +27,7 @@ public class VirtualizedItemsControl : ItemsControl
             nameof(AutoResetVerticalScrollBar), 
             typeof(bool), 
             typeof(VirtualizedItemsControl),
-            new PropertyMetadata(true)
+            new(true)
             );
 
     public bool AutoResetHorizontalScrollBar
@@ -41,7 +41,7 @@ public class VirtualizedItemsControl : ItemsControl
             nameof(AutoResetHorizontalScrollBar), 
             typeof(bool), 
             typeof(VirtualizedItemsControl), 
-            new PropertyMetadata(true)
+            new(true)
             );
 
     private void VirtualizedItemsControl_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

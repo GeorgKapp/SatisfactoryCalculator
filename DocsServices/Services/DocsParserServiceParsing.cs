@@ -6,7 +6,7 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-    private bool ExcludeBuilding(string? className)
+    private static bool ExcludeBuilding(string? className)
     {
         return new []
             {
@@ -19,7 +19,8 @@ public partial class DocsParserService
             .Contains(className);
     }
 
-    private Building[] ParseBuildings(Class2[] classes2, Dictionary<string, Class2> classesDictionary)
+    // ReSharper disable once HeapView.ClosureAllocation
+    private static IEnumerable<Building> ParseBuildings(IEnumerable<Class2> classes2, IReadOnlyDictionary<string, Class2> classesDictionary)
     {
         return classes2
             .Where(p => !ExcludeBuilding(p.ClassName))
@@ -27,7 +28,7 @@ public partial class DocsParserService
             .ToArray();
     }
 
-    private Building ParseBuilding(Class2 class2, Dictionary<string, Class2> classesDictionary)
+    private static Building ParseBuilding(Class2 class2, IReadOnlyDictionary<string, Class2> classesDictionary)
     {
         var smallIconPath = class2.mSmallIcon;
         var bigIconPath = class2.mPersistentBigIcon;
@@ -50,7 +51,7 @@ public partial class DocsParserService
             bigIconPath = IconPathParseUtility.ReplaceBigIconPathFromClass(class2);
         }
 
-        return new Building
+        return new()
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!,
             DisplayName = class2.mDisplayName,
@@ -64,10 +65,10 @@ public partial class DocsParserService
         };
     }
 
-    private Item[] ParseItems(Class2[] classes2)
+    private Item[] ParseItems(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseItem(p))
+            .Select(ParseItem)
             .ToArray();
     }
 
@@ -98,14 +99,14 @@ public partial class DocsParserService
         return item;
     }
 
-    private Resource[] ParseResources(Class2[] classes2)
+    private static IEnumerable<Resource> ParseResources(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseResource(p))
+            .Select(ParseResource)
             .ToArray();
     }
 
-    private Resource ParseResource(Class2 class2)
+    private static Resource ParseResource(Class2 class2)
     {
         return new()
         {
@@ -113,14 +114,14 @@ public partial class DocsParserService
         };
     }
 
-    private Equipment[] ParseEquipments(Class2[] classes2)
+    private static IEnumerable<Equipment> ParseEquipments(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseEquipment(p))
+            .Select(ParseEquipment)
             .ToArray();
     }
 
-    private Equipment ParseEquipment(Class2 class2)
+    private static Equipment ParseEquipment(Class2 class2)
     {
         var equipment = new Equipment
         {
@@ -131,14 +132,14 @@ public partial class DocsParserService
         return equipment;
     }
 
-    private Vehicle[] ParseVehicles(Class2[] classes2)
+    private static IEnumerable<Vehicle> ParseVehicles(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseVehicle(p))
+            .Select(ParseVehicle)
             .ToArray();
     }
 
-    private Vehicle ParseVehicle(Class2 class2)
+    private static Vehicle ParseVehicle(Class2 class2)
     {
         return new()
         {
@@ -150,14 +151,14 @@ public partial class DocsParserService
         };
     }
 
-    private Weapon[] ParseWeapons(Class2[] classes2)
+    private static IEnumerable<Weapon> ParseWeapons(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseWeapon(p))
+            .Select(ParseWeapon)
             .ToArray();
     }
 
-    private Weapon ParseWeapon(Class2 class2)
+    private static Weapon ParseWeapon(Class2 class2)
     {
         return new()
         {
@@ -169,14 +170,14 @@ public partial class DocsParserService
         };
     }
 
-    private Ammunition[] ParseAmmunitions(Class2[] classes2)
+    private static IEnumerable<Ammunition> ParseAmmunitions(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseAmmunition(p))
+            .Select(ParseAmmunition)
             .ToArray();
     }
 
-    private Ammunition ParseAmmunition(Class2 class2)
+    private static Ammunition ParseAmmunition(Class2 class2)
     {
         return new()
         {
@@ -188,7 +189,7 @@ public partial class DocsParserService
         };
     }
 
-    private bool ExcludeRecipe(string? className)
+    private static bool ExcludeRecipe(string? className)
     {
         return new[]
             {
@@ -199,16 +200,16 @@ public partial class DocsParserService
             .Contains(className);
     }
 
-    private Recipe[] ParseRecipes(Class2[] classes2)
+    private static IEnumerable<Recipe> ParseRecipes(IEnumerable<Class2> classes2)
     {
         return classes2
             .Where(p => !ExcludeRecipe(p.ClassName))
-            .Select(p => ParseRecipe(p))
+            .Select(ParseRecipe)
             .Where(p => p is not null).Cast<Recipe>()
             .ToArray();
     }
 
-    private Recipe? ParseRecipe(Class2 class2)
+    private static Recipe? ParseRecipe(Class2 class2)
     {
         var array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
         if (array.Contains("Converter_C"))
@@ -216,9 +217,11 @@ public partial class DocsParserService
 
         var constructedByBuildGun = array.Contains("BuildGun_C") || array.Contains("FGBuildGun");
         var constructedInWorkshop = array.Contains("WorkshopComponent_C");
+        // ReSharper disable once HeapView.ObjectAllocation
         var constructedInWorkbench = array.Contains("WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C");
         
         array = array
+            // ReSharper disable once HeapView.ObjectAllocation
             .Except("BuildGun_C", "FGBuildGun", "WorkshopComponent_C", "WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C")
             .ToArray();
         
@@ -242,27 +245,29 @@ public partial class DocsParserService
         return recipe;
     }
 
-    private CustomizationRecipe[] ParseCustomizationRecipes(Class2[] classes2)
+    private static IEnumerable<CustomizationRecipe> ParseCustomizationRecipes(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseCustomizationRecipe(p))
+            .Select(ParseCustomizationRecipe)
             .ToArray();
     }
 
-    private CustomizationRecipe ParseCustomizationRecipe(Class2 class2)
+    private static CustomizationRecipe ParseCustomizationRecipe(Class2 class2)
     {
         var array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
 
         var constructedByBuildGun = array.Contains("BuildGun_C") || array.Contains("FGBuildGun");
         var constructedInWorkshop = array.Contains("WorkshopComponent_C");
+        // ReSharper disable once HeapView.ObjectAllocation
         var constructedInWorkbench = array.Contains("WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C");
 
+        // ReSharper disable once HeapView.ObjectAllocation
         array = array.Except("BuildGun_C", "FGBuildGun", "WorkshopComponent_C", "WorkBenchComponent_C", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench_C").ToArray();
 
         var customizationRecipe = new CustomizationRecipe
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!,
-            DisplayName = ((class2.mDisplayName == "N/A") ? null : class2.mDisplayName)!,
+            DisplayName = (class2.mDisplayName == "N/A" ? null : class2.mDisplayName)!,
             VariablePowerConsumptionRange = PowerConsumptionRangeConverterUtility.ConverToPowerVariableConsumption(NumberParseUtility.MapToDouble(class2.mVariablePowerConsumptionConstant), NumberParseUtility.MapToDouble(class2.mVariablePowerConsumptionFactor)),
             ManufacturingMenuPriority = NumberParseUtility.MapToNullableDouble(class2.mManufacturingMenuPriority),
             ManufactoringDuration = NumberParseUtility.MapToDouble(class2.mManufactoringDuration),
@@ -280,14 +285,14 @@ public partial class DocsParserService
         return customizationRecipe;
     }
 
-    private Miner[] ParseMiners(Class2[] classes2)
+    private static IEnumerable<Miner> ParseMiners(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseMiner(p))
+            .Select(ParseMiner)
             .ToArray();
     }
 
-    private Miner ParseMiner(Class2 class2)
+    private static Miner ParseMiner(Class2 class2)
     {
         return new()
         {
@@ -300,14 +305,14 @@ public partial class DocsParserService
         };
     }
 
-    private Schematic[] ParseSchematics(Class2[] classes2)
+    private static IEnumerable<Schematic> ParseSchematics(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseSchematic(p))
+            .Select(ParseSchematic)
             .ToArray();
     }
 
-    private Schematic ParseSchematic(Class2 class2)
+    private static Schematic ParseSchematic(Class2 class2)
     {
         var schematic = new Schematic
         {
@@ -395,14 +400,16 @@ public partial class DocsParserService
         return schematic;
     }
 
-    private Generator[] ParseGenerators(Class2[] classes2, Item[] biomassItems)
+    // ReSharper disable once HeapView.ClosureAllocation
+    // ReSharper disable once ReturnTypeCanBeEnumerable.Local
+    private static Generator[] ParseGenerators(IEnumerable<Class2> classes2, Item[] biomassItems)
     {
         return classes2
             .Select(p => ParseGenerator(p, biomassItems))
             .ToArray();
     }
 
-    private Generator ParseGenerator(Class2 class2, Item[] biomassItems)
+    private static Generator ParseGenerator(Class2 class2, Item[] biomassItems)
     {
         return new()
         {
@@ -414,14 +421,14 @@ public partial class DocsParserService
         };
     }
 
-    private Consumable[] ParseConsumables(Class2[] classes2)
+    private static IEnumerable<Consumable> ParseConsumables(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseConsumable(p))
+            .Select(ParseConsumable)
             .ToArray();
     }
 
-    private Consumable ParseConsumable(Class2 class2)
+    private static Consumable ParseConsumable(Class2 class2)
     {
         return new()
         {
@@ -430,7 +437,8 @@ public partial class DocsParserService
         };
     }
 
-    private Fuel[] ParseFuels(Mfuel[]? mFuel, Item[] biomassItems)
+    // ReSharper disable once HeapView.ClosureAllocation
+    private static Fuel[] ParseFuels(Mfuel[]? mFuel, Item[] biomassItems)
     {
         if(mFuel is null)
             return Array.Empty<Fuel>();
@@ -440,11 +448,12 @@ public partial class DocsParserService
             .ToArray();
     }
 
-    private Fuel[] ParseFuel(Mfuel mFuel, Item[] biomassItems)
+    // ReSharper disable once HeapView.ClosureAllocation
+    private static IEnumerable<Fuel> ParseFuel(Mfuel mFuel, IEnumerable<Item> biomassItems)
     {
         if(mFuel.mFuelClass == "FGItemDescriptorBiomass")
         {
-            return biomassItems.Select(p => ParseFuel(new Mfuel
+            return biomassItems.Select(p => ParseFuel(new()
             {
                 mFuelClass = p.ClassName,
                 mSupplementalResourceClass = mFuel.mSupplementalResourceClass,
@@ -456,7 +465,7 @@ public partial class DocsParserService
         return new[] { ParseFuel(mFuel) };
     }
 
-    private Fuel ParseFuel(Mfuel mFuel)
+    private static Fuel ParseFuel(Mfuel mFuel)
     {
         return new()
         {

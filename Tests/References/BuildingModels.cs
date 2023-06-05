@@ -1,8 +1,8 @@
 ﻿namespace SatisfactoryCalculator.Tests.References;
 
-internal class BuildingModels
+internal static class BuildingModels
 {
-    public static Building Constructor = new Building
+    public static readonly Building Constructor = new()
     {
         ClassName = "ConstructorMk1_C",
         Name = "Constructor",
@@ -13,7 +13,7 @@ internal class BuildingModels
         PowerConsumptionRange = null
     };
 
-    public static Building OilRefinery = new Building
+    public static readonly Building OilRefinery = new()
     {
         ClassName = "OilRefinery_C",
         Name = "Refinery",

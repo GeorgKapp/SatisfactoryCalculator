@@ -1,16 +1,24 @@
-﻿namespace SatisfactoryCalculator.Tests.References;
+﻿// ReSharper disable UnusedMember.Global
+namespace SatisfactoryCalculator.Tests.References;
 
-internal class FuelModels
+internal static class FuelModels
 {
-    public static Fuel LiquidFuel =
-        new Fuel(generator: GeneratorModels.FuelGenerator, ingredient: FuelContentModels.LiquidFuel);
+    public static readonly Fuel LiquidFuel = new(
+        GeneratorModels.FuelGenerator, 
+        FuelContentModels.LiquidFuel);
     
-    public static Fuel CoalFuel = new Fuel(generator: GeneratorModels.CoalGenerator, ingredient: FuelContentModels.Coal,
-        supplementalIngredient: FuelContentModels.Water);
+    public static readonly Fuel CoalFuel = new(
+        GeneratorModels.CoalGenerator, 
+        FuelContentModels.Coal,
+        FuelContentModels.Water);
 
-    public static Fuel CompactedCoalFuel = new Fuel(generator: GeneratorModels.CoalGenerator,
-        ingredient: FuelContentModels.CompactedCoal, supplementalIngredient: FuelContentModels.Water);
+    public static readonly Fuel CompactedCoalFuel = new(
+        GeneratorModels.CoalGenerator,
+        FuelContentModels.CompactedCoal, 
+        FuelContentModels.Water);
 
-    public static Fuel PetroleumCokeFuel = new Fuel(generator: GeneratorModels.CoalGenerator,
-        ingredient: FuelContentModels.PetroleumCoke, supplementalIngredient: FuelContentModels.Water);
+    public static readonly Fuel PetroleumCokeFuel = new(
+        GeneratorModels.CoalGenerator,
+        FuelContentModels.PetroleumCoke,
+        FuelContentModels.Water);
 }

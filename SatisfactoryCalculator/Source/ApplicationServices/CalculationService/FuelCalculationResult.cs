@@ -3,6 +3,7 @@ namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class FuelCalculationResult
 {
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public double FuelBurnTime { get; set; }
     public double PowerProduction { get; set; }
     public double AmountPerMinute { get; set; }

@@ -50,12 +50,11 @@ internal class MainViewModel : ObservableObject
     private ICommand? _saveCommand;
     public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(Save);
 
-	public MainViewModel(ApplicationState applicationState, JsonService jsonService, PageService pageService, DataModelMappingService dataModelMappingService)
+	public MainViewModel(ApplicationState applicationState, JsonService jsonService, DataModelMappingService dataModelMappingService)
 	{
 		_applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
-		_pageService = pageService ?? throw new ArgumentNullException(nameof(pageService));
-        _dataModelMappingService = dataModelMappingService ?? throw new ArgumentNullException(nameof(dataModelMappingService));
+		_dataModelMappingService = dataModelMappingService ?? throw new ArgumentNullException(nameof(dataModelMappingService));
     }
 
     private void ShowItems() => ShowFilterableEntityPage(_applicationState.Configuration.Items);
@@ -95,7 +94,13 @@ internal class MainViewModel : ObservableObject
         var mappedData = DebugExtensions.Profile(() =>
             _dataModelMappingService.MapToConfigurationModel(data),
             "Map Data");
-        
+
+        if (mappedData is null)
+        {
+	        Debug.WriteLine("Data was null");
+	        return;
+        }
+
         _applicationState.SetConfig(data, mappedData);
 
         IsInitializing = false;
@@ -105,6 +110,5 @@ internal class MainViewModel : ObservableObject
     private readonly ApplicationState _applicationState;
 
     private readonly JsonService _jsonService;
-    private readonly PageService _pageService;
     private readonly DataModelMappingService _dataModelMappingService;
 }

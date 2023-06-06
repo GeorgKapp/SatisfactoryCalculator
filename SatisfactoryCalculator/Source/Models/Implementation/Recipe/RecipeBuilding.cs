@@ -14,6 +14,8 @@ internal class RecipeBuilding
         Building = building;
     }
 
-    public IBuilding Building { get; set; }
+    public IBuilding Building { get; }
+    
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public PowerConsumptionRange? PowerConsumptionRange { get; set; }
 }

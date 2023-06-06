@@ -1,4 +1,5 @@
 // ReSharper disable CheckNamespace
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.Source.Models;
 
 public class Configuration : ObservableObject
@@ -52,5 +53,5 @@ public class Configuration : ObservableObject
         set => SetProperty(ref _lastSyncDate, value);
     }
 
-    internal Dictionary<string, EntityReference> ReferenceDictionary { get; set; } = new();
+    internal IDictionary<string, EntityReference> ReferenceDictionary { get; set; }
 }

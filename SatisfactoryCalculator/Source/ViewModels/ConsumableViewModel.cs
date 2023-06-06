@@ -4,28 +4,19 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class ConsumableViewModel : ObservableObject
 {
-    private IConsumable? _selectedConsumable;
-    public IConsumable? SelectedConsumable
+    private IConsumable _selectedConsumable;
+    public IConsumable SelectedConsumable
     {
         get => _selectedConsumable;
         set
         {
             SetProperty(ref _selectedConsumable, value);
-            if (value is null)
-            {
-                SelectedConsumableAsIngredientInRecipes = new();
-                SelectedConsumableAsBuildingIngredientInRecipes = new();
-                SelectedConsumableAsProductInRecipes = new();
-                SelectedConsumableAsFuels = new();
-            }
-            else
-            {
-                var entityReference = _applicationState.Configuration.ReferenceDictionary[value.ClassName];
-                SelectedConsumableAsIngredientInRecipes = new(entityReference.RecipeIngredient);
-                SelectedConsumableAsBuildingIngredientInRecipes = new(entityReference.RecipeBuildingIngredient);
-                SelectedConsumableAsProductInRecipes = new(entityReference.RecipeProduct);
-                SelectedConsumableAsFuels = new(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
-            }
+
+            var entityReference = _applicationState.Configuration.ReferenceDictionary[value.ClassName];
+            SelectedConsumableAsIngredientInRecipes = new(entityReference.RecipeIngredient);
+            SelectedConsumableAsBuildingIngredientInRecipes = new(entityReference.RecipeBuildingIngredient);
+            SelectedConsumableAsProductInRecipes = new(entityReference.RecipeProduct);
+            SelectedConsumableAsFuels = new(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
         }
     }
 
@@ -74,12 +65,16 @@ internal class ConsumableViewModel : ObservableObject
         }
     }
     
+#pragma warning disable CA1822
     public Thickness ProductsSectionMargin => CalculateMargin(false);
+#pragma warning restore CA1822
     public Thickness IngredientsSectionMargin => CalculateMargin(_selectedConsumableAsProductInRecipes.Count > 0);
     public Thickness BuildingIngredientSectionMargin => CalculateMargin(_selectedConsumableAsIngredientInRecipes.Count > 0);
     public Thickness FuelsSectionMargin => CalculateMargin(_selectedConsumableAsBuildingIngredientInRecipes.Count > 0 || _selectedConsumableAsProductInRecipes.Count > 0);
 
+#pragma warning disable CS8618
     public ConsumableViewModel(ApplicationState applicationState)
+#pragma warning restore CS8618
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
     }

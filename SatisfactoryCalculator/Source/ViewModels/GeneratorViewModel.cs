@@ -4,25 +4,17 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class GeneratorViewModel : ObservableObject
 {
-    private IGenerator? _selectedGenerator;
-    public IGenerator? SelectedGenerator
+    private IGenerator _selectedGenerator;
+    public IGenerator SelectedGenerator
     {
         get => _selectedGenerator;
         set
         {
             SetProperty(ref _selectedGenerator, value);
-
-            if (value is null)
-            {
-                SelectedGeneratorFuels = new();
-                SelectedGeneratorRecipes = new();
-            }
-            else
-            {
-                SelectedGeneratorFuels = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator);
-                SelectedGeneratorRecipes = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
-                SelectedGeneratorClockSpeed = "100";
-            }
+            
+            SelectedGeneratorFuels = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].FuelGenerator);
+            SelectedGeneratorRecipes = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
+            SelectedGeneratorClockSpeed = "100";
         }
     }
 
@@ -67,7 +59,9 @@ internal class GeneratorViewModel : ObservableObject
         }
     }
     
+#pragma warning disable CS8618
     public GeneratorViewModel(ApplicationState applicationState, CalculationService calculationService)
+#pragma warning restore CS8618
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
         _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));

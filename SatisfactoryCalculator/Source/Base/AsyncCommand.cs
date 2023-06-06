@@ -4,6 +4,7 @@ internal class AsyncCommand : IAsyncCommand
 {
 	public event EventHandler? CanExecuteChanged;
 
+	// ReSharper disable once HeapView.ClosureAllocation
 	public AsyncCommand(Func<Task> execute, bool canExecute = true)
 	{
 		_execute = execute;
@@ -32,7 +33,7 @@ internal class AsyncCommand : IAsyncCommand
 		RaiseCanExecuteChanged();
 	}
 
-	public void RaiseCanExecuteChanged()
+	private void RaiseCanExecuteChanged()
 	{
 		CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 	}

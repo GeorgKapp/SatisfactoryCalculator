@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.Source.DependencyInjection;
 
 internal static class ServiceExtensions
 {
-	public static void ConfigureServices(this ServiceCollection services)
+	public static void ConfigureServices(this IServiceCollection services)
 	{
 		services
 			.AddDomainServices()
@@ -12,7 +12,7 @@ internal static class ServiceExtensions
 			.AddViews();
 	}
 
-	private static ServiceCollection AddApplicationState(this ServiceCollection services)
+	private static IServiceCollection AddApplicationState(this IServiceCollection services)
 	{
 		services
 			.AddSingleton<ApplicationState>();
@@ -20,7 +20,7 @@ internal static class ServiceExtensions
 		return services;
 	}
 
-	private static ServiceCollection AddApplicationServices(this ServiceCollection services)
+	private static IServiceCollection AddApplicationServices(this IServiceCollection services)
 	{
 		services
 			.AddTransient<CalculationService>()
@@ -31,7 +31,7 @@ internal static class ServiceExtensions
 		return services;
 	}
 
-	private static ServiceCollection AddDomainServices(this ServiceCollection services)
+	private static IServiceCollection AddDomainServices(this IServiceCollection services)
 	{
 		services
 			.AddTransient<JsonService>()
@@ -41,7 +41,7 @@ internal static class ServiceExtensions
 		return services;
 	}
 
-	private static void AddViews(this ServiceCollection services)
+	private static void AddViews(this IServiceCollection services)
 	{
 		services
 			.AddSingleton<FilterableEntityPage>()
@@ -56,7 +56,7 @@ internal static class ServiceExtensions
 			.AddSingleton<DataImportPage>();
 	}
 
-	private static ServiceCollection AddViewModels(this ServiceCollection services)
+	private static IServiceCollection AddViewModels(this IServiceCollection services)
 	{
 		services
 			.AddSingleton<FilterableEntityViewModel>()

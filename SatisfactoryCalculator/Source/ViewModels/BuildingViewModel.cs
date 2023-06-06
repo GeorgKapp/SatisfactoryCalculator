@@ -2,17 +2,15 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class BuildingViewModel : ObservableObject
 {
-    private IBuilding? _selectedBuilding;
-    public IBuilding? SelectedBuilding
+    private IBuilding _selectedBuilding;
+    public IBuilding SelectedBuilding
     {
         get => _selectedBuilding;
         set
         {
             SetProperty(ref _selectedBuilding, value);
-
-            SelectedBuildingRecipes = value is not null
-                ? new (_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct)
-                : new();
+            
+            SelectedBuildingRecipes = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
         }
     }
 
@@ -23,7 +21,9 @@ internal class BuildingViewModel : ObservableObject
         private set => SetProperty(ref _selectedBuildingRecipes, value);
     }
     
+#pragma warning disable CS8618
     public BuildingViewModel(ApplicationState applicationState)
+#pragma warning restore CS8618
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
     }

@@ -1,8 +1,11 @@
-﻿using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
+﻿using System.Diagnostics.CodeAnalysis;
+using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
+// ReSharper disable MemberCanBeMadeStatic.Local
 
 // ReSharper disable once CheckNamespace
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
+[SuppressMessage("Performance", "CA1822:Mark members as static")]
 internal class CalculationService : ICalculationService
 {
     public double? CalculateAmountPerMinte(Form? form, double? amount, double manufactoringDuration)
@@ -59,14 +62,14 @@ internal class CalculationService : ICalculationService
             
             calculationResult.SupplementalAmountPerMinute = supplementalAmountPerMinute;
         }
-        
-        //TODO: needs to be checked for nuclear fuel generators
+
         if (fuel.ByProduct is not null)
             calculationResult.ByProductAmountPerMinute = amountPerMinute * NormalizeAmount(fuel.ByProduct.Item.Form, fuel.ByProductAmount!.Value);
 
         return calculationResult;
     }
 
+    // ReSharper disable once HeapView.ClosureAllocation
     public RecipeItemProductionResult CalculateRecipeItemProduction(IRecipe recipe, IEntity entity, IBuilding building, double overclock)
     {
         var buildingProductionResult = CalculateRecipeBuildingProduction(recipe, building, overclock);
@@ -117,15 +120,8 @@ internal class CalculationService : ICalculationService
         return Math.Round(result, 1);
     }
 
-    private double GetManufactoringBuildingSpeed(IBuilding building) => 
-        building.ManufactoringSpeed.HasValue
-            ? building.ManufactoringSpeed.Value
-            : 1;
-
-    private bool IsFormLiquidOrGas(Form? form) => 
-        form is not null && 
-        (form == Form.Liquid || form == Form.Gas);
-    
+    private double GetManufactoringBuildingSpeed(IBuilding building) => building.ManufactoringSpeed ?? 1;
+    private bool IsFormLiquidOrGas(Form? form) => form is Form.Liquid or Form.Gas;
     private double OverClockMultiplier(double overclock) => overclock / DefaultPercentage;
 
     private const double DefaultPercentage = 100;

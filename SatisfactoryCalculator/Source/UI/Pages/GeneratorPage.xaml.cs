@@ -1,10 +1,9 @@
-﻿namespace SatisfactoryCalculator.Source.UI.Pages
+﻿namespace SatisfactoryCalculator.Source.UI.Pages;
+
+public partial class GeneratorPage
 {
-    public partial class GeneratorPage
+    public GeneratorPage()
     {
-        public GeneratorPage()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

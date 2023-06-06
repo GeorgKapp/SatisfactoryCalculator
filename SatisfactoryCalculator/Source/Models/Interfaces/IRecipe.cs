@@ -1,13 +1,14 @@
+// ReSharper disable UnusedMemberInSuper.Global
 namespace SatisfactoryCalculator.Source.Models.Interfaces;
 
 internal interface IRecipe : IEntity
 {
-    bool IsAlternateRecipe { get; set; }
-    bool ConstructedByBuildGun { get; set; }
-    bool ConstructedInWorkshop { get; set; }
-    bool ConstructedInWorkbench { get; set; }
-    double ManufactoringDuration { get; set; }
-    RecipeBuilding[] Buildings { get; set; }
-    RecipePart[] Ingredients { get; set; }
-    RecipePart[] Products { get; set; }
+    bool IsAlternate { get; }
+    bool ConstructedByBuildGun { get; init; }
+    bool ConstructedInWorkshop { get; init; }
+    bool ConstructedInWorkbench { get; init; }
+    double ManufactoringDuration { get; }
+    RecipeBuilding[] Buildings { get; }
+    RecipePart[] Ingredients { get; }
+    RecipePart[] Products { get; }
 }

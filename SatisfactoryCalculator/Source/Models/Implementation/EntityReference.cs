@@ -1,32 +1,21 @@
 ﻿// ReSharper disable CheckNamespace
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.Source.Models.Refernces;
 
 internal class EntityReference
 {
-    public EntityReference(string? entityClassName, IRecipe[] recipeIngredient, IRecipe[] recipeBuildingIngredient, IRecipe[] recipeProduct, IRecipe[] recipeBuilding, Fuel[] fuelIngredient, Fuel[] fuelByProduct, Fuel[] fuelGenerator)
-    {
-        EntityClassName = entityClassName;
-        RecipeIngredient = recipeIngredient;
-        RecipeBuildingIngredient = recipeBuildingIngredient;
-        RecipeProduct = recipeProduct;
-        RecipeBuilding = recipeBuilding;
-        FuelIngredient = fuelIngredient;
-        FuelByProduct = fuelByProduct;
-        FuelGenerator = fuelGenerator;
-    }
+    public IRecipe[] RecipeIngredient { get; init; }
+    public IRecipe[] RecipeProduct { get; init;}
+    public IRecipe[] RecipeBuildingIngredient { get;init; }
+    public IRecipe[] RecipeBuilding { get; init; }
+    public IRecipe[] RecipeFuels { get; init; }
+    public Fuel[] FuelIngredient { get; init; }
+    public Fuel[] FuelByProduct { get; init;}
+    public Fuel[] FuelGenerator { get; init;}
 
-    public string? EntityClassName { get; set; }
-
-    public IRecipe[] RecipeIngredient { get; set; }
-    public IRecipe[] RecipeProduct { get; set; }
-    public IRecipe[] RecipeBuildingIngredient { get; set; }
-    public IRecipe[] RecipeBuilding { get; set; }
-    public IRecipe[] RecipeFuels { get; set; } = Array.Empty<IRecipe>(); 
-    public Fuel[] FuelIngredient { get; set; }
-    public Fuel[] FuelByProduct { get; set; }
-    public Fuel[] FuelGenerator { get; set; }
-
-    public ISchema[] SchemaIngredient { get; set; } = Array.Empty<ISchema>();
-    public ISchema[] SchemaUnlock { get; set; } = Array.Empty<ISchema>();
-    public ISchema[] SchemaBuilding { get; set; } = Array.Empty<ISchema>();
+    public ISchema[] SchemaIngredient { get; init; }
+    public ISchema[] SchemaUnlock { get; init;}
+    public ISchema[] SchemaBuilding { get; init; }
 }

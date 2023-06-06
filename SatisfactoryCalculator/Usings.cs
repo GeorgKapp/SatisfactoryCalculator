@@ -32,6 +32,6 @@ global using System.Windows.Input;
 global using System.Windows.Media.Imaging;
 global using SatisfactoryCalculator.Source.Utilities;
 global using SatisfactoryCalculator.Source.Models.Interfaces;
-global using System.Collections.Specialized;
 global using System.Windows.Media;
 global using SatisfactoryCalculator.Source.UI.Extensions;
+global using System.Diagnostics;

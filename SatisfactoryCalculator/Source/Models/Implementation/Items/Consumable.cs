@@ -1,13 +1,14 @@
 // ReSharper disable CheckNamespace
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.Source.Models;
 
 internal class Consumable : IConsumable
 {
-    public string ClassName { get; set; } = null!;
-    public string Name { get; set; } = null!;
-    public BitmapImage? Image { get; set; }
-    public string Description { get; set; } = null!;
-    public Form? Form { get; set; }
-    public double EnergyValue { get; set; }
-    public double? HealthGain { get; set; }
+    public string ClassName { get; init; }
+    public string Name { get; init; }
+    public BitmapImage? Image { get; init; }
+    public string Description { get; init; }
+    public Form? Form { get; init; }
+    public double EnergyValue { get; init; }
+    public double? HealthGain { get; init; }
 }

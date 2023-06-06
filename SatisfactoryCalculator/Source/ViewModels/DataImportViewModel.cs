@@ -42,13 +42,11 @@ internal class DataImportViewModel : ObservableObject
 	private ICommand? _cancelLoadDataCommand;
     public ICommand CancelLoadDataCommand => _cancelLoadDataCommand ??= new SimpleCommand(CancelLoadData);
 
-    public DataImportViewModel(ApplicationState applicationState, ClipBoardService clipBoardService, DataModelMappingService mappingService, DocsParserService docsParserService, DataModelImageCreateService dataModelImageCreateService)
+    public DataImportViewModel(ApplicationState applicationState, DataModelMappingService mappingService, DocsParserService docsParserService)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
-        _clipBoardService = clipBoardService ?? throw new ArgumentNullException(nameof(clipBoardService));
         _mappingService = mappingService ?? throw new ArgumentNullException(nameof(mappingService));
         _docsParserService = docsParserService ?? throw new ArgumentNullException(nameof(docsParserService));
-        _dataModelImageCreateService = dataModelImageCreateService ?? throw new ArgumentNullException(nameof(dataModelImageCreateService));
     }
 
     private async Task LoadData()
@@ -71,6 +69,13 @@ internal class DataImportViewModel : ObservableObject
 
                 var data = await DataModelImageCreateService.CreateImagesAsync(result.Content!, UeModelExportDirectoryPath, Constants.ImageFilePath, progress, _cancellationTokenSource.Token);
                 var mappingResult = _mappingService.MapToConfigurationModel(data, progress, _cancellationTokenSource.Token);
+                
+                if (mappingResult is null)
+                {
+                    Debug.WriteLine("Data was null");
+                    return;
+                }
+                
                 _applicationState.SetConfig(data, mappingResult);
 
                 Settings.Default.Save();
@@ -108,9 +113,7 @@ internal class DataImportViewModel : ObservableObject
 
     private readonly ApplicationState _applicationState;
     private CancellationTokenSource _cancellationTokenSource = new();
-
-    private readonly ClipBoardService _clipBoardService;
+    
     private readonly DataModelMappingService _mappingService;
-    private readonly DataModelImageCreateService _dataModelImageCreateService;
     private readonly DocsParserService _docsParserService;
 }

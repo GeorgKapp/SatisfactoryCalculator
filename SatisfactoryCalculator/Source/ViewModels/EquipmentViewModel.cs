@@ -2,24 +2,17 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class EquipmentViewModel : ObservableObject
 {
-    private IEquipment? _selectedEquipment;
-    public IEquipment? SelectedEquipment
+    private IEquipment _selectedEquipment;
+    public IEquipment SelectedEquipment
     {
         get => _selectedEquipment;
         set
         {
             SetProperty(ref _selectedEquipment, value);
-            if (value is null)
-            {
-                SelectedEquipmentAsIngredientInRecipes = new();
-                SelectedEquipmentAsProductInRecipes = new();
-            }
-            else
-            {
-                var entityReference = _applicationState.Configuration.ReferenceDictionary[value.ClassName];
-                SelectedEquipmentAsIngredientInRecipes = new(entityReference.RecipeIngredient);
-                SelectedEquipmentAsProductInRecipes = new(entityReference.RecipeProduct);
-            }
+
+            var entityReference = _applicationState.Configuration.ReferenceDictionary[value.ClassName];
+            SelectedEquipmentAsIngredientInRecipes = new(entityReference.RecipeIngredient);
+            SelectedEquipmentAsProductInRecipes = new(entityReference.RecipeProduct);
         }
     }
 
@@ -45,10 +38,14 @@ internal class EquipmentViewModel : ObservableObject
         }
     }
     
+#pragma warning disable CA1822
     public Thickness ProductsSectionMargin => CalculateMargin(false);
+#pragma warning restore CA1822
     public Thickness IngredientsSectionMargin => CalculateMargin(_selectedEquipmentAsProductInRecipes.Count > 0);
     
+#pragma warning disable CS8618
     public EquipmentViewModel(ApplicationState applicationState)
+#pragma warning restore CS8618
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
     }

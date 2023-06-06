@@ -6,10 +6,11 @@ internal class ApplicationState : ObservableObject
     public Configuration Configuration
     {
         get => _configuration;
+        // ReSharper disable once UnusedMember.Global
         set => SetProperty(ref _configuration, value);
     }
 
-    public Data? Data { get; set; }
+    public Data? Data { get; private set; }
 
 	public void SetConfig(Data data, DataModelMappingResult mappingResult)
 	{

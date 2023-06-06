@@ -9,11 +9,6 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class FilterableEntityViewModel : ObservableObject
 {
-	public FilterableEntityViewModel(PageService pageService)
-	{
-		_pageService = pageService ?? throw new ArgumentNullException(nameof(pageService));
-	}
-
 	private object? _currentPage;
     public object? CurrentPage
 	{
@@ -81,9 +76,8 @@ internal class FilterableEntityViewModel : ObservableObject
 			    CurrentPage = recipeFetchResult.Item1;
 			    break;
 		    default:
-			    throw new NotImplementedException("Page switching not implemented");
+			    // ReSharper disable once NotResolvedInText
+			    throw new ArgumentOutOfRangeException("Page switching not implemented");
 	    }
     }
-
-    private readonly PageService _pageService;
 }

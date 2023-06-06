@@ -15,11 +15,11 @@ internal class FuelItem : ObservableObject
         AmountPerMinute = amountPerMinute;
     }
     
-    private IItem _item;
+    private readonly IItem _item;
     public IItem Item
     {
         get => _item;
-        set => SetProperty(ref _item, value);
+        private init => SetProperty(ref _item, value);
     }
 
     private double? _amountPerMinute;
@@ -34,5 +34,6 @@ internal class FuelItem : ObservableObject
         }
     }
 
+    // ReSharper disable once HeapView.ObjectAllocation
     public string AmountPerMinuteText => $"{AmountPerMinute} p/m";
 }

@@ -3,13 +3,32 @@ namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelMappingResult
 {
-    public Dictionary<string, EntityReference> ReferenceDictionary { get; set; } = new();
+    public DataModelMappingResult(
+        IItem[] items, 
+        IEquipment[] equipments, 
+        IConsumable[] consumables, 
+        IBuilding[] buildings,
+        IGenerator[] generators, 
+        IRecipe[] recipes, 
+        IDictionary<string, EntityReference> referenceDictionary, 
+        DateTime? lastSyncDate)
+    {
+        Items = items;
+        Equipments = equipments;
+        Consumables = consumables;
+        Buildings = buildings;
+        Generators = generators;
+        Recipes = recipes;
+        ReferenceDictionary = referenceDictionary;
+        LastSyncDate = lastSyncDate;
+    }
 
-    public IItem[] Items { get; set; } = Array.Empty<IItem>();
-    public IEquipment[] Equipments { get; set; } = Array.Empty<IEquipment>();
-    public IConsumable[] Consumables { get; set; } = Array.Empty<IConsumable>();
-    public IBuilding[] Buildings { get; set; } = Array.Empty<IBuilding>();
-    public IGenerator[] Generators { get; set; } = Array.Empty<IGenerator>();
-    public IRecipe[] Recipes { get; set; } = Array.Empty<IRecipe>();
-    public DateTime? LastSyncDate { get; set; }
+    public IDictionary<string, EntityReference> ReferenceDictionary { get; }
+    public IItem[] Items { get; }
+    public IEquipment[] Equipments { get; }
+    public IConsumable[] Consumables { get; }
+    public IBuilding[] Buildings { get; }
+    public IGenerator[] Generators { get; }
+    public IRecipe[] Recipes { get; }
+    public DateTime? LastSyncDate { get; }
 }

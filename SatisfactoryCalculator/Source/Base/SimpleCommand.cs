@@ -4,16 +4,19 @@ internal class SimpleCommand : ICommand
 {
 	public event EventHandler? CanExecuteChanged
 	{
-		add { CommandManager.RequerySuggested += value; }
-		remove { CommandManager.RequerySuggested -= value; }
+		add => CommandManager.RequerySuggested += value;
+		remove => CommandManager.RequerySuggested -= value;
 	}
 
+	// ReSharper disable once UnusedMember.Global
 	public SimpleCommand(Action action, Func<bool> canExecute)
 	{
 		_action = action;
 		_canExecute = canExecute;
 	}
 
+	// ReSharper disable once HeapView.ClosureAllocation
+	// ReSharper disable once UnusedMember.Global
 	public SimpleCommand(Action action, bool canExecute)
 	{
 		_action = action;
@@ -28,9 +31,7 @@ internal class SimpleCommand : ICommand
 
 	public bool CanExecute(object? parameter)
 	{
-		return _canExecute is null
-			? true 
-			: _canExecute!();
+		return _canExecute is null || _canExecute!();
 	}
 
 	public void Execute(object? parameter)
@@ -38,7 +39,6 @@ internal class SimpleCommand : ICommand
 		_action();
 	}
 
-    private Action _action;
-
-    private Func<bool>? _canExecute;
+    private readonly Action _action;
+    private readonly Func<bool>? _canExecute;
 }

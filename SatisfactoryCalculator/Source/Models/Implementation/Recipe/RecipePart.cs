@@ -17,11 +17,14 @@ internal class RecipePart
         SourceAmount = sourceAmount;
     }
 
-    public IEntity Part { get; set; }
+    public IEntity Part { get; }
     public double? AmountPerMinute { get; set; }
+    
+    // ReSharper disable once HeapView.ObjectAllocation
     public string AmountPerMinuteText => $"{AmountPerMinute} p/m";
-    public double CurrentAmount { get; set; }
-    public double SourceAmount { get; set; }
+    public double SourceAmount { get; }
     public double Amount { get; set; }
+    
+    // ReSharper disable once HeapView.ObjectAllocation
     public string AmountText => $"{Amount} x";
 }

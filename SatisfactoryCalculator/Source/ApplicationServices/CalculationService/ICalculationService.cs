@@ -1,4 +1,5 @@
 ﻿using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
+// ReSharper disable UnusedMemberInSuper.Global
 
 // ReSharper disable once CheckNamespace
 namespace SatisfactoryCalculator.Source.ApplicationServices;

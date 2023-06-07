@@ -7,6 +7,7 @@ internal class DataModelMappingResult
         IItem[] items, 
         IEquipment[] equipments, 
         IConsumable[] consumables, 
+        IWeapon[] weapons,
         IBuilding[] buildings,
         IGenerator[] generators, 
         IRecipe[] recipes, 
@@ -16,6 +17,7 @@ internal class DataModelMappingResult
         Items = items;
         Equipments = equipments;
         Consumables = consumables;
+        Weapons = weapons;
         Buildings = buildings;
         Generators = generators;
         Recipes = recipes;
@@ -27,6 +29,7 @@ internal class DataModelMappingResult
     public IItem[] Items { get; }
     public IEquipment[] Equipments { get; }
     public IConsumable[] Consumables { get; }
+    public IWeapon[] Weapons { get; }
     public IBuilding[] Buildings { get; }
     public IGenerator[] Generators { get; }
     public IRecipe[] Recipes { get; }

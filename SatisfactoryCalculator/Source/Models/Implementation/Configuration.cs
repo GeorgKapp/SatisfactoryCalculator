@@ -25,6 +25,13 @@ public class Configuration : ObservableObject
         set => SetProperty(ref _consumables, value);
     }
     
+    private ObservableCollection<IWeapon> _weapons = new();
+    internal ObservableCollection<IWeapon> Weapons
+    {
+        get => _weapons;
+        set => SetProperty(ref _weapons, value);
+    }
+    
     private ObservableCollection<IBuilding> _buildings = new();
     internal ObservableCollection<IBuilding> Buildings
     {

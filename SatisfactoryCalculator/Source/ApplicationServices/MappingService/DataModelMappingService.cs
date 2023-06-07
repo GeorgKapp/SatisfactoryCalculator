@@ -6,6 +6,8 @@ using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
 using Generator = SatisfactoryCalculator.DocsServices.Models.DataModels.Generator;
 using Item = SatisfactoryCalculator.DocsServices.Models.DataModels.Item;
 using Recipe = SatisfactoryCalculator.DocsServices.Models.DataModels.Recipe;
+using Weapon = SatisfactoryCalculator.DocsServices.Models.DataModels.Weapon;
+
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable HeapView.ClosureAllocation
 
@@ -34,6 +36,9 @@ internal class DataModelMappingService
         
         progress?.ReportOrThrow("Map Consumables", token);
         var consumables = MapToConsumables(data.Consumables, itemDictionary);
+        
+        progress?.ReportOrThrow("Map Weapons", token);
+        var weapons = MapToWeapons(data.Weapons, itemDictionary);
 
         progress?.ReportOrThrow("Map Buildings", token);
         var buildings = MapToBuildingModels(data.Buildings);
@@ -54,14 +59,15 @@ internal class DataModelMappingService
         var lastSyncDate = GetLastSyncDate();
         
         return new(
-            items: itemDictionary.Values.ToArray(), 
-            equipments: equipments, 
-            consumables: consumables,
-            buildings: buildingDictionary.Values.ToArray(), 
-            generators: generators, 
-            recipes: recipes,
-            referenceDictionary: referenceDictionary, 
-            lastSyncDate: lastSyncDate);
+            itemDictionary.Values.ToArray(), 
+            equipments, 
+            consumables,
+            weapons,
+            buildingDictionary.Values.ToArray(), 
+            generators, 
+            recipes,
+            referenceDictionary, 
+            lastSyncDate);
     }
 
     #region Model Methods
@@ -124,6 +130,34 @@ internal class DataModelMappingService
         
         itemDictionary[consumable.ClassName] = mappedConsumable;
         return mappedConsumable;
+    }
+    
+    // ReSharper disable once HeapView.ClosureAllocation
+    private IWeapon[] MapToWeapons(IEnumerable<Weapon> weapons, IDictionary<string, IItem> itemDictionary) => weapons
+        .Select(p => MapToWeapon(p, itemDictionary))
+        .OrderBy(p => p.Name)
+        .ToArray();
+
+    private IWeapon MapToWeapon(Weapon weapon, IDictionary<string, IItem> itemDictionary)
+    {
+        var item = itemDictionary[weapon.ClassName];
+        
+        var mappedWeapon = new Models.Weapon
+        {
+            ClassName = item.ClassName, 
+            Name = item.Name,
+            Description = item.Description, 
+            Form = item.Form, 
+            EnergyValue = item.EnergyValue, 
+            Image = item.Image,
+            EquipmentSlot = weapon.EquipmentSlot,
+            DamageMultiplier = weapon.DamageMultiplier,
+            ReloadTime = weapon.ReloadTime,
+            AutoReloadDelay = weapon.AutoReloadDelay
+        };
+        
+        itemDictionary[weapon.ClassName] = mappedWeapon;
+        return mappedWeapon;
     }
 
     private IEnumerable<IBuilding> MapToBuildingModels(IEnumerable<Building> buildings)

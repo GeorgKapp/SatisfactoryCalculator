@@ -7,9 +7,9 @@ public partial class EquipmentSlotControl
         InitializeComponent();
     }
     
-    public EquipmentSlot EquipmentSlot
+    public EquipmentSlot? EquipmentSlot
     {
-        get => (EquipmentSlot)GetValue(EquipmentSlotProperty);
+        get => (EquipmentSlot?)GetValue(EquipmentSlotProperty);
         // ReSharper disable once HeapView.BoxingAllocation
         set => SetValue(EquipmentSlotProperty, value);
     }
@@ -17,7 +17,7 @@ public partial class EquipmentSlotControl
     public static readonly DependencyProperty EquipmentSlotProperty =
         DependencyProperty.Register(
             nameof(EquipmentSlot),
-            typeof(EquipmentSlot),
+            typeof(EquipmentSlot?),
             typeof(EquipmentSlotControl),
             new(EquipmentSlotChangedCallback));
 
@@ -33,14 +33,15 @@ public partial class EquipmentSlotControl
         backSlot.Visibility = Visibility.Collapsed;
         bodySlot.Visibility = Visibility.Collapsed;
         handSlot.Visibility = Visibility.Collapsed;
-
+        
         switch (EquipmentSlot)
         {
-            case EquipmentSlot.Arms: handSlot.Visibility = Visibility.Visible; break;
-            case EquipmentSlot.Back: backSlot.Visibility = Visibility.Visible; break;
-            case EquipmentSlot.Body: bodySlot.Visibility = Visibility.Visible; break;
-            case EquipmentSlot.Head: headSlot.Visibility = Visibility.Visible; break;
-            case EquipmentSlot.Legs: legSlot.Visibility = Visibility.Visible; break;
+            case null: break;
+            case Shared.Enums.EquipmentSlot.Arms: handSlot.Visibility = Visibility.Visible; break;
+            case Shared.Enums.EquipmentSlot.Back: backSlot.Visibility = Visibility.Visible; break;
+            case Shared.Enums.EquipmentSlot.Body: bodySlot.Visibility = Visibility.Visible; break;
+            case Shared.Enums.EquipmentSlot.Head: headSlot.Visibility = Visibility.Visible; break;
+            case Shared.Enums.EquipmentSlot.Legs: legSlot.Visibility = Visibility.Visible; break;
             default: throw new ArgumentOutOfRangeException();
         }
     }

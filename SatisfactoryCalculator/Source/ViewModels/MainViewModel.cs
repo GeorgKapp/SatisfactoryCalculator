@@ -31,6 +31,9 @@ internal class MainViewModel : ObservableObject
     
     private ICommand? _showConsumablesCommand;
     public ICommand ShowConsumablesCommand => _showConsumablesCommand ??= new SimpleCommand(ShowConsumables);
+    
+    private ICommand? _showWeaponsCommand;
+    public ICommand ShowWeaponsCommand => _showWeaponsCommand ??= new SimpleCommand(ShowWeapons);
 
     private ICommand? _showBuildingsCommand;
     public ICommand ShowBuildingsCommand => _showBuildingsCommand ??= new SimpleCommand(ShowBuildings);
@@ -60,6 +63,7 @@ internal class MainViewModel : ObservableObject
     private void ShowItems() => ShowFilterableEntityPage(_applicationState.Configuration.Items);
     private void ShowEquipments() => ShowFilterableEntityPage(_applicationState.Configuration.Equipments);
     private void ShowConsumables() => ShowFilterableEntityPage(_applicationState.Configuration.Consumables);
+    private void ShowWeapons() => ShowFilterableEntityPage(_applicationState.Configuration.Weapons);
     private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
     private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
     private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);

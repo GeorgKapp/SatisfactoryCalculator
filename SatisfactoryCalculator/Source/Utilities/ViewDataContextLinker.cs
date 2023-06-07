@@ -9,6 +9,7 @@ public static class ViewDataContextLinker
         Link<ItemPage, ItemViewModel>();
         Link<EquipmentPage, EquipmentViewModel>();
         Link<ConsumablePage, ConsumableViewModel>();
+        Link<WeaponPage, WeaponViewModel>();
         Link<BuildingPage, BuildingViewModel>();
         Link<GeneratorPage, GeneratorViewModel>();
         Link<RecipePage, RecipeViewModel>();

@@ -31,7 +31,7 @@
                 <c:SatisfactoryButton Content="Items" Command="{Binding ShowItemsCommand}"/>
                 <c:SatisfactoryButton Content="Equipments" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowEquipmentsCommand}"/>
                 <c:SatisfactoryButton Content="Consumables" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowConsumablesCommand}"/>
-                <c:SatisfactoryButton Content="Weapons" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Weapons" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowWeaponsCommand}"/>
                 <c:SatisfactoryButton Content="Ammunition" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Resources" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Vehicles" Style="{StaticResource SubCategoryButtonButton}"/>

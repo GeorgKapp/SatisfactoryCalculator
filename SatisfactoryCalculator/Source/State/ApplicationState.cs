@@ -19,6 +19,7 @@ internal class ApplicationState : ObservableObject
         Configuration.Items = new(mappingResult.Items);
         Configuration.Equipments = new(mappingResult.Equipments);
         Configuration.Consumables = new(mappingResult.Consumables);
+        Configuration.Weapons = new(mappingResult.Weapons);
         Configuration.Buildings = new(mappingResult.Buildings);
         Configuration.Generators = new(mappingResult.Generators);
         Configuration.Recipes = new(mappingResult.Recipes);

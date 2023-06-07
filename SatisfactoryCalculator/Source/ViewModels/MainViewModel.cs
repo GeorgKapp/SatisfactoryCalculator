@@ -98,7 +98,6 @@ internal class MainViewModel : ObservableObject
     {
 	    try
 	    {
-
 		    InitializingText = "Initializing";
 		    IsInitializing = true;
 

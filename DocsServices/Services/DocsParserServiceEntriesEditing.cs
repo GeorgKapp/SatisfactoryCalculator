@@ -1,9 +1,13 @@
+using System.Diagnostics.CodeAnalysis;
+// ReSharper disable MemberCanBeMadeStatic.Local
+
 namespace SatisfactoryCalculator.DocsServices.Services;
 
+[SuppressMessage("Performance", "CA1822:Mark members as static")]
 public partial class DocsParserService
 {
     // ReSharper disable once HeapView.ClosureAllocation
-    private static void RemoveGeneratorFuelsWithNoEnergy(IEnumerable<Item> items, List<Generator> generators)
+    private void RemoveGeneratorFuelsWithNoEnergy(IEnumerable<Item> items, List<Generator> generators)
     {
         foreach (var generator in generators)
         {
@@ -15,13 +19,26 @@ public partial class DocsParserService
         }
     }
 
-    private static void EditEquipmentDescription(IEnumerable<Item> items)
+    private void EditEquipmentDescription(IEnumerable<Item> items)
     {
         foreach (var item in items.Where(item => item.ClassName == "Chainsaw_C"))
         {
             item.Description = item.Description
                 .Replace("Slot: Hands", "")
                 .Trim();
+        }
+    }
+    
+    private void AddWeaponToAmmunitionReferences(IEnumerable<Item> items, IEnumerable<Weapon> weapons, IEnumerable<Ammunition> ammunitions)
+    {
+        // ReSharper disable once HeapView.ClosureAllocation
+        foreach (var ammunition in ammunitions)
+        {
+            // ReSharper disable once PossibleMultipleEnumeration
+            ammunition.UsedInWeapon = weapons
+                .Where(p => p.UsesAmmunition.Contains(ammunition.ClassName))
+                .Select(p => p.ClassName)
+                .Single();
         }
     }
 }

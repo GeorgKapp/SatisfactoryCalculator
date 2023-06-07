@@ -1,5 +1,8 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
+
+using System.Text.Json.Serialization;
+
 #pragma warning disable CS8767
 #pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.DataModels;

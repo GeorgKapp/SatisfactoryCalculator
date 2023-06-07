@@ -13,6 +13,7 @@ internal class WeaponViewModel : ObservableObject
             var entityReference = _applicationState.Configuration.ReferenceDictionary[value.ClassName];
             SelectedWeaponAsIngredientInRecipes = new(entityReference.RecipeIngredient);
             SelectedWeaponAsProductInRecipes = new(entityReference.RecipeProduct);
+            SelectedAmmunitions = new(_selectedWeapon.Ammunitions);
         }
     }
 
@@ -38,10 +39,21 @@ internal class WeaponViewModel : ObservableObject
         }
     }
     
+    private ObservableCollection<IAmmunition> _selectedAmmunitions = new();
+    public ObservableCollection<IAmmunition> SelectedAmmunitions
+    {
+        get => _selectedAmmunitions;
+        private set
+        {
+            SetProperty(ref _selectedAmmunitions, value);
+            NotifyMarginUpdates();
+        }
+    }
+    
 #pragma warning disable CA1822
     public Thickness ProductsSectionMargin => CalculateMargin(false);
-#pragma warning restore CA1822
     public Thickness IngredientsSectionMargin => CalculateMargin(_selectedWeaponAsProductInRecipes.Count > 0);
+    public Thickness AmmunitionSectionMargin => CalculateMargin(_selectedWeaponAsIngredientInRecipes.Count > 0);
 
 #pragma warning disable CS8618
     public WeaponViewModel(ApplicationState applicationState)
@@ -59,6 +71,7 @@ internal class WeaponViewModel : ObservableObject
     {
         Notify(nameof(ProductsSectionMargin));
         Notify(nameof(IngredientsSectionMargin));
+        Notify(nameof(AmmunitionSectionMargin));
     }
 
     private readonly ApplicationState _applicationState;

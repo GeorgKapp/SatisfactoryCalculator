@@ -50,7 +50,7 @@
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedConsumable.Description}" />
                 <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedConsumable.HealthGain, Converter={StaticResource NullToVisibilityConverter}}">
-                    <Run Text="Health Gain: "/>
+                    <Run Text="Health Gain: " FontWeight="SemiBold"/>
                     <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
                     <Run Text="{Binding SelectedConsumable.HealthGain}"/>
                 </c:SatisfactoryTextBlock>
@@ -62,16 +62,16 @@
             <ItemsControl.ItemsSource>
                 <CompositeCollection>
 
-                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedConsumableAsProductInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding ProductsSectionMargin}"/>
+                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedConsumableAsProductInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" FontSize="16" Margin="{Binding ProductsSectionMargin}"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
 
-                    <c:SatisfactoryTextBlock Text="Consumable used as Ingredient" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedConsumableAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding IngredientsSectionMargin}"/>
+                    <c:SatisfactoryTextBlock Text="Consumable used as Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedConsumableAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" FontSize="16" Margin="{Binding IngredientsSectionMargin}"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource IngredientCollection}}"/>
 
-                    <c:SatisfactoryTextBlock Text="Consumable used as Building Ingredient" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedConsumableAsBuildingIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding BuildingIngredientSectionMargin}"/>
+                    <c:SatisfactoryTextBlock Text="Consumable used as Building Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedConsumableAsBuildingIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding BuildingIngredientSectionMargin}"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource BuildingIngredientCollection}}"/>
 
-                    <c:SatisfactoryTextBlock Text="Consumable used as Fuel" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedConsumableAsFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding FuelsSectionMargin}"/>
+                    <c:SatisfactoryTextBlock Text="Consumable used as Fuel" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedConsumableAsFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding FuelsSectionMargin}"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource FuelIngredientCollection}}"/>
  
                 </CompositeCollection>

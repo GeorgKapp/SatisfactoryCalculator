@@ -10,10 +10,9 @@ internal class OverviewViewModel : ObservableObject
 	public OverviewViewModel(ApplicationState applicationState)
 	{
 		_applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
-		NotifyChanges();
 	}
 
-	private void NotifyChanges()
+	public void Update()
 	{
 		Notify(nameof(BuildingAmount));
 		Notify(nameof(ItemAmount));

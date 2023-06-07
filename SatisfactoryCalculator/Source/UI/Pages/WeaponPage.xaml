@@ -7,6 +7,7 @@
       xmlns:models="clr-namespace:SatisfactoryCalculator.Source.Models"
       xmlns:u="clr-namespace:SatisfactoryCalculator.Source.UI.UserControls"
       xmlns:context="clr-namespace:SatisfactoryCalculator.Source.ViewModels"
+      xmlns:interfaces="clr-namespace:SatisfactoryCalculator.Source.Models.Interfaces"
       mc:Ignorable="d"
       Background="Transparent"
       d:Background="#202125"
@@ -16,13 +17,18 @@
 
         <CollectionViewSource x:Key="ProductCollection" Source="{Binding SelectedWeaponAsProductInRecipes}"/>
         <CollectionViewSource x:Key="IngredientCollection" Source="{Binding SelectedWeaponAsIngredientInRecipes}"/>
-
+        <CollectionViewSource x:Key="AmmunitionCollection" Source="{Binding SelectedAmmunitions}"/>
+        
         <DataTemplate DataType="{x:Type models:Fuel}">
             <u:FuelControl Fuel="{Binding}" Margin="0,0,0,15"/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:Recipe}">
             <u:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type models:Ammunition}">
+            <u:AmmunitionControl Ammunition="{Binding}" Margin="0,0,0,15"/>
         </DataTemplate>
 
     </Page.Resources>
@@ -48,15 +54,15 @@
                 <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedWeapon.Name}" />
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedWeapon.Description}" />
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedWeapon.DamageMultiplier, Converter={StaticResource NullToVisibilityConverter}}">
-                    <Run Text="Damage Multiplier: "/>
+                    <Run Text="Damage Multiplier: " FontWeight="SemiBold"/>
                     <Run Text="{Binding SelectedWeapon.DamageMultiplier}"/>
                 </c:SatisfactoryTextBlock>
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedWeapon.ReloadTime, Converter={StaticResource NullToVisibilityConverter}}">
-                    <Run Text="Reload Time: "/>
+                    <Run Text="Reload Time: " FontWeight="SemiBold"/>
                     <Run Text="{Binding SelectedWeapon.ReloadTime}"/>
                 </c:SatisfactoryTextBlock>
                 <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedWeapon.AutoReloadDelay, Converter={StaticResource NullToVisibilityConverter}}">
-                    <Run Text="Auto Reload Delay: "/>
+                    <Run Text="Auto Reload Delay: " FontWeight="SemiBold"/>
                     <Run Text="{Binding SelectedWeapon.AutoReloadDelay}"/>
                 </c:SatisfactoryTextBlock>
             </StackPanel>
@@ -69,11 +75,14 @@
             <ItemsControl.ItemsSource>
                 <CompositeCollection>
 
-                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedWeaponAsProductInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding ProductsSectionMargin}"/>
+                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedWeaponAsProductInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding ProductsSectionMargin}"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
 
-                    <c:SatisfactoryTextBlock Text="Weapon used as Ingredient" Style="{StaticResource LargeTextBlock}" Visibility="{Binding SelectedWeaponAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" TextDecorations="Underline" FontSize="16" Margin="{Binding IngredientsSectionMargin}"/>
+                    <c:SatisfactoryTextBlock Text="Weapon used as Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedWeaponAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding IngredientsSectionMargin}"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource IngredientCollection}}"/>
+                    
+                    <c:SatisfactoryTextBlock Text="Ammunition" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedWeapon.Ammunitions.Length, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding AmmunitionSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource AmmunitionCollection}}"/>
                     
                 </CompositeCollection>
             </ItemsControl.ItemsSource>

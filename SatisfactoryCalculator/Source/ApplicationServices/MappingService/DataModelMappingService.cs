@@ -1,4 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
+using Ammunition = SatisfactoryCalculator.DocsServices.Models.DataModels.Ammunition;
 using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
 using Consumable = SatisfactoryCalculator.DocsServices.Models.DataModels.Consumable;
 using Equipment = SatisfactoryCalculator.DocsServices.Models.DataModels.Equipment;
@@ -39,6 +39,11 @@ internal class DataModelMappingService
         
         progress?.ReportOrThrow("Map Weapons", token);
         var weapons = MapToWeapons(data.Weapons, itemDictionary);
+        
+        progress?.ReportOrThrow("Map Ammunitions", token);
+        var ammunitions = MapToAmmunitions(data.Ammunition, itemDictionary);
+
+        LinkWeaponsAndAmmunition(data.Weapons, data.Ammunition, itemDictionary);
 
         progress?.ReportOrThrow("Map Buildings", token);
         var buildings = MapToBuildingModels(data.Buildings);
@@ -63,6 +68,7 @@ internal class DataModelMappingService
             equipments, 
             consumables,
             weapons,
+            ammunitions,
             buildingDictionary.Values.ToArray(), 
             generators, 
             recipes,
@@ -80,7 +86,7 @@ internal class DataModelMappingService
         Form = p.Form,
         EnergyValue = p.EnergyValue,
         Image = BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath))
-    }).Cast<IItem>().OrderBy(p => p.Name).ToArray();
+    }).OrderBy(p => p.Name).ToArray();
     
     // ReSharper disable once HeapView.ClosureAllocation
     private IEquipment[] MapToEquipments(IEnumerable<Equipment> equipments, IDictionary<string, IItem> itemDictionary) => equipments
@@ -159,6 +165,49 @@ internal class DataModelMappingService
         itemDictionary[weapon.ClassName] = mappedWeapon;
         return mappedWeapon;
     }
+    
+    // ReSharper disable once HeapView.ClosureAllocation
+    private IAmmunition[] MapToAmmunitions(IEnumerable<Ammunition> ammunitions, IDictionary<string, IItem> itemDictionary) => ammunitions
+        .Select(p => MapToAmmunition(p, itemDictionary))
+        .OrderBy(p => p.Name)
+        .ToArray();
+
+    private IAmmunition MapToAmmunition(Ammunition ammunition, IDictionary<string, IItem> itemDictionary)
+    {
+        var item = itemDictionary[ammunition.ClassName];
+        
+        var mappedAmmunition = new Models.Ammunition
+        {
+            ClassName = item.ClassName, 
+            Name = item.Name,
+            Description = item.Description, 
+            Form = item.Form, 
+            EnergyValue = item.EnergyValue, 
+            Image = item.Image,
+            MaxAmmoEffectiveRange = ammunition.MaxAmmoEffectiveRange,
+            WeaponDamageMultiplier = ammunition.WeaponDamageMultiplier,
+            FireRate = ammunition.FireRate,
+            ReloadTimeMultiplier = ammunition.ReloadTimeMultiplier
+        };
+        
+        itemDictionary[ammunition.ClassName] = mappedAmmunition;
+        return mappedAmmunition;
+    }
+    
+    private void LinkWeaponsAndAmmunition(IEnumerable<Weapon> weapons, IEnumerable<Ammunition> ammunitions, IDictionary<string, IItem> itemDictionary)
+    {
+        foreach (var ammunition in ammunitions)
+        {
+            var mappedMunition = (IAmmunition)itemDictionary[ammunition.ClassName];
+            mappedMunition.UsedInWeapon = (IWeapon)itemDictionary[ammunition.UsedInWeapon];
+        }
+        
+        foreach (var weapon in weapons)
+        {
+            var mappedWeapon = (IWeapon)itemDictionary[weapon.ClassName];
+            mappedWeapon.Ammunitions = weapon.UsesAmmunition.Select(p => (IAmmunition)itemDictionary[p]).ToArray();
+        }
+    }
 
     private IEnumerable<IBuilding> MapToBuildingModels(IEnumerable<Building> buildings)
     {
@@ -174,7 +223,7 @@ internal class DataModelMappingService
                 PowerConsumptionExponent = p.PowerConsumptionExponent,
                 PowerConsumptionRange = p.PowerConsumptionRange
             }
-        ).Cast<IBuilding>().OrderBy(p => p.Name).ToArray();
+        ).OrderBy(p => p.Name).ToArray();
     }
 
     // ReSharper disable once HeapView.ClosureAllocation

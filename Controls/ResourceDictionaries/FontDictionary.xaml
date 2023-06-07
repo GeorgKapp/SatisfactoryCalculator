@@ -8,6 +8,7 @@
     <FontStretch x:Key="BaseFontStretch">Expanded</FontStretch>
 
     <s:Double x:Key="SmallFontSize">14</s:Double>
+    <s:Double x:Key="GroupFontSize">16</s:Double>
     <s:Double x:Key="BaseFontSize">18</s:Double>
     <s:Double x:Key="MediumFontSize">25</s:Double>
     <s:Double x:Key="LargeFontSize">30</s:Double>

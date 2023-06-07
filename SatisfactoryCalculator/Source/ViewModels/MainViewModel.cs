@@ -34,6 +34,9 @@ internal class MainViewModel : ObservableObject
     
     private ICommand? _showWeaponsCommand;
     public ICommand ShowWeaponsCommand => _showWeaponsCommand ??= new SimpleCommand(ShowWeapons);
+    
+    private ICommand? _showAmmunitionsCommand;
+    public ICommand ShowAmmunitionsCommand => _showAmmunitionsCommand ??= new SimpleCommand(ShowAmmunitions);
 
     private ICommand? _showBuildingsCommand;
     public ICommand ShowBuildingsCommand => _showBuildingsCommand ??= new SimpleCommand(ShowBuildings);
@@ -64,11 +67,17 @@ internal class MainViewModel : ObservableObject
     private void ShowEquipments() => ShowFilterableEntityPage(_applicationState.Configuration.Equipments);
     private void ShowConsumables() => ShowFilterableEntityPage(_applicationState.Configuration.Consumables);
     private void ShowWeapons() => ShowFilterableEntityPage(_applicationState.Configuration.Weapons);
+    private void ShowAmmunitions() => ShowFilterableEntityPage(_applicationState.Configuration.Ammunitions);
     private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
     private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
     private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);
-	private void ShowOverview() => CurrentPage = PageService.FetchPage<OverviewPage>();
-	private void ShowDataImport() => CurrentPage = PageService.FetchPage<DataImportPage>();
+    private void ShowOverview()
+    {
+	    var result = PageService.FetchPageWithViewModel<OverviewPage, OverviewViewModel>();
+	    result.Item2.Update();
+	    CurrentPage = result.Item1;
+    }
+    private void ShowDataImport() => CurrentPage = PageService.FetchPage<DataImportPage>();
 
 	private void ShowFilterableEntityPage(IEnumerable<IEntity> entities)
 	{
@@ -87,28 +96,40 @@ internal class MainViewModel : ObservableObject
 
     public async Task Load()
     {
-        InitializingText = "Initializing";
-        IsInitializing = true;
+	    try
+	    {
 
-        // ReSharper disable once HeapView.ClosureAllocation
-        var data = (await DebugExtensions.ProfileAsync(
-	        _jsonService.ReadUtf8JsonAsync<Data>(Constants.InformationFileName), 
-	        "Read Data"))!;
+		    InitializingText = "Initializing";
+		    IsInitializing = true;
 
-        var mappedData = DebugExtensions.Profile(() =>
-            _dataModelMappingService.MapToConfigurationModel(data),
-            "Map Data");
+		    // ReSharper disable once HeapView.ClosureAllocation
+		    var data = (await DebugExtensions.ProfileAsync(
+			    _jsonService.ReadUtf8JsonAsync<Data>(Constants.InformationFileName),
+			    "Read Data"))!;
 
-        if (mappedData is null)
-        {
-	        Debug.WriteLine("Data was null");
-	        return;
-        }
+		    var mappedData = DebugExtensions.Profile(() =>
+				    _dataModelMappingService.MapToConfigurationModel(data),
+			    "Map Data");
 
-        _applicationState.SetConfig(data, mappedData);
+		    if (mappedData is null)
+		    {
+			    Debug.WriteLine("Data was null");
+			    return;
+		    }
 
-        IsInitializing = false;
-        InitializingText = string.Empty;
+		    _applicationState.SetConfig(data, mappedData);
+	    }
+	    catch (Exception exception)
+	    {
+		    InitializingText = "Exception occured: Exception copied to clipboard";
+		    ClipBoardService.CopyToClipboard(exception.Message);
+		    await Task.Delay(1000);
+	    }
+	    finally
+	    {
+		    InitializingText = string.Empty;
+		    IsInitializing = false;
+	    }
     }
 
     private readonly ApplicationState _applicationState;

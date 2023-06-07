@@ -10,9 +10,9 @@ public partial class DocsParserService
 	public async Task<Result<Data>> ParseDocsJsonAsync(string docsFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
 	{
 		progress?.ReportOrThrow("Read docs.json file", token);
-		var classes1 = (await _jsonService.ReadJsonAsync<Class1[]>(docsFilePath))!;
+		var rootObjects = (await _jsonService.ReadJsonAsync<RootObject[]>(docsFilePath))!;
 
-		var classesDictionary = classes1
+		var classesDictionary = rootObjects
 			.SelectMany(p => p.Classes)
 #pragma warning disable CS8714
 			.ToDictionary(p => p.ClassName!, p => p);
@@ -22,7 +22,7 @@ public partial class DocsParserService
 		var data = new Data();
 
         var biomassItems = Array.Empty<Item>();
-        foreach (var class1 in classes1)
+        foreach (var class1 in rootObjects)
         {
 	        if (class1.NativeClass != "Class'/Script/FactoryGame.FGItemDescriptorBiomass'") 
 		        continue;
@@ -32,7 +32,7 @@ public partial class DocsParserService
         }
 		data.Items.AddRange(biomassItems);
 
-        foreach (var class1 in classes1)
+        foreach (var class1 in rootObjects)
 		{
 			token?.ThrowIfCancellationRequested();
 			switch (class1.NativeClass)
@@ -189,7 +189,7 @@ public partial class DocsParserService
 					return Result<Data>.Failure($"{class1.NativeClass} not parsed");
 			}
 		}
-
+        
         progress?.ReportOrThrow("Add missing items", token);
         data.Items.Add(_coffeeCup);
 		data.Items.Add(_goldenCoffeeCup);
@@ -214,6 +214,9 @@ public partial class DocsParserService
 		progress?.ReportOrThrow("Add missing statues", token);
 		data.Statues.AddRange(_statues);
 		
+		progress?.ReportOrThrow("Add ammunition and weapon references for each other", token);
+		AddWeaponToAmmunitionReferences(data.Items, data.Weapons, data.Ammunition);
+
 		progress?.ReportOrThrow("Remove Generator Fuels with no energy value", token);
         RemoveGeneratorFuelsWithNoEnergy(data.Items, data.Generators);
 

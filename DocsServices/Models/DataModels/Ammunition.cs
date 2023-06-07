@@ -9,4 +9,5 @@ public class Ammunition : IBase
 	public double? ReloadTimeMultiplier { get; set; }
 	public double FireRate { get; set; }
 	public double WeaponDamageMultiplier { get; set; }
+	public string UsedInWeapon { get; set; }
 }

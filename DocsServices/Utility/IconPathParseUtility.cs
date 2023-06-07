@@ -43,7 +43,7 @@ internal static class IconPathParseUtility
 		return ConvertIconPathToUePath(iconPath);
 	}
 
-	public static string ReplaceSmallIconPathFromClass(Class2 class2)
+	public static string ReplaceSmallIconPathFromClass(Classes class2)
 	{
 		var className = class2.ClassName;
 		var result = className switch
@@ -56,7 +56,7 @@ internal static class IconPathParseUtility
 		return result;
 	}
 
-	public static string ReplaceBigIconPathFromClass(Class2 class2)
+	public static string ReplaceBigIconPathFromClass(Classes class2)
 	{
 		var className = class2.ClassName;
 		

@@ -1,13 +1,21 @@
 // ReSharper disable InconsistentNaming
 // ReSharper disable UnusedMember.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable CheckNamespace
 #pragma warning disable CS8618
-namespace SatisfactoryCalculator.DocsServices.Models.JsonModels;
+#pragma warning disable CA1050
 
-// ReSharper disable once ClassNeverInstantiated.Global
-internal class Class2
+public class RootObject
+
 {
-    public string? ClassName { get; set; }
+    public string NativeClass { get; set; }
+    public Classes[] Classes { get; set; }
+}
+
+public class Classes
+{
+    public string ClassName { get; set; }
     public string mDisplayName { get; set; }
     public string mDescription { get; set; }
     public string mAbbreviatedDisplayName { get; set; }
@@ -19,12 +27,96 @@ internal class Class2
     public string mForm { get; set; }
     public string mSmallIcon { get; set; }
     public string mPersistentBigIcon { get; set; }
+    public string mCrosshairMaterial { get; set; }
+    public string mDescriptorStatBars { get; set; }
     public string mSubCategories { get; set; }
     public string mMenuPriority { get; set; }
     public string mFluidColor { get; set; }
     public string mGasColor { get; set; }
+    public string mCompatibleItemDescriptors { get; set; }
+    public string mClassToScanFor { get; set; }
+    public string mScannableType { get; set; }
+    public string mShouldOverrideScannerDisplayText { get; set; }
+    public string mScannerDisplayText { get; set; }
+    public string mScannerLightColor { get; set; }
     public string mResourceSinkPoints { get; set; }
-    public string mBuildMenuPriority { get; set; }
+    public string mStoppedProducingAnimationSounds { get; set; }
+    public string mStoppedAkComponents { get; set; }
+    public string mSocketStoppedAkComponents { get; set; }
+    public string m_DockingStates { get; set; }
+    public string m_OffsetTime { get; set; }
+    public string mDroneDockingStartLocationLocal { get; set; }
+    public string mDroneDockingLocationLocal { get; set; }
+    public string mBatteryClasses { get; set; }
+    public string mDroneDockingQueue { get; set; }
+    public string mStationHasDronesInQueue { get; set; }
+    public string mItemTransferringStage { get; set; }
+    public string mTransferProgress { get; set; }
+    public string mTransferSpeed { get; set; }
+    public string mStackTransferSize { get; set; }
+    public string mDroneQueueRadius { get; set; }
+    public string mDroneQueueSeparationRadius { get; set; }
+    public string mDroneQueueVerticalSeparation { get; set; }
+    public string mTripPowerCost { get; set; }
+    public string mTripPowerPerMeterCost { get; set; }
+    public string mTripInformationSampleCount { get; set; }
+    public string mStorageSizeX { get; set; }
+    public string mStorageSizeY { get; set; }
+    public string mBatteryStorageSizeX { get; set; }
+    public string mBatteryStorageSizeY { get; set; }
+    public string mMapText { get; set; }
+    public string mPowerConsumption { get; set; }
+    public string mPowerConsumptionExponent { get; set; }
+    public string mDoesHaveShutdownAnimation { get; set; }
+    public string mOnHasPowerChanged { get; set; }
+    public string mOnHasProductionChanged { get; set; }
+    public string mOnHasStandbyChanged { get; set; }
+    public string mMinimumProducingTime { get; set; }
+    public string mMinimumStoppedTime { get; set; }
+    public string mCanEverMonitorProductivity { get; set; }
+    public string mCanChangePotential { get; set; }
+    public string mMinPotential { get; set; }
+    public string mMaxPotential { get; set; }
+    public string mMaxPotentialIncreasePerCrystal { get; set; }
+    public string mFluidStackSizeDefault { get; set; }
+    public string mFluidStackSizeMultiplier { get; set; }
+    public string OnReplicationDetailActorCreatedEvent { get; set; }
+    public string mEffectUpdateInterval { get; set; }
+    public string mDefaultProductivityMeasurementDuration { get; set; }
+    public string mLastProductivityMeasurementProduceDuration { get; set; }
+    public string mLastProductivityMeasurementDuration { get; set; }
+    public string mCurrentProductivityMeasurementProduceDuration { get; set; }
+    public string mCurrentProductivityMeasurementDuration { get; set; }
+    public string mProductivityMonitorEnabled { get; set; }
+    public string mCachedSkeletalMeshes { get; set; }
+    public string mAddToSignificanceManager { get; set; }
+    public string mSignificanceRange { get; set; }
+    public string MaxRenderDistance { get; set; }
+    public string mHighlightVector { get; set; }
+    public string mAlternativeMaterialRecipes { get; set; }
+    public string mContainsComponents { get; set; }
+    public string mBuildEffectSpeed { get; set; }
+    public string mAllowColoring { get; set; }
+    public string mAllowPatterning { get; set; }
+    public string mSkipBuildEffect { get; set; }
+    public string mForceNetUpdateOnRegisterPlayer { get; set; }
+    public string mToggleDormancyOnInteraction { get; set; }
+    public string mIsMultiSpawnedBuildable { get; set; }
+    public string mShouldShowHighlight { get; set; }
+    public string mShouldShowAttachmentPointVisuals { get; set; }
+    public string mCreateClearanceMeshRepresentation { get; set; }
+    public string mCanContainLightweightInstances { get; set; }
+    public string mAffectsOcclusion { get; set; }
+    public string mOcclusionShape { get; set; }
+    public string mScaleCustomOffset { get; set; }
+    public string mCustomScaleType { get; set; }
+    public string mOcclusionBoxInfo { get; set; }
+    public string mAttachmentPoints { get; set; }
+    public string mInteractingPlayers { get; set; }
+    public string mIsUseable { get; set; }
+    public string mHideOnBuildEffectStart { get; set; }
+    public string mShouldModifyWorldGrid { get; set; }
+    public string mBlueprintBuildEffectID { get; set; }
     public string mRandomAnim { get; set; }
     public string mCanPress { get; set; }
     public string mEquipmentSlot { get; set; }
@@ -33,7 +125,9 @@ internal class Class2
     public string mArmAnimation { get; set; }
     public string mBackAnimation { get; set; }
     public string mHasPersistentOwner { get; set; }
+    public string mOnlyVisibleToOwner { get; set; }
     public string mUseDefaultPrimaryFire { get; set; }
+    public string mReceivedDamageModifiers { get; set; }
     public string mAnimData { get; set; }
     public string mCurrentAnimData { get; set; }
     public string FullName { get; set; }
@@ -42,11 +136,12 @@ internal class Class2
     public string mCost { get; set; }
     public string mTimeToComplete { get; set; }
     public string mRelevantShopSchematics { get; set; }
-    public Munlock[] mUnlocks { get; set; }
+    public MUnlocks[] mUnlocks { get; set; }
     public string mSchematicIcon { get; set; }
     public string mSmallSchematicIcon { get; set; }
-    public Mschematicdependency[] mSchematicDependencies { get; set; }
+    public MSchematicDependencies[] mSchematicDependencies { get; set; }
     public string mDependenciesBlocksSchematicAccess { get; set; }
+    public string mHiddenUntilDependenciesMet { get; set; }
     public string mRelevantEvents { get; set; }
     public string mIncludeInBuilds { get; set; }
     public string mUnlockName { get; set; }
@@ -54,27 +149,20 @@ internal class Class2
     public string mUnlockIconBig { get; set; }
     public string mUnlockIconSmall { get; set; }
     public string mUnlockIconCategory { get; set; }
+    public string mHealthGain { get; set; }
+    public string mCustomHandsMeshScale { get; set; }
+    public string mCustomRotation { get; set; }
+    public string mCustomLocation { get; set; }
+    public string mDecalSize { get; set; }
+    public string mPingColor { get; set; }
+    public string mCollectSpeedMultiplier { get; set; }
+    public string mManualMiningAudioName { get; set; }
     public string mWidth { get; set; }
     public string mHeight { get; set; }
     public string mElevation { get; set; }
     public string mAngularDepth { get; set; }
     public string mWallType { get; set; }
     public string mAngledVariants { get; set; }
-    public string MaxRenderDistance { get; set; }
-    public string mHighlightVector { get; set; }
-    public string mAllowColoring { get; set; }
-    public string mSkipBuildEffect { get; set; }
-    public string mBuildEffectSpeed { get; set; }
-    public string mForceNetUpdateOnRegisterPlayer { get; set; }
-    public string mToggleDormancyOnInteraction { get; set; }
-    public string mShouldShowHighlight { get; set; }
-    public string mShouldShowAttachmentPointVisuals { get; set; }
-    public string mCreateClearanceMeshRepresentation { get; set; }
-    public string mAttachmentPoints { get; set; }
-    public string mInteractingPlayers { get; set; }
-    public string mIsUseable { get; set; }
-    public string mHideOnBuildEffectStart { get; set; }
-    public string mShouldModifyWorldGrid { get; set; }
     public string IsDoorOpen { get; set; }
     public string mCanBeLocked { get; set; }
     public string mAnimationRate { get; set; }
@@ -92,119 +180,58 @@ internal class Class2
     public string mVariablePowerConsumptionConstant { get; set; }
     public string mVariablePowerConsumptionFactor { get; set; }
     public string mSize { get; set; }
-    public string mMontageLength { get; set; }
-    public string mInterpSawProgress { get; set; }
-    public string mWasSawing { get; set; }
-    public string mCurrentState { get; set; }
-    public string mPlayingSound { get; set; }
-    public string mCurrentAudioState { get; set; }
-    public string mPreviousAudioState { get; set; }
-    public string mEnergyConsumption { get; set; }
-    public string mSawDownTreeTime { get; set; }
-    public string mCollateralPickupRadius { get; set; }
-    public string mExcludeChainsawableFoliage { get; set; }
-    public string mEnergyStored { get; set; }
-    public string mMaxSpawnDistance { get; set; }
-    public string mSpawningClearance { get; set; }
-    public string mBuildDisqualifierText { get; set; }
-    public string canDisplayDisqualifier { get; set; }
-    public string mPlaceDistanceMax { get; set; }
-    public string mImmunity { get; set; }
-    public string mIsWorking { get; set; }
-    public string mHasNegatedDamage { get; set; }
-    public string mDamageNegated { get; set; }
-    public string mFilterDuration { get; set; }
-    public string mCountdown { get; set; }
-    public string mDisableEffectTimer { get; set; }
-    public string mSuit1PMeshMaterials { get; set; }
-    public string mThrustPower { get; set; }
-    public string mVelocityZExtreme { get; set; }
-    public string mVelocityZExtremesDamper { get; set; }
-    public string mJumpBeforeThrustTime { get; set; }
-    public string mMaxFuel { get; set; }
-    public string mCurrentFuel { get; set; }
-    public string mFuelRegenRate { get; set; }
-    public string mFuelConsumeRate { get; set; }
-    public string mThrustCooldown { get; set; }
-    public string mFuelWorth { get; set; }
-    public string mPaidForFuel { get; set; }
-    public string mThrustAirControl { get; set; }
-    public string mDefaultAirControl { get; set; }
-    public string mRTPCInterval { get; set; }
-    public string mJumpTimeStamp { get; set; }
-    public string mIsThrusting { get; set; }
-    public string mSprintSpeedFactor { get; set; }
-    public string mJumpSpeedFactor { get; set; }
-    public string mProjectileData { get; set; }
-    public string AmmoFiredDelegate { get; set; }
-    public string mFiringTransform { get; set; }
-    public string mHasBeenInitialized { get; set; }
-    public string mWeaponDamageMultiplier { get; set; }
-    public string mMagazineSize { get; set; }
-    public string mMaxAmmoEffectiveRange { get; set; }
-    public string mAmmoDamageFalloff { get; set; }
-    public string mReloadTimeModifier { get; set; }
-    public string mFireRateModifier { get; set; }
-    public string mDispersionPerShotChangeModifier { get; set; }
-    public string mMinWeaponDispersionModifier { get; set; }
-    public string mMaxWeaponDispersionModifier { get; set; }
-    public string mWeaponAimTimeModifier { get; set; }
-    public string mMuteDryFire { get; set; }
-    public string mRandomReloadAnim { get; set; }
-    public string mRandomStingerAnim { get; set; }
-    public string mShowCycleAmmoRadialMenuTimer { get; set; }
-    public string mWeaponState { get; set; }
-    public string mOldState { get; set; }
-    public string mAutomaticallyReload { get; set; }
-    public string mAutoReloadDelay { get; set; }
-    public string mAutoReloadTimerHandle { get; set; }
-    public string mCurrentAmmoCount { get; set; }
-    public string mAllowedAmmoClasses { get; set; }
-    public string mFiringBlocksDispersionReduction { get; set; }
-    public string mBaseRestingDispersion { get; set; }
-    public string mBaseFiringDispersion { get; set; }
-    public string mBaseAimTime { get; set; }
-    public string mRestingDispersion { get; set; }
-    public string mFiringDispersion { get; set; }
-    public string mDispersionChangePerShot { get; set; }
-    public string mAimTime { get; set; }
-    public string mCurrentDispersion { get; set; }
-    public string mReloadTime { get; set; }
-    public string mFireRate { get; set; }
-    public string mAmmoCycleMode { get; set; }
-    public string mAmmoSwitchUsedRadialMenu { get; set; }
-    public string mOnAmmoCyclingPressed { get; set; }
-    public string mOnAmmoCyclingReleased { get; set; }
-    public string mOnWeaponStateChanged { get; set; }
-    public string mBlockSprintWhenFiring { get; set; }
-    public string Fire { get; set; }
-    public string mLockAngle { get; set; }
-    public string mHasReloadedOnce { get; set; }
-    public string mHitDamage { get; set; }
-    public string mRandomAttackAnim { get; set; }
-    public string mSecondSwingMaxTime { get; set; }
-    public string mSecondSwingCooldDownTime { get; set; }
-    public string mDamage { get; set; }
-    public string mAttackDistance { get; set; }
-    public string mCurrentMontageSection { get; set; }
-    public string mSecondAttackTimer { get; set; }
-    public string mFirstAttackTimer { get; set; }
-    public string mRandomEquipAnim { get; set; }
-    public string mUseStaticHeight { get; set; }
-    public string mCanStack { get; set; }
-    public string mStackHeight { get; set; }
-    public string mCustomSkins { get; set; }
+    public string mIsInverted { get; set; }
     public string mMeshLength { get; set; }
-    public string mItemMeshMap { get; set; }
-    public string mSplineData { get; set; }
-    public string mSpeed { get; set; }
-    public string mItems { get; set; }
-    public string mPowerConnections { get; set; }
-    public string mPowerPoleType { get; set; }
-    public string mHasPower { get; set; }
-    public string mMaxLength { get; set; }
-    public string mLengthPerCost { get; set; }
     public string mConnections { get; set; }
+    public string mIsOwnedByPlatform { get; set; }
+    public string mTrackGraphID { get; set; }
+    public string mOverlappingTracks { get; set; }
+    public string mVehicles { get; set; }
+    public string mSignalBlockID { get; set; }
+    public string mTerminalDistanceFromEdge { get; set; }
+    public string mTerminalHalfDepth { get; set; }
+    public string mDimensions { get; set; }
+    public string OnRecordDataChanged { get; set; }
+    public string OnBlueprintCostChanged { get; set; }
+    public string mCurrentCost { get; set; }
+    public string mBuildables { get; set; }
+    public string mIntersectComponents { get; set; }
+    public string mCurrentRecordData { get; set; }
+    public string mExtractStartupTime { get; set; }
+    public string mExtractStartupTimer { get; set; }
+    public string mExtractCycleTime { get; set; }
+    public string mItemsPerCycle { get; set; }
+    public string mPipeOutputConnections { get; set; }
+    public string mReplicatedFlowRate { get; set; }
+    public string mAllowedResourceForms { get; set; }
+    public string mOnlyAllowCertainResources { get; set; }
+    public string mAllowedResources { get; set; }
+    public string mExtractorTypeName { get; set; }
+    public string mTryFindMissingResource { get; set; }
+    public string CurrentPotentialChangedDelegate { get; set; }
+    public string ConnectedExtractorCountChangedDelegate { get; set; }
+    public string mActivationStartupTime { get; set; }
+    public string mActivationStartupTimer { get; set; }
+    public string mSatelliteActivationComplete { get; set; }
+    public string mSatelliteNodeCount { get; set; }
+    public string mConnectedExtractorCount { get; set; }
+    public string mDefaultPotentialExtractionPerMinute { get; set; }
+    public string mProductionEffectsRunning { get; set; }
+    public string mVariablePowerProductionConstant { get; set; }
+    public string mVariablePowerProductionFactor { get; set; }
+    public string mVariablePowerProductionCycleLength { get; set; }
+    public string mMinPowerProduction { get; set; }
+    public string mMaxPowerProduction { get; set; }
+    public string mVariablePowerProductionCycleOffset { get; set; }
+    public string mPowerProduction { get; set; }
+    public string mLoadPercentage { get; set; }
+    public string mParticleMap { get; set; }
+    public string CanPlayAfterStartUpStopped { get; set; }
+    public string mCanPlayAfterStartUpStopped { get; set; }
+    public string mInternalMiningState_0 { get; set; }
+    public string mToggleMiningStateHandle_0 { get; set; }
+    public string mMinimumDrillTime_0 { get; set; }
+    public string mMaximumDrillTime_0 { get; set; }
     public string mWorkBenchOccupied { get; set; }
     public string mWorkBenchFree { get; set; }
     public string Meshes { get; set; }
@@ -223,36 +250,161 @@ internal class Class2
     public string mDefaultResources { get; set; }
     public string mNeedPlayingBuildEffectNotification { get; set; }
     public string mRepresentationText { get; set; }
-    public string mPowerConsumption { get; set; }
-    public string mPowerConsumptionExponent { get; set; }
-    public string mDoesHaveShutdownAnimation { get; set; }
-    public string mOnHasPowerChanged { get; set; }
-    public string mOnHasProductionChanged { get; set; }
-    public string mOnHasStandbyChanged { get; set; }
-    public string mMinimumProducingTime { get; set; }
-    public string mMinimumStoppedTime { get; set; }
-    public string mNumCyclesForProductivity { get; set; }
-    public string mCanChangePotential { get; set; }
-    public string mMinPotential { get; set; }
-    public string mMaxPotential { get; set; }
-    public string mMaxPotentialIncreasePerCrystal { get; set; }
-    public string mFluidStackSizeDefault { get; set; }
-    public string mFluidStackSizeMultiplier { get; set; }
-    public string OnReplicationDetailActorCreatedEvent { get; set; }
-    public string mEffectUpdateInterval { get; set; }
-    public string mCachedSkeletalMeshes { get; set; }
-    public string mAddToSignificanceManager { get; set; }
-    public string mSignificanceRange { get; set; }
-    public string mDecalSize { get; set; }
-    public string mPingColor { get; set; }
-    public string mCollectSpeedMultiplier { get; set; }
-    public string mManualMiningAudioName { get; set; }
-    public string ToggleColorPickerUI { get; set; }
-    public string mRedundantTargetCrosshairColor { get; set; }
-    public string mNoTargetCrosshairColor { get; set; }
-    public string mNonColorableTargetCrosshairColor { get; set; }
-    public string mColorSlot { get; set; }
+    public string mOccupiedText { get; set; }
+    public string Tier { get; set; }
+    public string mSelectedPoleVersion { get; set; }
+    public string mUseStaticHeight { get; set; }
+    public string mCanStack { get; set; }
+    public string mStackHeight { get; set; }
+    public string mCustomSkins { get; set; }
+    public string mItemMeshMap { get; set; }
+    public string mSplineData { get; set; }
+    public string mSpeed { get; set; }
+    public string mItems { get; set; }
+    public string mMaxLength { get; set; }
+    public string mLengthPerCost { get; set; }
+    public string mCachedRelativeLocations { get; set; }
+    public string mPowerConnections { get; set; }
+    public string mPowerPoleType { get; set; }
+    public string mHasPower { get; set; }
+    public string mMontageLength { get; set; }
+    public string mInterpSawProgress { get; set; }
+    public string mWasSawing { get; set; }
+    public string mCurrentState { get; set; }
+    public string mPlayingSound { get; set; }
+    public string mCurrentAudioState { get; set; }
+    public string mPreviousAudioState { get; set; }
+    public string mCurrentOutputDataSFX { get; set; }
+    public string mAkEventsArray { get; set; }
+    public string mEventIndexSFX { get; set; }
+    public string mCurrentAkID { get; set; }
+    public string mEnergyConsumption { get; set; }
+    public string mSawDownTreeTime { get; set; }
+    public string mCollateralPickupRadius { get; set; }
+    public string mExcludeChainsawableFoliage { get; set; }
+    public string mEnergyStored { get; set; }
+    public string mSpentFuelClass { get; set; }
+    public string mAmountOfWaste { get; set; }
+    public string mMaxSpawnDistance { get; set; }
+    public string mSpawningClearance { get; set; }
+    public string mBuildDisqualifierText { get; set; }
+    public string canDisplayDisqualifier { get; set; }
+    public string mPlaceDistanceMax { get; set; }
+    public string mImmunity { get; set; }
+    public string mIsWorking { get; set; }
+    public string mHasNegatedDamage { get; set; }
+    public string mDamageNegated { get; set; }
+    public string mFilterDuration { get; set; }
+    public string mCountdown { get; set; }
+    public string mDisableEffectTimer { get; set; }
+    public string mIsBurningFuel { get; set; }
+    public string mSuit1PMeshMaterials { get; set; }
+    public string mDefaultAirControl { get; set; }
+    public string mRTPCInterval { get; set; }
+    public string mThrustCooldown { get; set; }
+    public string mCurrentFuel { get; set; }
+    public string mIsThrusting { get; set; }
+    public string mFuelTypes { get; set; }
+    public string mSelectedFuelType { get; set; }
+    public string mCurrentFuelType { get; set; }
+    public string mSprintSpeedFactor { get; set; }
+    public string mJumpSpeedFactor { get; set; }
+    public string mInitialProjectileSpeedOverride { get; set; }
+    public string mProjectileMaxSpeedOverride { get; set; }
+    public string mProjectileHealthOverride { get; set; }
+    public string mProjectileLifespan { get; set; }
+    public string mProjectileStickspan { get; set; }
+    public string mCanTakeDamageBySameProjectileOrChild { get; set; }
+    public string mDamageTypesAtEndOfLife { get; set; }
+    public string mGravityScaleOverLifespan { get; set; }
+    public string mHomingProjectile { get; set; }
+    public string mHomingNeedsValidTarget { get; set; }
+    public string mMaxHomingAccelerationMagnitudeOverride { get; set; }
+    public string mHomingMagnitudeMultiplierOverLifespan { get; set; }
+    public string mHomingMagnitudeMultiplierOverDistanceToTarget { get; set; }
+    public string mHomingOverlapSize { get; set; }
+    public string mHomingAngleLimit { get; set; }
+    public string mHomingOverrideTargets { get; set; }
+    public string AmmoFiredDelegate { get; set; }
+    public string mFiringTransform { get; set; }
+    public string mFiringDirection { get; set; }
+    public string mMagazineSize { get; set; }
+    public string mMaxAmmoEffectiveRange { get; set; }
+    public string mReloadTimeMultiplier { get; set; }
+    public string mFireRate { get; set; }
+    public string mFiringTransformIgnoresDispersion { get; set; }
+    public string mDispersionFireRateMultiplier { get; set; }
+    public string mDispersionPerShot { get; set; }
+    public string mRestingDispersion { get; set; }
+    public string mFiringDispersion { get; set; }
+    public string mDispersionRecoveryTime { get; set; }
+    public string mHasBeenInitialized { get; set; }
+    public string mWeaponDamageMultiplier { get; set; }
+    public string mMagazineMeshMaterials { get; set; }
+    public string mDamageTypesOnImpact { get; set; }
+    public string mAmmoDamageFalloff { get; set; }
+    public string mMuzzleFlashScale { get; set; }
+    public string mFiringSounds { get; set; }
+    public string mAmmoColor { get; set; }
+    public string mAmmoScale { get; set; }
+    public string mAmmoTickFunction { get; set; }
+    public string SpreadTrail_Velocity { get; set; }
+    public string mNumShots { get; set; }
+    public string mSpreadAngleDegrees { get; set; }
+    public string mMuteDryFire { get; set; }
+    public string mRandomReloadAnim { get; set; }
+    public string mRandomStingerAnim { get; set; }
+    public string mRebarGunStingerID { get; set; }
+    public string mRebarGunEquipID { get; set; }
+    public string mShowCycleAmmoRadialMenuTimer { get; set; }
+    public string mOnWeaponStateChanged { get; set; }
+    public string mWeaponState { get; set; }
+    public string mAutomaticallyReload { get; set; }
+    public string mAutoReloadDelay { get; set; }
+    public string mAutoReloadTimerHandle { get; set; }
+    public string mCurrentAmmoCount { get; set; }
+    public string mAllowedAmmoClasses { get; set; }
+    public string mAttachMagazineToPlayer { get; set; }
+    public string mMuzzleSocketName { get; set; }
+    public string mCurrentMagazineBoneName { get; set; }
+    public string mEjectMagazineBoneName { get; set; }
+    public string mDispersionOnNoMagazine { get; set; }
+    public string mFiringBlocksDispersionReduction { get; set; }
+    public string mCurrentDispersion { get; set; }
+    public string mReloadTime { get; set; }
+    public string mAmmoSwitchUsedRadialMenu { get; set; }
+    public string mOnAmmoCyclingPressed { get; set; }
+    public string mOnAmmoCyclingReleased { get; set; }
+    public string mBlockSprintWhenFiring { get; set; }
+    public string Fire { get; set; }
+    public string mHasReloadedOnce { get; set; }
+    public string Location { get; set; }
+    public string Trail_Velocity { get; set; }
+    public string mPlayFireEffects { get; set; }
+    public string mRandomAttackAnim { get; set; }
+    public string mDamageTypes { get; set; }
+    public string mSecondSwingMaxTime { get; set; }
+    public string mSecondSwingCooldDownTime { get; set; }
+    public string mAttackDistance { get; set; }
+    public string mAttackSweepRadius { get; set; }
+    public string mCurrentMontageSection { get; set; }
+    public string mSecondAttackTimer { get; set; }
+    public string mFirstAttackTimer { get; set; }
+    public string mRandomEquipAnim { get; set; }
+    public string mRadialMenuShowUpTime { get; set; }
+    public string mDispensedProjectiles { get; set; }
+    public string mIsPendingExecuteFire { get; set; }
+    public string mMaxChargeTime { get; set; }
+    public string mMaxThrowForce { get; set; }
+    public string mMinThrowForce { get; set; }
+    public string mDelayBetweenSecondaryTriggers { get; set; }
     public string mPostProcessEnabled { get; set; }
+    public string mIsInPoisonArea { get; set; }
+    public string mWaterpumpTimeline_RTPC_B8FA6F944E717E3B7A286E84901F620E { get; set; }
+    public string mWaterpumpTimeline__Direction_B8FA6F944E717E3B7A286E84901F620E { get; set; }
+    public string HasLostSignificance { get; set; }
+    public string mMinimumDepthForPlacement { get; set; }
+    public string mDepthTraceOriginOffset { get; set; }
     public string IsPowered { get; set; }
     public string mCurrentRecipeCheck { get; set; }
     public string mPreviousRecipeCheck { get; set; }
@@ -262,9 +414,8 @@ internal class Class2
     public string mFactoryInputConnections { get; set; }
     public string mPipeInputConnections { get; set; }
     public string mFactoryOutputConnections { get; set; }
-    public string mPipeOutputConnections { get; set; }
-    public string mProductionEffectsRunning { get; set; }
     public string mIsPendingToKillVFX { get; set; }
+    public string mCachedCurrentPotential { get; set; }
     public string bIsPendingToKillVfx { get; set; }
     public string mCurrentColor_VFX { get; set; }
     public string CurrentPackagingMode { get; set; }
@@ -272,34 +423,13 @@ internal class Class2
     public string m_NotifyNameREferences { get; set; }
     public string mColor { get; set; }
     public string mIsRadioActive { get; set; }
-    public string mStoppedProducingAnimationSounds { get; set; }
-    public string mStoppedAkComponents { get; set; }
-    public string mSocketStoppedAkComponents { get; set; }
-    public string mParticleMap { get; set; }
-    public string CanPlayAfterStartUpStopped { get; set; }
-    public string mExtractStartupTime { get; set; }
-    public string mExtractStartupTimer { get; set; }
-    public string mExtractCycleTime { get; set; }
-    public string mItemsPerCycle { get; set; }
-    public string mReplicatedFlowRate { get; set; }
-    public string mAllowedResourceForms { get; set; }
-    public string mOnlyAllowCertainResources { get; set; }
-    public string mAllowedResources { get; set; }
-    public string mExtractorTypeName { get; set; }
-    public string mCanPlayAfterStartUpStopped { get; set; }
-    public string mInternalMiningState_0 { get; set; }
-    public string mToggleMiningStateHandle_0 { get; set; }
-    public string mMinimumDrillTime_0 { get; set; }
-    public string mMaximumDrillTime_0 { get; set; }
     public string mStackingHeight { get; set; }
     public string mInventorySizeX { get; set; }
     public string mInventorySizeY { get; set; }
-    public string mOccupiedText { get; set; }
-    public string Tier { get; set; }
     public string mCachedLoadPercentage { get; set; }
     public string mFuelClasses { get; set; }
     public string mDefaultFuelClasses { get; set; }
-    public Mfuel[]? mFuel { get; set; }
+    public MFuel[] mFuel { get; set; }
     public string mAvailableFuelClasses { get; set; }
     public string mFuelResourceForm { get; set; }
     public string mFuelLoadAmount { get; set; }
@@ -309,18 +439,21 @@ internal class Class2
     public string mIsFullBlast { get; set; }
     public string mCachedInputConnections { get; set; }
     public string mCachedPipeInputConnections { get; set; }
-    public string mPowerProduction { get; set; }
-    public string mPowerProductionExponent { get; set; }
-    public string mLoadPercentage { get; set; }
     public string m_SFXSockets { get; set; }
     public string m_CurrentPotential { get; set; }
-    public string mHealthGain { get; set; }
-    public string mCustomHandsMeshScale { get; set; }
-    public string mCustomRotation { get; set; }
-    public string mCustomLocation { get; set; }
-    public string mSpentFuelClass { get; set; }
-    public string mAmountOfWaste { get; set; }
     public string mCurrentResearchState { get; set; }
+    public string mScreenUpdateTimer { get; set; }
+    public string mScanlineLerpT { get; set; }
+    public string mScreenUpdateTime { get; set; }
+    public string mNormalizedCloesnessToObject { get; set; }
+    public string mObjectIsWithinRange { get; set; }
+    public string mBeepDelayMax { get; set; }
+    public string mBeepDelayMin { get; set; }
+    public string mDetectionRange { get; set; }
+    public string mUpdateClosestObjectTime { get; set; }
+    public string mObjectDetails { get; set; }
+    public string mScannableDescriptors { get; set; }
+    public string mShouldBeepEvenIfNoObject { get; set; }
     public string mDefaultLength { get; set; }
     public string mLength { get; set; }
     public string mIsSupport { get; set; }
@@ -355,17 +488,13 @@ internal class Class2
     public string mIgnoreActorsForIndicator { get; set; }
     public string mFluidNames { get; set; }
     public string mCurrentFluid { get; set; }
-    public string mQuantiziedContent { get; set; }
-    public string mQuantiziedFlow { get; set; }
+    public string mLastContentForSound { get; set; }
+    public string mLastFlowForSound { get; set; }
     public string mRattleLimit { get; set; }
     public string mIsRattling { get; set; }
+    public string mUpdateSoundsHandle { get; set; }
     public string mSnappedPassthroughs { get; set; }
     public string mStorageCapacity { get; set; }
-    public string mWaterpumpTimeline_RTPC_B8FA6F944E717E3B7A286E84901F620E { get; set; }
-    public string mWaterpumpTimeline__Direction_B8FA6F944E717E3B7A286E84901F620E { get; set; }
-    public string HasLostSignificance { get; set; }
-    public string mMinimumDepthForPlacement { get; set; }
-    public string mDepthTraceOriginOffset { get; set; }
     public string IsAnimationProducing { get; set; }
     public string EnableTickGrinder { get; set; }
     public string EnableTickEngine { get; set; }
@@ -376,36 +505,6 @@ internal class Class2
     public string mShopInventoryDefaultSize { get; set; }
     public string mFuelConsumption { get; set; }
     public string mInventorySize { get; set; }
-    public string m_DockingStates { get; set; }
-    public string m_OffsetTime { get; set; }
-    public string mDroneDockingStartLocationLocal { get; set; }
-    public string mDroneDockingLocationLocal { get; set; }
-    public string mBatteryClasses { get; set; }
-    public string mDroneDockingQueue { get; set; }
-    public string mStationHasDronesInQueue { get; set; }
-    public string mItemTransferringStage { get; set; }
-    public string mTransferProgress { get; set; }
-    public string mTransferSpeed { get; set; }
-    public string mStackTransferSize { get; set; }
-    public string mDroneQueueRadius { get; set; }
-    public string mDroneQueueSeparationRadius { get; set; }
-    public string mDroneQueueVerticalSeparation { get; set; }
-    public string mTripPowerCost { get; set; }
-    public string mTripPowerPerMeterCost { get; set; }
-    public string mTripInformationSampleCount { get; set; }
-    public string mStorageSizeX { get; set; }
-    public string mStorageSizeY { get; set; }
-    public string mBatteryStorageSizeX { get; set; }
-    public string mBatteryStorageSizeY { get; set; }
-    public string mMapText { get; set; }
-    public string CurrentPotentialChangedDelegate { get; set; }
-    public string ConnectedExtractorCountChangedDelegate { get; set; }
-    public string mActivationStartupTime { get; set; }
-    public string mActivationStartupTimer { get; set; }
-    public string mSatelliteActivationComplete { get; set; }
-    public string mSatelliteNodeCount { get; set; }
-    public string mConnectedExtractorCount { get; set; }
-    public string mDefaultPotentialExtractionPerMinute { get; set; }
     public string mSequenceDuration { get; set; }
     public string mLightningTimer { get; set; }
     public string mGameTimeAtProducing { get; set; }
@@ -423,6 +522,7 @@ internal class Class2
     public string mMeshHeight { get; set; }
     public string mTopTransform { get; set; }
     public string mIsReversed { get; set; }
+    public string mDepth { get; set; }
     public string mIsFrame { get; set; }
     public string mDisableAttachmentSnapOn { get; set; }
     public string mIsDoubleRamp { get; set; }
@@ -431,22 +531,11 @@ internal class Class2
     public string mMaxNumSortRules { get; set; }
     public string mLastItem { get; set; }
     public string mItemToLastOutputMap { get; set; }
-    public string mLastOutputIndex { get; set; }
     public string mCurrentOutputIndex { get; set; }
+    public string mLastOutputIndex { get; set; }
     public string mCurrentInventoryIndex { get; set; }
     public string mDistributionTable { get; set; }
     public string mCurrentInputIndex { get; set; }
-    public string mScreenUpdateTimer { get; set; }
-    public string mScanlineLerpT { get; set; }
-    public string mScreenUpdateTime { get; set; }
-    public string mNormalizedCloesnessToObject { get; set; }
-    public string mObjectIsWithinRange { get; set; }
-    public string mBeepDelayMax { get; set; }
-    public string mBeepDelayMin { get; set; }
-    public string mDetectionRange { get; set; }
-    public string mUpdateClosestObjectTime { get; set; }
-    public string mObjectDetails { get; set; }
-    public string mShouldBeepEvenIfNoObject { get; set; }
     public string mPowerBankCapacity { get; set; }
     public string mLaunchPowerCost { get; set; }
     public string mChargeRateMultiplier { get; set; }
@@ -482,7 +571,7 @@ internal class Class2
     public string InterpolateEngineSound_InterpolateEngineAlpha_064FA8194B7224F6F187999413D1C8A6 { get; set; }
     public string InterpolateEngineSound__Direction_064FA8194B7224F6F187999413D1C8A6 { get; set; }
     public string mWindDirectionFromTurbine { get; set; }
-    public string mIsWindSoundPlaying { get; set; }
+    public string mIsWindSoundPlaying_ { get; set; }
     public string mAudioTimerCounter { get; set; }
     public string AudioCounterTimer { get; set; }
     public string IsEnginePlaying { get; set; }
@@ -528,6 +617,8 @@ internal class Class2
     public string mDockForDuration { get; set; }
     public string mMustDockForDuration { get; set; }
     public string mCurrentDockForDuration { get; set; }
+    public string mHasAnyRelevantStacksToMove { get; set; }
+    public string mAllowDepartureNoValidItemsToTransfer { get; set; }
     public string mShouldExecuteLoadOrUnload { get; set; }
     public string mRanCompleteBeforeNone { get; set; }
     public string mSwapCargoVisibilityTimerHandle { get; set; }
@@ -547,11 +638,6 @@ internal class Class2
     public string mShouldTeleportHere { get; set; }
     public string mDockedPlatformList { get; set; }
     public string mCurrentDockedWithRuleSet { get; set; }
-    public string mIsOwnedByPlatform { get; set; }
-    public string mTrackGraphID { get; set; }
-    public string mOverlappingTracks { get; set; }
-    public string mVehicles { get; set; }
-    public string mSignalBlockID { get; set; }
     public string mHoverPackActiveTimer { get; set; }
     public string mCurrentPlayerVelocity { get; set; }
     public string mCurrentMouseDelta { get; set; }
@@ -565,8 +651,6 @@ internal class Class2
     public string mHoverSpeed { get; set; }
     public string mHoverAccelerationSpeed { get; set; }
     public string mHoverSprintMultiplier { get; set; }
-    public string mRailRoadSurfSpeed { get; set; }
-    public string mRailroadSurfSensitivity { get; set; }
     public string mHoverFriction { get; set; }
     public string mJumpKeyHoldActivationTime { get; set; }
     public string mFallSpeedLimitWhenPowered { get; set; }
@@ -581,6 +665,7 @@ internal class Class2
     public string mShouldAutomaticallyHoverWhenConnected { get; set; }
     public string mCrouchHoverCancelTime { get; set; }
     public string mCharacterUseDistanceWhenActive { get; set; }
+    public string mActiveNoiseFrequency { get; set; }
     public string mCurrentConnectionLocation { get; set; }
     public string mShouldPlayDeactivateSound { get; set; }
     public string mZiplineJumpLaunchVelocity { get; set; }
@@ -595,32 +680,14 @@ internal class Class2
     public string mMaxCharacters { get; set; }
     public string mOnIsSwitchOnChanged { get; set; }
     public string mOnIsConnectedChanged { get; set; }
+    public string mOnBuildingTagChanged { get; set; }
     public string mIsSwitchOn { get; set; }
     public string mHasBuildingTag { get; set; }
     public string mBuildingTag { get; set; }
     public string mIsBridgeConnected { get; set; }
-    public string mVariablePowerProductionConstant { get; set; }
-    public string mVariablePowerProductionFactor { get; set; }
-    public string mVariablePowerProductionCycleLength { get; set; }
-    public string mMinPowerProduction { get; set; }
-    public string mMaxPowerProduction { get; set; }
-    public string mVariablePowerProductionCycleOffset { get; set; }
     public string mTerminalVelocityZ { get; set; }
     public string mIsDeployed { get; set; }
-    public string OnRadarTowerRadiusUpdated { get; set; }
-    public string mMinRevealRadius { get; set; }
-    public string mMaxRevealRadius { get; set; }
-    public string mNumRadarExpansionSteps { get; set; }
-    public string mRadarExpansionInterval { get; set; }
-    public string mCurrentExpansionStep { get; set; }
-    public string mTimeToNextExpansion { get; set; }
-    public string mRadialMenuShowUpTime { get; set; }
-    public string mDispensedProjectiles { get; set; }
-    public string mIsPendingExecuteFire { get; set; }
-    public string mMaxChargeTime { get; set; }
-    public string mMaxThrowForce { get; set; }
-    public string mMinThrowForce { get; set; }
-    public string mDelayBetweenSecondaryTriggers { get; set; }
+    public string mRevealRadius { get; set; }
     public string mTimeToProduceItem { get; set; }
     public string mEventType { get; set; }
     public string mGainSignificanceDistance { get; set; }
@@ -662,3 +729,35 @@ internal class Class2
     public string mClearanceThickness { get; set; }
     public string mUseSoftClearance { get; set; }
 }
+
+public class MUnlocks
+{
+    public string Class { get; set; }
+    public string mScannableObjects { get; set; }
+    public string mRecipes { get; set; }
+    public string mNumInventorySlotsToUnlock { get; set; }
+    public string mResourcesToAddToScanner { get; set; }
+    public string mResourcePairsToAddToScanner { get; set; }
+    public string mEmotes { get; set; }
+    public string mSchematics { get; set; }
+    public string mNumArmEquipmentSlotsToUnlock { get; set; }
+    public string mItemsToGive { get; set; }
+    public string mTapeUnlocks { get; set; }
+}
+
+public class MSchematicDependencies
+{
+    public string Class { get; set; }
+    public string mSchematics { get; set; }
+    public string mRequireAllSchematicsToBePurchased { get; set; }
+    public string mGamePhase { get; set; }
+}
+
+public class MFuel
+{
+    public string mFuelClass { get; set; }
+    public string mSupplementalResourceClass { get; set; }
+    public string mByproduct { get; set; }
+    public string mByproductAmount { get; set; }
+}
+

@@ -6,4 +6,5 @@ internal interface IWeapon : IItem
     double? ReloadTime { get; init; }
     double? AutoReloadDelay { get; init; }
     EquipmentSlot EquipmentSlot { get; init; }
+    public IAmmunition[] Ammunitions { get; set; }
 }

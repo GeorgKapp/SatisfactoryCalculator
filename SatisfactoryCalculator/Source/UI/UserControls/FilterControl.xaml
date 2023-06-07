@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <c:SatisfactoryTextBox Grid.Row="0" TextChanged="FilterTextChanged"/>
+        <c:SatisfactoryTextBox Grid.Row="0" TextChanged="FilterTextChanged" x:Name="filterTextBox"/>
 
         <ListView x:Name="listView"
                   Margin="0,10,0,0"

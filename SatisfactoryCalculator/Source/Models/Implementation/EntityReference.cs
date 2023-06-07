@@ -14,7 +14,8 @@ internal class EntityReference
     public Fuel[] FuelIngredient { get; init; }
     public Fuel[] FuelByProduct { get; init;}
     public Fuel[] FuelGenerator { get; init;}
-
+    public IWeapon? IsMunitionForWeapon { get; init;}
+    public IAmmunition[] UsesAmmunition { get; init;}
     public ISchema[] SchemaIngredient { get; init; }
     public ISchema[] SchemaUnlock { get; init;}
     public ISchema[] SchemaBuilding { get; init; }

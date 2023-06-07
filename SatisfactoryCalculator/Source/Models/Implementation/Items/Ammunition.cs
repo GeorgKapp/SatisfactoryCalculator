@@ -1,7 +1,7 @@
 #pragma warning disable CS8618
 namespace SatisfactoryCalculator.Source.Models;
 
-internal class Weapon : IWeapon
+internal class Ammunition : IAmmunition
 {
     public string ClassName { get; init; }
     public string Name { get; init; }
@@ -9,9 +9,9 @@ internal class Weapon : IWeapon
     public string Description { get; init; }
     public Form? Form { get; init; }
     public double EnergyValue { get; init; }
-    public double? DamageMultiplier { get; init; }
-    public double? ReloadTime { get; init; }
-    public double? AutoReloadDelay { get; init; }
-    public EquipmentSlot EquipmentSlot { get; init; }
-    public IAmmunition[] Ammunitions { get; set; }
+    public double MaxAmmoEffectiveRange { get; init;  }
+    public double? ReloadTimeMultiplier { get; init;  }
+    public double FireRate { get; init;  }
+    public double WeaponDamageMultiplier { get; init;  }
+    public IWeapon UsedInWeapon { get; set; }
 }

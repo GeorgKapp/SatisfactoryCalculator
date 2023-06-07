@@ -1,5 +1,6 @@
 ﻿namespace SatisfactoryCalculator.Source.UI.UserControls;
 
+#pragma warning disable CA1822
 internal partial class FilterControl
 {
     public FilterControl()
@@ -50,7 +51,7 @@ internal partial class FilterControl
         var filterControl = (FilterControl)d;
         
         filterControl.UpdateCollectionView();
-        filterControl.RefreshFilter();
+        filterControl.ResetFilter();
     }
     
     private void UpdateCollectionView()
@@ -61,6 +62,11 @@ internal partial class FilterControl
         _collectionView = CollectionViewSource.GetDefaultView(ItemsSource);
         _collectionView.Filter = ApplyFilter;
         listView.FindVisualChild<ScrollViewer>()?.ScrollToTop();
+    }
+
+    private void ResetFilter()
+    {
+        filterTextBox.Text = string.Empty;
     }
 
     private void RefreshFilter()

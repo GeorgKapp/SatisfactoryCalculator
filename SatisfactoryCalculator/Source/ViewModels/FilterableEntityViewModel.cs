@@ -5,6 +5,7 @@ using Generator = SatisfactoryCalculator.Source.Models.Generator;
 using Item = SatisfactoryCalculator.Source.Models.Item;
 using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
 using Weapon = SatisfactoryCalculator.Source.Models.Weapon;
+using Ammunition = SatisfactoryCalculator.Source.Models.Ammunition;
 
 namespace SatisfactoryCalculator.Source.ViewModels;
 
@@ -60,6 +61,11 @@ internal class FilterableEntityViewModel : ObservableObject
 			    var weaponFetchResult = PageService.FetchPageWithViewModel<WeaponPage, WeaponViewModel>();
 			    weaponFetchResult.Item2.SelectedWeapon = weapon;
 			    CurrentPage = weaponFetchResult.Item1;
+			    break;
+		    case Ammunition ammunition:
+			    var ammunitionFetchResult = PageService.FetchPageWithViewModel<AmmunitionPage, AmmunitionViewModel>();
+			    ammunitionFetchResult.Item2.SelectedAmmunition = ammunition;
+			    CurrentPage = ammunitionFetchResult.Item1;
 			    break;
 		    case Item item:
 			    var itemFetchResult = PageService.FetchPageWithViewModel<ItemPage, ItemViewModel>();

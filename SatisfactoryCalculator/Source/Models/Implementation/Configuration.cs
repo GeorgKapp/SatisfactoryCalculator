@@ -32,6 +32,13 @@ public class Configuration : ObservableObject
         set => SetProperty(ref _weapons, value);
     }
     
+    private ObservableCollection<IAmmunition> _ammunitions = new();
+    internal ObservableCollection<IAmmunition> Ammunitions
+    {
+        get => _ammunitions;
+        set => SetProperty(ref _ammunitions, value);
+    }
+    
     private ObservableCollection<IBuilding> _buildings = new();
     internal ObservableCollection<IBuilding> Buildings
     {

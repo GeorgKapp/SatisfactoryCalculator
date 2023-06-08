@@ -18,5 +18,4 @@ internal class EntityReference
     public IAmmunition[] UsesAmmunition { get; init;}
     public ISchematic[] SchemaIngredient { get; init; }
     public ISchematic[] SchemaUnlock { get; init;}
-    public ISchematic[] SchemaBuilding { get; init; }
 }

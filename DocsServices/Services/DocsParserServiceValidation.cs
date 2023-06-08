@@ -127,6 +127,7 @@ public partial class DocsParserService
             .Concat(GetClassNames(data.Generators))
             .Concat(GetClassNames(data.Emotes))
             .Concat(GetClassNames(data.Statues))
+            .Concat(GetClassNames(data.Schematics))
             .ToArray();
 
         var results = new List<Result>();
@@ -135,18 +136,26 @@ public partial class DocsParserService
         {
             var controlEntities =
                 GetClassNames(schematic.Cost)
-                .Concat(GetClassNames(schematic.ItemsToGive))
-                .Concat(schematic.UnlocksScannerResourcePairs)
-                .Concat(schematic.UnlocksScannerResources)
-                .Concat(schematic.Emotes)
-                .ToArray();
+                    .Concat(GetClassNames(schematic.ItemsToGive))
+                    .Concat(schematic.UnlocksScannerResourcePairs)
+                    .Concat(schematic.UnlocksScannerResources)
+                    .Concat(schematic.Emotes)
+                    .Concat(schematic.UnlocksRecipes)
+                    .Concat(schematic.SchematicDependencies.SelectMany(p => p.Schematics))
+                    .ToList();
+
+            if (schematic.UnlocksScannerObject is not null)
+            {
+                controlEntities.Add(schematic.UnlocksScannerObject.ItemClass);
+                controlEntities.AddRange(schematic.UnlocksScannerObject.ActorsAllowedToScan);
+            }
 
             var differences = controlEntities.Except(sources).ToList();
             if (!differences.Any())
                 continue;
 
             results.Add(Result.Failure(
-               $"Schematic: {schematic.DisplayName} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
+                $"Schematic: {schematic.DisplayName} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
         }
 
         return Result.Combine(results);

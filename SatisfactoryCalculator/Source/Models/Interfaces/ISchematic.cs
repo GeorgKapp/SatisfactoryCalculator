@@ -2,22 +2,23 @@ namespace SatisfactoryCalculator.Source.Models.Interfaces;
 
 internal interface ISchematic : IEntity
 {
-    public SchematicType Type { get; set; }
-    public double? MenuPriority { get; set; }
-    public int TechTier { get; set; }
-    public double? TimeToComplete { get; set; }
-    public string?[] RelevantEvents { get; set; }
-    public Reference[] Cost { get; set; }
-    public IRecipe[] UnlocksRecipes { get; set; }
-    public ScannableObject UnlocksScannerObject { get; set; }
-    public string?[] UnlocksScannerResources { get; set; }
-    public string?[] UnlocksScannerResourcePairs { get; set; }
-    public string?[] Emotes { get; set; }
-    public Reference[] ItemsToGive { get; set; }
-    public int? UnlocksArmEquipmentSlot { get; set; }
-    public int? UnlocksInventoryEquipmentSlot { get; set; }
-    public SchematicDependency[] SchematicDependencies { get; set; }
-    public bool HiddenUntilDependenciesMet { get; set; }
-    public bool DependenciesBlocksSchematicAccess { get; set; }
-    public bool UnlocksMap { get; set; }
+    string Description { get; }
+    SchematicType Type { get; }
+    double? MenuPriority { get; }
+    int TechTier { get; }
+    double? TimeToComplete { get; }
+    string?[] RelevantEvents { get; }
+    Reference[] Cost { get; }
+    IRecipe[] UnlocksRecipes { get; }
+    ScannableObject UnlocksScannerObject { get; }
+    string?[] UnlocksScannerResources { get; }
+    string?[] UnlocksScannerResourcePairs { get; }
+    string?[] Emotes { get; }
+    ItemToGive[] ItemsToGive { get; }
+    int? UnlocksArmEquipmentSlot { get; }
+    int? UnlocksInventoryEquipmentSlot { get; }
+    SchematicDependency[] SchematicDependencies { get; }
+    bool HiddenUntilDependenciesMet { get; }
+    bool DependenciesBlocksSchematicAccess { get; }
+    bool UnlocksMap { get; }
 }

@@ -4,7 +4,7 @@ namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 
 public class SchematicDependency
 {
-	public string?[] Schematics { get; set; }
+	public string[] Schematics { get; set; } = Array.Empty<string>();
 	public bool RequireAllSchematicsToBePurchased { get; set; }
 	public SchematicDependencyType SchematicDependencyType { get; set; }
 }

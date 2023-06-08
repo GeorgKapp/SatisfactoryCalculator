@@ -317,6 +317,7 @@ public partial class DocsParserService
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!,
             DisplayName = class2.mDisplayName,
+            Description = class2.mDescription,
             MenuPriority = NumberParseUtility.MapToNullableDouble(class2.mMenuPriority),
             TimeToComplete = NumberParseUtility.MapToNullableDouble(class2.mTimeToComplete),
             TechTier = Convert.ToInt32(class2.mTechTier),

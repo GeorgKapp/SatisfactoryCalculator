@@ -18,9 +18,11 @@ internal static class UnrealEngineClassLexer
             return Array.Empty<Token>();
 
         List<Token> tokenOutput = new();
-
-        var i = 0;
+        
+        // ReSharper disable once InlineOutVariableDeclaration
+        // ReSharper disable once TooWideLocalVariableScope
         string tokenMatch;
+        var i = 0;
         while (i < input.Length)
         {
             if (IsToken(input, i, TokenType.ScopeStart, out tokenMatch))

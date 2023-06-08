@@ -6,8 +6,8 @@ internal static class UnrealEngineClassParser
     {
         var tokens = UnrealEngineClassLexer.TokenizeString(input);
 
-        UnrealEngineParseRootResult rootResult = null;
-        UnrealEngineParseResult currentParseResult = null;
+        UnrealEngineParseRootResult? rootResult = null;
+        UnrealEngineParseResult? currentParseResult = null;
 
         if (tokens.Length >= 2
             && tokens[0].TokenType == TokenType.ScopeStart
@@ -19,9 +19,8 @@ internal static class UnrealEngineClassParser
         var i = 0;
         while (i < tokens.Length)
         {
-            var token = tokens[i];
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-            switch (token.TokenType)
+            switch (tokens[i].TokenType)
             {
                 case TokenType.ScopeStart:
                     if (rootResult is null)
@@ -46,10 +45,7 @@ internal static class UnrealEngineClassParser
                         .Replace("\"", "")
                         .Split(".")
                         .Last();
-
-                    if (currentParseResult is null)
-                        _ = "";
-
+                    
                     currentParseResult!.ClassName =
                         ClassNameParseUtility.CleanClassName(classNameWithoutQuotationMarks)!;
                     

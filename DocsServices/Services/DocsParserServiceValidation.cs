@@ -128,6 +128,10 @@ public partial class DocsParserService
             .Concat(GetClassNames(data.Emotes))
             .Concat(GetClassNames(data.Statues))
             .Concat(GetClassNames(data.Schematics))
+            .Concat(GetClassNames(data.CustomizationRecipes))
+            .Concat(GetClassNames(data.Recipes))
+            .Concat(GetClassNames(data.Creatures))
+            .Concat(GetClassNames(data.Plants))
             .ToArray();
 
         var results = new List<Result>();
@@ -144,11 +148,15 @@ public partial class DocsParserService
                     .Concat(schematic.SchematicDependencies.SelectMany(p => p.Schematics))
                     .ToList();
 
-            if (schematic.UnlocksScannerObject is not null)
+            foreach (var scannerObject in schematic.UnlocksScannerObjects)
             {
-                controlEntities.Add(schematic.UnlocksScannerObject.ItemClass);
-                controlEntities.AddRange(schematic.UnlocksScannerObject.ActorsAllowedToScan);
+                controlEntities.Add(scannerObject.ItemClass);
+                controlEntities.AddRange(scannerObject.ActorsAllowedToScan);
             }
+
+            controlEntities = controlEntities
+                .Distinct()
+                .ToList();
 
             var differences = controlEntities.Except(sources).ToList();
             if (!differences.Any())

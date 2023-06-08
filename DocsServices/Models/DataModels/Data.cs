@@ -18,5 +18,6 @@ public class Data
 	public List<Consumable> Consumables { get; set; } = new();
 	public List<Emote> Emotes { get; set; } = new();
 	public List<Statue> Statues { get; set; } = new();
-
+	public List<Creature> Creatures { get; set; } = new();
+	public List<Plant> Plants { get; set; } = new();
 }

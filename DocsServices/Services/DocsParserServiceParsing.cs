@@ -307,8 +307,14 @@ public partial class DocsParserService
     private IEnumerable<Schematic> ParseSchematics(IEnumerable<Classes> classes2)
     {
         return classes2
+            .Where(p => !ExcludeSchematics(p.ClassName))
             .Select(ParseSchematic)
             .ToArray();
+    }
+
+    private bool ExcludeSchematics(string className)
+    {
+        return className is "Schematic_StartingRecipes_C" or "Schematic_SaveCompatibility_C";
     }
 
     private Schematic ParseSchematic(Classes class2)
@@ -357,7 +363,7 @@ public partial class DocsParserService
                     break;
                 
                 case "BP_UnlockScannableObject_C":
-                    schematic.UnlocksScannerObject = ScannableObjectParseUtility.MapToScannableObject(munlock.mScannableObjects);
+                    schematic.UnlocksScannerObjects = ScannableObjectParseUtility.MapToScannableObjects(munlock.mScannableObjects);
                     break;
                 
                 case "BP_UnlockEmote_C":

@@ -19,7 +19,7 @@ public class Schematic : IBase, IIcon
 	// ReSharper disable once PropertyCanBeMadeInitOnly.Global
 	public Reference[] Cost { get; set; } = Array.Empty<Reference>();
 	public string[] UnlocksRecipes { get; set; } = Array.Empty<string>();
-	public ScannableObject? UnlocksScannerObject { get; set; }
+	public ScannableObject[] UnlocksScannerObjects { get; set; } = Array.Empty<ScannableObject>();
 	public string[] UnlocksScannerResources { get; set; } = Array.Empty<string>();
 	public string[] UnlocksScannerResourcePairs { get; set; } = Array.Empty<string>();
 	public string[] Emotes { get; set; } = Array.Empty<string>();

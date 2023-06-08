@@ -215,6 +215,12 @@ public partial class DocsParserService
 		progress?.ReportOrThrow("Add missing statues", token);
 		data.Statues.AddRange(_statues);
 		
+		progress?.ReportOrThrow("Add missing creatures", token);
+		data.Creatures.AddRange(_creatures);
+		
+		progress?.ReportOrThrow("Add missing plants", token);
+		data.Plants.AddRange(_plants);
+		
 		progress?.ReportOrThrow("Add ammunition and weapon references for each other", token);
 		AddWeaponToAmmunitionReferences(data.Items, data.Weapons, data.Ammunition);
 

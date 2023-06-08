@@ -126,4 +126,11 @@ internal static class ClassNameParseUtility
 		"Build_QuarterPipeMiddle_Ficsit_8x4_C" => "Desc_QuarterPipeMiddle_Ficsit_4x4_C",
 		_ => className
 	};
+
+	public static string CorrectClassNameForSchematics(string className) => className switch
+	{
+		"FGObjectScanner" => "ObjectScanner_C",
+		"FGBuildableRadarTower" => "RadarTower_C",
+		_ => className
+	};
 }

@@ -1,4 +1,5 @@
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+#pragma warning disable CS8618
 namespace SatisfactoryCalculator.DocsServices.Models.DataModels;
 
 public class Schematic : IBase, IIcon
@@ -19,8 +20,8 @@ public class Schematic : IBase, IIcon
 	public Reference[] Cost { get; set; } = null!;
 	public string?[] UnlocksRecipes { get; set; } = null!;
 	public ScannableObject UnlocksScannerObject { get; set; } = null!;
-	public string?[] UnlocksScannerResources { get; set; } = null!;
-	public string?[] UnlocksScannerResourcePairs { get; set; } = null!;
+	public string[] UnlocksScannerResources { get; set; }
+	public string[] UnlocksScannerResourcePairs { get; set; }
 	public string?[] Emotes { get; set; } = null!;
 	public Reference[] ItemsToGive { get; set; } = null!;
 	public int? UnlocksArmEquipmentSlot { get; set; }

@@ -2,7 +2,7 @@
 namespace SatisfactoryCalculator.Source.Models;
 
 // ReSharper disable once UnusedType.Global
-internal class Schema : ISchema
+internal class Schematic
 {
     
 }

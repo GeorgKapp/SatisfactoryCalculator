@@ -195,6 +195,7 @@ public partial class DocsParserService
 		data.Items.Add(_goldenCoffeeCup);
 		data.Items.Add(_boomBox);
 		data.Items.Add(_fiscitCoupon);
+		data.Items.Add(_harddrive);
 
 		progress?.ReportOrThrow("Add missing equipment", token);
 		data.Equipments.Add(_coffeeCupEquipment);

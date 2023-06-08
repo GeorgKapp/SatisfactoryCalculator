@@ -1,4 +1,5 @@
-﻿using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
+﻿using SatisfactoryCalculator.DocsServices.Utility.Parser;
+using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
 using Item = SatisfactoryCalculator.DocsServices.Models.DataModels.Item;
 using Recipe = SatisfactoryCalculator.DocsServices.Models.DataModels.Recipe;
 
@@ -164,7 +165,7 @@ public partial class DocsParserService
             ReloadTime = NumberParseUtility.MapToNullableDouble(class2.mReloadTime),
             DamageMultiplier = NumberParseUtility.MapToNullableDouble(class2.mWeaponDamageMultiplier),
             EquipmentSlot = StringToEnumParseUtility.ParseEquipmentSlotStringToEnum(class2.mEquipmentSlot),
-            UsesAmmunition = ReferenceParseUtility.MapToReferenceArray(class2.mAllowedAmmoClasses).Except("CartridgePlasma_C").ToArray()
+            UsesAmmunition = ReferenceParseUtility.GetReferences(class2.mAllowedAmmoClasses).Except("CartridgePlasma_C").ToArray()
         };
     }
 
@@ -209,7 +210,7 @@ public partial class DocsParserService
 
     private Recipe? ParseRecipe(Classes class2)
     {
-        var array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
+        var array = ReferenceParseUtility.GetReferences(class2.mProducedIn);
         if (array.Contains("Converter_C"))
             return null;
 
@@ -231,8 +232,8 @@ public partial class DocsParserService
             ManufacturingMenuPriority = NumberParseUtility.MapToNullableDouble(class2.mManufacturingMenuPriority),
             ManufactoringDuration = NumberParseUtility.MapToDouble(class2.mManufactoringDuration),
             ManualManufacturingMultiplier = NumberParseUtility.MapToDouble(class2.mManualManufacturingMultiplier),
-            Ingredients = ReferenceParseUtility.MapToReferenceWithAmountArray(class2.mIngredients),
-            Products = ReferenceParseUtility.MapToReferenceWithAmountArray(class2.mProduct),
+            Ingredients = ReferenceParseUtility.GetReferencesWithAmount(class2.mIngredients),
+            Products = ReferenceParseUtility.GetReferencesWithAmount(class2.mProduct),
             Buildings = array.ToArray(),
             ConstructedByBuildGun = constructedByBuildGun,
             ConstructedInWorkshop = constructedInWorkshop,
@@ -252,7 +253,7 @@ public partial class DocsParserService
 
     private CustomizationRecipe ParseCustomizationRecipe(Classes class2)
     {
-        var array = ReferenceParseUtility.MapToReferenceArray(class2.mProducedIn);
+        var array = ReferenceParseUtility.GetReferences(class2.mProducedIn);
 
         var constructedByBuildGun = array.Contains("BuildGun_C") || array.Contains("FGBuildGun");
         var constructedInWorkshop = array.Contains("WorkshopComponent_C");
@@ -270,8 +271,8 @@ public partial class DocsParserService
             ManufacturingMenuPriority = NumberParseUtility.MapToNullableDouble(class2.mManufacturingMenuPriority),
             ManufactoringDuration = NumberParseUtility.MapToDouble(class2.mManufactoringDuration),
             ManualManufacturingMultiplier = NumberParseUtility.MapToDouble(class2.mManualManufacturingMultiplier),
-            Ingredients = ReferenceParseUtility.MapToReferenceWithAmountArray(class2.mIngredients),
-            Products = ReferenceParseUtility.MapToReferenceWithAmountArray(class2.mProduct),
+            Ingredients = ReferenceParseUtility.GetReferencesWithAmount(class2.mIngredients),
+            Products = ReferenceParseUtility.GetReferencesWithAmount(class2.mProduct),
             Buildings = array.ToArray(),
             ConstructedByBuildGun = constructedByBuildGun,
             ConstructedInWorkshop = constructedInWorkshop,
@@ -322,8 +323,8 @@ public partial class DocsParserService
             Type = StringToEnumParseUtility.ParseSchematicTypeStringToEnum(class2.mType),
             SmallIconPath = string.IsNullOrEmpty(class2.mSmallSchematicIcon) ? null : IconPathParseUtility.ReadIconPathFromSchematicIcon(class2.mSmallSchematicIcon),
             BigIconPath = string.IsNullOrEmpty(class2.mSchematicIcon) ? null : IconPathParseUtility.ReadIconPathFromSchematicIcon(class2.mSchematicIcon),
-            RelevantEvents = string.IsNullOrEmpty(class2.mRelevantEvents) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArray(class2.mRelevantEvents),
-            Cost = string.IsNullOrEmpty(class2.mRelevantEvents) ? Array.Empty<Reference>() : ReferenceParseUtility.MapToReferenceWithAmountArray(class2.mCost),
+            RelevantEvents = string.IsNullOrEmpty(class2.mRelevantEvents) ? Array.Empty<string>() : ReferenceParseUtility.GetReferences(class2.mRelevantEvents),
+            Cost = string.IsNullOrEmpty(class2.mCost) ? Array.Empty<Reference>() : ReferenceParseUtility.GetReferencesWithAmount(class2.mCost),
             HiddenUntilDependenciesMet = Convert.ToBoolean(class2.mDependenciesBlocksSchematicAccess),
             DependenciesBlocksSchematicAccess = Convert.ToBoolean(class2.mDependenciesBlocksSchematicAccess),
             UnlocksRecipes = Array.Empty<string>(),
@@ -351,7 +352,7 @@ public partial class DocsParserService
                     break;
                 
                 case "BP_UnlockRecipe_C":
-                    schematic.UnlocksRecipes = ReferenceParseUtility.MapToReferenceArray(munlock.mRecipes);
+                    schematic.UnlocksRecipes = ReferenceParseUtility.GetReferences(munlock.mRecipes);
                     break;
                 
                 case "BP_UnlockScannableObject_C":
@@ -359,16 +360,16 @@ public partial class DocsParserService
                     break;
                 
                 case "BP_UnlockEmote_C":
-                    schematic.Emotes = ReferenceParseUtility.MapToReferenceArray(munlock.mEmotes);
+                    schematic.Emotes = ReferenceParseUtility.GetReferences(munlock.mEmotes);
                     break;
                 
                 case "BP_UnlockScannableResource_C":
-                    schematic.UnlocksScannerResources = string.IsNullOrEmpty(munlock.mResourcesToAddToScanner) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArray(munlock.mResourcesToAddToScanner);
-                    schematic.UnlocksScannerResourcePairs = string.IsNullOrEmpty(munlock.mResourcePairsToAddToScanner) ? Array.Empty<string>() : ReferenceParseUtility.MapToReferenceArrayIgnoreIdentifiers(munlock.mResourcePairsToAddToScanner);
+                    schematic.UnlocksScannerResources = string.IsNullOrEmpty(munlock.mResourcesToAddToScanner) ? Array.Empty<string>() : UnrealEngineClassParser.ParseInputs(munlock.mResourcesToAddToScanner).Select(p => p.ClassName).ToArray();
+                    schematic.UnlocksScannerResourcePairs = string.IsNullOrEmpty(munlock.mResourcePairsToAddToScanner) ? Array.Empty<string>() : UnrealEngineClassParser.ParseInputs(munlock.mResourcePairsToAddToScanner).Select(p => p.ClassName).ToArray();
                     break;
                 
                 case "BP_UnlockGiveItem_C":
-                    schematic.ItemsToGive = ReferenceParseUtility.MapToReferenceWithAmountArray(munlock.mItemsToGive);
+                    schematic.ItemsToGive = ReferenceParseUtility.GetReferencesWithAmount(munlock.mItemsToGive);
                     break;
             }
         }
@@ -381,7 +382,7 @@ public partial class DocsParserService
             switch (mschematicdependency.Class)
             {
                 case "BP_SchematicPurchasedDependency_C":
-                    schematicDependency.Schematics = ReferenceParseUtility.MapToReferenceArray(mschematicdependency.mSchematics);
+                    schematicDependency.Schematics = ReferenceParseUtility.GetReferences(mschematicdependency.mSchematics);
                     schematicDependency.RequireAllSchematicsToBePurchased = Convert.ToBoolean(mschematicdependency.mRequireAllSchematicsToBePurchased);
                     schematicDependency.SchematicDependencyType = SchematicDependencyType.PurchasedDependency;
                     break;

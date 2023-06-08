@@ -41,6 +41,16 @@ public partial class DocsParserService
         SmallIconPath = "\\Game\\FactoryGame\\Equipment\\BoomBox\\UI\\IconDesc_Boombox_64.png",
         BigIconPath = "\\Game\\FactoryGame\\Equipment\\BoomBox\\UI\\IconDesc_Boombox_256.png"
     };
+    
+    private readonly Item _harddrive = new()
+    {
+        ClassName = "HardDrive_C",
+        DisplayName = "Hard Drive",
+        Description = "A hard drive with FICSIT data. Analyze it in the MAM to salvage its contents.",
+        SmallIconPath = "\\Game\\FactoryGame\\Resource\\Environment\\CrashSites\\UI\\HardDrive_64.png",
+        BigIconPath = "\\Game\\FactoryGame\\Resource\\Environment\\CrashSites\\UI\\HardDrive_256.png",
+        StackSize = StackSize.Medium
+    };
 
     private readonly Equipment _coffeeCupEquipment = new()
     {

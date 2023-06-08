@@ -13,10 +13,10 @@ internal static class ScannableObjectParseUtility
 		var arraySplitTagIndex = mScannableObjects.IndexOf(ArraySplitTag, bluePrintTagIndex, StringComparison.Ordinal);
 
 		var mClassReferenceInput = mScannableObjects.Substring(bluePrintTagIndex, arraySplitTagIndex - bluePrintTagIndex);
-		var className = ReferenceParseUtility.MapToReferenceArray(mClassReferenceInput).First();
+		var className = ReferenceParseUtility.GetReferences(mClassReferenceInput).First();
 
 		var startIndex = mScannableObjects.IndexOf(ActorsAllowedToScanTag, StringComparison.Ordinal);
-		var actorsAllowedToScan = ReferenceParseUtility.MapToReferenceArray(mScannableObjects[startIndex..]);
+		var actorsAllowedToScan = ReferenceParseUtility.GetReferences(mScannableObjects[startIndex..]);
 
 		return new()
 		{

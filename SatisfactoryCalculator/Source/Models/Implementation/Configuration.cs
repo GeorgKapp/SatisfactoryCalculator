@@ -59,6 +59,27 @@ public class Configuration : ObservableObject
         get => _recipes;
         set => SetProperty(ref _recipes, value);
     }
+    
+    private ObservableCollection<ISchematic> _schematics = new();
+    internal ObservableCollection<ISchematic> Schematics
+    {
+        get => _schematics;
+        set => SetProperty(ref _schematics, value);
+    }
+    
+    private ObservableCollection<ICreature> _creatures = new();
+    internal ObservableCollection<ICreature> Creatures
+    {
+        get => _creatures;
+        set => SetProperty(ref _creatures, value);
+    }
+    
+    private ObservableCollection<IPlant> _plants = new();
+    internal ObservableCollection<IPlant> Plants
+    {
+        get => _plants;
+        set => SetProperty(ref _plants, value);
+    }
 
     private DateTime? _lastSyncDate = new();
     internal DateTime? LastSyncDate

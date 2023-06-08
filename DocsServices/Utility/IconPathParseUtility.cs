@@ -5,13 +5,8 @@ internal static class IconPathParseUtility
 	public static string? ConvertIconPathToUePath(string iconPath)
 	{
 		if (iconPath == "None")
-		{
 			return null;
-		}
 
-		if (iconPath.Contains("CoffeeCup"))
-			_ = 1;
-		
 		var text = iconPath.StartsWith("Texture2D") ? iconPath.Remove(0, "Texture2D".Length) : iconPath;
 		text = text.Trim().Trim('\'').Trim('"');
 		var directoryName = Path.GetDirectoryName(text);

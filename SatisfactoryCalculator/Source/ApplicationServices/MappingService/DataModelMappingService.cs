@@ -1,6 +1,7 @@
 using Ammunition = SatisfactoryCalculator.DocsServices.Models.DataModels.Ammunition;
 using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
 using Consumable = SatisfactoryCalculator.DocsServices.Models.DataModels.Consumable;
+using Creature = SatisfactoryCalculator.DocsServices.Models.DataModels.Creature;
 using Equipment = SatisfactoryCalculator.DocsServices.Models.DataModels.Equipment;
 using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
 using Generator = SatisfactoryCalculator.DocsServices.Models.DataModels.Generator;
@@ -54,6 +55,11 @@ internal class DataModelMappingService
         
         progress?.ReportOrThrow("Map Fuels", token);
         var fuels = MapToFuelModels(data.Generators, generators, itemDictionary);
+        
+        progress?.ReportOrThrow("Map Creatures", token);
+        var creatures = MapToCreatures(data.Creatures); 
+        var creatureDictionary = MapToCreatureDictionary(creatures);
+        AddCreatureLinks(creatures, data.Creatures, itemDictionary, creatureDictionary);
 
         progress?.ReportOrThrow("Map Recipes", token);
         var recipes = MapToRecipeModels(data.Recipes, itemDictionary, buildingDictionary);
@@ -72,6 +78,7 @@ internal class DataModelMappingService
             buildingDictionary.Values.ToArray(), 
             generators, 
             recipes,
+            creatureDictionary.Values.ToArray(),
             referenceDictionary, 
             lastSyncDate);
     }
@@ -261,7 +268,7 @@ internal class DataModelMappingService
         }
         return fuelModels.ToArray();
     }
-
+    
     private Fuel MapToFuelModel(DocsServices.Models.DataModels.Fuel fuel, IGenerator generator, IDictionary<string, IItem> itemDictionary)
     {
         var ingredient = MapToFuelContentModel(itemDictionary[fuel.FuelClass], 0);
@@ -297,6 +304,63 @@ internal class DataModelMappingService
     }
 
     private FuelItem MapToFuelContentModel(IItem item, double amount) => new(item, amount);
+    
+    // ReSharper disable once HeapView.ClosureAllocation
+    private ICreature[] MapToCreatures(IEnumerable<Creature> creatues) => creatues
+        .Select(MapToCreature)
+        .OrderBy(p => p.Name)
+        .ToArray();
+
+    private ICreature MapToCreature(Creature creatue) =>
+        new Models.Creature
+        {
+            ClassName = creatue.ClassName, 
+            Name = creatue.DisplayName,
+            Description = creatue.Description,
+            Image = BitmapImageCache.Fetch(SelectImagePath(creatue.SmallIconPath, creatue.BigIconPath)),
+            HitPoints = creatue.HitPoints,
+            Damage = creatue.Damage,
+            Behaviour = creatue.Behaviour
+        };
+
+    private void AddCreatureLinks(ICreature[] creatureModels, IEnumerable<Creature> creatures, IDictionary<string, IItem> itemDictionary, IDictionary<string, ICreature> creatureDictionary)
+    {
+        foreach (var creature in creatures)
+        {
+            var creatureModel = creatureDictionary[creature.ClassName];
+            creatureModel.Variants = MapToVariants(creatureModels, creatures, creatureModel.ClassName, creature.VariantGroup, creatureDictionary);
+            creatureModel.Loot = MapToLoots(creature.Loot, itemDictionary);
+        }
+    }
+    
+    private ICreature[]? MapToVariants(IEnumerable<ICreature> creatureModels, IEnumerable<Creature> creatures, string creatureClassName, string? variantGroup, IDictionary<string, ICreature> creatureDictionary)
+    {
+        if (variantGroup is null)
+            return null;
+
+        var foundCreatureClassNames =
+            creatures
+                .Where(p => p.VariantGroup == variantGroup && p.ClassName != creatureClassName)
+                .Select(p => p.ClassName);
+
+        return foundCreatureClassNames
+            .Select(p => creatureDictionary[p])
+            .OrderBy(p => p.ClassName)
+            .ToArray();
+    }
+
+    private Loot[] MapToLoots(CreatureLoot[] loots, IDictionary<string, IItem> itemDictionary) =>
+        loots
+            .Select(p => MapToLoot(p, itemDictionary))
+            .OrderBy(p => p.Item.ClassName)
+            .ToArray();
+    
+    private Loot MapToLoot(CreatureLoot loot, IDictionary<string, IItem> itemDictionary) =>
+        new()
+        {
+            Item = itemDictionary[loot.ClassName],
+            Amount = loot.Amount
+        };
 
     private IRecipe[] MapToRecipeModels(IEnumerable<Recipe> recipes, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary) =>
         recipes
@@ -374,6 +438,9 @@ internal class DataModelMappingService
 
     private IDictionary<string, IBuilding> MapToBuildingDictionary(IEnumerable<IBuilding> buildings) =>
         buildings.ToDictionary(p => p.ClassName, p => p);
+    
+    private IDictionary<string, ICreature> MapToCreatureDictionary(IEnumerable<ICreature> creatures) =>
+        creatures.ToDictionary(p => p.ClassName, p => p);
 
     // ReSharper disable once HeapView.ClosureAllocation
     private IDictionary<string, EntityReference> MapToEntityReferenceDictionary(IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, Fuel[] fuels, IRecipe[] recipes)

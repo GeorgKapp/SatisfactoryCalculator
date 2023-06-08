@@ -215,7 +215,7 @@ public partial class DocsParserService
             Damage = new [] { "Charge Damage: 20", "Bite Damage: 30" },
             Loot = new [] { new CreatureLoot{ ClassName = "HogParts_C", Amount = 3}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "Hog_C" }
+            VariantGroup = "Hog"
         },
         new()
         {
@@ -228,7 +228,7 @@ public partial class DocsParserService
             Damage = new [] { "Charge Damage: 10" },
             Loot = new [] { new CreatureLoot{ ClassName = "HogParts_C", Amount = 1}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "HogAlpha_C" }
+            VariantGroup = "Hog"
         },
         new()
         {
@@ -241,7 +241,7 @@ public partial class DocsParserService
             Damage = new [] { "Melee fireball Damage: 1-11" , "Ranged fireball Damage: 1-6"},
             Loot = new [] { new CreatureLoot{ ClassName = "SpitterParts_C", Amount = 2}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "SpitterAqua_C", "SpitterForest_C", "SpitterRForest_C", "SpitterDesertAlpha_C", "SpitterAquaAlpha_C", "SpitterForestAlpha_C", "SpitterRForestAlpha_C" }
+            VariantGroup = "Splitter"
         },
         new()
         {
@@ -254,7 +254,7 @@ public partial class DocsParserService
             Damage = new [] { "Melee fireball Damage: 1-13" , "Ranged fireball Damage: 1-8"},
             Loot = new [] { new CreatureLoot{ ClassName = "SpitterParts_C", Amount = 2}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "SpitterDesert_C", "SpitterForest_C", "SpitterRForest_C", "SpitterDesertAlpha_C", "SpitterAquaAlpha_C", "SpitterForestAlpha_C", "SpitterRForestAlpha_C" }
+            VariantGroup = "Splitter"
         },
         new()
         {
@@ -267,7 +267,7 @@ public partial class DocsParserService
             Damage = new []{ "Melee fireball Damage: 1-12" , "Ranged fireball Damage: 1-6"},
             Loot = new [] { new CreatureLoot{ ClassName = "SpitterParts_C", Amount = 2}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "SpitterDesert_C", "SpitterAqua_C", "SpitterRForest_C", "SpitterDesertAlpha_C", "SpitterAquaAlpha_C", "SpitterForestAlpha_C", "SpitterRForestAlpha_C" }
+            VariantGroup = "Splitter"
         },
         new()
         {
@@ -280,7 +280,7 @@ public partial class DocsParserService
             Damage = new [] { "Melee fireball Damage: 1-13" , "Ranged fireball Damage: 1-8"},
             Loot = new [] { new CreatureLoot{ ClassName = "SpitterParts_C", Amount = 2}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "SpitterDesert_C", "SpitterAqua_C", "SpitterForest_C", "SpitterDesertAlpha_C", "SpitterAquaAlpha_C", "SpitterForestAlpha_C", "SpitterRForestAlpha_C" }
+            VariantGroup = "Splitter"
         },
         new()
         {
@@ -293,7 +293,7 @@ public partial class DocsParserService
             Damage = new [] { "Melee Fireball Damage: 1-12", "A large fireball (<20) which splits into 5 smaller fireball (<10) mid-air", "A large fireball which deals 50 explosive damage at large radius, dealing massive knockback" },
             Loot = new [] { new CreatureLoot{ ClassName = "SpitterParts_C", Amount = 4}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "SpitterDesert_C", "SpitterAqua_C", "SpitterForest_C", "SpitterRForest_C", "SpitterAquaAlpha_C", "SpitterForestAlpha_C", "SpitterRForestAlpha_C" }
+            VariantGroup = "Splitter"
         },
         new()
         {
@@ -306,7 +306,7 @@ public partial class DocsParserService
             Damage = new [] { "Melee Fireball Damage: 1-12", "4 consecutive shots at <18 damage each", "A charged, sniped shot at <36 damage" },
             Loot = new [] { new CreatureLoot{ ClassName = "SpitterParts_C", Amount = 4}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "SpitterDesert_C", "SpitterAqua_C", "SpitterForest_C", "SpitterRForest_C", "SpitterDesertAlpha_C", "SpitterForestAlpha_C", "SpitterRForestAlpha_C" }
+            VariantGroup = "Splitter"
         },
         new()
         {
@@ -319,7 +319,7 @@ public partial class DocsParserService
             Damage = new [] { "Melee Fireball Damage: 1-16", "4 consecutive shots at <18 damage each", "A large fireball which deals 50 explosive damage at large radius, dealing massive knockback" },
             Loot = new [] { new CreatureLoot{ ClassName = "SpitterParts_C", Amount = 4}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "SpitterDesert_C", "SpitterAqua_C", "SpitterForest_C", "SpitterRForest_C", "SpitterDesertAlpha_C", "SpitterAquaAlpha_C", "SpitterRForestAlpha_C" }
+            VariantGroup = "Splitter"
         },
         new()
         {
@@ -332,7 +332,7 @@ public partial class DocsParserService
             Damage = new [] { "Melee Fireball Damage: 1-12", "4 consecutive shots at <18 damage each", "A large fireball which deals 50 explosive damage at large radius, dealing massive knockback" },
             Loot = new [] { new CreatureLoot{ ClassName = "SpitterParts_C", Amount = 4}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "SpitterDesert_C", "SpitterAqua_C", "SpitterForest_C", "SpitterRForest_C", "SpitterDesertAlpha_C", "SpitterAquaAlpha_C", "SpitterForestAlpha_C" }
+            VariantGroup = "Splitter"
         },
         new()
         {
@@ -357,7 +357,7 @@ public partial class DocsParserService
             Damage = new [] { "Slash Damage: 5" },
             Loot = new [] { new CreatureLoot{ ClassName = "StingerParts_C", Amount = 1}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "ArachnophobiaStinger_C", "ArachnophobiaStingerElite_C", "StingerChild_C", "Stinger_C", "StingerElite_C" }
+            VariantGroup = "Stinger"
         },
         new()
         {
@@ -370,7 +370,7 @@ public partial class DocsParserService
             Damage = new [] { "Slash Damage: 30", "Leap Damage: 50" },
             Loot = new [] { new CreatureLoot{ ClassName = "StingerParts_C", Amount = 3}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "ArachnophobiaStingerChild_C", "ArachnophobiaStingerElite_C", "StingerChild_C", "Stinger_C", "StingerElite_C"  }
+            VariantGroup = "Stinger"
         },
         new()
         {
@@ -383,7 +383,7 @@ public partial class DocsParserService
             Damage = new [] { "Slash Damage: 30", "Leap Damage: 50", "Gas Damage: 5/sec" },
             Loot = new [] { new CreatureLoot{ ClassName = "StingerParts_C", Amount = 5}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "ArachnophobiaStingerChild_C", "ArachnophobiaStinger_C", "StingerChild_C", "Stinger_C", "StingerElite_C"  }
+            VariantGroup = "Stinger"
         },
         new()
         {
@@ -396,7 +396,7 @@ public partial class DocsParserService
             Damage = new [] { "Slash Damage: 5" },
             Loot = new [] { new CreatureLoot{ ClassName = "StingerParts_C", Amount = 1}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "ArachnophobiaStingerChild_C", "ArachnophobiaStinger_C", "ArachnophobiaStingerElite_C", "Stinger_C", "StingerElite_C"  }
+            VariantGroup = "Stinger"
         },
         new()
         {
@@ -409,7 +409,7 @@ public partial class DocsParserService
             Damage = new [] { "Slash Damage: 30", "Leap Damage: 50" },
             Loot = new [] { new CreatureLoot{ ClassName = "StingerParts_C", Amount = 3}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "ArachnophobiaStingerChild_C", "ArachnophobiaStinger_C", "ArachnophobiaStingerElite_C", "StingerChild_C", "StingerElite_C"  }
+            VariantGroup = "Stinger"
         },
         new()
         {
@@ -422,7 +422,7 @@ public partial class DocsParserService
             Damage = new [] { "Slash Damage: 30", "Leap Damage: 50", "Gas Damage: 5/sec" },
             Loot = new [] { new CreatureLoot{ ClassName = "StingerParts_C", Amount = 5}},
             Behaviour = CreatureBehaviour.Hostile,
-            Variants = new [] { "ArachnophobiaStingerChild_C", "ArachnophobiaStinger_C", "ArachnophobiaStingerElite_C", "StingerChild_C", "Stinger_C" }
+            VariantGroup = "Stinger"
         },
         new()
         {
@@ -458,7 +458,7 @@ public partial class DocsParserService
 
     private readonly Plant[] _plants = 
     {
-        new() { ClassName = "BerryBush_C" },
-        new() { ClassName = "NutBush_C" }
+        new() { ClassName = "BerryBush_C", DisplayName = "Berry Bush" },
+        new() { ClassName = "NutBush_C" , DisplayName = "Nut Bush" }
     };
 }

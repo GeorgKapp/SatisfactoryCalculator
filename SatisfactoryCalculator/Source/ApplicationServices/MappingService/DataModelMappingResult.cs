@@ -12,6 +12,7 @@ internal class DataModelMappingResult
         IBuilding[] buildings,
         IGenerator[] generators, 
         IRecipe[] recipes, 
+        ICreature[] creatures,
         IDictionary<string, EntityReference> referenceDictionary, 
         DateTime? lastSyncDate)
     {
@@ -23,6 +24,7 @@ internal class DataModelMappingResult
         Buildings = buildings;
         Generators = generators;
         Recipes = recipes;
+        Creatures = creatures;
         ReferenceDictionary = referenceDictionary;
         LastSyncDate = lastSyncDate;
     }
@@ -36,5 +38,6 @@ internal class DataModelMappingResult
     public IBuilding[] Buildings { get; }
     public IGenerator[] Generators { get; }
     public IRecipe[] Recipes { get; }
+    public ICreature[] Creatures { get; }
     public DateTime? LastSyncDate { get; }
 }

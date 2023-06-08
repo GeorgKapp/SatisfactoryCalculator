@@ -22,6 +22,9 @@ public class DataModelImageCreateService
 
         progress?.ReportOrThrow("Creating Statue Images", token);
         await CreateImagesAsync(data.Statues, ueModelExportPath, imageFilePath);
+        
+        progress?.ReportOrThrow("Creating Creature Images", token);
+        await CreateImagesAsync(data.Creatures, ueModelExportPath, imageFilePath);
 
         return data;
     }

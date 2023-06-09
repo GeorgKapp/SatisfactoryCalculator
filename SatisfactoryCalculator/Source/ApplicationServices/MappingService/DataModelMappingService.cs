@@ -2,8 +2,8 @@ using Ammunition = SatisfactoryCalculator.DocsServices.Models.DataModels.Ammunit
 using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
 using Consumable = SatisfactoryCalculator.DocsServices.Models.DataModels.Consumable;
 using Creature = SatisfactoryCalculator.DocsServices.Models.DataModels.Creature;
+using CreatureLoot = SatisfactoryCalculator.DocsServices.Models.DataModels.CreatureLoot;
 using Equipment = SatisfactoryCalculator.DocsServices.Models.DataModels.Equipment;
-using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
 using Generator = SatisfactoryCalculator.DocsServices.Models.DataModels.Generator;
 using Item = SatisfactoryCalculator.DocsServices.Models.DataModels.Item;
 using Recipe = SatisfactoryCalculator.DocsServices.Models.DataModels.Recipe;
@@ -59,13 +59,15 @@ internal class DataModelMappingService
         progress?.ReportOrThrow("Map Creatures", token);
         var creatures = MapToCreatures(data.Creatures); 
         var creatureDictionary = MapToCreatureDictionary(creatures);
-        AddCreatureLinks(creatures, data.Creatures, itemDictionary, creatureDictionary);
+        LinkCreatureVariants(creatures, data.Creatures, itemDictionary, creatureDictionary);
+        var creatureLoots = MapToCreatureLoots(data.Creatures, itemDictionary, creatureDictionary);
+        
 
         progress?.ReportOrThrow("Map Recipes", token);
         var recipes = MapToRecipeModels(data.Recipes, itemDictionary, buildingDictionary);
 
         progress?.ReportOrThrow("Map References", token);
-        var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, fuels, recipes);
+        var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, fuels, creatureLoots, recipes);
 
         var lastSyncDate = GetLastSyncDate();
         
@@ -258,9 +260,9 @@ internal class DataModelMappingService
         return mappedGenerator;
     }
 
-    private Fuel[] MapToFuelModels(IEnumerable<Generator> generators, IGenerator[] generatorModels, IDictionary<string, IItem> itemDictionary)
+    private GeneratorFuel[] MapToFuelModels(IEnumerable<Generator> generators, IGenerator[] generatorModels, IDictionary<string, IItem> itemDictionary)
     {
-        List<Fuel> fuelModels = new();
+        List<GeneratorFuel> fuelModels = new();
         foreach (var generator in generators)
         {
             var generatorModel = generatorModels.First(p => p.ClassName == generator.ClassName);
@@ -269,7 +271,7 @@ internal class DataModelMappingService
         return fuelModels.ToArray();
     }
     
-    private Fuel MapToFuelModel(DocsServices.Models.DataModels.Fuel fuel, IGenerator generator, IDictionary<string, IItem> itemDictionary)
+    private GeneratorFuel MapToFuelModel(DocsServices.Models.DataModels.Fuel fuel, IGenerator generator, IDictionary<string, IItem> itemDictionary)
     {
         var ingredient = MapToFuelContentModel(itemDictionary[fuel.FuelClass], 0);
 
@@ -323,13 +325,12 @@ internal class DataModelMappingService
             Behaviour = creatue.Behaviour
         };
 
-    private void AddCreatureLinks(ICreature[] creatureModels, IEnumerable<Creature> creatures, IDictionary<string, IItem> itemDictionary, IDictionary<string, ICreature> creatureDictionary)
+    private void LinkCreatureVariants(ICreature[] creatureModels, IEnumerable<Creature> creatures, IDictionary<string, IItem> itemDictionary, IDictionary<string, ICreature> creatureDictionary)
     {
         foreach (var creature in creatures)
         {
             var creatureModel = creatureDictionary[creature.ClassName];
             creatureModel.Variants = MapToVariants(creatureModels, creatures, creatureModel.ClassName, creature.VariantGroup, creatureDictionary);
-            creatureModel.Loot = MapToLoots(creature.Loot, itemDictionary);
         }
     }
     
@@ -349,17 +350,23 @@ internal class DataModelMappingService
             .ToArray();
     }
 
-    private Loot[] MapToLoots(CreatureLoot[] loots, IDictionary<string, IItem> itemDictionary) =>
-        loots
-            .Select(p => MapToLoot(p, itemDictionary))
-            .OrderBy(p => p.Item.ClassName)
-            .ToArray();
+    private Models.CreatureLoot[] MapToCreatureLoots(IEnumerable<Creature> creatures, IDictionary<string, IItem> itemDictionary, IDictionary<string, ICreature> creatureDictionary)
+    {
+        List<Models.CreatureLoot> creatureLoots = new();
+        foreach (var creature in creatures)
+        {
+            var creatureModel = creatureDictionary[creature.ClassName];
+            creatureLoots.AddRange(creature.Loot.Select(loot => MapToLoot(loot.Amount, creatureModel, itemDictionary[loot.ClassName])));
+        }
+        return creatureLoots.ToArray();
+    }
     
-    private Loot MapToLoot(CreatureLoot loot, IDictionary<string, IItem> itemDictionary) =>
+    private Models.CreatureLoot MapToLoot(int amount, ICreature mappedCreature, IItem mappedItem) =>
         new()
         {
-            Item = itemDictionary[loot.ClassName],
-            Amount = loot.Amount
+            Item = mappedItem,
+            Amount = amount,
+            Creature = mappedCreature
         };
 
     private IRecipe[] MapToRecipeModels(IEnumerable<Recipe> recipes, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary) =>
@@ -443,18 +450,18 @@ internal class DataModelMappingService
         creatures.ToDictionary(p => p.ClassName, p => p);
 
     // ReSharper disable once HeapView.ClosureAllocation
-    private IDictionary<string, EntityReference> MapToEntityReferenceDictionary(IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, Fuel[] fuels, IRecipe[] recipes)
+    private IDictionary<string, EntityReference> MapToEntityReferenceDictionary(IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, GeneratorFuel[] fuels, Models.CreatureLoot[] creatureLoots, IRecipe[] recipes)
     {
         var entityReferences = itemDictionary.Values
-            .ToDictionary(item => item.ClassName, item => CreateEntityReference(item.ClassName, buildingDictionary, fuels, recipes));
+            .ToDictionary(item => item.ClassName, item => CreateEntityReference(item.ClassName, buildingDictionary, fuels, creatureLoots, recipes));
 
         foreach (var building in buildingDictionary.Values)
-            entityReferences.Add(building.ClassName, CreateEntityReference(building.ClassName, buildingDictionary, fuels, recipes));
+            entityReferences.Add(building.ClassName, CreateEntityReference(building.ClassName, buildingDictionary, fuels, creatureLoots, recipes));
 
         return entityReferences;
     }
 
-    private EntityReference CreateEntityReference(string entityClassName, IDictionary<string, IBuilding> buildingDictionary, Fuel[] fuels, IRecipe[] recipes) =>
+    private EntityReference CreateEntityReference(string entityClassName, IDictionary<string, IBuilding> buildingDictionary, GeneratorFuel[] fuels, Models.CreatureLoot[] creatureLoots, IRecipe[] recipes) =>
         new()
         {
             RecipeIngredient = GetRecipeIngredientReferences(entityClassName, recipes, buildingDictionary),
@@ -463,7 +470,9 @@ internal class DataModelMappingService
             RecipeBuilding = GetRecipeBuildingReferences(entityClassName, recipes),
             FuelIngredient = GetFuelIngredientReferences(entityClassName, fuels),
             FuelByProduct = GetFuelByProductReferences(entityClassName, fuels),
-            FuelGenerator = GetFuelGeneratorReferences(entityClassName, fuels)
+            FuelGenerator = GetFuelGeneratorReferences(entityClassName, fuels),
+            LootFromCreature = GetItemIsDroppedFromCreatureReferences(entityClassName, creatureLoots),
+            DropsLoot = GetCreatureDropsLootReferences(entityClassName, creatureLoots)
         };
     
     private IRecipe[] GetRecipeIngredientReferences(string entityClassName, IEnumerable<IRecipe> recipes, IDictionary<string, IBuilding> buildingDictionary) => recipes
@@ -484,17 +493,25 @@ internal class DataModelMappingService
         .Where(recipe => recipe.Buildings.Any(p => p.Building.ClassName == entityClassName))
         .ToArray();
 
-    private Fuel[] GetFuelIngredientReferences(string entityClassName, IEnumerable<Fuel> fuels) => fuels
+    private GeneratorFuel[] GetFuelIngredientReferences(string entityClassName, IEnumerable<GeneratorFuel> fuels) => fuels
         .Where(fuel => fuel.Ingredient.Item.ClassName == entityClassName || fuel.SupplementalIngredient?.Item.ClassName == entityClassName)
         .ToArray();
 
-    private Fuel[] GetFuelByProductReferences(string entityClassName, IEnumerable<Fuel> fuels) => fuels
+    private GeneratorFuel[] GetFuelByProductReferences(string entityClassName, IEnumerable<GeneratorFuel> fuels) => fuels
        .Where(fuel => fuel.ByProduct is not null && fuel.ByProduct.Item.ClassName == entityClassName)
        .ToArray();
 
-    private Fuel[] GetFuelGeneratorReferences(string entityClassName, IEnumerable<Fuel> fuels) => fuels
+    private GeneratorFuel[] GetFuelGeneratorReferences(string entityClassName, IEnumerable<GeneratorFuel> fuels) => fuels
        .Where(fuel => fuel.Generator.ClassName == entityClassName)
        .ToArray();
+    
+    private Models.CreatureLoot[] GetCreatureDropsLootReferences(string entityClassName, IEnumerable<Models.CreatureLoot> creatureLoots) => creatureLoots
+        .Where(creatureLoot => creatureLoot.Creature.ClassName == entityClassName)
+        .ToArray();
+    
+    private Models.CreatureLoot[] GetItemIsDroppedFromCreatureReferences(string entityClassName, IEnumerable<Models.CreatureLoot> creatureLoots) => creatureLoots
+        .Where(creatureLoot => creatureLoot.Item.ClassName == entityClassName)
+        .ToArray();
 
     #endregion
 

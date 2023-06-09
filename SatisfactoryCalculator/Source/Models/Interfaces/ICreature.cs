@@ -6,6 +6,5 @@ internal interface ICreature : IEntity
     ICreature[]? Variants { get; set; }
     int HitPoints { get; }
     string[]? Damage { get; }
-    Loot[] Loot { get; set; }
     CreatureBehaviour Behaviour { get; }
 }

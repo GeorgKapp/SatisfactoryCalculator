@@ -1,5 +1,3 @@
-using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
-
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class ConsumableViewModel : ObservableObject
@@ -54,8 +52,8 @@ internal class ConsumableViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Fuel> _selectedConsumableAsFuels = new();
-    public ObservableCollection<Fuel> SelectedConsumableAsFuels
+    private ObservableCollection<GeneratorFuel> _selectedConsumableAsFuels = new();
+    public ObservableCollection<GeneratorFuel> SelectedConsumableAsFuels
     {
         get => _selectedConsumableAsFuels;
         private set

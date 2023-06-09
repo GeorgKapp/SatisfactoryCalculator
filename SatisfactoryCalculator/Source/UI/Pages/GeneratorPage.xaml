@@ -17,8 +17,8 @@
         <CollectionViewSource x:Key="GeneratorCollection" Source="{Binding SelectedGeneratorFuels}"/>
         <CollectionViewSource x:Key="RecipeCollection" Source="{Binding SelectedGeneratorRecipes}"/>
 
-        <DataTemplate DataType="{x:Type models:Fuel}">
-            <u:FuelControl Fuel="{Binding}" Margin="0,0,0,15" ShowFuelGenerator="False"/>
+        <DataTemplate DataType="{x:Type models:GeneratorFuel}">
+            <u:FuelControl GeneratorFuel="{Binding}" Margin="0,0,0,15" ShowFuelGenerator="False"/>
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type models:Recipe}">

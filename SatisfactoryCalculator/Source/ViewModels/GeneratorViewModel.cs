@@ -1,6 +1,4 @@
-﻿using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
-
-namespace SatisfactoryCalculator.Source.ViewModels;
+﻿namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class GeneratorViewModel : ObservableObject
 {
@@ -18,8 +16,8 @@ internal class GeneratorViewModel : ObservableObject
         }
     }
 
-    private ObservableCollection<Fuel> _selectedGeneratorFuels = new();
-    public ObservableCollection<Fuel> SelectedGeneratorFuels
+    private ObservableCollection<GeneratorFuel> _selectedGeneratorFuels = new();
+    public ObservableCollection<GeneratorFuel> SelectedGeneratorFuels
     {
         get => _selectedGeneratorFuels;
         private set => SetProperty(ref _selectedGeneratorFuels, value);

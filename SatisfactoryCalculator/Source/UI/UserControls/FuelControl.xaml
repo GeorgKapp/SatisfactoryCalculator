@@ -48,12 +48,12 @@
 
 
     <p:ExtendedStackPanel Orientation="Horizontal" Spacing="3" Margin="10,0,0,0">
-        <ContentControl Content="{Binding Fuel.Ingredient, ElementName=userControl}"/>
-        <ContentControl Content="{Binding Fuel.SupplementalIngredient, ElementName=userControl}" Margin="8,0,0,0"/>
-        <TextBlock Text="+" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" Visibility="{Binding Fuel.ByProduct, Converter={StaticResource NullToVisibilityConverter},ElementName=userControl}" FontSize="30" VerticalAlignment="Stretch"/>
-        <ContentControl Content="{Binding Fuel.ByProduct, ElementName=userControl}"  Margin="8,0,8,0"/>
+        <ContentControl Content="{Binding GeneratorFuel.Ingredient, ElementName=userControl}"/>
+        <ContentControl Content="{Binding GeneratorFuel.SupplementalIngredient, ElementName=userControl}" Margin="8,0,0,0"/>
+        <TextBlock Text="+" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" Visibility="{Binding GeneratorFuel.ByProduct, Converter={StaticResource NullToVisibilityConverter},ElementName=userControl}" FontSize="30" VerticalAlignment="Stretch"/>
+        <ContentControl Content="{Binding GeneratorFuel.ByProduct, ElementName=userControl}"  Margin="8,0,8,0"/>
         <TextBlock Text="▶" Margin="-15,0,0,0" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" FontSize="20" VerticalAlignment="Center" Visibility="{Binding ShowFuelGenerator, Converter={StaticResource StandardBooleanToVisibilityConverter},ElementName=userControl}"/>
-        <ContentControl Content="{Binding Fuel.Generator, ElementName=userControl}" Visibility="{Binding ShowFuelGenerator, Converter={StaticResource StandardBooleanToVisibilityConverter},ElementName=userControl}"/>
+        <ContentControl Content="{Binding GeneratorFuel.Generator, ElementName=userControl}" Visibility="{Binding ShowFuelGenerator, Converter={StaticResource StandardBooleanToVisibilityConverter},ElementName=userControl}"/>
     </p:ExtendedStackPanel>
 
 </UserControl>

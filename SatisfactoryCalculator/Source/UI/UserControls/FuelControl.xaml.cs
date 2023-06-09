@@ -1,18 +1,16 @@
-﻿using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
-
-namespace SatisfactoryCalculator.Source.UI.UserControls;
+﻿namespace SatisfactoryCalculator.Source.UI.UserControls;
 
 public partial class FuelControl
 {
-    internal Fuel Fuel
+    internal GeneratorFuel GeneratorFuel
     {
-        get => (Fuel)GetValue(FuelProperty);
-        set => SetValue(FuelProperty, value);
+        get => (GeneratorFuel)GetValue(GeneratorFuelProperty);
+        set => SetValue(GeneratorFuelProperty, value);
     }
-    internal static readonly DependencyProperty FuelProperty = 
+    internal static readonly DependencyProperty GeneratorFuelProperty = 
         DependencyProperty.Register(
-            nameof(Fuel), 
-            typeof(Fuel), 
+            nameof(GeneratorFuel), 
+            typeof(GeneratorFuel), 
             typeof(FuelControl)
             );
 

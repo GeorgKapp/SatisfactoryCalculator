@@ -3,27 +3,27 @@ namespace SatisfactoryCalculator.Tests.References;
 
 internal static class FuelModels
 {
-    public static readonly Fuel LiquidFuel = new()
+    public static readonly GeneratorFuel LiquidGeneratorFuel = new()
     {
         Generator = GeneratorModels.FuelGenerator,
         Ingredient = FuelContentModels.LiquidFuel
     };
     
-    public static readonly Fuel CoalFuel = new()
+    public static readonly GeneratorFuel CoalGeneratorFuel = new()
     {
         Generator = GeneratorModels.CoalGenerator,
         Ingredient = FuelContentModels.Coal,
         SupplementalIngredient = FuelContentModels.Water
     };
     
-    public static readonly Fuel CompactedCoalFuel = new()
+    public static readonly GeneratorFuel CompactedCoalGeneratorFuel = new()
     {
         Generator = GeneratorModels.CoalGenerator,
         Ingredient = FuelContentModels.CompactedCoal,
         SupplementalIngredient = FuelContentModels.Water
     };
     
-    public static readonly Fuel PetroleumCokeFuel = new()
+    public static readonly GeneratorFuel PetroleumCokeGeneratorFuel = new()
     {
         Generator = GeneratorModels.CoalGenerator,
         Ingredient = FuelContentModels.PetroleumCoke,

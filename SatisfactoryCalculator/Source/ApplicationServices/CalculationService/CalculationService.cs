@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Fuel = SatisfactoryCalculator.Source.Models.Fuel;
+
 // ReSharper disable MemberCanBeMadeStatic.Local
 
 // ReSharper disable once CheckNamespace
@@ -24,9 +24,9 @@ internal class CalculationService : ICalculationService
             ? sourceInput / 1000
             : sourceInput;
     
-    public FuelCalculationResult CalculateRoundedFuelConsumption(Fuel fuel, double overclock)
+    public FuelCalculationResult CalculateRoundedFuelConsumption(GeneratorFuel generatorFuel, double overclock)
     {
-        var fuelConsumptionresult = CalculateFuelConsumption(fuel, overclock);
+        var fuelConsumptionresult = CalculateFuelConsumption(generatorFuel, overclock);
         fuelConsumptionresult.AmountPerMinute = Math.Round(Math.Round(fuelConsumptionresult.AmountPerMinute, 4), 2);
         fuelConsumptionresult.PowerProduction = Math.Round(Math.Round(fuelConsumptionresult.PowerProduction, 4), 2);
         
@@ -36,35 +36,35 @@ internal class CalculationService : ICalculationService
         return fuelConsumptionresult;
     }
     
-    public FuelCalculationResult CalculateFuelConsumption(Fuel fuel, double overclock)
+    public FuelCalculationResult CalculateFuelConsumption(GeneratorFuel generatorFuel, double overclock)
     {
         if (overclock is < 0 or > 250)
             throw new ArgumentException("Overclock Parameter must be between 0 and 250");
         
         var overClockMultiplier = OverClockMultiplier(overclock);
-        var powerCapacity = fuel.Generator.PowerProduction * overClockMultiplier;
-        var fuelBurnTime = fuel.Ingredient.Item.EnergyValue / powerCapacity;
+        var powerCapacity = generatorFuel.Generator.PowerProduction * overClockMultiplier;
+        var fuelBurnTime = generatorFuel.Ingredient.Item.EnergyValue / powerCapacity;
         var amountPerMinute = SecondsPerMinute / fuelBurnTime;
 
         var calculationResult = new FuelCalculationResult
         {
-            AmountPerMinute = NormalizeAmount(fuel.Ingredient.Item.Form, amountPerMinute),
+            AmountPerMinute = NormalizeAmount(generatorFuel.Ingredient.Item.Form, amountPerMinute),
             PowerProduction = powerCapacity,
             FuelBurnTime = fuelBurnTime
         };
 
-        if (fuel.SupplementalIngredient is not null)
+        if (generatorFuel.SupplementalIngredient is not null)
         {
             var supplementalAmountPerMinute = powerCapacity
-                                              * fuel.Generator.SupplementalToPowerRatio!.Value
+                                              * generatorFuel.Generator.SupplementalToPowerRatio!.Value
                                               * SecondsPerMinute
-                                              / fuel.Generator.SupplementalLoadAmount!.Value;
+                                              / generatorFuel.Generator.SupplementalLoadAmount!.Value;
             
             calculationResult.SupplementalAmountPerMinute = supplementalAmountPerMinute;
         }
 
-        if (fuel.ByProduct is not null)
-            calculationResult.ByProductAmountPerMinute = amountPerMinute * NormalizeAmount(fuel.ByProduct.Item.Form, fuel.ByProductAmount!.Value);
+        if (generatorFuel.ByProduct is not null)
+            calculationResult.ByProductAmountPerMinute = amountPerMinute * NormalizeAmount(generatorFuel.ByProduct.Item.Form, generatorFuel.ByProductAmount!.Value);
 
         return calculationResult;
     }

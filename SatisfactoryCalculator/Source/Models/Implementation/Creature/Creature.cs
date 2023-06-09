@@ -9,6 +9,5 @@ internal class Creature : ICreature
     public ICreature[]? Variants { get; set; }
     public int HitPoints { get; init; }
     public string[]? Damage { get; init; }
-    public Loot[] Loot { get; set; }
     public CreatureBehaviour Behaviour { get; init; }
 }

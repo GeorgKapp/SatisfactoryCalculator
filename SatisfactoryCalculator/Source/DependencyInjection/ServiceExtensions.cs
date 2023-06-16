@@ -17,14 +17,13 @@ internal static class ServiceExtensions
 
 	private static void SetApplicationPaths()
 	{
-		AppDomain.CurrentDomain.SetData("DataDirectory", Environment.CurrentDirectory + Constants.DataDirectoryPath);
-		AppDomain.CurrentDomain.SetData("ImageDirectory", Environment.CurrentDirectory + Constants.ImageDirectoryPath);
+		AppDomain.CurrentDomain.SetData("DataDirectory", Environment.CurrentDirectory + "/Data");
 	}
 
 	private static IServiceCollection AddDbContext(this IServiceCollection services)
 	{
 		services.AddDbContext<ModelContext>(options =>
-			options.UseSqlite(ConfigurationManager.ConnectionStrings[Constants.DataDirectory]?.ConnectionString));
+			options.UseSqlite(ConfigurationManager.ConnectionStrings[Constants.DataFile].ConnectionString));
 		
 		return services;
 	}

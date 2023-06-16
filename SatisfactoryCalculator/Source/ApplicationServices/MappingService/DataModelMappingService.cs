@@ -520,9 +520,11 @@ internal class DataModelMappingService
         ? bigIconPath
         : smallIconPath;
 
-    private DateTime? GetLastSyncDate() => File.Exists(Constants.InformationFileName)
-        ? new DateTime?(File.GetLastWriteTime(Constants.InformationFileName))
-        : null;
+    // private DateTime? GetLastSyncDate() => File.Exists(Constants.InformationFileName)
+    //     ? new DateTime?(File.GetLastWriteTime(Constants.InformationFileName))
+    //     : null;
+    //
+    private DateTime? GetLastSyncDate() => DateTime.Now;
 
     #endregion
 

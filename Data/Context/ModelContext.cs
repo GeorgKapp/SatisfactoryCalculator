@@ -25,9 +25,6 @@ public class ModelContext : DbContext
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Weapon> Weapons { get; set; }
     
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite("Data Source=C:\\Users\\Georg\\Desktop\\Test\\SatisfactoryData.db");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AmmunitionConfiguration());

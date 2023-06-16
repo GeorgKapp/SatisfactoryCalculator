@@ -4,9 +4,10 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-	public DocsParserService(JsonService jsonService)
+	public DocsParserService(JsonService jsonService, ModelContext modelContext)
 	{
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
+		_modelContext = modelContext ?? throw new ArgumentNullException(nameof(modelContext));
 	}
 
 	public async Task<Result<DataContainer>> ParseDocsJsonAsync(string docsFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
@@ -339,4 +340,5 @@ public partial class DocsParserService
 	}
 
     private readonly JsonService _jsonService;
+    private readonly ModelContext _modelContext;
 }

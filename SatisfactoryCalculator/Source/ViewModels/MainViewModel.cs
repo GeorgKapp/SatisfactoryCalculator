@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class MainViewModel : ObservableObject
 {
-    private object? _currentPage;
+	private object? _currentPage;
     public object? CurrentPage
 	{
 		get => _currentPage;
@@ -56,8 +56,13 @@ internal class MainViewModel : ObservableObject
     private ICommand? _saveCommand;
     public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(Save);
 
-	public MainViewModel(ApplicationState applicationState, JsonService jsonService, DataModelMappingService dataModelMappingService)
+	public MainViewModel(
+		ModelContext modelContext,
+		ApplicationState applicationState, 
+		JsonService jsonService, 
+		DataModelMappingService dataModelMappingService)
 	{
+		_modelContext = modelContext ?? throw new ArgumentNullException(nameof(modelContext));
 		_applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
 		_dataModelMappingService = dataModelMappingService ?? throw new ArgumentNullException(nameof(dataModelMappingService));
@@ -86,20 +91,15 @@ internal class MainViewModel : ObservableObject
 		CurrentPage = fetchResult.Item1;
 	}
 	
-	private void Save()
-	{
-		if (!Directory.Exists(Constants.DataFilePath))
-			Directory.CreateDirectory(Constants.DataFilePath);
-		
-		_jsonService.WriteJson(_applicationState.Data, Constants.InformationFileName);
-	}
+	private void Save() => _modelContext.SaveChanges();
 
-    public async Task Load()
+	public async Task Load()
     {
 	    try
 	    {
 		    InitializingText = "Initializing";
 		    IsInitializing = true;
+		    
 		    //
 		    // // ReSharper disable once HeapView.ClosureAllocation
 		    // var data = (await DebugExtensions.ProfileAsync(
@@ -131,8 +131,8 @@ internal class MainViewModel : ObservableObject
 	    }
     }
 
+    private readonly ModelContext _modelContext;
     private readonly ApplicationState _applicationState;
-
     private readonly JsonService _jsonService;
     private readonly DataModelMappingService _dataModelMappingService;
 }

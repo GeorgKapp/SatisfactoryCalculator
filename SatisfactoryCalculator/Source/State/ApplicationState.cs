@@ -1,3 +1,5 @@
+using Configuration = SatisfactoryCalculator.Source.Models.Configuration;
+
 namespace SatisfactoryCalculator.Source.State;
 
 internal class ApplicationState : ObservableObject

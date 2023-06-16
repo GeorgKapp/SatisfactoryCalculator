@@ -4,12 +4,29 @@ internal static class ServiceExtensions
 {
 	public static void ConfigureServices(this IServiceCollection services)
 	{
+		SetApplicationPaths();
+
 		services
+			.AddDbContext()
 			.AddDomainServices()
 			.AddApplicationServices()
 			.AddApplicationState()
 			.AddViewModels()
 			.AddViews();
+	}
+
+	private static void SetApplicationPaths()
+	{
+		AppDomain.CurrentDomain.SetData("DataDirectory", Environment.CurrentDirectory + Constants.DataDirectoryPath);
+		AppDomain.CurrentDomain.SetData("ImageDirectory", Environment.CurrentDirectory + Constants.ImageDirectoryPath);
+	}
+
+	private static IServiceCollection AddDbContext(this IServiceCollection services)
+	{
+		services.AddDbContext<ModelContext>(options =>
+			options.UseSqlite(ConfigurationManager.ConnectionStrings[Constants.DataDirectory]?.ConnectionString));
+		
+		return services;
 	}
 
 	private static IServiceCollection AddApplicationState(this IServiceCollection services)

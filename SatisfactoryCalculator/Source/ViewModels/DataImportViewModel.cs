@@ -67,7 +67,7 @@ internal class DataImportViewModel : ObservableObject
                     return;
                 }
 
-                var data = await DataModelImageCreateService.CreateImagesAsync(result.Content!, UeModelExportDirectoryPath, Constants.ImageFilePath, progress, _cancellationTokenSource.Token);
+                var data = await DataModelImageCreateService.CreateImagesAsync(result.Content!, UeModelExportDirectoryPath, Constants.ImageDirectoryPath, progress, _cancellationTokenSource.Token);
                 var mappingResult = _mappingService.MapToConfigurationModel(data, progress, _cancellationTokenSource.Token);
                 
                 if (mappingResult is null)

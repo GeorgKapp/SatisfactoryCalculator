@@ -5,7 +5,7 @@ internal static class GeneratorModels
 {
     public static readonly Generator CoalGenerator = new()
     {
-        ClassName = "GeneratorCoal_C",
+        ClassName = "GeneratorCoal",
         Name = "Coal Generator",
         PowerProduction = 75,
         SupplementalToPowerRatio = 10,
@@ -14,14 +14,14 @@ internal static class GeneratorModels
     
     public static readonly Generator FuelGenerator = new()
     {
-        ClassName = "GeneratorFuel_C",
+        ClassName = "GeneratorFuel",
         Name = "LiquidFuel Generator",
         PowerProduction = 150
     };
     
     public static readonly Generator NuclearGenerator = new()
     {
-        ClassName = "GeneratorNuclear_C",
+        ClassName = "GeneratorNuclear",
         Name = "Nuclear Generator",
         PowerProduction = 2500,
         SupplementalToPowerRatio = 2,

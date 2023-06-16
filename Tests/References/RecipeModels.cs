@@ -4,7 +4,7 @@ internal static class RecipeModels
 {
     public static readonly Recipe CableRecipe = new()
     {
-       ClassName = "Cable_C", 
+       ClassName = "Cable", 
        Name = "Cable", 
        ConstructedInWorkbench = true,
        ManufactoringDuration = 2,
@@ -15,7 +15,7 @@ internal static class RecipeModels
     
     public static readonly Recipe IronPlateRecipe = new()
     {
-        ClassName = "IronPlate_C", 
+        ClassName = "IronPlate", 
         Name = "Iron Plate", 
         ConstructedInWorkbench = true,
         ManufactoringDuration = 6,
@@ -26,7 +26,7 @@ internal static class RecipeModels
     
     public static readonly Recipe IronRodRecipe = new()
     {
-        ClassName = "IronRod_C", 
+        ClassName = "IronRod", 
         Name = "Iron Rod", 
         ConstructedInWorkbench = true,
         ManufactoringDuration = 4,
@@ -37,7 +37,7 @@ internal static class RecipeModels
     
     public static readonly Recipe ResidualPlasticRecipe = new()
     {
-        ClassName = "ResidualPlastic_C", 
+        ClassName = "ResidualPlastic", 
         Name = "Residual Plastic",
         ManufactoringDuration = 6,
         Ingredients = new[] { new RecipePart(ItemModels.PolymerResin, 6), 

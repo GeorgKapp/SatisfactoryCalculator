@@ -5,7 +5,7 @@ internal static class ItemModels
 {
     public static readonly Item Wire = new()
     {
-        ClassName = "Wire_C",
+        ClassName = "Wire",
         Name = "Wire",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
@@ -13,7 +13,7 @@ internal static class ItemModels
     
     public static readonly Item Cable = new()
     {
-        ClassName = "Cable_C",
+        ClassName = "Cable",
         Name = "Cable",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
@@ -21,7 +21,7 @@ internal static class ItemModels
     
     public static readonly Item IronPlate = new()
     {
-        ClassName = "IronPlate_C",
+        ClassName = "IronPlate",
         Name = "Iron Plate",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
@@ -29,7 +29,7 @@ internal static class ItemModels
     
     public static readonly Item IronRod = new()
     {
-        ClassName = "IronRod_C",
+        ClassName = "IronRod",
         Name = "Iron Rod",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
@@ -37,7 +37,7 @@ internal static class ItemModels
     
     public static readonly Item IronIngot = new()
     {
-        ClassName = "IronIngot_C",
+        ClassName = "IronIngot",
         Name = "Iron Ingot",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
@@ -45,7 +45,7 @@ internal static class ItemModels
 
     public static readonly Item PolymerResin = new()
     {
-        ClassName = "PolymerResin_C",
+        ClassName = "PolymerResin",
         Name = "Polymer Resin",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
@@ -53,7 +53,7 @@ internal static class ItemModels
     
     public static readonly Item Plastic = new()
     {
-        ClassName = "Plastic_C",
+        ClassName = "Plastic",
         Name = "Plastic",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
@@ -61,7 +61,7 @@ internal static class ItemModels
     
     public static readonly Item Water = new()
     {
-        ClassName = "Water_C",
+        ClassName = "Water",
         Name = "Water",
         Form = Shared.Enums.Form.Liquid,
         EnergyValue = 0
@@ -69,7 +69,7 @@ internal static class ItemModels
     
     public static readonly Item Rubber = new()
     {
-        ClassName = "Rubber_C",
+        ClassName = "Rubber",
         Name = "Rubber",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 0
@@ -77,7 +77,7 @@ internal static class ItemModels
     
     public static readonly Item LiquidFuel = new()
     {
-        ClassName = "LiquidFuel_C",
+        ClassName = "LiquidFuel",
         Name = "LiquidFuel",
         Form = Shared.Enums.Form.Liquid,
         EnergyValue = 0.75M
@@ -85,7 +85,7 @@ internal static class ItemModels
     
     public static readonly Item Coal = new()
     {
-        ClassName = "Coal_C",
+        ClassName = "Coal",
         Name = "Coal",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 300
@@ -93,7 +93,7 @@ internal static class ItemModels
     
     public static readonly Item CompactedCoal = new()
     {
-        ClassName = "CompactedCoal_C",
+        ClassName = "CompactedCoal",
         Name = "Compacted Coal",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 630
@@ -101,7 +101,7 @@ internal static class ItemModels
     
     public static readonly Item PetroleumCoke = new()
     {
-        ClassName = "PetroleumCoke_C",
+        ClassName = "PetroleumCoke",
         Name = "Petroleum Coke",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 180
@@ -109,7 +109,7 @@ internal static class ItemModels
     
     public static readonly Item PackagedFuel = new()
     {
-        ClassName = "Fuel_C",
+        ClassName = "Fuel",
         Name = "LiquidFuel",
         Form = Shared.Enums.Form.Solid,
         EnergyValue = 750

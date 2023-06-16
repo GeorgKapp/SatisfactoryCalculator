@@ -4,7 +4,7 @@ internal static class BuildingModels
 {
     public static readonly Building Constructor = new()
     {
-        ClassName = "ConstructorMk1_C",
+        ClassName = "ConstructorMk1",
         Name = "Constructor",
         ManufactoringSpeed = 1,
         PowerConsumption = 4,
@@ -13,7 +13,7 @@ internal static class BuildingModels
 
     public static readonly Building OilRefinery = new()
     {
-        ClassName = "OilRefinery_C",
+        ClassName = "OilRefinery",
         Name = "Refinery",
         ManufactoringSpeed = 1,
         PowerConsumption = 30,

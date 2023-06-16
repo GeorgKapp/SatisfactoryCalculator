@@ -84,53 +84,53 @@ public class UnrealEngineTagParserTests
     public void CheckParserInputWithFixedAmounts() => CheckParserOutput(
         BluePrintStringWithAmounts, new UnrealEngineParseResult[]
         {
-            new("Cable_C", 200), 
-            new("IronRod_C", 200),
-            new("IronScrew_C", 500), 
-            new("IronPlate_C", 300)
+            new("Cable", 200), 
+            new("IronRod", 200),
+            new("IronScrew", 500), 
+            new("IronPlate", 300)
         });
     
     [Fact(DisplayName = "Check Parser with no amounts")]
     public void CheckParserInputWithNoAmounts() => CheckParserOutput(
         BluePrintStringWithNoAmounts, new UnrealEngineParseResult[]
         {
-            new("Cable_C", null), 
-            new("IronRod_C", null),
-            new("IronScrew_C", null), 
-            new("IronPlate_C", null)
+            new("Cable", null), 
+            new("IronRod", null),
+            new("IronScrew", null), 
+            new("IronPlate", null)
         });
     
     [Fact(DisplayName = "Check Parser with one missing amount")]
     public void CheckParserInputWithOneMissingAmount() => CheckParserOutput(
         BluePrintStringWithOneMissingAmount, new UnrealEngineParseResult[]
         {
-            new("Cable_C", 200), 
-            new("IronRod_C", 200),
-            new("IronScrew_C", 500), 
-            new("IronPlate_C", null)
+            new("Cable", 200), 
+            new("IronRod", 200),
+            new("IronScrew", 500), 
+            new("IronPlate", null)
         });
     
     [Fact(DisplayName = "Check Parser with no root class")]
     public void CheckParserInputWithNoRootClass() => CheckParserOutput(
         BluePrintStringWithNoRootClass, new UnrealEngineParseResult[]
         {
-            new("OreCopper_C", null)
+            new("OreCopper", null)
         });
     
     [Fact(DisplayName = "Check Parser with schema string")]
     public void CheckParserInputSchemaString() => CheckParserOutput(
         SchemaStringWithAmounts, new UnrealEngineParseResult[]
         {
-            new("Crystal_mk2_C", 1), 
-            new("Rotor_C", 25),
-            new("Cable_C", 100)
+            new("Crystal_mk2", 1), 
+            new("Rotor", 25),
+            new("Cable", 100)
         });
     
     [Fact(DisplayName = "Check Parser with schema string single entry")]
     public void CheckParserInputSchemaStringWithSingleEntry() => CheckParserOutput(
         SchemaStringWithSingleEntry, new UnrealEngineParseResult[]
         {
-            new("Crystal_mk2_C", 1)
+            new("Crystal_mk2", 1)
         });
 
     private void CheckParserOutput(string input, UnrealEngineParseResult[] expectedResults)

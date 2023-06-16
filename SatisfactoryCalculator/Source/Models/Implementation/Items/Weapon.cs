@@ -8,10 +8,10 @@ internal class Weapon : IWeapon
     public BitmapImage? Image { get; init; }
     public string Description { get; init; }
     public Form? Form { get; init; }
-    public double EnergyValue { get; init; }
-    public double? DamageMultiplier { get; init; }
-    public double? ReloadTime { get; init; }
-    public double? AutoReloadDelay { get; init; }
+    public decimal? EnergyValue { get; init; }
+    public decimal? DamageMultiplier { get; init; }
+    public decimal? ReloadTime { get; init; }
+    public decimal? AutoReloadDelay { get; init; }
     public EquipmentSlot EquipmentSlot { get; init; }
     public IAmmunition[] Ammunitions { get; set; }
 }

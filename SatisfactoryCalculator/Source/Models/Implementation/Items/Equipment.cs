@@ -10,6 +10,6 @@ internal class Equipment : IEquipment
     public BitmapImage? Image { get; init; }
     public string Description { get; init; }
     public Form? Form { get; init; }
-    public double EnergyValue { get; init; }
+    public decimal? EnergyValue { get; init; }
     public EquipmentSlot EquipmentSlot { get; init; }
 }

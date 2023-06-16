@@ -8,18 +8,18 @@ namespace SatisfactoryCalculator.Source.ApplicationServices;
 [SuppressMessage("Performance", "CA1822:Mark members as static")]
 internal class CalculationService : ICalculationService
 {
-    public double? CalculateAmountPerMinte(Form? form, double? amount, double manufactoringDuration)
+    public decimal? CalculateAmountPerMinte(Form? form, decimal? amount, decimal manufactoringDuration)
     {
         if (amount is null)
             return null;
 
         amount = NormalizeAmount(form, amount.Value);
 
-        var factor = 60.0 / manufactoringDuration;
+        var factor = (decimal)60.0 / manufactoringDuration;
         return amount * factor;
     }
 
-    public double NormalizeAmount(Form? form, double sourceInput) =>
+    public decimal NormalizeAmount(Form? form, decimal sourceInput) =>
         IsFormLiquidOrGas(form)
             ? sourceInput / 1000
             : sourceInput;
@@ -42,8 +42,8 @@ internal class CalculationService : ICalculationService
             throw new ArgumentException("Overclock Parameter must be between 0 and 250");
         
         var overClockMultiplier = OverClockMultiplier(overclock);
-        var powerCapacity = generatorFuel.Generator.PowerProduction * overClockMultiplier;
-        var fuelBurnTime = generatorFuel.Ingredient.Item.EnergyValue / powerCapacity;
+        var powerCapacity = generatorFuel.Generator.PowerProduction * (decimal)overClockMultiplier;
+        var fuelBurnTime = generatorFuel.Ingredient.Item.EnergyValue!.Value / powerCapacity;
         var amountPerMinute = SecondsPerMinute / fuelBurnTime;
 
         var calculationResult = new FuelCalculationResult
@@ -100,7 +100,7 @@ internal class CalculationService : ICalculationService
         var buildingSpeed = GetManufactoringBuildingSpeed(building);
         var powerConsumption = CalculatePowerConsumption(building.PowerConsumption, overclockMultiplier);
 
-        var time = recipe.ManufactoringDuration / buildingSpeed / overclockMultiplier;
+        var time = recipe.ManufactoringDuration / buildingSpeed / (decimal)overclockMultiplier;
         var cyclesPerMinute = SecondsPerMinute / time;
 
         return new()
@@ -111,20 +111,20 @@ internal class CalculationService : ICalculationService
         };
     }
 
-    private double CalculatePowerConsumption(double? powerConsumption, double overclockMultiplier)
+    private decimal CalculatePowerConsumption(decimal? powerConsumption, double overclockMultiplier)
     {
         if (!powerConsumption.HasValue)
             return 0;
 
-        var result = powerConsumption.Value * Math.Pow(overclockMultiplier, PowerConsumptionExponent) + double.Epsilon;
+        var result = powerConsumption.Value * (decimal)Math.Pow(overclockMultiplier, PowerConsumptionExponent) + (decimal)double.Epsilon;
         return Math.Round(result, 1);
     }
 
-    private double GetManufactoringBuildingSpeed(IBuilding building) => building.ManufactoringSpeed ?? 1;
+    private decimal GetManufactoringBuildingSpeed(IBuilding building) => building.ManufactoringSpeed ?? 1;
     private bool IsFormLiquidOrGas(Form? form) => form is Form.Liquid or Form.Gas;
     private double OverClockMultiplier(double overclock) => overclock / DefaultPercentage;
 
     private const double DefaultPercentage = 100;
-    private const double SecondsPerMinute = 60;
+    private const decimal SecondsPerMinute = 60;
     private const double PowerConsumptionExponent = 1.321928;
 }

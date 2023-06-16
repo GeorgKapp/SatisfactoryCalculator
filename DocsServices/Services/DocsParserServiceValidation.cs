@@ -3,7 +3,7 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-    private static Result ValidateForDuplicates<T>(IEnumerable<T> source) where T : IBase
+    private static Result ValidateForDuplicates<T>(IEnumerable<T> source) where T : IClassNamePrimaryKey
     {
         var duplicates = source
             .GroupBy(p => p.ClassName)
@@ -16,7 +16,7 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private static Result ValidateReferencesByTarget<T>(IEnumerable<T> source, IEnumerable<T> target) where T : IBase
+    private static Result ValidateReferencesByTarget<T>(IEnumerable<T> source, IEnumerable<T> target) where T : IClassNamePrimaryKey
     {
         var missingReferences = target.Select(p => p.ClassName)
             .Except(source.Select(p => p.ClassName))
@@ -27,7 +27,7 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private static Result SeperatelyValidateDataForDuplicates(Data data)
+    private static Result SeperatelyValidateDataForDuplicates(DataContainer data)
     {
         return Result.Combine(
             new[] 
@@ -50,11 +50,11 @@ public partial class DocsParserService
             );
     }
 
-    private static Result ValidateDataReferences(Data data)
+    private static Result ValidateDataReferences(DataContainer data)
     {
-        var items = data.Items.Cast<IBase>();
+        var items = data.Items.Cast<IClassNamePrimaryKey>();
 
-        var itemReferences = data.Consumables.Cast<IBase>()
+        var itemReferences = data.Consumables.Cast<IClassNamePrimaryKey>()
             .Concat(data.Equipments)
             .Concat(data.Weapons)
             .Concat(data.Vehicles);
@@ -63,9 +63,9 @@ public partial class DocsParserService
         if (!itemValidationResult.IsSuccess)
             return itemValidationResult;
 
-        var buildings = data.Buildings.Cast<IBase>();
+        var buildings = data.Buildings.Cast<IClassNamePrimaryKey>();
 
-        var buildingReferences = data.Generators.Cast<IBase>()
+        var buildingReferences = data.Generators.Cast<IClassNamePrimaryKey>()
             .Concat(data.Miners);
 
         var buildingValidationResult = ValidateReferencesByTarget(buildings, buildingReferences);
@@ -75,7 +75,7 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private static Result ValidateItemExistanceInRecipes(Data data)
+    private static Result ValidateItemExistanceInRecipes(DataContainer data)
     {
         var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
@@ -90,30 +90,43 @@ public partial class DocsParserService
             .Concat(GetClassNames(data.Emotes))
             .Concat(GetClassNames(data.Statues))
             .ToArray();
-
-        var recipes = data.Recipes
-            .Concat(data.CustomizationRecipes.Cast<IRecipe>())
-            .ToArray();
-
-        var results = new List<Result>();
+        
+        var recipeResults = new List<Result>();
         // ReSharper disable once LoopCanBeConvertedToQuery
-        foreach (var recipe in recipes)
+        foreach (var recipe in data.Recipes)
         {
-            var recipeContentNames = GetClassNames(recipe.Ingredients)
-                .Concat(GetClassNames(recipe.Products))
+            var recipeContentNames = recipe.Ingredients.Select(p => p.Item.ClassName)
+                .Concat(recipe.Products.Select(p => p.Item.ClassName))
+                .Concat(recipe.Buildings.Select(p => p.ClassName))
                 .ToArray();
 
             var differences = recipeContentNames.Except(sources).ToList();
             if (!differences.Any())
                 continue;
 
-            results.Add(Result.Failure(
-                $"Recipe: {recipe.DisplayName} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
+            recipeResults.Add(Result.Failure(
+                $"Recipe: {recipe.Name} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
         }
-        return Result.Combine(results);
+
+        var customizationRecipeResults = new List<Result>();
+        // ReSharper disable once LoopCanBeConvertedToQuery
+        foreach (var customizationRecipe in data.CustomizationRecipes)
+        {
+            var recipeContentNames = customizationRecipe.Ingredients.Select(p => p.Item.ClassName)
+                .ToArray();
+
+            var differences = recipeContentNames.Except(sources).ToList();
+            if (!differences.Any())
+                continue;
+
+            customizationRecipeResults.Add(Result.Failure(
+                $"Recipe: {customizationRecipe.Name} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
+        }
+        
+        return Result.Combine(recipeResults.Concat(customizationRecipeResults));
     }
 
-    private static Result ValidateItemExistanceInSchematics(Data data)
+    private static Result ValidateItemExistanceInSchematics(DataContainer data)
     {
         var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
@@ -138,20 +151,19 @@ public partial class DocsParserService
         // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
         foreach (var schematic in data.Schematics)
         {
-            var controlEntities =
-                GetClassNames(schematic.Cost)
-                    .Concat(GetClassNames(schematic.ItemsToGive))
-                    .Concat(schematic.UnlocksScannerResourcePairs)
-                    .Concat(schematic.UnlocksScannerResources)
-                    .Concat(schematic.Emotes)
-                    .Concat(schematic.UnlocksRecipes)
-                    .Concat(schematic.SchematicDependencies.SelectMany(p => p.Schematics))
+            var controlEntities = schematic.Costs.Select(p => p.Item.ClassName)
+                    .Concat(GetClassNames(schematic.GivesItems))
+                    .Concat(GetClassNames(schematic.UnlocksScannerResourcePairs))
+                    .Concat(GetClassNames(schematic.UnlocksScannerResources))
+                    .Concat(GetClassNames(schematic.UnlocksEmotes))
+                    .Concat(GetClassNames(schematic.UnlocksRecipes))
+                    .Concat(schematic.Dependencies.Select(p => p.Schematics.Select(p => p.ClassName)).SelectMany(p => p))
                     .ToList();
 
-            foreach (var scannerObject in schematic.UnlocksScannerObjects)
+            foreach (var scannerObject in schematic.UnlocksScannableObjects)
             {
-                controlEntities.Add(scannerObject.ItemClass);
-                controlEntities.AddRange(scannerObject.ActorsAllowedToScan);
+                controlEntities.Add(scannerObject.Item.ClassName);
+                controlEntities.AddRange(scannerObject.ScanningActors.Select(p => p.Item is null ? p.Building!.ClassName : p.Item.ClassName));
             }
 
             controlEntities = controlEntities
@@ -163,12 +175,12 @@ public partial class DocsParserService
                 continue;
 
             results.Add(Result.Failure(
-                $"Schematic: {schematic.DisplayName} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
+                $"Schematic: {schematic.Name} could not find the following references: {string.Join(Environment.NewLine, differences)}"));
         }
 
         return Result.Combine(results);
     }
 
-    private static IEnumerable<string> GetClassNames<T>(IEnumerable<T> source) where T : IBase =>
+    private static IEnumerable<string> GetClassNames<T>(IEnumerable<T> source) where T : IClassNamePrimaryKey =>
         source.Select(p => p.ClassName);
 }

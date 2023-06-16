@@ -8,10 +8,10 @@ internal class Ammunition : IAmmunition
     public BitmapImage? Image { get; init; }
     public string Description { get; init; }
     public Form? Form { get; init; }
-    public double EnergyValue { get; init; }
-    public double MaxAmmoEffectiveRange { get; init;  }
-    public double? ReloadTimeMultiplier { get; init;  }
-    public double FireRate { get; init;  }
-    public double WeaponDamageMultiplier { get; init;  }
+    public decimal? EnergyValue { get; init; }
+    public decimal MaxAmmoEffectiveRange { get; init;  }
+    public decimal? ReloadTimeMultiplier { get; init;  }
+    public decimal FireRate { get; init;  }
+    public decimal WeaponDamageMultiplier { get; init;  }
     public IWeapon UsedInWeapon { get; set; }
 }

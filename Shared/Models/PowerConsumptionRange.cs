@@ -2,5 +2,5 @@
 namespace SatisfactoryCalculator.Shared.Models;
 
 public record PowerConsumptionRange(
-	double StartPowerConsumption,
-	double EndPowerConsumption);
+	decimal Start,
+	decimal End);

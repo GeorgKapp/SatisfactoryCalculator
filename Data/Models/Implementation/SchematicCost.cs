@@ -1,0 +1,9 @@
+﻿namespace Data.Models.Implementation;
+
+public class SchematicCost : IIDPrimaryKey
+{
+    public int ID { get; set; }
+    
+    public Item Item { get; set; }
+    public decimal Amount { get; set; }
+}

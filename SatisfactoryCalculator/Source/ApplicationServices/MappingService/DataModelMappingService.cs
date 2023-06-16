@@ -1,13 +1,14 @@
-using Ammunition = SatisfactoryCalculator.DocsServices.Models.DataModels.Ammunition;
-using Building = SatisfactoryCalculator.DocsServices.Models.DataModels.Building;
-using Consumable = SatisfactoryCalculator.DocsServices.Models.DataModels.Consumable;
-using Creature = SatisfactoryCalculator.DocsServices.Models.DataModels.Creature;
-using CreatureLoot = SatisfactoryCalculator.DocsServices.Models.DataModels.CreatureLoot;
-using Equipment = SatisfactoryCalculator.DocsServices.Models.DataModels.Equipment;
-using Generator = SatisfactoryCalculator.DocsServices.Models.DataModels.Generator;
-using Item = SatisfactoryCalculator.DocsServices.Models.DataModels.Item;
-using Recipe = SatisfactoryCalculator.DocsServices.Models.DataModels.Recipe;
-using Weapon = SatisfactoryCalculator.DocsServices.Models.DataModels.Weapon;
+using Ammunition = Data.Models.Implementation.Ammunition;
+using Building = Data.Models.Implementation.Building;
+using Consumable = Data.Models.Implementation.Consumable;
+using Creature = Data.Models.Implementation.Creature;
+using CreatureLoot = Data.Models.Implementation.CreatureLoot;
+using Equipment = Data.Models.Implementation.Equipment;
+using FuelItem = Data.Models.Implementation.FuelItem;
+using Generator = Data.Models.Implementation.Generator;
+using Item = Data.Models.Implementation.Item;
+using Recipe = Data.Models.Implementation.Recipe;
+using Weapon = Data.Models.Implementation.Weapon;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable HeapView.ClosureAllocation
@@ -23,7 +24,7 @@ internal class DataModelMappingService
         _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
     }
 
-    public DataModelMappingResult? MapToConfigurationModel(Data? data, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
+    public DataModelMappingResult? MapToConfigurationModel(DataContainer? data, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
     {
         if (data is null)
             return null;
@@ -60,14 +61,14 @@ internal class DataModelMappingService
         var creatures = MapToCreatures(data.Creatures); 
         var creatureDictionary = MapToCreatureDictionary(creatures);
         LinkCreatureVariants(creatures, data.Creatures, itemDictionary, creatureDictionary);
-        var creatureLoots = MapToCreatureLoots(data.Creatures, itemDictionary, creatureDictionary);
+        //var creatureLoots = MapToCreatureLoots(data.Creatures, itemDictionary, creatureDictionary);
         
 
         progress?.ReportOrThrow("Map Recipes", token);
         var recipes = MapToRecipeModels(data.Recipes, itemDictionary, buildingDictionary);
 
         progress?.ReportOrThrow("Map References", token);
-        var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, fuels, creatureLoots, recipes);
+        var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, fuels, recipes);
 
         var lastSyncDate = GetLastSyncDate();
         
@@ -90,11 +91,11 @@ internal class DataModelMappingService
     private IEnumerable<IItem> MapToItemModels(IEnumerable<Item> items) => items.Select(p => new Models.Item
     { 
         ClassName = p.ClassName,
-        Name = p.DisplayName,
+        Name = p.Name,
         Description = p.Description,
         Form = p.Form,
         EnergyValue = p.EnergyValue,
-        Image = BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath))
+        Image = BitmapImageCache.Fetch(SelectImagePath(p.SmallImagePath, p.BigImagePath))
     }).OrderBy(p => p.Name).ToArray();
     
     // ReSharper disable once HeapView.ClosureAllocation
@@ -208,13 +209,13 @@ internal class DataModelMappingService
         foreach (var ammunition in ammunitions)
         {
             var mappedMunition = (IAmmunition)itemDictionary[ammunition.ClassName];
-            mappedMunition.UsedInWeapon = (IWeapon)itemDictionary[ammunition.UsedInWeapon];
+            //mappedMunition.UsedInWeapon = (IWeapon)itemDictionary[ammunition.UsedInWeapon];
         }
         
         foreach (var weapon in weapons)
         {
             var mappedWeapon = (IWeapon)itemDictionary[weapon.ClassName];
-            mappedWeapon.Ammunitions = weapon.UsesAmmunition.Select(p => (IAmmunition)itemDictionary[p]).ToArray();
+            //mappedWeapon.Ammunitions = weapon.UsesAmmunition.Select(p => (IAmmunition)itemDictionary[p]).ToArray();
         }
     }
 
@@ -224,10 +225,10 @@ internal class DataModelMappingService
             new Models.Building
             {
                 ClassName = p.ClassName, 
-                Name = p.DisplayName,
+                Name = p.Name,
                 Description = p.Description, 
-                Image = BitmapImageCache.Fetch(SelectImagePath(p.SmallIconPath, p.BigIconPath)),
-                ManufactoringSpeed = p.ManuFacturingSpeed, 
+                Image = BitmapImageCache.Fetch(SelectImagePath(p.SmallImagePath, p.BigImagePath)),
+                ManufactoringSpeed = p.ManufactoringSpeed, 
                 PowerConsumption = p.PowerConsumption,
                 PowerConsumptionExponent = p.PowerConsumptionExponent,
                 PowerConsumptionRange = p.PowerConsumptionRange
@@ -271,18 +272,18 @@ internal class DataModelMappingService
         return fuelModels.ToArray();
     }
     
-    private GeneratorFuel MapToFuelModel(DocsServices.Models.DataModels.Fuel fuel, IGenerator generator, IDictionary<string, IItem> itemDictionary)
+    private GeneratorFuel MapToFuelModel(FuelItem fuel, IGenerator generator, IDictionary<string, IItem> itemDictionary)
     {
-        var ingredient = MapToFuelContentModel(itemDictionary[fuel.FuelClass], 0);
+        var ingredient = MapToFuelContentModel(itemDictionary[fuel.Fuel.ClassName], 0);
 
-        var supplementalIngredient = !string.IsNullOrEmpty(fuel.SupplementalResourceClass)
-            ? MapToFuelContentModel(itemDictionary[fuel.SupplementalResourceClass], 0)
+        var supplementalIngredient = !string.IsNullOrEmpty(fuel.Supplement?.ClassName)
+            ? MapToFuelContentModel(itemDictionary[fuel.Supplement!.ClassName], 0)
             : null;
 
-        FuelItem? byProductItem = null;
-        double? byProductAmount = null;
+        SatisfactoryCalculator.Source.Models.FuelItem? byProductItem = null;
+        decimal? byProductAmount = null;
         
-        if (string.IsNullOrEmpty(fuel.ByProduct))
+        if (string.IsNullOrEmpty(fuel.ByProduct?.ClassName))
             return new()
             {
                 Ingredient = ingredient, 
@@ -292,7 +293,7 @@ internal class DataModelMappingService
                 Generator = generator
             };
         
-        byProductItem = MapToFuelContentModel(itemDictionary[fuel.ByProduct], 0);
+        byProductItem = MapToFuelContentModel(itemDictionary[fuel.ByProduct.ClassName], 0);
         byProductAmount = fuel.ByProductAmount;
 
         return new()
@@ -305,7 +306,7 @@ internal class DataModelMappingService
         };
     }
 
-    private FuelItem MapToFuelContentModel(IItem item, double amount) => new(item, amount);
+    private SatisfactoryCalculator.Source.Models.FuelItem MapToFuelContentModel(IItem item, decimal amount) => new(item, amount);
     
     // ReSharper disable once HeapView.ClosureAllocation
     private ICreature[] MapToCreatures(IEnumerable<Creature> creatues) => creatues
@@ -317,11 +318,11 @@ internal class DataModelMappingService
         new Models.Creature
         {
             ClassName = creatue.ClassName, 
-            Name = creatue.DisplayName,
+            Name = creatue.Name,
             Description = creatue.Description,
-            Image = BitmapImageCache.Fetch(SelectImagePath(creatue.SmallIconPath, creatue.BigIconPath)),
+            Image = BitmapImageCache.Fetch(SelectImagePath(creatue.SmallImagePath, creatue.BigImagePath)),
             HitPoints = creatue.HitPoints,
-            Damage = creatue.Damage,
+            Damage = creatue.Damage.ToArray(),
             Behaviour = creatue.Behaviour
         };
 
@@ -330,36 +331,36 @@ internal class DataModelMappingService
         foreach (var creature in creatures)
         {
             var creatureModel = creatureDictionary[creature.ClassName];
-            creatureModel.Variants = MapToVariants(creatureModels, creatures, creatureModel.ClassName, creature.VariantGroup, creatureDictionary);
+            //creatureModel.Variants = MapToVariants(creatureModels, creatures, creatureModel.ClassName, creature.VariantGroup, creatureDictionary);
         }
     }
     
-    private ICreature[]? MapToVariants(IEnumerable<ICreature> creatureModels, IEnumerable<Creature> creatures, string creatureClassName, string? variantGroup, IDictionary<string, ICreature> creatureDictionary)
-    {
-        if (variantGroup is null)
-            return null;
+    // private ICreature[]? MapToVariants(IEnumerable<ICreature> creatureModels, IEnumerable<Creature> creatures, string creatureClassName, string? variantGroup, IDictionary<string, ICreature> creatureDictionary)
+    // {
+    //     if (variantGroup is null)
+    //         return null;
+    //
+    //     var foundCreatureClassNames =
+    //         creatures
+    //             .Where(p => p.VariantGroup == variantGroup && p.ClassName != creatureClassName)
+    //             .Select(p => p.ClassName);
+    //
+    //     return foundCreatureClassNames
+    //         .Select(p => creatureDictionary[p])
+    //         .OrderBy(p => p.ClassName)
+    //         .ToArray();
+    // }
 
-        var foundCreatureClassNames =
-            creatures
-                .Where(p => p.VariantGroup == variantGroup && p.ClassName != creatureClassName)
-                .Select(p => p.ClassName);
-
-        return foundCreatureClassNames
-            .Select(p => creatureDictionary[p])
-            .OrderBy(p => p.ClassName)
-            .ToArray();
-    }
-
-    private Models.CreatureLoot[] MapToCreatureLoots(IEnumerable<Creature> creatures, IDictionary<string, IItem> itemDictionary, IDictionary<string, ICreature> creatureDictionary)
-    {
-        List<Models.CreatureLoot> creatureLoots = new();
-        foreach (var creature in creatures)
-        {
-            var creatureModel = creatureDictionary[creature.ClassName];
-            creatureLoots.AddRange(creature.Loot.Select(loot => MapToLoot(loot.Amount, creatureModel, itemDictionary[loot.ClassName])));
-        }
-        return creatureLoots.ToArray();
-    }
+    // private Models.CreatureLoot[] MapToCreatureLoots(IEnumerable<Creature> creatures, IDictionary<string, IItem> itemDictionary, IDictionary<string, ICreature> creatureDictionary)
+    // {
+    //     List<Models.CreatureLoot> creatureLoots = new();
+    //     foreach (var creature in creatures)
+    //     {
+    //         var creatureModel = creatureDictionary[creature.ClassName];
+    //         creatureLoots.AddRange(creature.Loot.Select(loot => MapToLoot(loot.Amount, creatureModel, itemDictionary[loot.ClassName])));
+    //     }
+    //     return creatureLoots.ToArray();
+    // }
     
     private Models.CreatureLoot MapToLoot(int amount, ICreature mappedCreature, IItem mappedItem) =>
         new()
@@ -376,62 +377,62 @@ internal class DataModelMappingService
 
     private IRecipe MapToRecipeModel(Recipe recipe, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
     {
-        var buildings = recipe.Buildings
-            .Select(building => MapToRecipeBuildingModel(buildingDictionary[building], recipe.VariablePowerConsumptionRange))
-            .ToList();
+        // var buildings = recipe.Buildings
+        //     .Select(building => MapToRecipeBuildingModel(buildingDictionary[building], recipe.VariablePowerConsumptionRange))
+        //     .ToList();
+        //
+        // if (recipe.ConstructedInWorkbench)
+        //     buildings.Add(MapToRecipeBuildingModel(buildingDictionary["WorkBench_C"], recipe.VariablePowerConsumptionRange));
+        //
+        // if (recipe.ConstructedInWorkshop)
+        //     buildings.Add(MapToRecipeBuildingModel(buildingDictionary["Workshop_C"], recipe.VariablePowerConsumptionRange));
 
-        if (recipe.ConstructedInWorkbench)
-            buildings.Add(MapToRecipeBuildingModel(buildingDictionary["WorkBench_C"], recipe.VariablePowerConsumptionRange));
+        // var productIsBuilding = recipe.Products
+        //     .Any(p => buildingDictionary.ContainsKey(p.Item.ClassName));
 
-        if (recipe.ConstructedInWorkshop)
-            buildings.Add(MapToRecipeBuildingModel(buildingDictionary["Workshop_C"], recipe.VariablePowerConsumptionRange));
-
-        var productIsBuilding = recipe.Products
-            .Any(p => buildingDictionary.ContainsKey(p.ClassName));
-
-        var ingredients = recipe.Ingredients
-            .Select(ingredient => MapToRecipeContentModel(ingredient, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
-            .ToArray();
-
-        var products = recipe.Products
-            .Select(product => MapToRecipeContentModel(product, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
-            .ToArray();
+        // var ingredients = recipe.Ingredients
+        //     .Select(ingredient => MapToRecipeContentModel(ingredient, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
+        //     .ToArray();
+        //
+        // var products = recipe.Products
+        //     .Select(product => MapToRecipeContentModel(product, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
+        //     .ToArray();
         
         return new Models.Recipe
         {
             ClassName = recipe.ClassName, 
-            Name = recipe.DisplayName,
+            Name = recipe.Name,
             IsAlternate = recipe.IsAlternate, 
             ConstructedByBuildGun = recipe.ConstructedByBuildGun,
             ConstructedInWorkbench = recipe.ConstructedInWorkbench, 
             ConstructedInWorkshop = recipe.ConstructedInWorkshop,
             ManufactoringDuration = recipe.ManufactoringDuration, 
-            Ingredients = ingredients,
-            Products = products,
-            Buildings = buildings.ToArray()
+            // Ingredients = ingredients,
+            // Products = products,
+            // Buildings = buildings.ToArray()
         };
     }
 
-    private RecipePart MapToRecipeContentModel(Reference recipeItem, double manufactoringDuration, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, bool setOnlyAmount)
-    {
-        IEntity? recipePart;
-        Form? form = null;
-        if(itemDictionary.TryGetValue(recipeItem.ClassName, out var item))
-        {
-            recipePart = item;
-            form = item.Form;
-        }
-        else
-        {
-            recipePart = buildingDictionary[recipeItem.ClassName];
-        }
-
-        return new(recipePart,
-            _calculationService.NormalizeAmount(form, recipeItem.Amount), recipeItem.Amount,
-            setOnlyAmount
-                ? null
-                : _calculationService.CalculateAmountPerMinte(form, recipeItem.Amount, manufactoringDuration));
-    }
+    // private RecipePart MapToRecipeContentModel(Reference recipeItem, double manufactoringDuration, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, bool setOnlyAmount)
+    // {
+    //     IEntity? recipePart;
+    //     Form? form = null;
+    //     if(itemDictionary.TryGetValue(recipeItem.ClassName, out var item))
+    //     {
+    //         recipePart = item;
+    //         form = item.Form;
+    //     }
+    //     else
+    //     {
+    //         recipePart = buildingDictionary[recipeItem.ClassName];
+    //     }
+    //
+    //     return new(recipePart,
+    //         _calculationService.NormalizeAmount(form, recipeItem.Amount), recipeItem.Amount,
+    //         setOnlyAmount
+    //             ? null
+    //             : _calculationService.CalculateAmountPerMinte(form, recipeItem.Amount, manufactoringDuration));
+    // }
 
     private RecipeBuilding MapToRecipeBuildingModel(IBuilding building, PowerConsumptionRange? powerConsumptionRange) =>
         new(building, powerConsumptionRange);
@@ -450,18 +451,18 @@ internal class DataModelMappingService
         creatures.ToDictionary(p => p.ClassName, p => p);
 
     // ReSharper disable once HeapView.ClosureAllocation
-    private IDictionary<string, EntityReference> MapToEntityReferenceDictionary(IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, GeneratorFuel[] fuels, Models.CreatureLoot[] creatureLoots, IRecipe[] recipes)
+    private IDictionary<string, EntityReference> MapToEntityReferenceDictionary(IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, GeneratorFuel[] fuels, IRecipe[] recipes)
     {
         var entityReferences = itemDictionary.Values
-            .ToDictionary(item => item.ClassName, item => CreateEntityReference(item.ClassName, buildingDictionary, fuels, creatureLoots, recipes));
+            .ToDictionary(item => item.ClassName, item => CreateEntityReference(item.ClassName, buildingDictionary, fuels, recipes));
 
         foreach (var building in buildingDictionary.Values)
-            entityReferences.Add(building.ClassName, CreateEntityReference(building.ClassName, buildingDictionary, fuels, creatureLoots, recipes));
+            entityReferences.Add(building.ClassName, CreateEntityReference(building.ClassName, buildingDictionary, fuels, recipes));
 
         return entityReferences;
     }
 
-    private EntityReference CreateEntityReference(string entityClassName, IDictionary<string, IBuilding> buildingDictionary, GeneratorFuel[] fuels, Models.CreatureLoot[] creatureLoots, IRecipe[] recipes) =>
+    private EntityReference CreateEntityReference(string entityClassName, IDictionary<string, IBuilding> buildingDictionary, GeneratorFuel[] fuels, IRecipe[] recipes) =>
         new()
         {
             RecipeIngredient = GetRecipeIngredientReferences(entityClassName, recipes, buildingDictionary),
@@ -471,8 +472,6 @@ internal class DataModelMappingService
             FuelIngredient = GetFuelIngredientReferences(entityClassName, fuels),
             FuelByProduct = GetFuelByProductReferences(entityClassName, fuels),
             FuelGenerator = GetFuelGeneratorReferences(entityClassName, fuels),
-            LootFromCreature = GetItemIsDroppedFromCreatureReferences(entityClassName, creatureLoots),
-            DropsLoot = GetCreatureDropsLootReferences(entityClassName, creatureLoots)
         };
     
     private IRecipe[] GetRecipeIngredientReferences(string entityClassName, IEnumerable<IRecipe> recipes, IDictionary<string, IBuilding> buildingDictionary) => recipes

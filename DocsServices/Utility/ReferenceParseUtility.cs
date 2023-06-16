@@ -36,17 +36,17 @@ internal static class ReferenceParseUtility
 		return ClassNameParseUtility.CleanClassName(SanitizeItemName(input))!;
 	}
 
-	public static Reference[] GetReferencesWithAmount(string mClassReferenceWithAmountInput)
-	{
-		if (string.IsNullOrEmpty(mClassReferenceWithAmountInput))
-			return Array.Empty<Reference>();
-
-		var result = UnrealEngineClassParser.ParseInputs(mClassReferenceWithAmountInput);
-		
-		return result
-			.Select(p => new Reference(p.ClassName, p.Amount ?? 1))
-			.ToArray();
-	}
+	// public static Reference[] GetReferencesWithAmount(string mClassReferenceWithAmountInput)
+	// {
+	// 	if (string.IsNullOrEmpty(mClassReferenceWithAmountInput))
+	// 		return Array.Empty<Reference>();
+	//
+	// 	var result = UnrealEngineClassParser.ParseInputs(mClassReferenceWithAmountInput);
+	// 	
+	// 	return result
+	// 		.Select(p => new Reference(p.ClassName, p.Amount ?? 1))
+	// 		.ToArray();
+	// }
 
 	private static string SanitizeInput(string input)
 	{

@@ -8,7 +8,6 @@ internal interface ISchematic : IEntity
     int TechTier { get; }
     double? TimeToComplete { get; }
     string?[] RelevantEvents { get; }
-    Reference[] Cost { get; }
     IRecipe[] UnlocksRecipes { get; }
     ScannableObject UnlocksScannerObject { get; }
     string?[] UnlocksScannerResources { get; }

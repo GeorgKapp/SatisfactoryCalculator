@@ -4,5 +4,5 @@ internal interface IItem : IEntity
 {
     string Description { get; }
     Form? Form { get; }
-    double EnergyValue { get; }
+    decimal? EnergyValue { get; }
 }

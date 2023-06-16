@@ -80,7 +80,7 @@ internal static class ItemModels
         ClassName = "LiquidFuel_C",
         Name = "LiquidFuel",
         Form = Shared.Enums.Form.Liquid,
-        EnergyValue = 0.75
+        EnergyValue = 0.75M
     };
     
     public static readonly Item Coal = new()

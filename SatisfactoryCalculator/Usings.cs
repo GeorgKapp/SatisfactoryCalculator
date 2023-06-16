@@ -1,5 +1,4 @@
 ﻿global using Microsoft.Extensions.DependencyInjection;
-global using SatisfactoryCalculator.DocsServices.Models.DataModels;
 global using SatisfactoryCalculator.DocsServices.Services;
 global using SatisfactoryCalculator.Properties;
 global using SatisfactoryCalculator.Shared.Common.Progress;
@@ -36,3 +35,4 @@ global using System.Windows.Media.Imaging;
 global using System.Windows.Media;
 global using System.Windows;
 global using System;
+global using Data.Context;

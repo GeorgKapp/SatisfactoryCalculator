@@ -7,7 +7,7 @@ internal interface IRecipe : IEntity
     bool ConstructedByBuildGun { get; init; }
     bool ConstructedInWorkshop { get; init; }
     bool ConstructedInWorkbench { get; init; }
-    double ManufactoringDuration { get; }
+    decimal ManufactoringDuration { get; }
     RecipeBuilding[] Buildings { get; }
     RecipePart[] Ingredients { get; }
     RecipePart[] Products { get; }

@@ -35,7 +35,7 @@ internal static class ClassNameParseUtility
 		if (string.IsNullOrEmpty(className))
 			return className;
 
-		return className switch
+		var classNameResult = className switch
 		{
 			not null when className.StartsWith("Build_") => className.Replace("Build_", ""),
 			not null when className.StartsWith("Desc_") => className.Replace("Desc_", ""),
@@ -49,6 +49,11 @@ internal static class ClassNameParseUtility
 			not null when className.StartsWith("Emote_") => className.Replace("Emote_", ""),
 			_ => className
 		};
+
+		if (classNameResult!.EndsWith("_C"))
+			classNameResult = classNameResult[..^2];
+
+		return classNameResult;
 	}
 
 	private static string? CorrectClassName(string? className) => className switch
@@ -129,8 +134,8 @@ internal static class ClassNameParseUtility
 
 	public static string CorrectClassNameForSchematics(string className) => className switch
 	{
-		"FGObjectScanner" => "ObjectScanner_C",
-		"FGBuildableRadarTower" => "RadarTower_C",
+		"FGObjectScanner" => "ObjectScanner",
+		"FGBuildableRadarTower" => "RadarTower",
 		_ => className
 	};
 }

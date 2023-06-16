@@ -8,7 +8,7 @@ internal static class BuildingModels
         Name = "Constructor",
         ManufactoringSpeed = 1,
         PowerConsumption = 4,
-        PowerConsumptionExponent = 1.6
+        PowerConsumptionExponent = 1.6M
     };
 
     public static readonly Building OilRefinery = new()
@@ -17,6 +17,6 @@ internal static class BuildingModels
         Name = "Refinery",
         ManufactoringSpeed = 1,
         PowerConsumption = 30,
-        PowerConsumptionExponent = 1.6
+        PowerConsumptionExponent = 1.6M
     };
 }

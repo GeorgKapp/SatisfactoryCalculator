@@ -13,7 +13,6 @@ internal class Schematic : ISchematic
     public int TechTier { get; init; }
     public double? TimeToComplete { get; init; }
     public string?[] RelevantEvents { get; init; }
-    public Reference[] Cost { get; init; }
     public IRecipe[] UnlocksRecipes { get; init; }
     public ScannableObject UnlocksScannerObject { get; init; }
     public string?[] UnlocksScannerResources { get; init; }

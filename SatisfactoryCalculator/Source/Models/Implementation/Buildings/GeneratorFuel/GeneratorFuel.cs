@@ -8,5 +8,5 @@ internal class GeneratorFuel
     public FuelItem Ingredient { get; init; }
     public FuelItem? SupplementalIngredient { get; init; }
     public FuelItem? ByProduct { get; init; }
-    public double? ByProductAmount { get; init; }
+    public decimal? ByProductAmount { get; init; }
 }

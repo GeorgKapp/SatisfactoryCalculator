@@ -1,4 +1,5 @@
 // ReSharper disable HeapView.ObjectAllocation
+
 namespace SatisfactoryCalculator.DocsServices.Utility;
 
 internal static class ScannableObjectParseUtility
@@ -40,17 +41,17 @@ internal static class ScannableObjectParseUtility
 		var actorsAllowedToScan = ReferenceParseUtility.GetReferences(mScannableObjects[startIndex..])
 			.Select(p => ClassNameParseUtility.CorrectClassNameForSchematics(p)).ToArray();
 
-		if (className == "HostileCreature_C")
-		{
-			return HostileCreaturesTags
-				.Select(p => new ScannableObject{ ItemClass = p, ActorsAllowedToScan = actorsAllowedToScan })
-				.ToArray();
-		}
+		// if (className == "HostileCreature_C")
+		// {
+		// 	return HostileCreaturesTags
+		// 		.Select(p => new ScannableObject{ ItemClass = p, ActorsAllowedToScan = actorsAllowedToScan })
+		// 		.ToArray();
+		// }
 		
 		return new[] { new ScannableObject
 		{
-			ItemClass = className,
-			ActorsAllowedToScan = actorsAllowedToScan
+			// ItemClass = className,
+			// ActorsAllowedToScan = actorsAllowedToScan
 		}};
 	}
 }

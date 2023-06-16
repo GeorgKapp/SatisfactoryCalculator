@@ -4,8 +4,8 @@ namespace SatisfactoryCalculator.Source.Models.Interfaces;
 internal interface IBuilding : IEntity
 {
     string Description { get; }
-    double? ManufactoringSpeed { get; }
-    double? PowerConsumption { get; }
-    double? PowerConsumptionExponent { get; init; }
+    decimal? ManufactoringSpeed { get; }
+    decimal? PowerConsumption { get; }
+    decimal? PowerConsumptionExponent { get; init; }
     PowerConsumptionRange? PowerConsumptionRange { get; init; }
 }

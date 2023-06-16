@@ -10,9 +10,9 @@ internal class ApplicationState : ObservableObject
         set => SetProperty(ref _configuration, value);
     }
 
-    public Data? Data { get; private set; }
+    public DataContainer? Data { get; private set; }
 
-	public void SetConfig(Data data, DataModelMappingResult mappingResult)
+	public void SetConfig(DataContainer data, DataModelMappingResult mappingResult)
 	{
         Data = data;
         

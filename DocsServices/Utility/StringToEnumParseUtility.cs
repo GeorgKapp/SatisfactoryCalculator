@@ -43,4 +43,10 @@ internal static class StringToEnumParseUtility
 		"EST_ResourceSink" => SchematicType.ResourceSink,
 		_ => throw new ArgumentOutOfRangeException("SchematicType: " + input)
 	};
+    
+    public static RelevantEvent ParseRelevantEventToEnum(string input) => input switch
+    {
+	    "EV_Christmas" => RelevantEvent.Christmas,
+	    _ => throw new ArgumentOutOfRangeException("SchematicType: " + input)
+    };
 }

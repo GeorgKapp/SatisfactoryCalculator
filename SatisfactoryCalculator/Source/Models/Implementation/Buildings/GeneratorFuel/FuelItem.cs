@@ -9,7 +9,7 @@ internal class FuelItem : ObservableObject
         Item = item;
     }
 
-    public FuelItem(IItem item, double? amountPerMinute)
+    public FuelItem(IItem item, decimal? amountPerMinute)
     {
         Item = item;
         AmountPerMinute = amountPerMinute;
@@ -22,9 +22,9 @@ internal class FuelItem : ObservableObject
         private init => SetProperty(ref _item, value);
     }
 
-    private double? _amountPerMinute;
+    private decimal? _amountPerMinute;
 
-    public double? AmountPerMinute
+    public decimal? AmountPerMinute
     {
         get => _amountPerMinute;
         set

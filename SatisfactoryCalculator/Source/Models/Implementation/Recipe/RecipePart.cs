@@ -3,7 +3,7 @@ namespace SatisfactoryCalculator.Source.Models;
 
 internal class RecipePart
 {
-    public RecipePart(IEntity part, double amount, double sourceAmount, double? amountPerMinute)
+    public RecipePart(IEntity part, decimal amount, decimal sourceAmount, decimal? amountPerMinute)
     {
         Part = part;
         Amount = amount;
@@ -11,19 +11,19 @@ internal class RecipePart
         AmountPerMinute = amountPerMinute;
     }
 
-    public RecipePart(IEntity part, double sourceAmount)
+    public RecipePart(IEntity part, decimal sourceAmount)
     {
         Part = part;
         SourceAmount = sourceAmount;
     }
 
     public IEntity Part { get; }
-    public double? AmountPerMinute { get; set; }
+    public decimal? AmountPerMinute { get; set; }
     
     // ReSharper disable once HeapView.ObjectAllocation
     public string AmountPerMinuteText => $"{AmountPerMinute} p/m";
-    public double SourceAmount { get; }
-    public double Amount { get; set; }
+    public decimal SourceAmount { get; }
+    public decimal Amount { get; set; }
     
     // ReSharper disable once HeapView.ObjectAllocation
     public string AmountText => $"{Amount} x";

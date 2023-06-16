@@ -100,23 +100,23 @@ internal class MainViewModel : ObservableObject
 	    {
 		    InitializingText = "Initializing";
 		    IsInitializing = true;
-
-		    // ReSharper disable once HeapView.ClosureAllocation
-		    var data = (await DebugExtensions.ProfileAsync(
-			    _jsonService.ReadUtf8JsonAsync<Data>(Constants.InformationFileName),
-			    "Read Data"))!;
-
-		    var mappedData = DebugExtensions.Profile(() =>
-				    _dataModelMappingService.MapToConfigurationModel(data),
-			    "Map Data");
-
-		    if (mappedData is null)
-		    {
-			    Debug.WriteLine("Data was null");
-			    return;
-		    }
-
-		    _applicationState.SetConfig(data, mappedData);
+		    //
+		    // // ReSharper disable once HeapView.ClosureAllocation
+		    // var data = (await DebugExtensions.ProfileAsync(
+			   //  _jsonService.ReadUtf8JsonAsync<Data>(Constants.InformationFileName),
+			   //  "Read Data"))!;
+		    //
+		    // var mappedData = DebugExtensions.Profile(() =>
+				  //   _dataModelMappingService.MapToConfigurationModel(data),
+			   //  "Map Data");
+		    //
+		    // if (mappedData is null)
+		    // {
+			   //  Debug.WriteLine("Data was null");
+			   //  return;
+		    // }
+		    //
+		    // _applicationState.SetConfig(data, mappedData);
 	    }
 	    catch (Exception exception)
 	    {

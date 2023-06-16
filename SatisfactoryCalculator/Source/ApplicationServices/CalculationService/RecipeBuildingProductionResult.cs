@@ -3,7 +3,7 @@ namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class RecipeBuildingProductionResult
 {
-    public double CyclesPerMinute { get; init; }
-    public double Time { get; init; }
-    public double PowerConsumption { get; init; }
+    public decimal CyclesPerMinute { get; init; }
+    public decimal Time { get; init; }
+    public decimal PowerConsumption { get; init; }
 }

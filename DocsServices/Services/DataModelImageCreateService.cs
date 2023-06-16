@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public class DataModelImageCreateService
 {
-    public static async Task<Data> CreateImagesAsync(Data data, string ueModelExportPath, string imageFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
+    public static async Task<DataContainer> CreateImagesAsync(DataContainer data, string ueModelExportPath, string imageFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
     {
         progress?.ReportOrThrow("Creating Images", token);
         if (!Directory.Exists(imageFilePath))
@@ -29,12 +29,12 @@ public class DataModelImageCreateService
         return data;
     }
 
-    private static async Task CreateImagesAsync(IEnumerable<IIcon> iconObjects, string ueModelExportPath, string imageFilePath)
+    private static async Task CreateImagesAsync(IEnumerable<IImage> iconObjects, string ueModelExportPath, string imageFilePath)
     {
         foreach (var iconObject in iconObjects)
         {
-            iconObject.SmallIconPath = await CreateImageAsync(iconObject.SmallIconPath, ueModelExportPath, imageFilePath);
-            iconObject.BigIconPath = await CreateImageAsync(iconObject.BigIconPath, ueModelExportPath, imageFilePath);
+            iconObject.SmallImagePath = await CreateImageAsync(iconObject.SmallImagePath, ueModelExportPath, imageFilePath);
+            iconObject.BigImagePath = await CreateImageAsync(iconObject.BigImagePath, ueModelExportPath, imageFilePath);
         }
     }
 

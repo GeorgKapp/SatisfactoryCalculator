@@ -1,11 +1,17 @@
+using System.Reflection;
+
 namespace SatisfactoryCalculator.Source.DependencyInjection;
 
-internal static class ServiceHost
+internal class ServiceHost
 {
+	public static ServiceHost Instance = new();
+	
 	public static ServiceProvider Provider { get; private set; }
-
-	static ServiceHost()
+	
+	public void Initialize()
 	{
+		AppDomain.CurrentDomain.SetData("DataDirectory", Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/Data");
+
 		var services = new ServiceCollection();
 		services.ConfigureServices();
 		Provider = services.BuildServiceProvider(new ServiceProviderOptions

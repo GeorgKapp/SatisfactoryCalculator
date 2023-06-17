@@ -1,11 +1,11 @@
+using System.Reflection;
+
 namespace SatisfactoryCalculator.Source.DependencyInjection;
 
 internal static class ServiceExtensions
 {
 	public static void ConfigureServices(this IServiceCollection services)
 	{
-		SetApplicationPaths();
-
 		services
 			.AddDbContext()
 			.AddDomainServices()
@@ -14,16 +14,11 @@ internal static class ServiceExtensions
 			.AddViewModels()
 			.AddViews();
 	}
-
-	private static void SetApplicationPaths()
-	{
-		AppDomain.CurrentDomain.SetData("DataDirectory", Environment.CurrentDirectory + "/Data");
-	}
-
+	
 	private static IServiceCollection AddDbContext(this IServiceCollection services)
 	{
 		services.AddDbContext<ModelContext>(options =>
-			options.UseSqlite(ConfigurationManager.ConnectionStrings[Constants.DataFile].ConnectionString));
+			options.UseSqlite("name=DataFile"));
 		
 		return services;
 	}

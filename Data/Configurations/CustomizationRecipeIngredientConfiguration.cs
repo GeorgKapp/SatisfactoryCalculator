@@ -4,6 +4,8 @@ internal class CustomizationRecipeIngredientConfiguration : IEntityTypeConfigura
 {
     public void Configure(EntityTypeBuilder<CustomizationRecipeIngredient> entity)
     {
+        entity.ToTable(nameof(CustomizationRecipeIngredient));
+        
         entity.Property(e => e.ID)
             .ValueGeneratedOnAdd();
     }

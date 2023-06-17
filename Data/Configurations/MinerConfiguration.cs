@@ -4,6 +4,8 @@ internal class MinerConfiguration : IEntityTypeConfiguration<Miner>
 {
     public void Configure(EntityTypeBuilder<Miner> entity)
     {
+        entity.ToTable(nameof(Miner));
+        
         entity.HasKey(p => p.ClassName);
         
         entity.Property(d => d.AllowedResourceForm)

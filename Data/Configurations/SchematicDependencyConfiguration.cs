@@ -4,6 +4,8 @@ internal class SchematicDependencyConfiguration : IEntityTypeConfiguration<Schem
 {
     public void Configure(EntityTypeBuilder<SchematicDependency> entity)
     {
+        entity.ToTable(nameof(SchematicDependency));
+        
         entity.Property(e => e.ID)
             .ValueGeneratedOnAdd();
         

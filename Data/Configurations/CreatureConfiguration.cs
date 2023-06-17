@@ -6,6 +6,8 @@ internal class CreatureConfiguration : IEntityTypeConfiguration<Creature>
 {
     public void Configure(EntityTypeBuilder<Creature> entity)
     {
+        entity.ToTable(nameof(Creature));
+        
         entity.HasKey(p => p.ClassName);
         
         entity.Property(p => p.Behaviour)

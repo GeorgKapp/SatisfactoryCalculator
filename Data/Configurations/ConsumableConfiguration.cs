@@ -4,6 +4,8 @@ internal class ConsumableConfiguration : IEntityTypeConfiguration<Consumable>
 {
     public void Configure(EntityTypeBuilder<Consumable> entity)
     {
+        entity.ToTable(nameof(Consumable));
+        
         entity.HasKey(p => p.ClassName);
 
         entity.HasOne(p => p.Item)

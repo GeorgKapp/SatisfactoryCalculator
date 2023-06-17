@@ -4,6 +4,8 @@ internal class WeaponConfiguration : IEntityTypeConfiguration<Weapon>
 {
     public void Configure(EntityTypeBuilder<Weapon> entity)
     {
+        entity.ToTable(nameof(Weapon));
+        
         entity.HasKey(p => p.ClassName);
         
         entity.Property(p => p.EquipmentSlot)

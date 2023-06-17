@@ -11,7 +11,7 @@ namespace Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Buildings",
+                name: "Building",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -26,11 +26,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Buildings", x => x.ClassName);
+                    table.PrimaryKey("PK_Building", x => x.ClassName);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CustomizationRecipes",
+                name: "CustomizationRecipe",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -46,11 +46,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomizationRecipes", x => x.ClassName);
+                    table.PrimaryKey("PK_CustomizationRecipe", x => x.ClassName);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Emotes",
+                name: "Emote",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -60,11 +60,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Emotes", x => x.ClassName);
+                    table.PrimaryKey("PK_Emote", x => x.ClassName);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Items",
+                name: "Item",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -81,11 +81,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.ClassName);
+                    table.PrimaryKey("PK_Item", x => x.ClassName);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Plants",
+                name: "Plant",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -93,11 +93,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Plants", x => x.ClassName);
+                    table.PrimaryKey("PK_Plant", x => x.ClassName);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Recipes",
+                name: "Recipe",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -115,25 +115,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Recipes", x => x.ClassName);
+                    table.PrimaryKey("PK_Recipe", x => x.ClassName);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SchematicDependency",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RequireAllSchematicsToBePurchased = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SchematicDependencyType = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SchematicDependency", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Schematics",
+                name: "Schematic",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -154,11 +140,25 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schematics", x => x.ClassName);
+                    table.PrimaryKey("PK_Schematic", x => x.ClassName);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Statues",
+                name: "SchematicDependency",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RequireAllSchematicsToBePurchased = table.Column<bool>(type: "INTEGER", nullable: false),
+                    SchematicDependencyType = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SchematicDependency", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Statue",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -169,11 +169,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Statues", x => x.ClassName);
+                    table.PrimaryKey("PK_Statue", x => x.ClassName);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Generators",
+                name: "Generator",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -183,17 +183,17 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Generators", x => x.ClassName);
+                    table.PrimaryKey("PK_Generator", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Generators_Buildings_ClassName",
+                        name: "FK_Generator_Building_ClassName",
                         column: x => x.ClassName,
-                        principalTable: "Buildings",
+                        principalTable: "Building",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Miners",
+                name: "Miner",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -203,17 +203,17 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Miners", x => x.ClassName);
+                    table.PrimaryKey("PK_Miner", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Miners_Buildings_ClassName",
+                        name: "FK_Miner_Building_ClassName",
                         column: x => x.ClassName,
-                        principalTable: "Buildings",
+                        principalTable: "Building",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Consumables",
+                name: "Consumable",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -221,11 +221,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Consumables", x => x.ClassName);
+                    table.PrimaryKey("PK_Consumable", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Consumables_Items_ClassName",
+                        name: "FK_Consumable_Item_ClassName",
                         column: x => x.ClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -243,9 +243,9 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_CreatureLoot", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_CreatureLoot_Items_ItemClassName",
+                        name: "FK_CreatureLoot_Item_ItemClassName",
                         column: x => x.ItemClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -264,21 +264,21 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_CustomizationRecipeIngredient", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_CustomizationRecipeIngredient_CustomizationRecipes_CustomizationRecipeClassName",
+                        name: "FK_CustomizationRecipeIngredient_CustomizationRecipe_CustomizationRecipeClassName",
                         column: x => x.CustomizationRecipeClassName,
-                        principalTable: "CustomizationRecipes",
+                        principalTable: "CustomizationRecipe",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CustomizationRecipeIngredient_Items_ItemClassName",
+                        name: "FK_CustomizationRecipeIngredient_Item_ItemClassName",
                         column: x => x.ItemClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Equipments",
+                name: "Equipment",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -286,34 +286,34 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Equipments", x => x.ClassName);
+                    table.PrimaryKey("PK_Equipment", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Equipments_Items_ClassName",
+                        name: "FK_Equipment_Item_ClassName",
                         column: x => x.ClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Resources",
+                name: "Resource",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Resources", x => x.ClassName);
+                    table.PrimaryKey("PK_Resource", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Resources_Items_ClassName",
+                        name: "FK_Resource_Item_ClassName",
                         column: x => x.ClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vehicles",
+                name: "Vehicle",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -322,17 +322,17 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vehicles", x => x.ClassName);
+                    table.PrimaryKey("PK_Vehicle", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Vehicles_Items_ClassName",
+                        name: "FK_Vehicle_Item_ClassName",
                         column: x => x.ClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Weapons",
+                name: "Weapon",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -343,11 +343,11 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Weapons", x => x.ClassName);
+                    table.PrimaryKey("PK_Weapon", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Weapons_Items_ClassName",
+                        name: "FK_Weapon_Item_ClassName",
                         column: x => x.ClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -363,15 +363,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_RecipeBuilding", x => new { x.BuildingsClassName, x.RecipeClassName });
                     table.ForeignKey(
-                        name: "FK_RecipeBuilding_Buildings_BuildingsClassName",
+                        name: "FK_RecipeBuilding_Building_BuildingsClassName",
                         column: x => x.BuildingsClassName,
-                        principalTable: "Buildings",
+                        principalTable: "Building",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RecipeBuilding_Recipes_RecipeClassName",
+                        name: "FK_RecipeBuilding_Recipe_RecipeClassName",
                         column: x => x.RecipeClassName,
-                        principalTable: "Recipes",
+                        principalTable: "Recipe",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -390,15 +390,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_RecipeIngredient", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_RecipeIngredient_Items_ItemClassName",
+                        name: "FK_RecipeIngredient_Item_ItemClassName",
                         column: x => x.ItemClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RecipeIngredient_Recipes_RecipeClassName",
+                        name: "FK_RecipeIngredient_Recipe_RecipeClassName",
                         column: x => x.RecipeClassName,
-                        principalTable: "Recipes",
+                        principalTable: "Recipe",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -417,15 +417,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_RecipeProduct", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_RecipeProduct_Items_ItemClassName",
+                        name: "FK_RecipeProduct_Item_ItemClassName",
                         column: x => x.ItemClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RecipeProduct_Recipes_RecipeClassName",
+                        name: "FK_RecipeProduct_Recipe_RecipeClassName",
                         column: x => x.RecipeClassName,
-                        principalTable: "Recipes",
+                        principalTable: "Recipe",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -443,15 +443,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_ScannableObject", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_ScannableObject_Items_ItemClassName",
+                        name: "FK_ScannableObject_Item_ItemClassName",
                         column: x => x.ItemClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ScannableObject_Schematics_SchematicClassName",
+                        name: "FK_ScannableObject_Schematic_SchematicClassName",
                         column: x => x.SchematicClassName,
-                        principalTable: "Schematics",
+                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -470,15 +470,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_SchematicCost", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_SchematicCost_Items_ItemClassName",
+                        name: "FK_SchematicCost_Item_ItemClassName",
                         column: x => x.ItemClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SchematicCost_Schematics_SchematicClassName",
+                        name: "FK_SchematicCost_Schematic_SchematicClassName",
                         column: x => x.SchematicClassName,
-                        principalTable: "Schematics",
+                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -494,15 +494,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_SchematicEmoteUnlock", x => new { x.SchematicClassName, x.UnlocksEmotesClassName });
                     table.ForeignKey(
-                        name: "FK_SchematicEmoteUnlock_Emotes_UnlocksEmotesClassName",
+                        name: "FK_SchematicEmoteUnlock_Emote_UnlocksEmotesClassName",
                         column: x => x.UnlocksEmotesClassName,
-                        principalTable: "Emotes",
+                        principalTable: "Emote",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SchematicEmoteUnlock_Schematics_SchematicClassName",
+                        name: "FK_SchematicEmoteUnlock_Schematic_SchematicClassName",
                         column: x => x.SchematicClassName,
-                        principalTable: "Schematics",
+                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -518,15 +518,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_SchematicItemGive", x => new { x.GivesItemsClassName, x.SchematicClassName });
                     table.ForeignKey(
-                        name: "FK_SchematicItemGive_Items_GivesItemsClassName",
+                        name: "FK_SchematicItemGive_Item_GivesItemsClassName",
                         column: x => x.GivesItemsClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SchematicItemGive_Schematics_SchematicClassName",
+                        name: "FK_SchematicItemGive_Schematic_SchematicClassName",
                         column: x => x.SchematicClassName,
-                        principalTable: "Schematics",
+                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -542,15 +542,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_SchematicRecipeUnlock", x => new { x.SchematicClassName, x.UnlocksRecipesClassName });
                     table.ForeignKey(
-                        name: "FK_SchematicRecipeUnlock_Recipes_UnlocksRecipesClassName",
+                        name: "FK_SchematicRecipeUnlock_Recipe_UnlocksRecipesClassName",
                         column: x => x.UnlocksRecipesClassName,
-                        principalTable: "Recipes",
+                        principalTable: "Recipe",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SchematicRecipeUnlock_Schematics_SchematicClassName",
+                        name: "FK_SchematicRecipeUnlock_Schematic_SchematicClassName",
                         column: x => x.SchematicClassName,
-                        principalTable: "Schematics",
+                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -572,9 +572,9 @@ namespace Data.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SchematicSchematicDependency_Schematics_SchematicsClassName",
+                        name: "FK_SchematicSchematicDependency_Schematic_SchematicsClassName",
                         column: x => x.SchematicsClassName,
-                        principalTable: "Schematics",
+                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -595,31 +595,31 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_FuelItem", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_FuelItem_Generators_GeneratorClassName",
+                        name: "FK_FuelItem_Generator_GeneratorClassName",
                         column: x => x.GeneratorClassName,
-                        principalTable: "Generators",
+                        principalTable: "Generator",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FuelItem_Items_ByProductClassName",
+                        name: "FK_FuelItem_Item_ByProductClassName",
                         column: x => x.ByProductClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName");
                     table.ForeignKey(
-                        name: "FK_FuelItem_Items_FuelClassName",
+                        name: "FK_FuelItem_Item_FuelClassName",
                         column: x => x.FuelClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FuelItem_Items_SupplementClassName",
+                        name: "FK_FuelItem_Item_SupplementClassName",
                         column: x => x.SupplementClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Creatures",
+                name: "Creature",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -634,9 +634,9 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Creatures", x => x.ClassName);
+                    table.PrimaryKey("PK_Creature", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Creatures_CreatureLoot_LootID",
+                        name: "FK_Creature_CreatureLoot_LootID",
                         column: x => x.LootID,
                         principalTable: "CreatureLoot",
                         principalColumn: "ID");
@@ -653,15 +653,15 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_SchematicScannerResourcePairUnlock", x => new { x.Schematic1ClassName, x.UnlocksScannerResourcePairsClassName });
                     table.ForeignKey(
-                        name: "FK_SchematicScannerResourcePairUnlock_Resources_UnlocksScannerResourcePairsClassName",
+                        name: "FK_SchematicScannerResourcePairUnlock_Resource_UnlocksScannerResourcePairsClassName",
                         column: x => x.UnlocksScannerResourcePairsClassName,
-                        principalTable: "Resources",
+                        principalTable: "Resource",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SchematicScannerResourcePairUnlock_Schematics_Schematic1ClassName",
+                        name: "FK_SchematicScannerResourcePairUnlock_Schematic_Schematic1ClassName",
                         column: x => x.Schematic1ClassName,
-                        principalTable: "Schematics",
+                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -677,21 +677,21 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_SchematicScannerResourceUnlock", x => new { x.SchematicClassName, x.UnlocksScannerResourcesClassName });
                     table.ForeignKey(
-                        name: "FK_SchematicScannerResourceUnlock_Resources_UnlocksScannerResourcesClassName",
+                        name: "FK_SchematicScannerResourceUnlock_Resource_UnlocksScannerResourcesClassName",
                         column: x => x.UnlocksScannerResourcesClassName,
-                        principalTable: "Resources",
+                        principalTable: "Resource",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SchematicScannerResourceUnlock_Schematics_SchematicClassName",
+                        name: "FK_SchematicScannerResourceUnlock_Schematic_SchematicClassName",
                         column: x => x.SchematicClassName,
-                        principalTable: "Schematics",
+                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ammunitions",
+                name: "Ammunition",
                 columns: table => new
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
@@ -703,17 +703,17 @@ namespace Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ammunitions", x => x.ClassName);
+                    table.PrimaryKey("PK_Ammunition", x => x.ClassName);
                     table.ForeignKey(
-                        name: "FK_Ammunitions_Items_ClassName",
+                        name: "FK_Ammunition_Item_ClassName",
                         column: x => x.ClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Ammunitions_Weapons_WeaponClassName",
+                        name: "FK_Ammunition_Weapon_WeaponClassName",
                         column: x => x.WeaponClassName,
-                        principalTable: "Weapons",
+                        principalTable: "Weapon",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -732,14 +732,14 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_ScanningActor", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_ScanningActor_Buildings_BuildingClassName",
+                        name: "FK_ScanningActor_Building_BuildingClassName",
                         column: x => x.BuildingClassName,
-                        principalTable: "Buildings",
+                        principalTable: "Building",
                         principalColumn: "ClassName");
                     table.ForeignKey(
-                        name: "FK_ScanningActor_Items_ItemClassName",
+                        name: "FK_ScanningActor_Item_ItemClassName",
                         column: x => x.ItemClassName,
-                        principalTable: "Items",
+                        principalTable: "Item",
                         principalColumn: "ClassName");
                     table.ForeignKey(
                         name: "FK_ScanningActor_ScannableObject_ScannableObjectID",
@@ -760,33 +760,33 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_CreatureVariant", x => new { x.CreatureClassName, x.VariantsClassName });
                     table.ForeignKey(
-                        name: "FK_CreatureVariant_Creatures_CreatureClassName",
+                        name: "FK_CreatureVariant_Creature_CreatureClassName",
                         column: x => x.CreatureClassName,
-                        principalTable: "Creatures",
+                        principalTable: "Creature",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CreatureVariant_Creatures_VariantsClassName",
+                        name: "FK_CreatureVariant_Creature_VariantsClassName",
                         column: x => x.VariantsClassName,
-                        principalTable: "Creatures",
+                        principalTable: "Creature",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ammunitions_WeaponClassName",
-                table: "Ammunitions",
+                name: "IX_Ammunition_WeaponClassName",
+                table: "Ammunition",
                 column: "WeaponClassName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Creature_LootID",
+                table: "Creature",
+                column: "LootID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CreatureLoot_ItemClassName",
                 table: "CreatureLoot",
                 column: "ItemClassName");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Creatures_LootID",
-                table: "Creatures",
-                column: "LootID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CreatureVariant_VariantsClassName",
@@ -918,10 +918,10 @@ namespace Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Ammunitions");
+                name: "Ammunition");
 
             migrationBuilder.DropTable(
-                name: "Consumables");
+                name: "Consumable");
 
             migrationBuilder.DropTable(
                 name: "CreatureVariant");
@@ -930,16 +930,16 @@ namespace Data.Migrations
                 name: "CustomizationRecipeIngredient");
 
             migrationBuilder.DropTable(
-                name: "Equipments");
+                name: "Equipment");
 
             migrationBuilder.DropTable(
                 name: "FuelItem");
 
             migrationBuilder.DropTable(
-                name: "Miners");
+                name: "Miner");
 
             migrationBuilder.DropTable(
-                name: "Plants");
+                name: "Plant");
 
             migrationBuilder.DropTable(
                 name: "RecipeBuilding");
@@ -975,34 +975,34 @@ namespace Data.Migrations
                 name: "SchematicSchematicDependency");
 
             migrationBuilder.DropTable(
-                name: "Statues");
+                name: "Statue");
 
             migrationBuilder.DropTable(
-                name: "Vehicles");
+                name: "Vehicle");
 
             migrationBuilder.DropTable(
-                name: "Weapons");
+                name: "Weapon");
 
             migrationBuilder.DropTable(
-                name: "Creatures");
+                name: "Creature");
 
             migrationBuilder.DropTable(
-                name: "CustomizationRecipes");
+                name: "CustomizationRecipe");
 
             migrationBuilder.DropTable(
-                name: "Generators");
+                name: "Generator");
 
             migrationBuilder.DropTable(
                 name: "ScannableObject");
 
             migrationBuilder.DropTable(
-                name: "Emotes");
+                name: "Emote");
 
             migrationBuilder.DropTable(
-                name: "Recipes");
+                name: "Recipe");
 
             migrationBuilder.DropTable(
-                name: "Resources");
+                name: "Resource");
 
             migrationBuilder.DropTable(
                 name: "SchematicDependency");
@@ -1011,13 +1011,13 @@ namespace Data.Migrations
                 name: "CreatureLoot");
 
             migrationBuilder.DropTable(
-                name: "Buildings");
+                name: "Building");
 
             migrationBuilder.DropTable(
-                name: "Schematics");
+                name: "Schematic");
 
             migrationBuilder.DropTable(
-                name: "Items");
+                name: "Item");
         }
     }
 }

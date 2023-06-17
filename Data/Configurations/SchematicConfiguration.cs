@@ -4,6 +4,8 @@ internal class SchematicConfiguration : IEntityTypeConfiguration<Schematic>
 {
     public void Configure(EntityTypeBuilder<Schematic> entity)
     {
+        entity.ToTable(nameof(Schematic));
+        
         entity.HasKey(p => p.ClassName);
         
         entity.Property(p => p.SchematicType)

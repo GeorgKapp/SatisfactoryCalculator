@@ -4,6 +4,8 @@ internal class SchematicCostConfiguration : IEntityTypeConfiguration<SchematicCo
 {
     public void Configure(EntityTypeBuilder<SchematicCost> entity)
     {
+        entity.ToTable(nameof(SchematicCost));
+        
         entity.Property(e => e.ID)
             .ValueGeneratedOnAdd();
     }

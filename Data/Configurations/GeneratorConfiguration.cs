@@ -4,6 +4,8 @@ internal class GeneratorConfiguration : IEntityTypeConfiguration<Generator>
 {
     public void Configure(EntityTypeBuilder<Generator> entity)
     {
+        entity.ToTable(nameof(Generator));
+        
         entity.HasKey(p => p.ClassName);
         
         entity.HasOne(p => p.Building)

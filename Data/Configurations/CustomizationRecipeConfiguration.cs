@@ -4,6 +4,8 @@ internal class CustomizationRecipeConfiguration : IEntityTypeConfiguration<Custo
 {
     public void Configure(EntityTypeBuilder<CustomizationRecipe> entity)
     {
+        entity.ToTable(nameof(CustomizationRecipe));
+        
         entity.HasKey(e => e.ClassName);
         
         entity

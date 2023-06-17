@@ -72,7 +72,7 @@ namespace Data.Migrations
 
                     b.HasIndex("WeaponClassName");
 
-                    b.ToTable("Ammunitions");
+                    b.ToTable("Ammunition", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Building", b =>
@@ -108,7 +108,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Buildings");
+                    b.ToTable("Building", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Consumable", b =>
@@ -121,7 +121,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Consumables");
+                    b.ToTable("Consumable", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Creature", b =>
@@ -163,7 +163,7 @@ namespace Data.Migrations
 
                     b.HasIndex("LootID");
 
-                    b.ToTable("Creatures");
+                    b.ToTable("Creature", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.CreatureLoot", b =>
@@ -183,7 +183,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ItemClassName");
 
-                    b.ToTable("CreatureLoot");
+                    b.ToTable("CreatureLoot", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.CustomizationRecipe", b =>
@@ -221,7 +221,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("CustomizationRecipes");
+                    b.ToTable("CustomizationRecipe", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.CustomizationRecipeIngredient", b =>
@@ -247,7 +247,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ItemClassName");
 
-                    b.ToTable("CustomizationRecipeIngredient");
+                    b.ToTable("CustomizationRecipeIngredient", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Emote", b =>
@@ -267,7 +267,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Emotes");
+                    b.ToTable("Emote", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Equipment", b =>
@@ -281,7 +281,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Equipments");
+                    b.ToTable("Equipment", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.FuelItem", b =>
@@ -317,7 +317,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SupplementClassName");
 
-                    b.ToTable("FuelItem");
+                    b.ToTable("FuelItem", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Generator", b =>
@@ -336,7 +336,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Generators");
+                    b.ToTable("Generator", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Item", b =>
@@ -379,7 +379,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Items");
+                    b.ToTable("Item", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Miner", b =>
@@ -399,7 +399,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Miners");
+                    b.ToTable("Miner", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Plant", b =>
@@ -413,7 +413,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Plants");
+                    b.ToTable("Plant", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Recipe", b =>
@@ -457,7 +457,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipe", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.RecipeIngredient", b =>
@@ -483,7 +483,7 @@ namespace Data.Migrations
 
                     b.HasIndex("RecipeClassName");
 
-                    b.ToTable("RecipeIngredient");
+                    b.ToTable("RecipeIngredient", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.RecipeProduct", b =>
@@ -509,7 +509,7 @@ namespace Data.Migrations
 
                     b.HasIndex("RecipeClassName");
 
-                    b.ToTable("RecipeProduct");
+                    b.ToTable("RecipeProduct", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Resource", b =>
@@ -519,7 +519,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Resources");
+                    b.ToTable("Resource", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.ScannableObject", b =>
@@ -542,7 +542,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SchematicClassName");
 
-                    b.ToTable("ScannableObject");
+                    b.ToTable("ScannableObject", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.ScanningActor", b =>
@@ -568,7 +568,7 @@ namespace Data.Migrations
 
                     b.HasIndex("ScannableObjectID");
 
-                    b.ToTable("ScanningActor");
+                    b.ToTable("ScanningActor", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Schematic", b =>
@@ -623,7 +623,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Schematics");
+                    b.ToTable("Schematic", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.SchematicCost", b =>
@@ -649,7 +649,7 @@ namespace Data.Migrations
 
                     b.HasIndex("SchematicClassName");
 
-                    b.ToTable("SchematicCost");
+                    b.ToTable("SchematicCost", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.SchematicDependency", b =>
@@ -667,7 +667,7 @@ namespace Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("SchematicDependency");
+                    b.ToTable("SchematicDependency", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Statue", b =>
@@ -693,7 +693,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Statues");
+                    b.ToTable("Statue", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Vehicle", b =>
@@ -709,7 +709,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Vehicles");
+                    b.ToTable("Vehicle", (string)null);
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Weapon", b =>
@@ -732,7 +732,7 @@ namespace Data.Migrations
 
                     b.HasKey("ClassName");
 
-                    b.ToTable("Weapons");
+                    b.ToTable("Weapon", (string)null);
                 });
 
             modelBuilder.Entity("EmoteSchematic", b =>

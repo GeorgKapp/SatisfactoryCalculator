@@ -4,6 +4,8 @@ internal class ScannableObjectConfiguration : IEntityTypeConfiguration<Scannable
 {
     public void Configure(EntityTypeBuilder<ScannableObject> entity)
     {
+        entity.ToTable(nameof(ScannableObject));
+        
         entity.Property(e => e.ID)
             .ValueGeneratedOnAdd();
         

@@ -4,6 +4,8 @@ internal class VehicleConfiguration : IEntityTypeConfiguration<Vehicle>
 {
     public void Configure(EntityTypeBuilder<Vehicle> entity)
     {
+        entity.ToTable(nameof(Vehicle));
+        
         entity.HasKey(e => e.ClassName);
 
         entity.HasOne(d => d.Item)

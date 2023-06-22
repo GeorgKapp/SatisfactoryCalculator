@@ -210,9 +210,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_Hog_256.png",
         HitPoints = 20,
         Damage = new [] { "Charge Damage: 10" },
-        Loot = new() { Item = new() { ClassName = "HogParts" }, Amount = 1 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _alphaHog  }
+        Loot = new() { ItemClassName = "HogParts", Amount = 1 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _alphaHog = new()
@@ -225,9 +224,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_HogAlpha_256.png",
         HitPoints = 80,
         Damage = new[] { "Charge Damage: 20", "Bite Damage: 30" },
-        Loot = new() { Item = new() { ClassName = "HogParts" }, Amount = 3 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _hog }
+        Loot = new() { ItemClassName = "HogParts", Amount = 3 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _desertSplitter = new()
@@ -239,9 +237,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_SpitterDesert_256.png",
         HitPoints = 30,
         Damage = new [] { "Melee fireball Damage: 1-11" , "Ranged fireball Damage: 1-6"},
-        Loot = new() { Item = new() { ClassName = "SpitterParts" }, Amount = 2 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _aquaSplitter, _forestSplitter, _redForestSplitter, _desertAlphaSplitter, _aquaAlphaSplitter, _forestAlphaSplitter, _redForestAlphaSplitter }
+        Loot = new() { ItemClassName = "SpitterParts", Amount = 2 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _aquaSplitter = new()
@@ -253,9 +250,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_SpitterAqua_256.png",
         HitPoints = 30,
         Damage = new [] { "Melee fireball Damage: 1-13" , "Ranged fireball Damage: 1-8"},
-        Loot = new() { Item = new() { ClassName = "SpitterParts" }, Amount = 2 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _desertSplitter, _forestSplitter, _redForestSplitter, _desertAlphaSplitter, _aquaAlphaSplitter, _forestAlphaSplitter, _redForestAlphaSplitter }
+        Loot = new() { ItemClassName = "SpitterParts", Amount = 2 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _forestSplitter = new()
@@ -267,9 +263,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_SpitterForest_256.png",
         HitPoints = 30,
         Damage = new []{ "Melee fireball Damage: 1-12" , "Ranged fireball Damage: 1-6"},
-        Loot = new() { Item = new() { ClassName = "SpitterParts" }, Amount = 2 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _desertSplitter, _aquaSplitter, _redForestSplitter, _desertAlphaSplitter, _aquaAlphaSplitter, _forestAlphaSplitter, _redForestAlphaSplitter }
+        Loot = new() { ItemClassName = "SpitterParts", Amount = 2 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _redForestSplitter = new()
@@ -281,9 +276,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_SpitterRForest_256.png",
         HitPoints = 30,
         Damage = new [] { "Melee fireball Damage: 1-13" , "Ranged fireball Damage: 1-8"},
-        Loot = new() { Item = new() { ClassName = "SpitterParts" }, Amount = 2 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _desertSplitter, _aquaSplitter, _forestSplitter, _desertAlphaSplitter, _aquaAlphaSplitter, _forestAlphaSplitter, _redForestAlphaSplitter }
+        Loot = new() { ItemClassName = "SpitterParts", Amount = 2 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _desertAlphaSplitter = new()
@@ -295,9 +289,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_SpitterDesertAlpha_256.png",
         HitPoints = 60,
         Damage = new [] { "Melee Fireball Damage: 1-12", "A large fireball (<20) which splits into 5 smaller fireball (<10) mid-air", "A large fireball which deals 50 explosive damage at large radius, dealing massive knockback" },
-        Loot = new() { Item = new() { ClassName = "SpitterParts" }, Amount = 4 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _desertSplitter, _aquaSplitter, _forestSplitter, _redForestSplitter, _aquaAlphaSplitter, _forestAlphaSplitter, _redForestAlphaSplitter }
+        Loot = new() { ItemClassName = "SpitterParts", Amount = 4 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _aquaAlphaSplitter = new()
@@ -309,9 +302,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_SpitterAquaAlpha_256.png",
         HitPoints = 60,
         Damage = new [] { "Melee Fireball Damage: 1-12", "4 consecutive shots at <18 damage each", "A charged, sniped shot at <36 damage" },
-        Loot = new() { Item = new() { ClassName = "SpitterParts" }, Amount = 4 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _desertSplitter, _aquaSplitter, _forestSplitter, _redForestSplitter, _desertAlphaSplitter, _forestAlphaSplitter, _redForestAlphaSplitter }
+        Loot = new() { ItemClassName = "SpitterParts", Amount = 4 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _forestAlphaSplitter = new()
@@ -323,9 +315,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_SpitterForestAlpha_256.png",
         HitPoints = 60,
         Damage = new [] { "Melee Fireball Damage: 1-16", "4 consecutive shots at <18 damage each", "A large fireball which deals 50 explosive damage at large radius, dealing massive knockback" },
-        Loot = new() { Item = new() { ClassName = "SpitterParts" }, Amount = 4 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _desertSplitter, _aquaSplitter, _forestSplitter, _redForestSplitter, _desertAlphaSplitter, _aquaAlphaSplitter, _redForestAlphaSplitter }
+        Loot = new() { ItemClassName = "SpitterParts", Amount = 4 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _redForestAlphaSplitter = new()
@@ -337,9 +328,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_SpitterRForestAlpha_256.png",
         HitPoints = 60,
         Damage = new [] { "Melee Fireball Damage: 1-12", "4 consecutive shots at <18 damage each", "A large fireball which deals 50 explosive damage at large radius, dealing massive knockback" },
-        Loot = new() { Item = new() { ClassName = "SpitterParts" }, Amount = 4 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _desertSplitter, _aquaSplitter, _forestSplitter, _redForestSplitter, _desertAlphaSplitter, _aquaAlphaSplitter, _forestAlphaSplitter }
+        Loot = new() { ItemClassName ="SpitterParts", Amount = 4 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _flyingCrabHatcher = new()
@@ -351,7 +341,7 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_Hatcher_256.png",
         HitPoints = 25,
         Damage = new [] { "Spawns 3 Flying Crabs dealing 10 Damage each" },
-        Loot = new() { Item = new() { ClassName = "HatcherParts" }, Amount = 1 },
+        Loot = new() { ItemClassName = "HatcherParts", Amount = 1 },
         Behaviour = CreatureBehaviour.Hostile
     };
     
@@ -364,9 +354,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_ArachnophobiaStingerChild_256.png",
         HitPoints = 10,
         Damage = new [] { "Slash Damage: 5" },
-        Loot = new() { Item = new() { ClassName = "StingerParts" }, Amount = 1 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _alphaStingerArachnophia, _eliteGasStingerArachnophia, _babyStinger, _alphaStinger, _eliteGasStinger }
+        Loot = new() { ItemClassName = "StingerParts", Amount = 1 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _alphaStingerArachnophia = new()
@@ -378,9 +367,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_ArachnophobiaStinger_256.png",
         HitPoints = 50,
         Damage = new [] { "Slash Damage: 30", "Leap Damage: 50" },
-        Loot = new() { Item = new() { ClassName = "StingerParts" }, Amount = 3 },
-        Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _babyStingerArachnophia, _eliteGasStingerArachnophia, _babyStinger, _alphaStinger, _eliteGasStinger }
+        Loot = new() { ItemClassName = "StingerParts", Amount = 3 },
+        Behaviour = CreatureBehaviour.Hostile
     };
     
     private static readonly Creature _eliteGasStingerArachnophia = new()
@@ -392,9 +380,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_ArachnophobiaStingerElite_256.png",
         HitPoints = 100,
         Damage = new [] { "Slash Damage: 30", "Leap Damage: 50", "Gas Damage: 5/sec" },
-        Loot = new() { Item = new() { ClassName = "StingerParts" }, Amount = 5 },
+        Loot = new() { ItemClassName = "StingerParts", Amount = 5 },
         Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _babyStingerArachnophia, _alphaStingerArachnophia, _babyStinger, _alphaStinger, _eliteGasStinger }
     };
     
     private static readonly Creature _babyStinger = new()
@@ -406,9 +393,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_StingerChild_256.png",
         HitPoints = 10,
         Damage = new [] { "Slash Damage: 5" },
-        Loot = new() { Item = new() { ClassName = "StingerParts" }, Amount = 1 },
+        Loot = new() { ItemClassName = "StingerParts", Amount = 1 },
         Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _babyStingerArachnophia, _alphaStingerArachnophia, _eliteGasStingerArachnophia, _alphaStinger, _eliteGasStinger }
     };
     
     private static readonly Creature _alphaStinger = new()
@@ -420,9 +406,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_Stinger_256.png",
         HitPoints = 50,
         Damage = new [] { "Slash Damage: 30", "Leap Damage: 50" },
-        Loot = new() { Item = new() { ClassName = "StingerParts" }, Amount = 3 },
+        Loot = new() { ItemClassName = "StingerParts", Amount = 3 },
         Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _babyStingerArachnophia, _alphaStingerArachnophia, _eliteGasStingerArachnophia, _babyStinger, _eliteGasStinger }
     };
     
     private static readonly Creature _eliteGasStinger = new()
@@ -434,9 +419,8 @@ public partial class DocsParserService
         BigImagePath = "\\Game\\FactoryGame\\Character\\Creature\\CreatureDescriptors\\UI\\IconDesc_StingerElite_256.png",
         HitPoints = 100,
         Damage = new [] { "Slash Damage: 30", "Leap Damage: 50", "Gas Damage: 5/sec" },
-        Loot = new() { Item = new() { ClassName = "StingerParts" }, Amount = 5 },
+        Loot = new() { ItemClassName = "StingerParts", Amount = 5 },
         Behaviour = CreatureBehaviour.Hostile,
-        Variants = new List<Creature>() { _babyStingerArachnophia, _alphaStingerArachnophia, _eliteGasStingerArachnophia, _babyStinger, _alphaStinger }
     };
     
     private static readonly Creature _lizardDoggo = new()
@@ -494,6 +478,13 @@ public partial class DocsParserService
         _lizardDoggo,
         _nonFlyingBird,
         _spaceTick
+    };
+
+    private static string[][] _createVariantGroups = new string[][]
+    {
+        new [] { "Hog", "HogAlpha" },
+        new [] { "SpitterDesert", "SpitterAqua", "SpitterForest", "SpitterRForest", "SpitterDesertAlpha", "SpitterAquaAlpha", "SpitterForestAlpha", "SpitterRForestAlpha" },
+        new [] { "ArachnophobiaStingerChild", "ArachnophobiaStinger", "ArachnophobiaStingerElite", "StingerChild", "Stinger", "StingerElite" }
     };
 
     private readonly Plant[] _plants = 

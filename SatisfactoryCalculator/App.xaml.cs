@@ -4,10 +4,11 @@ public partial class App
 {
     private void OnStartup(object sender, StartupEventArgs e)
     {
-        ServiceHost.Instance.Initialize();
+        ApplicationContext.Instance.Initialize();
+        
         // ReSharper disable once HeapView.ClosureAllocation
-        var mainViewModel = ServiceHost.Provider.GetRequiredService<MainViewModel>();
-        var mainView = ServiceHost.Provider.GetRequiredService<MainView>();
+        var mainViewModel = ApplicationContext.Instance.ServiceProvider.GetRequiredService<MainViewModel>();
+        var mainView = ApplicationContext.Instance.ServiceProvider.GetRequiredService<MainView>();
         Task.Run(() => mainViewModel.Load());
         mainView.Show();
     }

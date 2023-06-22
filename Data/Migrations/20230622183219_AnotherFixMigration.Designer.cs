@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    [Migration("20230617084304_Initial")]
-    partial class Initial
+    [Migration("20230622183219_AnotherFixMigration")]
+    partial class AnotherFixMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -424,9 +424,6 @@ namespace Data.Migrations
                     b.Property<string>("ClassName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("BigImagePath")
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("ConstructedByBuildGun")
                         .HasColumnType("INTEGER");
 
@@ -450,9 +447,6 @@ namespace Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SmallImagePath")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("VariablePowerConsumptionRange")
@@ -498,8 +492,10 @@ namespace Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("BuildingClassName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ItemClassName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RecipeClassName")
@@ -507,6 +503,8 @@ namespace Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("BuildingClassName");
 
                     b.HasIndex("ItemClassName");
 
@@ -531,8 +529,10 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("CreatureClassName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("ItemClassName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SchematicClassName")
@@ -540,6 +540,8 @@ namespace Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("CreatureClassName");
 
                     b.HasIndex("ItemClassName");
 
@@ -1006,17 +1008,21 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Implementation.RecipeProduct", b =>
                 {
+                    b.HasOne("Data.Models.Implementation.Building", "Building")
+                        .WithMany()
+                        .HasForeignKey("BuildingClassName");
+
                     b.HasOne("Data.Models.Implementation.Item", "Item")
                         .WithMany()
-                        .HasForeignKey("ItemClassName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ItemClassName");
 
                     b.HasOne("Data.Models.Implementation.Recipe", null)
                         .WithMany("Products")
                         .HasForeignKey("RecipeClassName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Building");
 
                     b.Navigation("Item");
                 });
@@ -1034,17 +1040,21 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Implementation.ScannableObject", b =>
                 {
+                    b.HasOne("Data.Models.Implementation.Creature", "Creature")
+                        .WithMany()
+                        .HasForeignKey("CreatureClassName");
+
                     b.HasOne("Data.Models.Implementation.Item", "Item")
                         .WithMany()
-                        .HasForeignKey("ItemClassName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ItemClassName");
 
                     b.HasOne("Data.Models.Implementation.Schematic", null)
                         .WithMany("UnlocksScannableObjects")
                         .HasForeignKey("SchematicClassName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Creature");
 
                     b.Navigation("Item");
                 });

@@ -1,4 +1,5 @@
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 namespace SatisfactoryCalculator.Source.DependencyInjection;
 
@@ -6,19 +7,48 @@ internal static class ServiceExtensions
 {
 	public static void ConfigureServices(this IServiceCollection services)
 	{
+		var pathOptions = services.AddPathOption();
+		
 		services
-			.AddDbContext()
+			.AddDbContext(pathOptions)
 			.AddDomainServices()
 			.AddApplicationServices()
 			.AddApplicationState()
 			.AddViewModels()
 			.AddViews();
 	}
+
+	private static PathOptions AddPathOption(this IServiceCollection services)
+	{
+		var dataFolder = Environment.CurrentDirectory + "\\Data";
+		var imageFolder = dataFolder + "\\Images";
+
+		services.Configure<PathOptions>(options =>
+		{
+			options.DataFolder = dataFolder;
+			options.ImageFolder = imageFolder;
+		});
+		
+		var pathOptionInstance = new PathOptions
+		{
+			DataFolder = dataFolder,
+			ImageFolder = imageFolder
+		};
+		
+		return pathOptionInstance;
+	}
 	
-	private static IServiceCollection AddDbContext(this IServiceCollection services)
+	private static IServiceCollection AddDbContext(this IServiceCollection services, PathOptions pathOptions)
 	{
 		services.AddDbContext<ModelContext>(options =>
-			options.UseSqlite("name=DataFile"));
+			options.UseSqlite($@"Data Source={pathOptions.DataFolder}\Data.db"));
+		
+		services.AddDbContextFactory<TempModelContext>(options =>
+			options
+				.UseSqlite($@"Data Source={pathOptions.DataFolder}\TempData.db")
+				.LogTo(p => Debug.WriteLine(p), LogLevel.Error)
+				.EnableSensitiveDataLogging()
+				);
 		
 		return services;
 	}

@@ -1,4 +1,6 @@
-﻿#pragma warning disable CS8618
+﻿using System.Diagnostics;
+
+#pragma warning disable CS8618
 
 namespace Data.Context;
 
@@ -6,10 +8,19 @@ public partial class ModelContext : DbContext
 {
     public ModelContext() { }
     public ModelContext(DbContextOptions<ModelContext> options) : base(options) { }
+    protected ModelContext(DbContextOptions options) : base(options) { }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlite("Data Source=C:\\Users\\Georg\\Desktop\\Test\\SatisfactoryData.db");
-    
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlite(
+                @"Data Source=C:\Users\Georg\Desktop\Test\SatisfactoryData.db");
+        }
+
+        base.OnConfiguring(optionsBuilder);
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AmmunitionConfiguration());

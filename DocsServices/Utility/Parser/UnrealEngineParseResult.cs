@@ -5,14 +5,14 @@ internal class UnrealEngineParseResult : IEquatable<UnrealEngineParseResult>, IC
     public UnrealEngineParseResult() { }
     public UnrealEngineParseResult(
         string ClassName, 
-        double? Amount = null)
+        decimal? Amount = null)
     {
         this.ClassName = ClassName;
         this.Amount = Amount;
     }
 
     public string ClassName { get; set; }
-    public double? Amount { get; set; }
+    public decimal? Amount { get; set; }
 
     public bool Equals(UnrealEngineParseResult? other)
     {

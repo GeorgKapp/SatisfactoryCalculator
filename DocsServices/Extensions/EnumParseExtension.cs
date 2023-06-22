@@ -1,8 +1,8 @@
 namespace SatisfactoryCalculator.DocsServices.Utility;
 
-internal static class StringToEnumParseUtility
+internal static class EnumParseExtension
 {
-	public static Form ParseFormStringToEnum(string input) => input switch
+	public static Form ParseToForm(this string input) => input switch
 	{
 		"RF_SOLID" => Form.Solid,
 		"RF_LIQUID" => Form.Liquid,
@@ -11,7 +11,7 @@ internal static class StringToEnumParseUtility
 		_ => throw new ArgumentOutOfRangeException("Form: " + input)
 	};
 
-	public static StackSize ParseStackSizeStringToEnum(string input) => input switch
+	public static StackSize ParseToStackSize(this string input) => input switch
 	{
 		"SS_HUGE" => StackSize.Huge,
 		"SS_SMALL" => StackSize.Small,
@@ -22,7 +22,7 @@ internal static class StringToEnumParseUtility
 		_ => throw new ArgumentOutOfRangeException("StackSize: " + input)
 	};
 
-    public static EquipmentSlot ParseEquipmentSlotStringToEnum(string input) => input switch
+    public static EquipmentSlot ParseToEquipmentSlot(this string input) => input switch
     {
         "ES_ARMS" => EquipmentSlot.Arms,
         "ES_BACK" => EquipmentSlot.Back,
@@ -32,7 +32,7 @@ internal static class StringToEnumParseUtility
         _ => throw new ArgumentOutOfRangeException("EquipmentSlot: " + input)
     };
 
-    public static SchematicType ParseSchematicTypeStringToEnum(string input) => input switch
+    public static SchematicType ParseToSchematicType(this string input) => input switch
 	{
 		"EST_Custom" => SchematicType.Custom,
 		"EST_MAM" => SchematicType.Mam,
@@ -44,7 +44,7 @@ internal static class StringToEnumParseUtility
 		_ => throw new ArgumentOutOfRangeException("SchematicType: " + input)
 	};
     
-    public static RelevantEvent ParseRelevantEventToEnum(string input) => input switch
+    public static RelevantEvent ParseToRelevantEvent(this string input) => input switch
     {
 	    "EV_Christmas" => RelevantEvent.Christmas,
 	    _ => throw new ArgumentOutOfRangeException("SchematicType: " + input)

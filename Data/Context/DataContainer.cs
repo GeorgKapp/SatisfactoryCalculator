@@ -2,7 +2,7 @@ namespace Data.Context;
 
 public class DataContainer
 {
-    public List<Ammunition> Ammunition { get; set; } = new();
+    public List<Ammunition> Ammunitions { get; set; } = new();
     public List<Building> Buildings { get; set; } = new();
     public List<Consumable> Consumables { get; set; } = new();
     public List<Creature> Creatures { get; set; } = new();

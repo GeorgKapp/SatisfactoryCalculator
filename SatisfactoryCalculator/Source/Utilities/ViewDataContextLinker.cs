@@ -22,8 +22,8 @@ public static class ViewDataContextLinker
         where TView : FrameworkElement
         where TViewModel : ObservableObject
     {
-        var view = ServiceHost.Provider.GetRequiredService<TView>();
-        var viewModel = ServiceHost.Provider.GetRequiredService<TViewModel>();
+        var view = ApplicationContext.Instance.ServiceProvider.GetRequiredService<TView>();
+        var viewModel = ApplicationContext.Instance.ServiceProvider.GetRequiredService<TViewModel>();
 
         view.DataContext = viewModel;
     }

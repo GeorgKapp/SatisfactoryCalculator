@@ -43,4 +43,8 @@
     <Resource Include="Source\UI\Assets\slots3.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="deleteFiles.bat" />
+  </ItemGroup>
+
 </Project>

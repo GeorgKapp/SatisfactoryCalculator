@@ -19,12 +19,12 @@ public class Schematic : IClassNamePrimaryKey, INameEntity, IDescriptionEntity, 
     public bool DependenciesBlocksSchematicAccess { get; set; }
     public bool UnlocksMap { get; set; }
 
-    public ICollection<SchematicCost> Costs = new List<SchematicCost>();
-    public ICollection<SchematicDependency> Dependencies = new List<SchematicDependency>();
-    public ICollection<ScannableObject> UnlocksScannableObjects  { get; set; }
-    public ICollection<Recipe> UnlocksRecipes  { get; set; }
-    public ICollection<Resource> UnlocksScannerResources  { get; set; }
-    public ICollection<Resource> UnlocksScannerResourcePairs  { get; set; }
-    public ICollection<Emote> UnlocksEmotes  { get; set; }
-    public ICollection<Item> GivesItems  { get; set; }
+    public ICollection<SchematicCost> Costs { get; set; } = new List<SchematicCost>();
+    public ICollection<SchematicDependency> Dependencies { get; set; } = new List<SchematicDependency>();
+    public ICollection<ScannableObject> UnlocksScannableObjects  { get; set; } = new List<ScannableObject>();
+    public ICollection<Recipe> UnlocksRecipes  { get; set; } = new List<Recipe>();
+    public ICollection<Resource> UnlocksScannerResources  { get; set; } = new List<Resource>();
+    public ICollection<Resource> UnlocksScannerResourcePairs  { get; set; } = new List<Resource>();
+    public ICollection<Emote> UnlocksEmotes  { get; set; } = new List<Emote>();
+    public ICollection<Item> GivesItems  { get; set; } = new List<Item>();
 }

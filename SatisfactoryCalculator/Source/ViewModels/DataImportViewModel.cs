@@ -42,9 +42,10 @@ internal class DataImportViewModel : ObservableObject
 	private ICommand? _cancelLoadDataCommand;
     public ICommand CancelLoadDataCommand => _cancelLoadDataCommand ??= new SimpleCommand(CancelLoadData);
 
-    public DataImportViewModel(ApplicationState applicationState, DataModelMappingService mappingService, DocsParserService docsParserService)
+    public DataImportViewModel(ApplicationState applicationState, IOptions<PathOptions> pathOptions, DataModelMappingService mappingService, DocsParserService docsParserService)
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
+        _pathOptions = pathOptions.Value ?? throw new ArgumentNullException(nameof(pathOptions));
         _mappingService = mappingService ?? throw new ArgumentNullException(nameof(mappingService));
         _docsParserService = docsParserService ?? throw new ArgumentNullException(nameof(docsParserService));
     }
@@ -67,7 +68,7 @@ internal class DataImportViewModel : ObservableObject
                     return;
                 }
 
-                var data = await DataModelImageCreateService.CreateImagesAsync(result.Content!, UeModelExportDirectoryPath, ConfigurationManager.ConnectionStrings[Constants.ImageDirectory].ConnectionString, progress, _cancellationTokenSource.Token);
+                var data = await DataModelImageCreateService.CreateImagesAsync(result.Content!, UeModelExportDirectoryPath, _pathOptions.ImageFolder, progress, _cancellationTokenSource.Token);
                 var mappingResult = _mappingService.MapToConfigurationModel(data, progress, _cancellationTokenSource.Token);
                 
                 if (mappingResult is null)
@@ -112,6 +113,7 @@ internal class DataImportViewModel : ObservableObject
     }
 
     private readonly ApplicationState _applicationState;
+    private readonly PathOptions _pathOptions;
     private CancellationTokenSource _cancellationTokenSource = new();
     
     private readonly DataModelMappingService _mappingService;

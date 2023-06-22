@@ -26,7 +26,7 @@ internal static class ClassNameParseUtility
 				return $"{Constants.DescriptionPrefix}{className[preFix.Length..]}";
 		}
 
-		throw new NotImplementedException("ClassName filtering not implemented: " + className);
+		throw new Exception("ClassName filtering not implemented: " + className);
 	}
 
 	public static string? CleanClassName(string? className)

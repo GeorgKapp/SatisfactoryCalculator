@@ -6,8 +6,8 @@ internal class PageService
         where TPage : Page
         where TViewModel : ObservableObject
     {
-        var page = ServiceHost.Provider.GetRequiredService<TPage>();
-        var viewModel = ServiceHost.Provider.GetRequiredService<TViewModel>();
+        var page = ApplicationContext.Instance.ServiceProvider.GetRequiredService<TPage>();
+        var viewModel = ApplicationContext.Instance.ServiceProvider.GetRequiredService<TViewModel>();
 
         return (page, viewModel);
     }
@@ -15,6 +15,6 @@ internal class PageService
     public static TPage FetchPage<TPage>() 
         where TPage : Page
     {
-        return ServiceHost.Provider.GetRequiredService<TPage>();
+        return ApplicationContext.Instance.ServiceProvider.GetRequiredService<TPage>();
     }
 }

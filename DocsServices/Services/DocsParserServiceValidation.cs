@@ -3,6 +3,18 @@ namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
+    private Result ValidateIfAllEntitiesWereTraversed(Dictionary<string, bool> rootObjectHandledDictionary)
+    {
+        var missingReferences = rootObjectHandledDictionary
+            .Where(p => !p.Value)
+            .Select(p => p.Key)
+            .ToArray();
+
+        return missingReferences.Length > 0 
+            ? Result.Failure($"{string.Join(Environment.NewLine, missingReferences)} not parsed") 
+            : Result.Success();
+    }
+    
     private static Result ValidateForDuplicates<T>(IEnumerable<T> source) where T : IClassNamePrimaryKey
     {
         var duplicates = source
@@ -16,18 +28,16 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private static Result ValidateReferencesByTarget<T>(IEnumerable<T> source, IEnumerable<T> target) where T : IClassNamePrimaryKey
+    private static Result ValidateReferencesByTarget(IEnumerable<string> source, IEnumerable<string> target)
     {
-        var missingReferences = target.Select(p => p.ClassName)
-            .Except(source.Select(p => p.ClassName))
-            .ToArray();
+        var missingReferences = target.Except(source).ToArray();
 
         return missingReferences.Length > 0
             ? Result.Failure($"Reference Items missing: {string.Join(Environment.NewLine, missingReferences)}")
             : Result.Success();
     }
 
-    private static Result SeperatelyValidateDataForDuplicates(DataContainer data)
+    private static Result SeperatelyValidateDataForDuplicates(ModelContext data)
     {
         return Result.Combine(
             new[] 
@@ -41,7 +51,7 @@ public partial class DocsParserService
                 ValidateForDuplicates(data.Schematics),
                 ValidateForDuplicates(data.Resources),
                 ValidateForDuplicates(data.Consumables),
-                ValidateForDuplicates(data.Ammunition),
+                ValidateForDuplicates(data.Ammunitions),
                 ValidateForDuplicates(data.Weapons),
                 ValidateForDuplicates(data.Equipments),
                 ValidateForDuplicates(data.Generators),
@@ -50,23 +60,25 @@ public partial class DocsParserService
             );
     }
 
-    private static Result ValidateDataReferences(DataContainer data)
+    private static Result ValidateDataReferences(ModelContext data)
     {
-        var items = data.Items.Cast<IClassNamePrimaryKey>();
+        var items = GetClassNames(data.Items);
 
-        var itemReferences = data.Consumables.Cast<IClassNamePrimaryKey>()
-            .Concat(data.Equipments)
-            .Concat(data.Weapons)
-            .Concat(data.Vehicles);
+        var itemReferences = GetClassNames(data.Consumables)
+            .Concat(GetClassNames(data.Equipments))
+            .Concat(GetClassNames(data.Weapons))
+            .Concat(GetClassNames(data.Vehicles))
+            .ToArray();
 
         var itemValidationResult = ValidateReferencesByTarget(items, itemReferences);
         if (!itemValidationResult.IsSuccess)
             return itemValidationResult;
 
-        var buildings = data.Buildings.Cast<IClassNamePrimaryKey>();
+        var buildings = GetClassNames(data.Buildings);
 
-        var buildingReferences = data.Generators.Cast<IClassNamePrimaryKey>()
-            .Concat(data.Miners);
+        var buildingReferences = GetClassNames(data.Generators)
+            .Concat(GetClassNames(data.Miners))
+            .ToArray();
 
         var buildingValidationResult = ValidateReferencesByTarget(buildings, buildingReferences);
         
@@ -75,13 +87,13 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private static Result ValidateItemExistanceInRecipes(DataContainer data)
+    private static Result ValidateItemExistanceInRecipes(ModelContext data)
     {
         var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
             .Concat(GetClassNames(data.Consumables))
             .Concat(GetClassNames(data.Resources))
-            .Concat(GetClassNames(data.Ammunition))
+            .Concat(GetClassNames(data.Ammunitions))
             .Concat(GetClassNames(data.Equipments))
             .Concat(GetClassNames(data.Weapons))
             .Concat(GetClassNames(data.Buildings))
@@ -95,8 +107,8 @@ public partial class DocsParserService
         // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var recipe in data.Recipes)
         {
-            var recipeContentNames = recipe.Ingredients.Select(p => p.Item.ClassName)
-                .Concat(recipe.Products.Select(p => p.Item.ClassName))
+            var recipeContentNames = recipe.Ingredients.Select(p => p.ItemClassName)
+                .Concat(recipe.Products.Select(p => string.IsNullOrEmpty(p.ItemClassName) ? p.BuildingClassName : p.ItemClassName))
                 .Concat(recipe.Buildings.Select(p => p.ClassName))
                 .ToArray();
 
@@ -112,7 +124,7 @@ public partial class DocsParserService
         // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var customizationRecipe in data.CustomizationRecipes)
         {
-            var recipeContentNames = customizationRecipe.Ingredients.Select(p => p.Item.ClassName)
+            var recipeContentNames = customizationRecipe.Ingredients.Select(p => p.ItemClassName)
                 .ToArray();
 
             var differences = recipeContentNames.Except(sources).ToList();
@@ -126,13 +138,13 @@ public partial class DocsParserService
         return Result.Combine(recipeResults.Concat(customizationRecipeResults));
     }
 
-    private static Result ValidateItemExistanceInSchematics(DataContainer data)
+    private static Result ValidateItemExistanceInSchematics(ModelContext data)
     {
         var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
             .Concat(GetClassNames(data.Consumables))
             .Concat(GetClassNames(data.Resources))
-            .Concat(GetClassNames(data.Ammunition))
+            .Concat(GetClassNames(data.Ammunitions))
             .Concat(GetClassNames(data.Equipments))
             .Concat(GetClassNames(data.Weapons))
             .Concat(GetClassNames(data.Buildings))
@@ -151,19 +163,19 @@ public partial class DocsParserService
         // ReSharper disable once ForeachCanBeConvertedToQueryUsingAnotherGetEnumerator
         foreach (var schematic in data.Schematics)
         {
-            var controlEntities = schematic.Costs.Select(p => p.Item.ClassName)
+            var controlEntities = schematic.Costs.Select(p => p.ItemClassName)
                     .Concat(GetClassNames(schematic.GivesItems))
                     .Concat(GetClassNames(schematic.UnlocksScannerResourcePairs))
                     .Concat(GetClassNames(schematic.UnlocksScannerResources))
                     .Concat(GetClassNames(schematic.UnlocksEmotes))
                     .Concat(GetClassNames(schematic.UnlocksRecipes))
-                    .Concat(schematic.Dependencies.Select(p => p.Schematics.Select(p => p.ClassName)).SelectMany(p => p))
+                    .Concat(schematic.Dependencies.Select(p => p.Schematics.Select(x => x.ClassName)).SelectMany(p => p))
                     .ToList();
 
             foreach (var scannerObject in schematic.UnlocksScannableObjects)
             {
-                controlEntities.Add(scannerObject.Item.ClassName);
-                controlEntities.AddRange(scannerObject.ScanningActors.Select(p => p.Item is null ? p.Building!.ClassName : p.Item.ClassName));
+                controlEntities.Add(scannerObject.ItemClassName + scannerObject.CreatureClassName + scannerObject.PlantClassName);
+                controlEntities.AddRange(scannerObject.ScanningActors.Select(p => string.IsNullOrEmpty(p.ItemClassName) ? p.BuildingClassName! : p.ItemClassName));
             }
 
             controlEntities = controlEntities

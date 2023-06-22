@@ -11,5 +11,10 @@ internal class SchematicDependencyConfiguration : IEntityTypeConfiguration<Schem
         
         entity.Property(d => d.SchematicDependencyType)
             .HasConversion<string>();
+        
+        entity
+            .HasMany(p => p.Schematics)
+            .WithMany()
+            .UsingEntity(p => p.ToTable("SchematicDependencySchematics"));
     }
 }

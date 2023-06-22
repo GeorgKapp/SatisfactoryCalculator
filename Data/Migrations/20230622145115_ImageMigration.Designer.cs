@@ -3,6 +3,7 @@ using System;
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20230622145115_ImageMigration")]
+    partial class ImageMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.7");
@@ -489,10 +492,8 @@ namespace Data.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("BuildingClassName")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ItemClassName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("RecipeClassName")
@@ -500,8 +501,6 @@ namespace Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("BuildingClassName");
 
                     b.HasIndex("ItemClassName");
 
@@ -526,18 +525,15 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CreatureClassName")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("ItemClassName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SchematicClassName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("CreatureClassName");
 
                     b.HasIndex("ItemClassName");
 
@@ -662,16 +658,11 @@ namespace Data.Migrations
                     b.Property<bool>("RequireAllSchematicsToBePurchased")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("SchematicClassName")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("SchematicDependencyType")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("SchematicClassName");
 
                     b.ToTable("SchematicDependency", (string)null);
                 });
@@ -818,17 +809,17 @@ namespace Data.Migrations
 
             modelBuilder.Entity("SchematicSchematicDependency", b =>
                 {
-                    b.Property<int>("SchematicDependencyID")
+                    b.Property<int>("DependenciesID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SchematicsClassName")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("SchematicDependencyID", "SchematicsClassName");
+                    b.HasKey("DependenciesID", "SchematicsClassName");
 
                     b.HasIndex("SchematicsClassName");
 
-                    b.ToTable("SchematicDependencySchematics", (string)null);
+                    b.ToTable("SchematicSchematicDependency", (string)null);
                 });
 
             modelBuilder.Entity("BuildingRecipe", b =>
@@ -1009,21 +1000,17 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Implementation.RecipeProduct", b =>
                 {
-                    b.HasOne("Data.Models.Implementation.Building", "Building")
-                        .WithMany()
-                        .HasForeignKey("BuildingClassName");
-
                     b.HasOne("Data.Models.Implementation.Item", "Item")
                         .WithMany()
-                        .HasForeignKey("ItemClassName");
+                        .HasForeignKey("ItemClassName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Data.Models.Implementation.Recipe", null)
                         .WithMany("Products")
                         .HasForeignKey("RecipeClassName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Building");
 
                     b.Navigation("Item");
                 });
@@ -1041,19 +1028,17 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Implementation.ScannableObject", b =>
                 {
-                    b.HasOne("Data.Models.Implementation.Creature", "Creature")
-                        .WithMany()
-                        .HasForeignKey("CreatureClassName");
-
                     b.HasOne("Data.Models.Implementation.Item", "Item")
                         .WithMany()
-                        .HasForeignKey("ItemClassName");
+                        .HasForeignKey("ItemClassName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Data.Models.Implementation.Schematic", null)
                         .WithMany("UnlocksScannableObjects")
-                        .HasForeignKey("SchematicClassName");
-
-                    b.Navigation("Creature");
+                        .HasForeignKey("SchematicClassName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Item");
                 });
@@ -1094,13 +1079,6 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("Data.Models.Implementation.SchematicDependency", b =>
-                {
-                    b.HasOne("Data.Models.Implementation.Schematic", null)
-                        .WithMany("Dependencies")
-                        .HasForeignKey("SchematicClassName");
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Vehicle", b =>
@@ -1204,7 +1182,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Data.Models.Implementation.SchematicDependency", null)
                         .WithMany()
-                        .HasForeignKey("SchematicDependencyID")
+                        .HasForeignKey("DependenciesID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1262,8 +1240,6 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Implementation.Schematic", b =>
                 {
                     b.Navigation("Costs");
-
-                    b.Navigation("Dependencies");
 
                     b.Navigation("UnlocksScannableObjects");
                 });

@@ -43,9 +43,9 @@ internal class DataModelMappingService
         var weapons = MapToWeapons(data.Weapons, itemDictionary);
         
         progress?.ReportOrThrow("Map Ammunitions", token);
-        var ammunitions = MapToAmmunitions(data.Ammunition, itemDictionary);
+        var ammunitions = MapToAmmunitions(data.Ammunitions, itemDictionary);
 
-        LinkWeaponsAndAmmunition(data.Weapons, data.Ammunition, itemDictionary);
+        LinkWeaponsAndAmmunition(data.Weapons, data.Ammunitions, itemDictionary);
 
         progress?.ReportOrThrow("Map Buildings", token);
         var buildings = MapToBuildingModels(data.Buildings);

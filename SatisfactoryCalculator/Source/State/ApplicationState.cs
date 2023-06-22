@@ -14,7 +14,7 @@ internal class ApplicationState : ObservableObject
 
     public DataContainer? Data { get; private set; }
 
-	public void SetConfig(DataContainer data, DataModelMappingResult mappingResult)
+    public void SetConfig(DataContainer data, DataModelMappingResult mappingResult)
 	{
         Data = data;
         

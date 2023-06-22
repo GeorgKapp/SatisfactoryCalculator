@@ -10,5 +10,6 @@ public class Ammunition : IClassNamePrimaryKey
     public decimal FireRate { get; set; }
     public decimal WeaponDamageMultiplier { get; set; }
     
+    public string WeaponClassName { get; set; }
     public Weapon Weapon { get; set; }
 }

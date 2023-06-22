@@ -1,6 +1,7 @@
 ﻿global using Data.Context;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Options;
 global using SatisfactoryCalculator.DocsServices.Services;
 global using SatisfactoryCalculator.Properties;
 global using SatisfactoryCalculator.Shared.Common.Progress;

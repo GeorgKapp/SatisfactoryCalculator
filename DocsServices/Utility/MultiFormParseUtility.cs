@@ -18,7 +18,7 @@ internal static class MultiFormParseUtility
 	{
 		return sanitizedSplitInput
 			// ReSharper disable once ConvertClosureToMethodGroup
-			.Select(p => StringToEnumParseUtility.ParseFormStringToEnum(p));
+			.Select(p => p.ParseToForm());
 	}
 
 	private static string SanitizeInput(string input)

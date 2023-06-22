@@ -16,11 +16,6 @@ internal class SchematicConfiguration : IEntityTypeConfiguration<Schematic>
             .HasConversion<string?>();
         
         entity
-            .HasMany(p => p.Dependencies)
-            .WithMany(p => p.Schematics)
-            .UsingEntity(p => p.ToTable("SchematicSchematicDependency"));
-
-        entity
             .HasMany(p => p.UnlocksRecipes)
             .WithMany()
             .UsingEntity(p => p.ToTable("SchematicRecipeUnlock"));
@@ -47,12 +42,15 @@ internal class SchematicConfiguration : IEntityTypeConfiguration<Schematic>
         
         entity
             .HasMany(p => p.UnlocksScannableObjects)
-            .WithOne()
-            .IsRequired();
+            .WithOne();
         
         entity
             .HasMany(p => p.Costs)
             .WithOne()
             .IsRequired();
+        
+        entity
+            .HasMany(p => p.Dependencies)
+            .WithOne();
     }
 }

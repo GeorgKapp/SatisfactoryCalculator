@@ -18,7 +18,7 @@ internal static class MultiRelevantEventsParseUtility
 	{
 		return sanitizedSplitInput
 			// ReSharper disable once ConvertClosureToMethodGroup
-			.Select(p => StringToEnumParseUtility.ParseRelevantEventToEnum(p));
+			.Select(p => p.ParseToRelevantEvent());
 	}
 
 	private static string SanitizeInput(string input)

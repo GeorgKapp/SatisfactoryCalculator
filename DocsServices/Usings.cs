@@ -1,5 +1,7 @@
 ﻿global using Data.Context;
+global using Data.Models.Implementation;
 global using Data.Models.Interfaces;
+global using SatisfactoryCalculator.DocsServices.Extensions;
 global using SatisfactoryCalculator.DocsServices.Utility;
 global using SatisfactoryCalculator.Shared.Common.Progress;
 global using SatisfactoryCalculator.Shared.Enums;
@@ -11,4 +13,3 @@ global using SatisfactoryCalculator.Shared.Utility;
 global using System.Diagnostics;
 global using System.Globalization;
 global using System.Runtime.CompilerServices;
-global using Data.Models.Implementation;

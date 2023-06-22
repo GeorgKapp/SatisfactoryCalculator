@@ -1,5 +1,7 @@
 // ReSharper disable HeapView.ObjectAllocation
 
+using Microsoft.EntityFrameworkCore;
+
 namespace SatisfactoryCalculator.DocsServices.Utility;
 
 internal static class ScannableObjectParseUtility
@@ -10,26 +12,26 @@ internal static class ScannableObjectParseUtility
 	
 	private static readonly string[] HostileCreaturesTags = new string[]
 	{
-		"HogAlpha_C",
-		"Hog_C",
-		"SpitterDesert_C",
-		"SpitterAqua_C",
-		"SpitterForest_C",
-		"SpitterRForest_C",
-		"SpitterDesertAlpha_C",
-		"SpitterAquaAlpha_C",
-		"SpitterForestAlpha_C",
-		"SpitterRForestAlpha_C",
-		"Hatcher_C",
-		"ArachnophobiaStingerChild_C",
-		"ArachnophobiaStinger_C",
-		"ArachnophobiaStingerElite_C", 
-		"StingerChild_C",
-		"Stinger_C", 
-		"StingerElite_C"
+		"HogAlpha",
+		"Hog",
+		"SpitterDesert",
+		"SpitterAqua",
+		"SpitterForest",
+		"SpitterRForest",
+		"SpitterDesertAlpha",
+		"SpitterAquaAlpha",
+		"SpitterForestAlpha",
+		"SpitterRForestAlpha",
+		"Hatcher",
+		"ArachnophobiaStingerChild",
+		"ArachnophobiaStinger",
+		"ArachnophobiaStingerElite", 
+		"StingerChild",
+		"Stinger", 
+		"StingerElite"
 	};
 
-	public static ScannableObject[] MapToScannableObjects(string mScannableObjects)
+	public static ScannableObject[] MapToScannableObjects(string mScannableObjects, string[] itemClassNames, string[] buildingClassNames)
 	{
 		var bluePrintTagIndex = mScannableObjects.IndexOf(BluePrintTag, StringComparison.Ordinal) + BluePrintTag.Length;
 		var arraySplitTagIndex = mScannableObjects.IndexOf(ArraySplitTag, bluePrintTagIndex, StringComparison.Ordinal);
@@ -38,20 +40,42 @@ internal static class ScannableObjectParseUtility
 		var className = ReferenceParseUtility.GetReferences(mClassReferenceInput).First();
 
 		var startIndex = mScannableObjects.IndexOf(ActorsAllowedToScanTag, StringComparison.Ordinal);
-		var actorsAllowedToScan = ReferenceParseUtility.GetReferences(mScannableObjects[startIndex..])
+		var scanningActorsReferences = ReferenceParseUtility.GetReferences(mScannableObjects[startIndex..])
 			.Select(p => ClassNameParseUtility.CorrectClassNameForSchematics(p)).ToArray();
 
-		// if (className == "HostileCreature_C")
-		// {
-		// 	return HostileCreaturesTags
-		// 		.Select(p => new ScannableObject{ ItemClass = p, ActorsAllowedToScan = actorsAllowedToScan })
-		// 		.ToArray();
-		// }
+		var scanningActors = new List<ScanningActor>();
+		foreach (var scanningActorsReference in scanningActorsReferences)
+		{
+			if(itemClassNames.Contains(scanningActorsReference)) {
+				scanningActors.Add(new() { ItemClassName = scanningActorsReference });
+			}
+			else if (buildingClassNames.Contains(scanningActorsReference)) {
+				scanningActors.Add(new() { BuildingClassName = scanningActorsReference });
+			}
+			else
+				throw new($"Scanning Actor Reference was not found: {scanningActorsReference}");
+		}
 		
+		if (className == "HostileCreature")
+		{
+			return HostileCreaturesTags
+				.Select(p => new ScannableObject { CreatureClassName = p, ScanningActors = scanningActors})
+				.ToArray();
+		}
+
+		if (itemClassNames.Contains(className))
+		{
+			return new[] { new ScannableObject
+			{
+				ItemClassName = className,
+				ScanningActors = scanningActors
+			}};
+		}
+
 		return new[] { new ScannableObject
 		{
-			// ItemClass = className,
-			// ActorsAllowedToScan = actorsAllowedToScan
+			PlantClassName = className,
+			ScanningActors = scanningActors
 		}};
 	}
 }

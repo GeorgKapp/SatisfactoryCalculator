@@ -5,10 +5,12 @@ public partial class DocsParserService
 	public DocsParserService(
 		JsonService jsonService, 
 		IDbContextFactory<TempModelContext> tempModelContextFactory,
+		IDbContextFactory<ModelContext> modelContextFactory,
 		IOptions<PathOptions> pathOptions)
 	{
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
 		_tempModelContextFactory = tempModelContextFactory ?? throw new ArgumentNullException(nameof(tempModelContextFactory));
+		_modelContextFactory = modelContextFactory ?? throw new ArgumentNullException(nameof(modelContextFactory));
 		_pathOptions = pathOptions ?? throw new ArgumentNullException(nameof(pathOptions));
 	}
 
@@ -345,6 +347,8 @@ public partial class DocsParserService
 			progress?.ReportOrThrow("Parse images", token);
 			await CreateImagesAsync(tempModelContext, ueModelExportDirectoryPath, _pathOptions.Value.ImageFolder, progress, token);
 			
+			await CopyMigrationHistoryAsync(tempModelContext);
+
 			File.Copy(
 				@$"{_pathOptions.Value.DataFolder}\TempData.db", 
 				@$"{_pathOptions.Value.DataFolder}\Data.db", 
@@ -363,7 +367,23 @@ public partial class DocsParserService
 		}
 	}
 
+	private async Task CopyMigrationHistoryAsync(TempModelContext tempModelContext)
+	{
+		var modelContext = await _modelContextFactory.CreateDbContextAsync();
+		var data = modelContext.ExecuteSelect("SELECT MigrationId, ProductVersion FROM __EFMigrationsHistory;");
+		
+		await tempModelContext.Database.ExecuteSqlAsync(
+			$"CREATE TABLE __EFMigrationsHistory (MigrationId TEXT NOT NULL CONSTRAINT PK___EFMigrationsHistory PRIMARY KEY, ProductVersion TEXT NOT NULL);");
+
+		foreach (DataRow dataRow in data.Rows)
+		{
+			await tempModelContext.Database.ExecuteSqlAsync(
+				$"INSERT INTO __EFMigrationsHistory (MigrationId, ProductVersion) SELECT {dataRow[0]}, {dataRow[1]}");
+		}
+	}
+
 	private readonly JsonService _jsonService;
     private readonly IDbContextFactory<TempModelContext> _tempModelContextFactory;
+    private readonly IDbContextFactory<ModelContext> _modelContextFactory;
     private readonly IOptions<PathOptions> _pathOptions;
 }

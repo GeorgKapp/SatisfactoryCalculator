@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    [Migration("20230622183219_AnotherFixMigration")]
-    partial class AnotherFixMigration
+    [Migration("20230623105802_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -535,8 +535,10 @@ namespace Data.Migrations
                     b.Property<string>("ItemClassName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PlantClassName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SchematicClassName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
@@ -544,6 +546,8 @@ namespace Data.Migrations
                     b.HasIndex("CreatureClassName");
 
                     b.HasIndex("ItemClassName");
+
+                    b.HasIndex("PlantClassName");
 
                     b.HasIndex("SchematicClassName");
 
@@ -666,11 +670,16 @@ namespace Data.Migrations
                     b.Property<bool>("RequireAllSchematicsToBePurchased")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("SchematicClassName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SchematicDependencyType")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("SchematicClassName");
 
                     b.ToTable("SchematicDependency", (string)null);
                 });
@@ -817,17 +826,17 @@ namespace Data.Migrations
 
             modelBuilder.Entity("SchematicSchematicDependency", b =>
                 {
-                    b.Property<int>("DependenciesID")
+                    b.Property<int>("SchematicDependencyID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("SchematicsClassName")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("DependenciesID", "SchematicsClassName");
+                    b.HasKey("SchematicDependencyID", "SchematicsClassName");
 
                     b.HasIndex("SchematicsClassName");
 
-                    b.ToTable("SchematicSchematicDependency", (string)null);
+                    b.ToTable("SchematicDependencySchematics", (string)null);
                 });
 
             modelBuilder.Entity("BuildingRecipe", b =>
@@ -1048,15 +1057,19 @@ namespace Data.Migrations
                         .WithMany()
                         .HasForeignKey("ItemClassName");
 
+                    b.HasOne("Data.Models.Implementation.Plant", "Plant")
+                        .WithMany()
+                        .HasForeignKey("PlantClassName");
+
                     b.HasOne("Data.Models.Implementation.Schematic", null)
                         .WithMany("UnlocksScannableObjects")
-                        .HasForeignKey("SchematicClassName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SchematicClassName");
 
                     b.Navigation("Creature");
 
                     b.Navigation("Item");
+
+                    b.Navigation("Plant");
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.ScanningActor", b =>
@@ -1095,6 +1108,13 @@ namespace Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("Data.Models.Implementation.SchematicDependency", b =>
+                {
+                    b.HasOne("Data.Models.Implementation.Schematic", null)
+                        .WithMany("Dependencies")
+                        .HasForeignKey("SchematicClassName");
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.Vehicle", b =>
@@ -1198,7 +1218,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Data.Models.Implementation.SchematicDependency", null)
                         .WithMany()
-                        .HasForeignKey("DependenciesID")
+                        .HasForeignKey("SchematicDependencyID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1256,6 +1276,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Implementation.Schematic", b =>
                 {
                     b.Navigation("Costs");
+
+                    b.Navigation("Dependencies");
 
                     b.Navigation("UnlocksScannableObjects");
                 });

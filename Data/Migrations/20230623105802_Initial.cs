@@ -102,8 +102,6 @@ namespace Data.Migrations
                 {
                     ClassName = table.Column<string>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: false),
-                    SmallImagePath = table.Column<string>(type: "TEXT", nullable: true),
-                    BigImagePath = table.Column<string>(type: "TEXT", nullable: true),
                     ManualManufacturingMultiplier = table.Column<decimal>(type: "TEXT", nullable: false),
                     ManufactoringDuration = table.Column<decimal>(type: "TEXT", nullable: false),
                     ManufacturingMenuPriority = table.Column<decimal>(type: "TEXT", nullable: true),
@@ -141,20 +139,6 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Schematic", x => x.ClassName);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SchematicDependency",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    RequireAllSchematicsToBePurchased = table.Column<bool>(type: "INTEGER", nullable: false),
-                    SchematicDependencyType = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SchematicDependency", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -409,7 +393,8 @@ namespace Data.Migrations
                 {
                     ID = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ItemClassName = table.Column<string>(type: "TEXT", nullable: false),
+                    ItemClassName = table.Column<string>(type: "TEXT", nullable: true),
+                    BuildingClassName = table.Column<string>(type: "TEXT", nullable: true),
                     Amount = table.Column<decimal>(type: "TEXT", nullable: false),
                     RecipeClassName = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -417,41 +402,19 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_RecipeProduct", x => x.ID);
                     table.ForeignKey(
+                        name: "FK_RecipeProduct_Building_BuildingClassName",
+                        column: x => x.BuildingClassName,
+                        principalTable: "Building",
+                        principalColumn: "ClassName");
+                    table.ForeignKey(
                         name: "FK_RecipeProduct_Item_ItemClassName",
                         column: x => x.ItemClassName,
                         principalTable: "Item",
-                        principalColumn: "ClassName",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ClassName");
                     table.ForeignKey(
                         name: "FK_RecipeProduct_Recipe_RecipeClassName",
                         column: x => x.RecipeClassName,
                         principalTable: "Recipe",
-                        principalColumn: "ClassName",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ScannableObject",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ItemClassName = table.Column<string>(type: "TEXT", nullable: false),
-                    SchematicClassName = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ScannableObject", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_ScannableObject_Item_ItemClassName",
-                        column: x => x.ItemClassName,
-                        principalTable: "Item",
-                        principalColumn: "ClassName",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ScannableObject_Schematic_SchematicClassName",
-                        column: x => x.SchematicClassName,
-                        principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -481,6 +444,26 @@ namespace Data.Migrations
                         principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SchematicDependency",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RequireAllSchematicsToBePurchased = table.Column<bool>(type: "INTEGER", nullable: false),
+                    SchematicDependencyType = table.Column<string>(type: "TEXT", nullable: false),
+                    SchematicClassName = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SchematicDependency", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_SchematicDependency_Schematic_SchematicClassName",
+                        column: x => x.SchematicClassName,
+                        principalTable: "Schematic",
+                        principalColumn: "ClassName");
                 });
 
             migrationBuilder.CreateTable(
@@ -550,30 +533,6 @@ namespace Data.Migrations
                     table.ForeignKey(
                         name: "FK_SchematicRecipeUnlock_Schematic_SchematicClassName",
                         column: x => x.SchematicClassName,
-                        principalTable: "Schematic",
-                        principalColumn: "ClassName",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SchematicSchematicDependency",
-                columns: table => new
-                {
-                    DependenciesID = table.Column<int>(type: "INTEGER", nullable: false),
-                    SchematicsClassName = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SchematicSchematicDependency", x => new { x.DependenciesID, x.SchematicsClassName });
-                    table.ForeignKey(
-                        name: "FK_SchematicSchematicDependency_SchematicDependency_DependenciesID",
-                        column: x => x.DependenciesID,
-                        principalTable: "SchematicDependency",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SchematicSchematicDependency_Schematic_SchematicsClassName",
-                        column: x => x.SchematicsClassName,
                         principalTable: "Schematic",
                         principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
@@ -719,6 +678,90 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SchematicDependencySchematics",
+                columns: table => new
+                {
+                    SchematicDependencyID = table.Column<int>(type: "INTEGER", nullable: false),
+                    SchematicsClassName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SchematicDependencySchematics", x => new { x.SchematicDependencyID, x.SchematicsClassName });
+                    table.ForeignKey(
+                        name: "FK_SchematicDependencySchematics_SchematicDependency_SchematicDependencyID",
+                        column: x => x.SchematicDependencyID,
+                        principalTable: "SchematicDependency",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_SchematicDependencySchematics_Schematic_SchematicsClassName",
+                        column: x => x.SchematicsClassName,
+                        principalTable: "Schematic",
+                        principalColumn: "ClassName",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CreatureVariant",
+                columns: table => new
+                {
+                    CreatureClassName = table.Column<string>(type: "TEXT", nullable: false),
+                    VariantsClassName = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CreatureVariant", x => new { x.CreatureClassName, x.VariantsClassName });
+                    table.ForeignKey(
+                        name: "FK_CreatureVariant_Creature_CreatureClassName",
+                        column: x => x.CreatureClassName,
+                        principalTable: "Creature",
+                        principalColumn: "ClassName",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CreatureVariant_Creature_VariantsClassName",
+                        column: x => x.VariantsClassName,
+                        principalTable: "Creature",
+                        principalColumn: "ClassName",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ScannableObject",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ItemClassName = table.Column<string>(type: "TEXT", nullable: true),
+                    CreatureClassName = table.Column<string>(type: "TEXT", nullable: true),
+                    PlantClassName = table.Column<string>(type: "TEXT", nullable: true),
+                    SchematicClassName = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ScannableObject", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_ScannableObject_Creature_CreatureClassName",
+                        column: x => x.CreatureClassName,
+                        principalTable: "Creature",
+                        principalColumn: "ClassName");
+                    table.ForeignKey(
+                        name: "FK_ScannableObject_Item_ItemClassName",
+                        column: x => x.ItemClassName,
+                        principalTable: "Item",
+                        principalColumn: "ClassName");
+                    table.ForeignKey(
+                        name: "FK_ScannableObject_Plant_PlantClassName",
+                        column: x => x.PlantClassName,
+                        principalTable: "Plant",
+                        principalColumn: "ClassName");
+                    table.ForeignKey(
+                        name: "FK_ScannableObject_Schematic_SchematicClassName",
+                        column: x => x.SchematicClassName,
+                        principalTable: "Schematic",
+                        principalColumn: "ClassName");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ScanningActor",
                 columns: table => new
                 {
@@ -746,30 +789,6 @@ namespace Data.Migrations
                         column: x => x.ScannableObjectID,
                         principalTable: "ScannableObject",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CreatureVariant",
-                columns: table => new
-                {
-                    CreatureClassName = table.Column<string>(type: "TEXT", nullable: false),
-                    VariantsClassName = table.Column<string>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CreatureVariant", x => new { x.CreatureClassName, x.VariantsClassName });
-                    table.ForeignKey(
-                        name: "FK_CreatureVariant_Creature_CreatureClassName",
-                        column: x => x.CreatureClassName,
-                        principalTable: "Creature",
-                        principalColumn: "ClassName",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CreatureVariant_Creature_VariantsClassName",
-                        column: x => x.VariantsClassName,
-                        principalTable: "Creature",
-                        principalColumn: "ClassName",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -839,6 +858,11 @@ namespace Data.Migrations
                 column: "RecipeClassName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RecipeProduct_BuildingClassName",
+                table: "RecipeProduct",
+                column: "BuildingClassName");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RecipeProduct_ItemClassName",
                 table: "RecipeProduct",
                 column: "ItemClassName");
@@ -849,9 +873,19 @@ namespace Data.Migrations
                 column: "RecipeClassName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ScannableObject_CreatureClassName",
+                table: "ScannableObject",
+                column: "CreatureClassName");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ScannableObject_ItemClassName",
                 table: "ScannableObject",
                 column: "ItemClassName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScannableObject_PlantClassName",
+                table: "ScannableObject",
+                column: "PlantClassName");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScannableObject_SchematicClassName",
@@ -884,6 +918,16 @@ namespace Data.Migrations
                 column: "SchematicClassName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SchematicDependency_SchematicClassName",
+                table: "SchematicDependency",
+                column: "SchematicClassName");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SchematicDependencySchematics_SchematicsClassName",
+                table: "SchematicDependencySchematics",
+                column: "SchematicsClassName");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SchematicEmoteUnlock_UnlocksEmotesClassName",
                 table: "SchematicEmoteUnlock",
                 column: "UnlocksEmotesClassName");
@@ -907,11 +951,6 @@ namespace Data.Migrations
                 name: "IX_SchematicScannerResourceUnlock_UnlocksScannerResourcesClassName",
                 table: "SchematicScannerResourceUnlock",
                 column: "UnlocksScannerResourcesClassName");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SchematicSchematicDependency_SchematicsClassName",
-                table: "SchematicSchematicDependency",
-                column: "SchematicsClassName");
         }
 
         /// <inheritdoc />
@@ -939,9 +978,6 @@ namespace Data.Migrations
                 name: "Miner");
 
             migrationBuilder.DropTable(
-                name: "Plant");
-
-            migrationBuilder.DropTable(
                 name: "RecipeBuilding");
 
             migrationBuilder.DropTable(
@@ -955,6 +991,9 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "SchematicCost");
+
+            migrationBuilder.DropTable(
+                name: "SchematicDependencySchematics");
 
             migrationBuilder.DropTable(
                 name: "SchematicEmoteUnlock");
@@ -972,9 +1011,6 @@ namespace Data.Migrations
                 name: "SchematicScannerResourceUnlock");
 
             migrationBuilder.DropTable(
-                name: "SchematicSchematicDependency");
-
-            migrationBuilder.DropTable(
                 name: "Statue");
 
             migrationBuilder.DropTable(
@@ -982,9 +1018,6 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Weapon");
-
-            migrationBuilder.DropTable(
-                name: "Creature");
 
             migrationBuilder.DropTable(
                 name: "CustomizationRecipe");
@@ -996,6 +1029,9 @@ namespace Data.Migrations
                 name: "ScannableObject");
 
             migrationBuilder.DropTable(
+                name: "SchematicDependency");
+
+            migrationBuilder.DropTable(
                 name: "Emote");
 
             migrationBuilder.DropTable(
@@ -1005,16 +1041,19 @@ namespace Data.Migrations
                 name: "Resource");
 
             migrationBuilder.DropTable(
-                name: "SchematicDependency");
-
-            migrationBuilder.DropTable(
-                name: "CreatureLoot");
-
-            migrationBuilder.DropTable(
                 name: "Building");
 
             migrationBuilder.DropTable(
+                name: "Creature");
+
+            migrationBuilder.DropTable(
+                name: "Plant");
+
+            migrationBuilder.DropTable(
                 name: "Schematic");
+
+            migrationBuilder.DropTable(
+                name: "CreatureLoot");
 
             migrationBuilder.DropTable(
                 name: "Item");

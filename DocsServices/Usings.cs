@@ -15,3 +15,6 @@ global using System.Globalization;
 global using System.Runtime.CompilerServices;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Options;
+global using System.Data;
+global using Data.Extensions;
+global using Microsoft.Data.Sqlite;

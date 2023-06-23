@@ -532,6 +532,9 @@ namespace Data.Migrations
                     b.Property<string>("ItemClassName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PlantClassName")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SchematicClassName")
                         .HasColumnType("TEXT");
 
@@ -540,6 +543,8 @@ namespace Data.Migrations
                     b.HasIndex("CreatureClassName");
 
                     b.HasIndex("ItemClassName");
+
+                    b.HasIndex("PlantClassName");
 
                     b.HasIndex("SchematicClassName");
 
@@ -1049,6 +1054,10 @@ namespace Data.Migrations
                         .WithMany()
                         .HasForeignKey("ItemClassName");
 
+                    b.HasOne("Data.Models.Implementation.Plant", "Plant")
+                        .WithMany()
+                        .HasForeignKey("PlantClassName");
+
                     b.HasOne("Data.Models.Implementation.Schematic", null)
                         .WithMany("UnlocksScannableObjects")
                         .HasForeignKey("SchematicClassName");
@@ -1056,6 +1065,8 @@ namespace Data.Migrations
                     b.Navigation("Creature");
 
                     b.Navigation("Item");
+
+                    b.Navigation("Plant");
                 });
 
             modelBuilder.Entity("Data.Models.Implementation.ScanningActor", b =>

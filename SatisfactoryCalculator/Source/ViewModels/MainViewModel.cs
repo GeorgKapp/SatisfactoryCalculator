@@ -104,7 +104,6 @@ internal class MainViewModel : ObservableObject
 		    IsInitializing = true;
 		    
 		    var mappedData = await _dataModelMappingService.MapConfigurationModelsAsync();
-
 		    _applicationState.SetConfig(mappedData);
 	    }
 	    catch (Exception exception)

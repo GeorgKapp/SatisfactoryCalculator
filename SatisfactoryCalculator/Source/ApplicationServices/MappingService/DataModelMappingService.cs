@@ -29,7 +29,7 @@ internal class DataModelMappingService
 
     public async Task<DataModelMappingResult> MapConfigurationModelsAsync(IExtendedProgress<string>? progress = null, CancellationToken? token = null)
     {
-        var modelContext = await _modelContextFactory.CreateDbContextAsync();
+        await using var modelContext = await _modelContextFactory.CreateDbContextAsync();
         
         progress?.ReportOrThrow("Map Items", token);
         var items = MapToItemModels(modelContext.Items);
@@ -63,11 +63,12 @@ internal class DataModelMappingService
         var creatures = MapToCreatures(modelContext.Creatures); 
         var creatureDictionary = MapToCreatureDictionary(creatures);
         LinkCreatureVariants(creatures, modelContext.Creatures, itemDictionary, creatureDictionary);
-        //var creatureLoots = MapToCreatureLoots(data.Creatures, itemDictionary, creatureDictionary);
+        var creatureLoots = MapToCreatureLoots(modelContext.Creatures, itemDictionary, creatureDictionary);
         
         progress?.ReportOrThrow("Map Recipes", token);
-        var recipes = MapToRecipeModels(modelContext.Recipes, itemDictionary, buildingDictionary);
+        //var recipes = MapToRecipeModels(modelContext.Recipes, itemDictionary, buildingDictionary);
 
+        var recipes = Array.Empty<IRecipe>();
         progress?.ReportOrThrow("Map References", token);
         var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, fuels, recipes);
 
@@ -210,13 +211,13 @@ internal class DataModelMappingService
         foreach (var ammunition in ammunitions)
         {
             var mappedMunition = (IAmmunition)itemDictionary[ammunition.ClassName];
-            //mappedMunition.UsedInWeapon = (IWeapon)itemDictionary[ammunition.UsedInWeapon];
+            mappedMunition.UsedInWeapon = (IWeapon)itemDictionary[ammunition.WeaponClassName];
         }
         
         foreach (var weapon in weapons)
         {
             var mappedWeapon = (IWeapon)itemDictionary[weapon.ClassName];
-            //mappedWeapon.Ammunitions = weapon.UsesAmmunition.Select(p => (IAmmunition)itemDictionary[p]).ToArray();
+            mappedWeapon.Ammunitions = weapon.Ammunitions.Select(p => (IAmmunition)itemDictionary[p.ClassName]).ToArray();
         }
     }
 
@@ -332,37 +333,28 @@ internal class DataModelMappingService
         foreach (var creature in creatures)
         {
             var creatureModel = creatureDictionary[creature.ClassName];
-            //creatureModel.Variants = MapToVariants(creatureModels, creatures, creatureModel.ClassName, creature.VariantGroup, creatureDictionary);
+            creatureModel.Variants = MapToVariants(creatures, creatureModel.ClassName, creatureDictionary);
         }
     }
     
-    // private ICreature[]? MapToVariants(IEnumerable<ICreature> creatureModels, IEnumerable<Creature> creatures, string creatureClassName, string? variantGroup, IDictionary<string, ICreature> creatureDictionary)
-    // {
-    //     if (variantGroup is null)
-    //         return null;
-    //
-    //     var foundCreatureClassNames =
-    //         creatures
-    //             .Where(p => p.VariantGroup == variantGroup && p.ClassName != creatureClassName)
-    //             .Select(p => p.ClassName);
-    //
-    //     return foundCreatureClassNames
-    //         .Select(p => creatureDictionary[p])
-    //         .OrderBy(p => p.ClassName)
-    //         .ToArray();
-    // }
+    private ICreature[]? MapToVariants(IEnumerable<Creature> creatures, string creatureClassName, IDictionary<string, ICreature> creatureDictionary)
+    {
+        return
+            creatures
+                .Where(p => p.ClassName == creatureClassName)
+                .SelectMany(p => p.Variants)
+                .Select(p => creatureDictionary[p.ClassName])
+                .OrderBy(p => p.ClassName)
+                .ToArray();
+    }
 
-    // private Models.CreatureLoot[] MapToCreatureLoots(IEnumerable<Creature> creatures, IDictionary<string, IItem> itemDictionary, IDictionary<string, ICreature> creatureDictionary)
-    // {
-    //     List<Models.CreatureLoot> creatureLoots = new();
-    //     foreach (var creature in creatures)
-    //     {
-    //         var creatureModel = creatureDictionary[creature.ClassName];
-    //         creatureLoots.AddRange(creature.Loot.Select(loot => MapToLoot(loot.Amount, creatureModel, itemDictionary[loot.ClassName])));
-    //     }
-    //     return creatureLoots.ToArray();
-    // }
-    
+    private Models.CreatureLoot[] MapToCreatureLoots(IEnumerable<Creature> creatures, IDictionary<string, IItem> itemDictionary, IDictionary<string, ICreature> creatureDictionary) =>
+        creatures
+            .Where(p => p.Loot is not null)
+            .Select(p =>
+                MapToLoot(p.Loot!.Amount, creatureDictionary[p.ClassName], itemDictionary[p.Loot.ItemClassName]))
+            .ToArray();
+
     private Models.CreatureLoot MapToLoot(int amount, ICreature mappedCreature, IItem mappedItem) =>
         new()
         {
@@ -371,53 +363,54 @@ internal class DataModelMappingService
             Creature = mappedCreature
         };
 
-    private IRecipe[] MapToRecipeModels(IEnumerable<Recipe> recipes, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary) =>
-        recipes
-            .Select(p => MapToRecipeModel(p, itemDictionary, buildingDictionary))
-            .OrderRecipeModel();
+    // private IRecipe[] MapToRecipeModels(IEnumerable<Recipe> recipes, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary) =>
+    //     recipes
+    //         .Select(p => MapToRecipeModel(p, itemDictionary, buildingDictionary))
+    //         .OrderRecipeModel();
 
-    private IRecipe MapToRecipeModel(Recipe recipe, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
-    {
-        // var buildings = recipe.Buildings
-        //     .Select(building => MapToRecipeBuildingModel(buildingDictionary[building], recipe.VariablePowerConsumptionRange))
-        //     .ToList();
-        //
-        // if (recipe.ConstructedInWorkbench)
-        //     buildings.Add(MapToRecipeBuildingModel(buildingDictionary["WorkBench_C"], recipe.VariablePowerConsumptionRange));
-        //
-        // if (recipe.ConstructedInWorkshop)
-        //     buildings.Add(MapToRecipeBuildingModel(buildingDictionary["Workshop_C"], recipe.VariablePowerConsumptionRange));
-
-        // var productIsBuilding = recipe.Products
-        //     .Any(p => buildingDictionary.ContainsKey(p.Item.ClassName));
-
-        // var ingredients = recipe.Ingredients
-        //     .Select(ingredient => MapToRecipeContentModel(ingredient, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
-        //     .ToArray();
-        //
-        // var products = recipe.Products
-        //     .Select(product => MapToRecipeContentModel(product, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
-        //     .ToArray();
-        
-        return new Models.Recipe
-        {
-            ClassName = recipe.ClassName, 
-            Name = recipe.Name,
-            IsAlternate = recipe.IsAlternate, 
-            ConstructedByBuildGun = recipe.ConstructedByBuildGun,
-            ConstructedInWorkbench = recipe.ConstructedInWorkbench, 
-            ConstructedInWorkshop = recipe.ConstructedInWorkshop,
-            ManufactoringDuration = recipe.ManufactoringDuration, 
-            // Ingredients = ingredients,
-            // Products = products,
-            // Buildings = buildings.ToArray()
-        };
-    }
+    // private IRecipe MapToRecipeModel(Recipe recipe, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
+    // {
+    //     var buildings = recipe.Buildings
+    //         .Select(building => MapToRecipeBuildingModel(buildingDictionary[building.ClassName], recipe.VariablePowerConsumptionRange))
+    //         .ToList();
+    //     
+    //     if (recipe.ConstructedInWorkbench)
+    //         buildings.Add(MapToRecipeBuildingModel(buildingDictionary["WorkBench_C"], recipe.VariablePowerConsumptionRange));
+    //     
+    //     if (recipe.ConstructedInWorkshop)
+    //         buildings.Add(MapToRecipeBuildingModel(buildingDictionary["Workshop_C"], recipe.VariablePowerConsumptionRange));
+    //
+    //     var productIsBuilding = recipe.Products
+    //         .Any(p => buildingDictionary.ContainsKey(p.Item.ClassName));
+    //
+    //     var ingredients = recipe.Ingredients
+    //         .Select(ingredient => MapToRecipeContentModel(ingredient, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
+    //         .ToArray();
+    //     
+    //     var products = recipe.Products
+    //         .Select(product => MapToRecipeContentModel(product, recipe.ManufactoringDuration, itemDictionary, buildingDictionary, productIsBuilding))
+    //         .ToArray();
+    //     
+    //     return new Models.Recipe
+    //     {
+    //         ClassName = recipe.ClassName, 
+    //         Name = recipe.Name,
+    //         IsAlternate = recipe.IsAlternate, 
+    //         ConstructedByBuildGun = recipe.ConstructedByBuildGun,
+    //         ConstructedInWorkbench = recipe.ConstructedInWorkbench, 
+    //         ConstructedInWorkshop = recipe.ConstructedInWorkshop,
+    //         ManufactoringDuration = recipe.ManufactoringDuration, 
+    //         Ingredients = ingredients,
+    //         Products = products,
+    //         Buildings = buildings.ToArray()
+    //     };
+    // }
 
     // private RecipePart MapToRecipeContentModel(Reference recipeItem, double manufactoringDuration, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, bool setOnlyAmount)
     // {
     //     IEntity? recipePart;
     //     Form? form = null;
+    //     
     //     if(itemDictionary.TryGetValue(recipeItem.ClassName, out var item))
     //     {
     //         recipePart = item;

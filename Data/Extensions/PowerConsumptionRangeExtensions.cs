@@ -18,6 +18,6 @@ internal static class PowerConsumptionRangeExtensions
 
         return new(
             Convert.ToDecimal(splittedInput[0]),
-            Convert.ToDecimal(splittedInput[2]));
+            Convert.ToDecimal(splittedInput[1]));
     }
 }

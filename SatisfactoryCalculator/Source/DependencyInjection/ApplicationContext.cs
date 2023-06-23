@@ -30,13 +30,8 @@ internal class ApplicationContext
 
 	private void UpdateDatabase()
 	{
-		var modelContext = ServiceProvider.GetRequiredService<ModelContext>();
+		using var modelContext = ServiceProvider.GetRequiredService<ModelContext>();
 		modelContext.Database.Migrate();
-		//TODO: look for ways to close connection and create temp data during loading
-		//modelContext.Database.CloseConnection();
-		
-		// var tempModelContext = ServiceProvider.GetRequiredService<TempModelContext>();
-		// tempModelContext.Database.EnsureCreated();
 	}
 
 	private void ConnectDataContextLinks()

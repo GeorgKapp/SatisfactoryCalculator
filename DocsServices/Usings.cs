@@ -13,3 +13,5 @@ global using SatisfactoryCalculator.Shared.Utility;
 global using System.Diagnostics;
 global using System.Globalization;
 global using System.Runtime.CompilerServices;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Options;

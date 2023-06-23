@@ -19,53 +19,54 @@ namespace SatisfactoryCalculator.Source.ApplicationServices;
 [SuppressMessage("Performance", "CA1822:Mark members as static")]
 internal class DataModelMappingService
 {
-    public DataModelMappingService(CalculationService calculationService)
+    public DataModelMappingService(
+        CalculationService calculationService,
+        IDbContextFactory<ModelContext> modelContextFactory)
     {
         _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
+        _modelContextFactory = modelContextFactory ?? throw new ArgumentNullException(nameof(modelContextFactory));
     }
 
-    public DataModelMappingResult? MapToConfigurationModel(DataContainer? data, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
+    public async Task<DataModelMappingResult> MapConfigurationModelsAsync(IExtendedProgress<string>? progress = null, CancellationToken? token = null)
     {
-        if (data is null)
-            return null;
+        var modelContext = await _modelContextFactory.CreateDbContextAsync();
         
         progress?.ReportOrThrow("Map Items", token);
-        var items = MapToItemModels(data.Items);
+        var items = MapToItemModels(modelContext.Items);
         var itemDictionary = MapToItemDictionary(items);
         
         progress?.ReportOrThrow("Map Equipments", token);
-        var equipments = MapToEquipments(data.Equipments, itemDictionary);
+        var equipments = MapToEquipments(modelContext.Equipments, itemDictionary);
         
         progress?.ReportOrThrow("Map Consumables", token);
-        var consumables = MapToConsumables(data.Consumables, itemDictionary);
+        var consumables = MapToConsumables(modelContext.Consumables, itemDictionary);
         
         progress?.ReportOrThrow("Map Weapons", token);
-        var weapons = MapToWeapons(data.Weapons, itemDictionary);
+        var weapons = MapToWeapons(modelContext.Weapons, itemDictionary);
         
         progress?.ReportOrThrow("Map Ammunitions", token);
-        var ammunitions = MapToAmmunitions(data.Ammunitions, itemDictionary);
+        var ammunitions = MapToAmmunitions(modelContext.Ammunitions, itemDictionary);
 
-        LinkWeaponsAndAmmunition(data.Weapons, data.Ammunitions, itemDictionary);
+        LinkWeaponsAndAmmunition(modelContext.Weapons, modelContext.Ammunitions, itemDictionary);
 
         progress?.ReportOrThrow("Map Buildings", token);
-        var buildings = MapToBuildingModels(data.Buildings);
+        var buildings = MapToBuildingModels(modelContext.Buildings);
         var buildingDictionary = MapToBuildingDictionary(buildings);
 
         progress?.ReportOrThrow("Map Generators", token);
-        var generators = MapToGeneratorModels(data.Generators, buildingDictionary);
+        var generators = MapToGeneratorModels(modelContext.Generators, buildingDictionary);
         
         progress?.ReportOrThrow("Map Fuels", token);
-        var fuels = MapToFuelModels(data.Generators, generators, itemDictionary);
+        var fuels = MapToFuelModels(modelContext.Generators, generators, itemDictionary);
         
         progress?.ReportOrThrow("Map Creatures", token);
-        var creatures = MapToCreatures(data.Creatures); 
+        var creatures = MapToCreatures(modelContext.Creatures); 
         var creatureDictionary = MapToCreatureDictionary(creatures);
-        LinkCreatureVariants(creatures, data.Creatures, itemDictionary, creatureDictionary);
+        LinkCreatureVariants(creatures, modelContext.Creatures, itemDictionary, creatureDictionary);
         //var creatureLoots = MapToCreatureLoots(data.Creatures, itemDictionary, creatureDictionary);
         
-
         progress?.ReportOrThrow("Map Recipes", token);
-        var recipes = MapToRecipeModels(data.Recipes, itemDictionary, buildingDictionary);
+        var recipes = MapToRecipeModels(modelContext.Recipes, itemDictionary, buildingDictionary);
 
         progress?.ReportOrThrow("Map References", token);
         var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, fuels, recipes);
@@ -529,4 +530,5 @@ internal class DataModelMappingService
     #endregion
 
     private readonly CalculationService _calculationService;
+    private readonly IDbContextFactory<ModelContext> _modelContextFactory;
 }

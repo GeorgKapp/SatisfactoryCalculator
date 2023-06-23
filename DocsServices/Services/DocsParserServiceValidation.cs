@@ -37,7 +37,7 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private static Result SeperatelyValidateDataForDuplicates(ModelContext data)
+    private static Result SeperatelyValidateDataForDuplicates(TempModelContext data)
     {
         return Result.Combine(
             new[] 
@@ -60,7 +60,7 @@ public partial class DocsParserService
             );
     }
 
-    private static Result ValidateDataReferences(ModelContext data)
+    private static Result ValidateDataReferences(TempModelContext data)
     {
         var items = GetClassNames(data.Items);
 
@@ -87,7 +87,7 @@ public partial class DocsParserService
             : Result.Success();
     }
 
-    private static Result ValidateItemExistanceInRecipes(ModelContext data)
+    private static Result ValidateItemExistanceInRecipes(TempModelContext data)
     {
         var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))
@@ -138,7 +138,7 @@ public partial class DocsParserService
         return Result.Combine(recipeResults.Concat(customizationRecipeResults));
     }
 
-    private static Result ValidateItemExistanceInSchematics(ModelContext data)
+    private static Result ValidateItemExistanceInSchematics(TempModelContext data)
     {
         var sources = GetClassNames(data.Items)
             .Concat(GetClassNames(data.Vehicles))

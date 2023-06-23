@@ -1,23 +1,28 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
 {
-	public DocsParserService(JsonService jsonService, TempModelContext tempModelContext)
+	public DocsParserService(
+		JsonService jsonService, 
+		IDbContextFactory<TempModelContext> tempModelContextFactory,
+		IOptions<PathOptions> pathOptions)
 	{
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
-		_tempModelContext = tempModelContext ?? throw new ArgumentNullException(nameof(tempModelContext));
+		_tempModelContextFactory = tempModelContextFactory ?? throw new ArgumentNullException(nameof(tempModelContextFactory));
+		_pathOptions = pathOptions ?? throw new ArgumentNullException(nameof(pathOptions));
 	}
 
-	public async Task<Result<DataContainer>> ParseDocsJsonAsync(
+	public async Task<Result> ParseDocsJsonAsync(
 		string docsFilePath, 
+		string ueModelExportDirectoryPath,
 		IExtendedProgress<string>? progress = null, 
 		CancellationToken? token = null)
 	{
+		await using var tempModelContext = await _tempModelContextFactory.CreateDbContextAsync();
+		
 		try
 		{
-			await _tempModelContext.Database.EnsureCreatedAsync();
+			await tempModelContext.Database.EnsureCreatedAsync();
 
 			progress?.ReportOrThrow("Read docs.json file", token);
 			var rootObjects = (await _jsonService.ReadJsonAsync<RootObject[]>(docsFilePath))!;
@@ -38,8 +43,8 @@ public partial class DocsParserService
 					case "Class'/Script/FactoryGame.FGItemDescriptorBiomass'":
 						biomassItems = ParseItems(class1.Classes);
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						_tempModelContext.Items.AddRange(biomassItems);
-						await _tempModelContext.SaveChangesAsync();
+						tempModelContext.Items.AddRange(biomassItems);
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGItemDescriptor'":
@@ -51,9 +56,9 @@ public partial class DocsParserService
 					case "Class'/Script/FactoryGame.FGAmmoTypeProjectile'":
 					case "Class'/Script/FactoryGame.FGAmmoTypeSpreadshot'":
 					case "Class'/Script/FactoryGame.FGVehicleDescriptor'":
-						_tempModelContext.Items.AddRange(ParseItems(class1.Classes));
+						tempModelContext.Items.AddRange(ParseItems(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
@@ -125,38 +130,42 @@ public partial class DocsParserService
 					case "Class'/Script/FactoryGame.FGPipeHyperStart'":
 					case "Class'/Script/FactoryGame.FGBuildablePole'":
 					case "Class'/Script/FactoryGame.FGBuildablePoleLightweight'":
-						_tempModelContext.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
+						tempModelContext.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 				}
 
+			var itemClassNames = tempModelContext.Items.Select(p => p.ClassName).ToArray();
+			var buildingClassNames = tempModelContext.Buildings.Select(p => p.ClassName).ToArray();
+
 			progress?.ReportOrThrow("Add missing items", token);
-			_tempModelContext.Items.Add(_coffeeCup);
-			_tempModelContext.Items.Add(_goldenCoffeeCup);
-			_tempModelContext.Items.Add(_boomBox);
-			_tempModelContext.Items.Add(_fiscitCoupon);
-			_tempModelContext.Items.Add(_harddrive);
-			await _tempModelContext.SaveChangesAsync();
+			tempModelContext.Items.Add(_coffeeCup);
+			tempModelContext.Items.Add(_goldenCoffeeCup);
+			tempModelContext.Items.Add(_boomBox);
+			tempModelContext.Items.Add(_fiscitCoupon);
+			tempModelContext.Items.Add(_harddrive);
+			await tempModelContext.SaveChangesAsync();
 
 			progress?.ReportOrThrow("Add missing equipment", token);
-			_tempModelContext.Equipments.Add(_coffeeCupEquipment);
-			_tempModelContext.Equipments.Add(_goldenCoffeeCupEquipment);
-			_tempModelContext.Equipments.Add(_boomBoxEquipment);
-			await _tempModelContext.SaveChangesAsync();
+			tempModelContext.Equipments.Add(_coffeeCupEquipment);
+			tempModelContext.Equipments.Add(_goldenCoffeeCupEquipment);
+			tempModelContext.Equipments.Add(_boomBoxEquipment);
+			await tempModelContext.SaveChangesAsync();
 			
 			progress?.ReportOrThrow("Add missing emotes", token);
-			_tempModelContext.Emotes.AddRange(_emotes);
-			await _tempModelContext.SaveChangesAsync();
+			tempModelContext.Emotes.AddRange(_emotes);
+			await tempModelContext.SaveChangesAsync();
 
 			progress?.ReportOrThrow("Add missing statues", token);
-			_tempModelContext.Statues.AddRange(_statues);
-			await _tempModelContext.SaveChangesAsync();
+			tempModelContext.Statues.AddRange(_statues);
+			await tempModelContext.SaveChangesAsync();
 
 			progress?.ReportOrThrow("Add missing creatures", token);
-			_tempModelContext.Creatures.AddRange(_creatures);
-			await _tempModelContext.SaveChangesAsync();
-			foreach (var creature in _tempModelContext.Creatures)
+			tempModelContext.Creatures.AddRange(_creatures);
+			await tempModelContext.SaveChangesAsync();
+			
+			foreach (var creature in tempModelContext.Creatures)
 			{
 				var creatureVariants = _createVariantGroups
 					.FirstOrDefault(p => p.Contains(creature.ClassName));
@@ -164,21 +173,21 @@ public partial class DocsParserService
 				if (creatureVariants is null)
 					continue;
 				
-				creature.Variants = _tempModelContext.Creatures
+				creature.Variants = tempModelContext.Creatures
 					.Where(p => creatureVariants.Contains(p.ClassName) && p.ClassName != creature.ClassName)
 					.ToArray();
 				
-				await _tempModelContext.SaveChangesAsync();
+				await tempModelContext.SaveChangesAsync();
 			}
 
 			progress?.ReportOrThrow("Add missing plants", token);
-			_tempModelContext.Plants.AddRange(_plants);
-			await _tempModelContext.SaveChangesAsync();
+			tempModelContext.Plants.AddRange(_plants);
+			await tempModelContext.SaveChangesAsync();
 			
 			progress?.ReportOrThrow("Add missing vehicles", token);
-			_tempModelContext.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCart_C"]));
-			_tempModelContext.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCartGold_C"]));
-			await _tempModelContext.SaveChangesAsync();
+			tempModelContext.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCart_C"]));
+			tempModelContext.Vehicles.Add(ParseVehicle(classesDictionary["Desc_GolfCartGold_C"]));
+			await tempModelContext.SaveChangesAsync();
 			
 			progress?.ReportOrThrow("Add weapons", token);
 			var ammunitionWeaponReferences = new Dictionary<string, string>();
@@ -188,8 +197,8 @@ public partial class DocsParserService
 					case "Class'/Script/FactoryGame.FGWeapon'":
 					case "Class'/Script/FactoryGame.FGEquipmentStunSpear'":
 					case "Class'/Script/FactoryGame.FGChargedWeapon'":
-						var parsedWeaponResults = ParseWeapons(class1.Classes, _tempModelContext.Ammunitions).ToArray();
-						_tempModelContext.Weapons.AddRange(parsedWeaponResults.Select(p => p.Item1));
+						var parsedWeaponResults = ParseWeapons(class1.Classes, tempModelContext.Ammunitions).ToArray();
+						tempModelContext.Weapons.AddRange(parsedWeaponResults.Select(p => p.Item1));
 						
 						foreach (var parsedWeaponResult in parsedWeaponResults)
 						{
@@ -198,7 +207,7 @@ public partial class DocsParserService
 						}
 						
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 				}
 
@@ -209,9 +218,9 @@ public partial class DocsParserService
 					case "Class'/Script/FactoryGame.FGAmmoTypeInstantHit'":
 					case "Class'/Script/FactoryGame.FGAmmoTypeProjectile'":
 					case "Class'/Script/FactoryGame.FGAmmoTypeSpreadshot'":
-						_tempModelContext.Ammunitions.AddRange(ParseAmmunitions(class1.Classes, ammunitionWeaponReferences));
+						tempModelContext.Ammunitions.AddRange(ParseAmmunitions(class1.Classes, ammunitionWeaponReferences));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 				}
 
@@ -222,21 +231,21 @@ public partial class DocsParserService
 				switch (class1.NativeClass)
 				{
 					case "Class'/Script/FactoryGame.FGConsumableDescriptor'":
-						_tempModelContext.Consumables.AddRange(ParseConsumables(class1.Classes));
+						tempModelContext.Consumables.AddRange(ParseConsumables(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGResourceDescriptor'":
-						_tempModelContext.Resources.AddRange(ParseResources(class1.Classes));
+						tempModelContext.Resources.AddRange(ParseResources(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGVehicleDescriptor'":
-						_tempModelContext.Vehicles.AddRange(ParseVehicles(class1.Classes));
+						tempModelContext.Vehicles.AddRange(ParseVehicles(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGSuitBase'":
@@ -248,36 +257,36 @@ public partial class DocsParserService
 					case "Class'/Script/FactoryGame.FGGasMask'":
 					case "Class'/Script/FactoryGame.FGEquipmentZipline'":
 					case "Class'/Script/FactoryGame.FGChainsaw'":
-						_tempModelContext.Equipments.AddRange(ParseEquipments(class1.Classes));
+						tempModelContext.Equipments.AddRange(ParseEquipments(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
 					case "Class'/Script/FactoryGame.FGBuildableWaterPump'":
-						_tempModelContext.Miners.AddRange(ParseMiners(class1.Classes));
+						tempModelContext.Miners.AddRange(ParseMiners(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGBuildableGeneratorFuel'":
 					case "Class'/Script/FactoryGame.FGBuildableGeneratorNuclear'":
 					case "Class'/Script/FactoryGame.FGBuildableGeneratorGeoThermal'":
-						_tempModelContext.Generators.AddRange(ParseGenerators(class1.Classes, biomassItems!));
+						tempModelContext.Generators.AddRange(ParseGenerators(class1.Classes, biomassItems!));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGRecipe'":
-						_tempModelContext.Recipes.AddRange(ParseRecipes(class1.Classes));
+						tempModelContext.Recipes.AddRange(ParseRecipes(class1.Classes, tempModelContext));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 
 					case "Class'/Script/FactoryGame.FGCustomizationRecipe'":
-						_tempModelContext.CustomizationRecipes.AddRange(ParseCustomizationRecipes(class1.Classes));
+						tempModelContext.CustomizationRecipes.AddRange(ParseCustomizationRecipes(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await _tempModelContext.SaveChangesAsync();
+						await tempModelContext.SaveChangesAsync();
 						break;
 					
 					case "Class'/Script/FactoryGame.FGPortableMinerDispenser'":
@@ -294,81 +303,67 @@ public partial class DocsParserService
 			foreach (var class1 in rootObjects)
 				if (class1.NativeClass == "Class'/Script/FactoryGame.FGSchematic'")
 				{
-					_tempModelContext.Schematics.AddRange(ParseSchematics(class1.Classes));
+					tempModelContext.Schematics.AddRange(ParseSchematics(class1.Classes, tempModelContext));
 					rootObjectHandledDictionary[class1.NativeClass] = true;
-					await _tempModelContext.SaveChangesAsync();
+					await tempModelContext.SaveChangesAsync();
 				}
-
 
 			progress?.ReportOrThrow("Check if all references very traversed");
 			var missingReferencesResult = ValidateIfAllEntitiesWereTraversed(rootObjectHandledDictionary);
 			if (!missingReferencesResult.IsSuccess)
-				return Result<DataContainer>.Failure(missingReferencesResult.Error!);
+				return Result.Failure(missingReferencesResult.Error!);
 
 			progress?.ReportOrThrow("Edit equipment description", token);
-			EditEquipmentDescription(_tempModelContext.Items);
-			await _tempModelContext.SaveChangesAsync();
+			EditEquipmentDescription(tempModelContext.Items);
+			await tempModelContext.SaveChangesAsync();
 			
 			progress?.ReportOrThrow("Remove Generator Fuels with no energy value", token);
-			RemoveGeneratorFuelsWithNoEnergy(_tempModelContext.Generators);
-			await _tempModelContext.SaveChangesAsync();
+			RemoveGeneratorFuelsWithNoEnergy(tempModelContext.Generators);
+			await tempModelContext.SaveChangesAsync();
 
 			progress?.ReportOrThrow("Check for duplicates", token);
-			var duplicateCheckResult = SeperatelyValidateDataForDuplicates(_tempModelContext);
+			var duplicateCheckResult = SeperatelyValidateDataForDuplicates(tempModelContext);
 			if (!duplicateCheckResult.IsSuccess)
-				return Result<DataContainer>.Failure(duplicateCheckResult.Error!);
+				return Result.Failure(duplicateCheckResult.Error!);
 
 			progress?.ReportOrThrow("Check data references", token);
-			var dataReferencesCheckResult = ValidateDataReferences(_tempModelContext);
+			var dataReferencesCheckResult = ValidateDataReferences(tempModelContext);
 			if (!dataReferencesCheckResult.IsSuccess)
-				return Result<DataContainer>.Failure(dataReferencesCheckResult.Error!);
+				return Result.Failure(dataReferencesCheckResult.Error!);
 
 			progress?.ReportOrThrow("Check if all items exist for recipe info", token);
-			var validateItemExistenceInRecipesCheckResult = ValidateItemExistanceInRecipes(_tempModelContext);
+			var validateItemExistenceInRecipesCheckResult = ValidateItemExistanceInRecipes(tempModelContext);
 			if (!validateItemExistenceInRecipesCheckResult.IsSuccess)
-				return Result<DataContainer>.Failure(validateItemExistenceInRecipesCheckResult.Error!);
+				return Result.Failure(validateItemExistenceInRecipesCheckResult.Error!);
 
 			progress?.ReportOrThrow("Check if all items and all schematic references exist for schematic info", token);
-			var validateItemExistenceInSchematicsCheckResult = ValidateItemExistanceInSchematics(_tempModelContext);
+			var validateItemExistenceInSchematicsCheckResult = ValidateItemExistanceInSchematics(tempModelContext);
 			if (!validateItemExistenceInSchematicsCheckResult.IsSuccess)
-				return Result<DataContainer>.Failure(validateItemExistenceInSchematicsCheckResult.Error!);
-
+				return Result.Failure(validateItemExistenceInSchematicsCheckResult.Error!);
+			
+			//TODO: insert configuration copying beforehand
+			progress?.ReportOrThrow("Parse images", token);
+			await CreateImagesAsync(tempModelContext, ueModelExportDirectoryPath, _pathOptions.Value.ImageFolder, progress, token);
+			
+			File.Copy(
+				@$"{_pathOptions.Value.DataFolder}\TempData.db", 
+				@$"{_pathOptions.Value.DataFolder}\Data.db", 
+				true);
+			
 			progress?.ReportSuccess("Data succesfully parsed");
-
-			var dataContainer = new DataContainer
-			{
-				Ammunitions = _tempModelContext.Ammunitions.ToList(),
-				Buildings = _tempModelContext.Buildings.ToList(),
-				Consumables = _tempModelContext.Consumables.ToList(),
-				Creatures = _tempModelContext.Creatures.ToList(),
-				CustomizationRecipes = _tempModelContext.CustomizationRecipes.ToList(),
-				Emotes = _tempModelContext.Emotes.ToList(),
-				Equipments = _tempModelContext.Equipments.ToList(),
-				Generators = _tempModelContext.Generators.ToList(),
-				Items = _tempModelContext.Items.ToList(),
-				Miners = _tempModelContext.Miners.ToList(),
-				Plants = _tempModelContext.Plants.ToList(),
-				Recipes = _tempModelContext.Recipes.ToList(),
-				Resources = _tempModelContext.Resources.ToList(),
-				Schematics = _tempModelContext.Schematics.ToList(),
-				Statues = _tempModelContext.Statues.ToList(),
-				Vehicles = _tempModelContext.Vehicles.ToList(),
-				Weapons = _tempModelContext.Weapons.ToList(),
-			};
-
-			return Result<DataContainer>.Success(dataContainer);
+			return Result.Success();
 		}
 		catch (Exception exception)
 		{
-			return Result<DataContainer>.Failure(exception.ToString());
+			return Result.Failure(exception.ToString());
 		}
 		finally
 		{
-			_tempModelContext.ChangeTracker.Clear();
-			await _tempModelContext.Database.EnsureDeletedAsync();
+			await tempModelContext.Database.EnsureDeletedAsync();
 		}
 	}
 
 	private readonly JsonService _jsonService;
-    private readonly ModelContext _tempModelContext;
+    private readonly IDbContextFactory<TempModelContext> _tempModelContextFactory;
+    private readonly IOptions<PathOptions> _pathOptions;
 }

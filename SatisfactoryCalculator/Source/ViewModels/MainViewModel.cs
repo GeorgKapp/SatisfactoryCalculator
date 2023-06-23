@@ -57,12 +57,12 @@ internal class MainViewModel : ObservableObject
     public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(Save);
 
 	public MainViewModel(
-		ModelContext modelContext,
+		IDbContextFactory<ModelContext> modelContextFactory,
 		ApplicationState applicationState, 
 		JsonService jsonService, 
 		DataModelMappingService dataModelMappingService)
 	{
-		_modelContext = modelContext ?? throw new ArgumentNullException(nameof(modelContext));
+		_modelContextFactory = modelContextFactory ?? throw new ArgumentNullException(nameof(modelContextFactory));
 		_applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
 		_jsonService = jsonService ?? throw new ArgumentNullException(nameof(jsonService));
 		_dataModelMappingService = dataModelMappingService ?? throw new ArgumentNullException(nameof(dataModelMappingService));
@@ -91,7 +91,10 @@ internal class MainViewModel : ObservableObject
 		CurrentPage = fetchResult.Item1;
 	}
 	
-	private void Save() => _modelContext.SaveChanges();
+	private void Save()
+	{
+		//Insert instance saving maybe
+	}
 
 	public async Task Load()
     {
@@ -100,23 +103,9 @@ internal class MainViewModel : ObservableObject
 		    InitializingText = "Initializing";
 		    IsInitializing = true;
 		    
-		    //
-		    // // ReSharper disable once HeapView.ClosureAllocation
-		    // var data = (await DebugExtensions.ProfileAsync(
-			   //  _jsonService.ReadUtf8JsonAsync<Data>(Constants.InformationFileName),
-			   //  "Read Data"))!;
-		    //
-		    // var mappedData = DebugExtensions.Profile(() =>
-				  //   _dataModelMappingService.MapToConfigurationModel(data),
-			   //  "Map Data");
-		    //
-		    // if (mappedData is null)
-		    // {
-			   //  Debug.WriteLine("Data was null");
-			   //  return;
-		    // }
-		    //
-		    // _applicationState.SetConfig(data, mappedData);
+		    var mappedData = await _dataModelMappingService.MapConfigurationModelsAsync();
+
+		    _applicationState.SetConfig(mappedData);
 	    }
 	    catch (Exception exception)
 	    {
@@ -131,7 +120,7 @@ internal class MainViewModel : ObservableObject
 	    }
     }
 
-    private readonly ModelContext _modelContext;
+    private readonly IDbContextFactory<ModelContext> _modelContextFactory;
     private readonly ApplicationState _applicationState;
     private readonly JsonService _jsonService;
     private readonly DataModelMappingService _dataModelMappingService;

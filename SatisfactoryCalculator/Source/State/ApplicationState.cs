@@ -11,13 +11,9 @@ internal class ApplicationState : ObservableObject
         // ReSharper disable once UnusedMember.Global
         set => SetProperty(ref _configuration, value);
     }
-
-    public DataContainer? Data { get; private set; }
-
-    public void SetConfig(DataContainer data, DataModelMappingResult mappingResult)
+    
+    public void SetConfig(DataModelMappingResult mappingResult)
 	{
-        Data = data;
-        
         Configuration.Items = new(mappingResult.Items);
         Configuration.Equipments = new(mappingResult.Equipments);
         Configuration.Consumables = new(mappingResult.Consumables);

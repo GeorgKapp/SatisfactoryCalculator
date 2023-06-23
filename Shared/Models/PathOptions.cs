@@ -1,6 +1,6 @@
-namespace SatisfactoryCalculator.Source.State;
+namespace SatisfactoryCalculator.Shared.Models;
 
-internal class PathOptions
+public class PathOptions
 {
     public string DataFolder { get; set; }
     public string ImageFolder{ get; set; }

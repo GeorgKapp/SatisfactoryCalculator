@@ -1,32 +1,32 @@
 namespace SatisfactoryCalculator.DocsServices.Services;
 
-public class DataModelImageCreateService
+public partial class DocsParserService
 {
-    public static async Task<DataContainer> CreateImagesAsync(DataContainer data, string ueModelExportPath, string imageFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
+    private static async Task CreateImagesAsync(TempModelContext tempModelContext, string ueModelExportPath, string imageFilePath, IExtendedProgress<string>? progress = null, CancellationToken? token = null)
     {
         progress?.ReportOrThrow("Creating Images", token);
         if (!Directory.Exists(imageFilePath))
             Directory.CreateDirectory(imageFilePath);
 
         progress?.ReportOrThrow("Creating Item Images", token);
-        await CreateImagesAsync(data.Items, ueModelExportPath, imageFilePath);
+        await CreateImagesAsync(tempModelContext.Items, ueModelExportPath, imageFilePath);
 
         progress?.ReportOrThrow("Creating Building Images", token);
-        await CreateImagesAsync(data.Buildings, ueModelExportPath, imageFilePath);
+        await CreateImagesAsync(tempModelContext.Buildings, ueModelExportPath, imageFilePath);
 
         progress?.ReportOrThrow("Creating Schematic Images", token);
-        await CreateImagesAsync(data.Schematics, ueModelExportPath, imageFilePath);
+        await CreateImagesAsync(tempModelContext.Schematics, ueModelExportPath, imageFilePath);
 
         progress?.ReportOrThrow("Creating Emote Images", token);
-        await CreateImagesAsync(data.Emotes, ueModelExportPath, imageFilePath);
+        await CreateImagesAsync(tempModelContext.Emotes, ueModelExportPath, imageFilePath);
 
         progress?.ReportOrThrow("Creating Statue Images", token);
-        await CreateImagesAsync(data.Statues, ueModelExportPath, imageFilePath);
+        await CreateImagesAsync(tempModelContext.Statues, ueModelExportPath, imageFilePath);
         
         progress?.ReportOrThrow("Creating Creature Images", token);
-        await CreateImagesAsync(data.Creatures, ueModelExportPath, imageFilePath);
+        await CreateImagesAsync(tempModelContext.Creatures, ueModelExportPath, imageFilePath);
 
-        return data;
+        await tempModelContext.SaveChangesAsync();
     }
 
     private static async Task CreateImagesAsync(IEnumerable<IImage> iconObjects, string ueModelExportPath, string imageFilePath)

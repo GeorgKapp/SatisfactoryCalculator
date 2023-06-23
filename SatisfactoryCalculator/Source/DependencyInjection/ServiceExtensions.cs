@@ -40,15 +40,17 @@ internal static class ServiceExtensions
 	
 	private static IServiceCollection AddDbContext(this IServiceCollection services, PathOptions pathOptions)
 	{
-		services.AddDbContext<ModelContext>(options =>
-			options.UseSqlite($@"Data Source={pathOptions.DataFolder}\Data.db"));
+		services.AddDbContextFactory<ModelContext>(options =>
+			options
+				.UseSqlite($@"Data Source={pathOptions.DataFolder}\Data.db;Pooling=false")
+			);
 		
 		services.AddDbContextFactory<TempModelContext>(options =>
 			options
-				.UseSqlite($@"Data Source={pathOptions.DataFolder}\TempData.db")
+				.UseSqlite($@"Data Source={pathOptions.DataFolder}\TempData.db;Pooling=false")
 				.LogTo(p => Debug.WriteLine(p), LogLevel.Error)
 				.EnableSensitiveDataLogging()
-				);
+		);
 		
 		return services;
 	}
@@ -76,8 +78,7 @@ internal static class ServiceExtensions
 	{
 		services
 			.AddTransient<JsonService>()
-			.AddTransient<DocsParserService>()
-			.AddTransient<DataModelImageCreateService>();
+			.AddTransient<DocsParserService>();
 
 		return services;
 	}

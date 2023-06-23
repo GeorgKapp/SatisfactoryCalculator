@@ -6,13 +6,7 @@ public class JsonService
 	{
 		WriteIndented = true
 	};
-
-	public void WriteJson<T>(T serializedObject, string fileName)
-	{
-		var contents = JsonSerializer.Serialize(serializedObject, _options);
-		File.WriteAllText(fileName, contents);
-	}
-
+	
 	public async Task<T?> ReadJsonAsync<T>(string jsonFileName)
 	{
 		if (!File.Exists(jsonFileName))

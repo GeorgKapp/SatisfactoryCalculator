@@ -200,16 +200,16 @@ public partial class DocsParserService
             .Contains(className);
     }
 
-    private IEnumerable<Recipe> ParseRecipes(IEnumerable<Classes> classes2)
+    private IEnumerable<Recipe> ParseRecipes(IEnumerable<Classes> classes2, TempModelContext tempModelContext)
     {
         return classes2
             .Where(p => !ExcludeRecipe(p.ClassName))
-            .Select(ParseRecipe)
+            .Select(p => ParseRecipe(p, tempModelContext))
             .Where(p => p is not null).Cast<Recipe>()
             .ToArray();
     }
 
-    private Recipe? ParseRecipe(Classes class2)
+    private Recipe? ParseRecipe(Classes class2, TempModelContext tempModelContext)
     {
         var producedInBuildings = ReferenceParseUtility.GetReferences(class2.mProducedIn);
         if (producedInBuildings.Contains("Converter_C"))
@@ -224,7 +224,7 @@ public partial class DocsParserService
             .Except("BuildGun", "FGBuildGun", "WorkshopComponent", "WorkBenchComponent", "FGBuildableAutomatedWorkBench", "AutomatedWorkBench")
             .ToArray();
 
-        var buildings = _tempModelContext.Buildings
+        var buildings = tempModelContext.Buildings
             .Where(p => producedInBuildings.Contains(p.ClassName))
             .ToArray();
         
@@ -241,9 +241,9 @@ public partial class DocsParserService
             string? itemClassName = null;
             string? buildingClassName = null;
             
-            if (_tempModelContext.Items.Any(item => item.ClassName == p.ClassName))
+            if (tempModelContext.Items.Any(item => item.ClassName == p.ClassName))
                 itemClassName = p.ClassName;
-            else if (_tempModelContext.Buildings.Any(building => building.ClassName == p.ClassName))
+            else if (tempModelContext.Buildings.Any(building => building.ClassName == p.ClassName))
                 buildingClassName = p.ClassName;
             else
                 throw new($"Recipe Product: {p.ClassName} is not contained as either building or item for Recipe: {class2.ClassName}");
@@ -336,11 +336,11 @@ public partial class DocsParserService
         };
     }
 
-    private IEnumerable<Schematic> ParseSchematics(IEnumerable<Classes> classes2)
+    private IEnumerable<Schematic> ParseSchematics(IEnumerable<Classes> classes2, TempModelContext tempModelContext)
     {
         return classes2
             .Where(p => !ExcludeSchematics(p.ClassName))
-            .Select(ParseSchematic)
+            .Select(x => ParseSchematic(x, tempModelContext))
             .ToArray();
     }
 
@@ -349,7 +349,7 @@ public partial class DocsParserService
         return className is "Schematic_StartingRecipes_C" or "Schematic_SaveCompatibility_C";
     }
 
-    private Schematic ParseSchematic(Classes class2)
+    private Schematic ParseSchematic(Classes class2, TempModelContext tempModelContext)
     {
         var costs = UnrealEngineClassParser.ParseInputs(class2.mCost)
             .Select(p => new SchematicCost { ItemClassName = p.ClassName, Amount = p.Amount ?? 1})
@@ -390,20 +390,20 @@ public partial class DocsParserService
                 
                 case "BP_UnlockRecipe_C":
                     var recipeReferences =  ReferenceParseUtility.GetReferences(munlock.mRecipes);
-                    schematic.UnlocksRecipes = _tempModelContext.Recipes
+                    schematic.UnlocksRecipes = tempModelContext.Recipes
                         .Where(p => recipeReferences.Contains(p.ClassName))
                         .ToArray();
                     break;
                 
                 case "BP_UnlockScannableObject_C":
-                    var itemClassNames = _tempModelContext.Items.Select(p => p.ClassName).ToArray();
-                    var buildingClassNames = _tempModelContext.Buildings.Select(p => p.ClassName).ToArray();
+                    var itemClassNames = tempModelContext.Items.Select(p => p.ClassName).ToArray();
+                    var buildingClassNames = tempModelContext.Buildings.Select(p => p.ClassName).ToArray();
                     schematic.UnlocksScannableObjects = ScannableObjectParseUtility.MapToScannableObjects(munlock.mScannableObjects, itemClassNames, buildingClassNames);
                     break;
                 
                 case "BP_UnlockEmote_C":
                     var emoteReferences =  ReferenceParseUtility.GetReferences(munlock.mEmotes);
-                    schematic.UnlocksEmotes = _tempModelContext.Emotes
+                    schematic.UnlocksEmotes = tempModelContext.Emotes
                         .Where(p => emoteReferences.Contains(p.ClassName))
                         .ToArray();
                     break;
@@ -416,7 +416,7 @@ public partial class DocsParserService
                             .Select(p => p.ClassName)
                             .ToArray();
                         
-                        schematic.UnlocksScannerResources = _tempModelContext.Resources
+                        schematic.UnlocksScannerResources = tempModelContext.Resources
                             .Where(p => scannerResourcesReferences.Contains(p.ClassName))
                             .ToArray();
                     }
@@ -428,7 +428,7 @@ public partial class DocsParserService
                             .Select(p => p.ClassName)
                             .ToArray();
                         
-                        schematic.UnlocksScannerResourcePairs = _tempModelContext.Resources
+                        schematic.UnlocksScannerResourcePairs = tempModelContext.Resources
                             .Where(p => scannerResourcePairsReferences.Contains(p.ClassName))
                             .ToArray();
                     }
@@ -436,7 +436,7 @@ public partial class DocsParserService
                 
                 case "BP_UnlockGiveItem_C":
                     var itemReferences =  ReferenceParseUtility.GetReferences(munlock.mItemsToGive);
-                    schematic.GivesItems = _tempModelContext.Items
+                    schematic.GivesItems = tempModelContext.Items
                         .Where(p => itemReferences.Contains(p.ClassName))
                         .ToArray();
                     break;

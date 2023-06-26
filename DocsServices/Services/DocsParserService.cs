@@ -227,6 +227,14 @@ public partial class DocsParserService
 						await tempModelContext.SaveChangesAsync();
 						break;
 				}
+			
+			foreach(var class1 in rootObjects)
+				if (class1.NativeClass == "Class'/Script/FactoryGame.FGResourceDescriptor'")
+				{
+					tempModelContext.Resources.AddRange(ParseResources(class1.Classes));
+					rootObjectHandledDictionary[class1.NativeClass] = true;
+					await tempModelContext.SaveChangesAsync();
+				}
 
 			progress?.ReportOrThrow("Add other entities", token);
 			foreach (var class1 in rootObjects)
@@ -239,13 +247,7 @@ public partial class DocsParserService
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
-
-					case "Class'/Script/FactoryGame.FGResourceDescriptor'":
-						tempModelContext.Resources.AddRange(ParseResources(class1.Classes));
-						rootObjectHandledDictionary[class1.NativeClass] = true;
-						await tempModelContext.SaveChangesAsync();
-						break;
-
+					
 					case "Class'/Script/FactoryGame.FGVehicleDescriptor'":
 						tempModelContext.Vehicles.AddRange(ParseVehicles(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
@@ -268,7 +270,7 @@ public partial class DocsParserService
 
 					case "Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
 					case "Class'/Script/FactoryGame.FGBuildableWaterPump'":
-						tempModelContext.Miners.AddRange(ParseMiners(class1.Classes));
+						tempModelContext.Miners.AddRange(ParseMiners(class1.Classes, tempModelContext));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;

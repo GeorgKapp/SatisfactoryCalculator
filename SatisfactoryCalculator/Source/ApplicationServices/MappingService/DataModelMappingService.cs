@@ -67,7 +67,7 @@ internal class DataModelMappingService
         var creatureLoots = MapToCreatureLoots(modelContext.Creatures, itemDictionary, creatureDictionary);
         
         progress?.ReportOrThrow("Map Ammunitions", token);
-        var resources = MapToResources(modelContext.Resources, itemDictionary);
+        var resources = MapToResources(modelContext.Resources.LoadAll(), itemDictionary);
         
         progress?.ReportOrThrow("Map Recipes", token);
         var recipes = MapToRecipeModels(modelContext.Recipes.LoadAll(), itemDictionary, buildingDictionary);

@@ -318,23 +318,41 @@ public partial class DocsParserService
         return customizationRecipe;
     }
 
-    private IEnumerable<Miner> ParseMiners(IEnumerable<Classes> classes2)
+    private IEnumerable<Miner> ParseMiners(IEnumerable<Classes> classes2, TempModelContext tempModelContext)
     {
         return classes2
-            .Select(ParseMiner)
+            .Select(p => ParseMiner(p, tempModelContext))
             .ToArray();
     }
 
-    private Miner ParseMiner(Classes class2)
+    private Miner ParseMiner(Classes class2, TempModelContext tempModelContext)
     {
+        var foundResources = new List<Resource>();
+        
+        if (!string.IsNullOrEmpty(class2.mAllowedResources))
+        {
+            var references = UnrealEngineClassParser.ParseInputs(class2.mAllowedResources)
+                .Select(p => p.ClassName)
+                .ToArray();
+
+            foundResources = tempModelContext.Resources
+                .Where(p => references.Contains(p.ClassName))
+                .ToList();
+        }
+        else
+        {
+            foundResources = tempModelContext.Resources
+                .Where(p => p.Item.Form == Form.Solid)
+                .ToList();
+        }
+        
         return new()
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!,
             ItemsPerCycle = Convert.ToInt32(class2.mItemsPerCycle),
             ExtractCycleTime = class2.mExtractCycleTime.MapToNullableDecimal(),
-            AllowedResourceForm = class2.ClassName == "Build_GeneratorGeoThermal_C"
-                ? Form.Gas
-                : MultiFormParseUtility.MapToForms(class2.mAllowedResourceForms).First()
+            AllowedResourceForm = MultiFormParseUtility.MapToForms(class2.mAllowedResourceForms).First(),
+            ExtractableResources = foundResources
         };
     }
 

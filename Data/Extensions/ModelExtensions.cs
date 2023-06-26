@@ -78,7 +78,8 @@ public static class ModelExtensions
     
     public static IQueryable<Resource> LoadAll(this IQueryable<Resource> resources) =>
         resources
-            .Include(p => p.Item);
+            .Include(p => p.Item)
+            .Include(p => p.Miners);
     
     public static IQueryable<ScannableObject> LoadAll(this IQueryable<ScannableObject> scannableObjects) =>
         scannableObjects

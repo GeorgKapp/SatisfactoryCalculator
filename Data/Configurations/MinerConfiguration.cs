@@ -14,5 +14,9 @@ internal class MinerConfiguration : IEntityTypeConfiguration<Miner>
         entity.HasOne(p => p.Building)
             .WithOne(p => p.Miner)
             .HasForeignKey<Miner>(p => p.ClassName);
+
+        entity.HasMany(p => p.ExtractableResources)
+            .WithMany(p => p.Miners)
+            .UsingEntity(p => p.ToTable("MinerResource"));
     }
 }

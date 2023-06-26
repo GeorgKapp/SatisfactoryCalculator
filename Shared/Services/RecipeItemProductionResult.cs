@@ -1,7 +1,7 @@
 ﻿// ReSharper disable once CheckNamespace
-namespace SatisfactoryCalculator.Source.ApplicationServices;
+namespace SatisfactoryCalculator.Shared.Services;
 
-internal class RecipeItemProductionResult
+public class RecipeItemProductionResult
 {
     public decimal Amount { get; init; }
     public decimal AmountPerMinute { get; init; }

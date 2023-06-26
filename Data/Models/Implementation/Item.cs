@@ -14,9 +14,9 @@ public class Item : IClassNamePrimaryKey, INameEntity, IDescriptionEntity, IImag
     public decimal? RadioActiveDecay { get; set; }
     public int? SinkPoints { get; set; }
     public Ammunition? Ammunition { get; set; }
-    public Weapon? Weapon { get; set; }
     public Consumable? Consumable { get; set; }
-    public Vehicle? Vehicle { get; set; }
-    public Resource? Resource { get; set; }
     public Equipment? Equipment { get; set; }
+    public Resource? Resource { get; set; }
+    public Vehicle? Vehicle { get; set; }
+    public Weapon? Weapon { get; set; }
 }

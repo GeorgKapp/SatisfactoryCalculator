@@ -112,6 +112,7 @@ internal class MainViewModel : ObservableObject
 		    ClipBoardService.CopyToClipboard(exception.Message);
 		    await Task.Delay(1000);
 	    }
+
 	    finally
 	    {
 		    InitializingText = string.Empty;

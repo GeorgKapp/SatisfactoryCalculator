@@ -28,6 +28,9 @@ public partial class DocsParserService
 
 			progress?.ReportOrThrow("Read docs.json file", token);
 			var rootObjects = (await _jsonService.ReadJsonAsync<RootObject[]>(docsFilePath))!;
+
+			var allTypes = GetAllTypes(rootObjects);
+			
 			
 			var rootObjectHandledDictionary = rootObjects
 				.ToDictionary(p => p.NativeClass, c => false);
@@ -344,6 +347,7 @@ public partial class DocsParserService
 				return Result.Failure(validateItemExistenceInSchematicsCheckResult.Error!);
 			
 			//TODO: insert configuration copying beforehand
+			
 			progress?.ReportOrThrow("Parse images", token);
 			await CreateImagesAsync(tempModelContext, ueModelExportDirectoryPath, _pathOptions.Value.ImageFolder, progress, token);
 			
@@ -370,7 +374,7 @@ public partial class DocsParserService
 	private async Task CopyMigrationHistoryAsync(TempModelContext tempModelContext)
 	{
 		var modelContext = await _modelContextFactory.CreateDbContextAsync();
-		var data = modelContext.ExecuteSelect("SELECT MigrationId, ProductVersion FROM __EFMigrationsHistory;");
+		var data = modelContext.SelectQuery("SELECT MigrationId, ProductVersion FROM __EFMigrationsHistory;");
 		
 		await tempModelContext.Database.ExecuteSqlAsync(
 			$"CREATE TABLE __EFMigrationsHistory (MigrationId TEXT NOT NULL CONSTRAINT PK___EFMigrationsHistory PRIMARY KEY, ProductVersion TEXT NOT NULL);");

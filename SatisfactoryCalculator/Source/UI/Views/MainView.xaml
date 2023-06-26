@@ -19,12 +19,12 @@
         <Grid d:Visibility="Collapsed" Visibility="{Binding IsInitializing, Converter={StaticResource BooleanToVisibilityConverter}}">
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
@@ -37,12 +37,18 @@
                 <c:SatisfactoryButton Content="Vehicles" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Buildings" Command="{Binding ShowBuildingsCommand}"/>
                 <c:SatisfactoryButton Content="Generators" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowGeneratorsCommand}"/>
-                <c:SatisfactoryButton Content="Miners" Style="{StaticResource SubCategoryButtonButton}" />
-                <c:SatisfactoryButton Content="Statues" Style="{StaticResource SubCategoryButtonButton}" />
-                <c:SatisfactoryButton Content="Emotes" />
+                <c:SatisfactoryButton Content="Miners" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Statues" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Recipes" Command="{Binding ShowRecipesCommand}"/>
-                <c:SatisfactoryButton Content="Customization" Style="{StaticResource SubCategoryButtonButton}" />
+                <c:SatisfactoryButton Content="Customization" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Schematics"/>
+                <c:SatisfactoryButton Content="MAM Research" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Tutorial" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Milestone" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Alternate" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Resource Sink" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Custom" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Emotes"/>
                 <c:SatisfactoryButton Content="Overview" Command="{Binding ShowOverviewCommand}"/>
                 <c:SatisfactoryButton Content="Data Import" Command="{Binding ShowDataImportCommand}"/>
             </StackPanel>

@@ -2,7 +2,7 @@ namespace Data.Extensions;
 
 public static class SqlLiteCommandExtensions
 {
-    public static DataTable ExecuteSelect<T>(this T dbContext, string query) where T : ModelContext
+    public static DataTable SelectQuery<T>(this T dbContext, string query) where T : ModelContext
     {
         var connection = (SqliteConnection)dbContext.Database.GetDbConnection();
         

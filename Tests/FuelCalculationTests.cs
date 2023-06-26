@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.Tests;
 
 public class FuelCalculationTests
 {
-    private readonly CalculationService _calculationService = new();
+    private readonly ModelCalculationService _calculationService = new(new());
     
     [Fact(DisplayName = "Calculate Coal Consumption with underlock(1%)")]
     public void CalculateCoalConsumption1() => CalculateFuelConsumption(FuelModels.CoalGeneratorFuel, 1, 0.75M, 0.15M, 0);
@@ -68,7 +68,7 @@ public class FuelCalculationTests
     
     private void CalculateFuelConsumption(GeneratorFuel generatorFuel, double overclock, decimal expectedPowerProduction, decimal expectedAmountPerMinute, decimal? expectedSupplementalAmountPerMinute = null, decimal? expectedByProductAmountPerMinute = null)
     {
-        var result = _calculationService.CalculateRoundedFuelConsumption(generatorFuel, overclock);
+        var result = _calculationService.CalculateRoundedFuelConsumption(overclock, generatorFuel);
         
         Assert.Equal(expectedPowerProduction, result.PowerProduction);
         Assert.Equal(expectedAmountPerMinute, result.AmountPerMinute);

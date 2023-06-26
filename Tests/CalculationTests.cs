@@ -1,10 +1,8 @@
-using SatisfactoryCalculator.Source.Models.Interfaces;
-
 namespace SatisfactoryCalculator.Tests;
 
 public class CalculationTests
 {
-    private readonly CalculationService _calculationService = new();
+    private readonly ModelCalculationService _calculationService = new(new());
 
     [Fact(DisplayName = "Calculate Cable RecipePart")]
     public void CalculateCableRecipe() => CalculateRecipeProductionTime(RecipeModels.CableRecipe, BuildingModels.Constructor, 100, 2, 30, 4);
@@ -45,7 +43,12 @@ public class CalculationTests
   
     private void CalculateRecipeProductionTime(IRecipe recipe, IBuilding buildingManufactorer, double overclock, decimal execptedTime, decimal expectedCyclesPerMinute, decimal expectedPowerConsumption)
     {
-        var productionResult = _calculationService.CalculateRecipeBuildingProduction(recipe, buildingManufactorer, overclock);
+        var productionResult = _calculationService.CalculateRecipeBuildingProduction(
+            overclock,
+            recipe.ManufactoringDuration, 
+            buildingManufactorer.ManufactoringSpeed, 
+            buildingManufactorer.PowerConsumption);
+        
         Assert.Equal(execptedTime, productionResult.Time);
         Assert.Equal(expectedCyclesPerMinute, productionResult.CyclesPerMinute);
         Assert.Equal(expectedPowerConsumption, productionResult.PowerConsumption);
@@ -53,14 +56,16 @@ public class CalculationTests
 
     private void CalculateItemProduction(IRecipe recipe, IEntity entity, IBuilding buildingManufactorer, double overclock, decimal execptedAmount, decimal exepectedAmountPerMinute)
     {
-        var productionResult = _calculationService.CalculateRecipeItemProduction(recipe, entity, buildingManufactorer, overclock);
+        var productionResult = _calculationService.CalculateRecipeItemProduction(overclock, recipe, entity, buildingManufactorer);
+        
         Assert.Equal(execptedAmount, productionResult.Amount);
         Assert.Equal(exepectedAmountPerMinute, productionResult.AmountPerMinute);
     }
 
     private void CalculateItemProduction(IRecipe recipe, IEntity entity, IBuilding buildingManufactorer, double overclock, decimal execptedAmount, decimal exepectedAmountPerMinute, decimal expectedEnergyConsumption)
     {
-        var productionResult = _calculationService.CalculateRecipeItemProduction(recipe, entity, buildingManufactorer, overclock);
+        var productionResult = _calculationService.CalculateRecipeItemProduction(overclock, recipe, entity, buildingManufactorer);
+        
         Assert.Equal(execptedAmount, productionResult.Amount);
         Assert.Equal(exepectedAmountPerMinute, productionResult.AmountPerMinute);
         Assert.Equal(expectedEnergyConsumption, productionResult.PowerConsumption);

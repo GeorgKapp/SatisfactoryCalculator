@@ -7,7 +7,6 @@ public class Schematic : IClassNamePrimaryKey, INameEntity, IDescriptionEntity, 
     public string? SmallImagePath { get; set; }
     public string? BigImagePath { get; set; }
     public string Description { get; set; }
-    
     public SchematicType SchematicType { get; set; }
     public RelevantEvent? RelevantEvent { get; set; }
     public decimal? MenuPriority { get; set; }

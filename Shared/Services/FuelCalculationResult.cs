@@ -1,7 +1,7 @@
 ﻿// ReSharper disable once CheckNamespace
-namespace SatisfactoryCalculator.Source.ApplicationServices;
+namespace SatisfactoryCalculator.Shared.Services;
 
-internal class FuelCalculationResult
+public class FuelCalculationResult
 {
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public decimal FuelBurnTime { get; set; }

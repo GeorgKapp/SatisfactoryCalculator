@@ -42,29 +42,31 @@ internal class GeneratorViewModel : ObservableObject
                 ? 0 
                 : double.Parse(value);
             
-            foreach(var fuelItem in SelectedGeneratorFuels)
+            foreach(var generatorFuel in SelectedGeneratorFuels)
             {
-                var fuelConsumptionResult = _calculationService.CalculateRoundedFuelConsumption(fuelItem, selectedGeneratorClockSpeed);
+                var fuelConsumptionResult = _modelCalculationService.CalculateRoundedFuelConsumption(
+                    selectedGeneratorClockSpeed,
+                    generatorFuel);
                 
-                fuelItem.Ingredient.AmountPerMinute = fuelConsumptionResult.AmountPerMinute;
+                generatorFuel.Ingredient.AmountPerMinute = fuelConsumptionResult.AmountPerMinute;
                 
-                if (fuelItem.SupplementalIngredient is not null) 
-                    fuelItem.SupplementalIngredient.AmountPerMinute = fuelConsumptionResult.SupplementalAmountPerMinute;
+                if (generatorFuel.SupplementalIngredient is not null) 
+                    generatorFuel.SupplementalIngredient.AmountPerMinute = fuelConsumptionResult.SupplementalAmountPerMinute;
                 
-                if (fuelItem.ByProduct is not null) 
-                    fuelItem.ByProduct.AmountPerMinute = fuelConsumptionResult.ByProductAmountPerMinute;
+                if (generatorFuel.ByProduct is not null) 
+                    generatorFuel.ByProduct.AmountPerMinute = fuelConsumptionResult.ByProductAmountPerMinute;
             }
         }
     }
     
 #pragma warning disable CS8618
-    public GeneratorViewModel(ApplicationState applicationState, CalculationService calculationService)
+    public GeneratorViewModel(ApplicationState applicationState, ModelCalculationService modelCalculationService)
 #pragma warning restore CS8618
     {
         _applicationState = applicationState ?? throw new ArgumentNullException(nameof(applicationState));
-        _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
+        _modelCalculationService = modelCalculationService ?? throw new ArgumentNullException(nameof(modelCalculationService));
     }
 
     private readonly ApplicationState _applicationState;
-    private readonly CalculationService _calculationService;
+    private readonly ModelCalculationService _modelCalculationService;
 }

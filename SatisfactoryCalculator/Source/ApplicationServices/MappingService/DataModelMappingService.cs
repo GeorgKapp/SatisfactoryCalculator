@@ -54,7 +54,7 @@ internal class DataModelMappingService
         var buildingDictionary = MapToBuildingDictionary(buildings);
 
         progress?.ReportOrThrow("Map Generators", token);
-        var generators = MapToGeneratorModels(modelContext.Generators, buildingDictionary);
+        var generators = MapToGeneratorModels(modelContext.Generators.Include(p => p.Fuels), buildingDictionary);
         
         progress?.ReportOrThrow("Map Fuels", token);
         var fuels = MapToFuelModels(modelContext.Generators, generators, itemDictionary);
@@ -263,7 +263,7 @@ internal class DataModelMappingService
         return mappedGenerator;
     }
 
-    private GeneratorFuel[] MapToFuelModels(IEnumerable<Generator> generators, IGenerator[] generatorModels, IDictionary<string, IItem> itemDictionary)
+    private GeneratorFuel[] MapToFuelModels(IQueryable<Generator> generators, IGenerator[] generatorModels, IDictionary<string, IItem> itemDictionary)
     {
         List<GeneratorFuel> fuelModels = new();
         foreach (var generator in generators)

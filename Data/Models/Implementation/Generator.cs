@@ -7,5 +7,5 @@ public class Generator : IClassNamePrimaryKey
     public decimal PowerProduction { get; set; }
     public decimal? SupplementToPowerRatio { get; set; }
     public decimal? SupplementalLoadAmount { get; set; }
-    public ICollection<FuelItem> Fuels { get; set; } = new List<FuelItem>();
+    public virtual ICollection<FuelItem> Fuels { get; set; } = new List<FuelItem>();
 }

@@ -97,6 +97,7 @@ internal static class ServiceExtensions
             .AddSingleton<BuildingPage>()
             .AddSingleton<GeneratorPage>()
             .AddSingleton<RecipePage>()
+			.AddSingleton<ResourcePage>()
 			.AddSingleton<OverviewPage>()
 			.AddSingleton<DataImportPage>();
 	}
@@ -114,6 +115,7 @@ internal static class ServiceExtensions
             .AddSingleton<BuildingViewModel>()
             .AddSingleton<GeneratorViewModel>()
             .AddSingleton<RecipeViewModel>()
+			.AddSingleton<ResourceViewModel>()
 			.AddSingleton<OverviewViewModel>()
 			.AddSingleton<DataImportViewModel>();
 

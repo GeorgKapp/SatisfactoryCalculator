@@ -14,6 +14,7 @@ public static class ViewDataContextLinker
         Link<BuildingPage, BuildingViewModel>();
         Link<GeneratorPage, GeneratorViewModel>();
         Link<RecipePage, RecipeViewModel>();
+        Link<ResourcePage, ResourceViewModel>();
         Link<OverviewPage, OverviewViewModel>();
         Link<DataImportPage, DataImportViewModel>();
     }

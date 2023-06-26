@@ -8,6 +8,7 @@ using FuelItem = Data.Models.Implementation.FuelItem;
 using Generator = Data.Models.Implementation.Generator;
 using Item = Data.Models.Implementation.Item;
 using Recipe = Data.Models.Implementation.Recipe;
+using Resource = Data.Models.Implementation.Resource;
 using Weapon = Data.Models.Implementation.Weapon;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
@@ -65,6 +66,9 @@ internal class DataModelMappingService
         LinkCreatureVariants(creatures, modelContext.Creatures, itemDictionary, creatureDictionary);
         var creatureLoots = MapToCreatureLoots(modelContext.Creatures, itemDictionary, creatureDictionary);
         
+        progress?.ReportOrThrow("Map Ammunitions", token);
+        var resources = MapToResources(modelContext.Resources, itemDictionary);
+        
         progress?.ReportOrThrow("Map Recipes", token);
         var recipes = MapToRecipeModels(modelContext.Recipes.LoadAll(), itemDictionary, buildingDictionary);
         
@@ -79,6 +83,7 @@ internal class DataModelMappingService
             consumables,
             weapons,
             ammunitions,
+            resources,
             buildingDictionary.Values.ToArray(), 
             generators, 
             recipes,
@@ -175,6 +180,30 @@ internal class DataModelMappingService
         
         itemDictionary[weapon.ClassName] = mappedWeapon;
         return mappedWeapon;
+    }
+    
+    // ReSharper disable once HeapView.ClosureAllocation
+    private IResource[] MapToResources(IEnumerable<Resource> resources, IDictionary<string, IItem> itemDictionary) => resources
+        .Select(p => MapToResource(p, itemDictionary))
+        .OrderBy(p => p.Name)
+        .ToArray();
+
+    private IResource MapToResource(Resource resource, IDictionary<string, IItem> itemDictionary)
+    {
+        var item = itemDictionary[resource.ClassName];
+        
+        var mappedResource = new Models.Resource
+        {
+            ClassName = item.ClassName, 
+            Name = item.Name,
+            Description = item.Description, 
+            Form = item.Form, 
+            EnergyValue = item.EnergyValue, 
+            Image = item.Image
+        };
+        
+        itemDictionary[resource.ClassName] = mappedResource;
+        return mappedResource;
     }
     
     // ReSharper disable once HeapView.ClosureAllocation

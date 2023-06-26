@@ -33,7 +33,7 @@
                 <c:SatisfactoryButton Content="Consumables" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowConsumablesCommand}"/>
                 <c:SatisfactoryButton Content="Weapons" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowWeaponsCommand}"/>
                 <c:SatisfactoryButton Content="Ammunition" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowAmmunitionsCommand}"/>
-                <c:SatisfactoryButton Content="Resources" Style="{StaticResource SubCategoryButtonButton}"/>
+                <c:SatisfactoryButton Content="Resources" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowRecourcesCommand}"/>
                 <c:SatisfactoryButton Content="Vehicles" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Buildings" Command="{Binding ShowBuildingsCommand}"/>
                 <c:SatisfactoryButton Content="Generators" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowGeneratorsCommand}"/>
@@ -41,13 +41,6 @@
                 <c:SatisfactoryButton Content="Statues" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Recipes" Command="{Binding ShowRecipesCommand}"/>
                 <c:SatisfactoryButton Content="Customization" Style="{StaticResource SubCategoryButtonButton}"/>
-                <c:SatisfactoryButton Content="Schematics"/>
-                <c:SatisfactoryButton Content="MAM Research" Style="{StaticResource SubCategoryButtonButton}"/>
-                <c:SatisfactoryButton Content="Tutorial" Style="{StaticResource SubCategoryButtonButton}"/>
-                <c:SatisfactoryButton Content="Milestone" Style="{StaticResource SubCategoryButtonButton}"/>
-                <c:SatisfactoryButton Content="Alternate" Style="{StaticResource SubCategoryButtonButton}"/>
-                <c:SatisfactoryButton Content="Resource Sink" Style="{StaticResource SubCategoryButtonButton}"/>
-                <c:SatisfactoryButton Content="Custom" Style="{StaticResource SubCategoryButtonButton}"/>
                 <c:SatisfactoryButton Content="Emotes"/>
                 <c:SatisfactoryButton Content="Overview" Command="{Binding ShowOverviewCommand}"/>
                 <c:SatisfactoryButton Content="Data Import" Command="{Binding ShowDataImportCommand}"/>

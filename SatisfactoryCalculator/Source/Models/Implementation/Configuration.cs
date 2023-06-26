@@ -80,6 +80,13 @@ public class Configuration : ObservableObject
         get => _plants;
         set => SetProperty(ref _plants, value);
     }
+    
+    private ObservableCollection<IResource> _resources = new();
+    internal ObservableCollection<IResource> Resources
+    {
+        get => _resources;
+        set => SetProperty(ref _resources, value);
+    }
 
     private DateTime? _lastSyncDate = new();
     internal DateTime? LastSyncDate

@@ -46,6 +46,9 @@ internal class MainViewModel : ObservableObject
 
     private ICommand? _showRecipesCommand;
     public ICommand ShowRecipesCommand => _showRecipesCommand ??= new SimpleCommand(ShowRecipes);
+    
+    private ICommand? _showResourcesCommand;
+    public ICommand ShowRecourcesCommand => _showResourcesCommand ??= new SimpleCommand(ShowRecources);
 
     private ICommand? _showOverviewCommand;
     public ICommand ShowOverviewCommand => _showOverviewCommand ??= new SimpleCommand(ShowOverview);
@@ -76,6 +79,7 @@ internal class MainViewModel : ObservableObject
     private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
     private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
     private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);
+    private void ShowRecources() => ShowFilterableEntityPage(_applicationState.Configuration.Resources);
     private void ShowOverview()
     {
 	    var result = PageService.FetchPageWithViewModel<OverviewPage, OverviewViewModel>();

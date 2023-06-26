@@ -14,6 +14,7 @@ internal class ResourceViewModel : ObservableObject
             SelectedResourceAsBuildingIngredientInRecipes = new(entityReference.RecipeBuildingIngredient);
             SelectedResourceAsIngredientInRecipes = new(entityReference.RecipeIngredient);
             SelectedResourceAsFuels = new(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
+            SelectedMiners = new(_selectedResource.Miners);
         }
     }
 
@@ -51,10 +52,23 @@ internal class ResourceViewModel : ObservableObject
         }
     }
     
+    private ObservableCollection<IMiner> _selectedMiners = new();
+    public ObservableCollection<IMiner> SelectedMiners
+    {
+        get => _selectedMiners;
+        private set
+        {
+            SetProperty(ref _selectedMiners, value);
+            NotifyMarginUpdates();
+        }
+    }
+    
     public Thickness IngredientsSectionMargin => CalculateMargin(false);
     public Thickness BuildingIngredientSectionMargin => CalculateMargin(_selectedResourceAsIngredientInRecipes.Count > 0);
-    public Thickness FuelsSectionMargin => CalculateMargin(_selectedResourceAsBuildingIngredientInRecipes.Count > 0 || _selectedResourceAsIngredientInRecipes.Count > 0);
+    public Thickness FuelsSectionMargin => CalculateMargin(_selectedResourceAsBuildingIngredientInRecipes.Count > 0);
+    public Thickness MinersSectionMargin => CalculateMargin(_selectedResourceAsFuels.Count > 0);
 
+    
 #pragma warning disable CS8618
     public ResourceViewModel(ApplicationState applicationState)
 #pragma warning restore CS8618
@@ -71,6 +85,7 @@ internal class ResourceViewModel : ObservableObject
     {
         Notify(nameof(IngredientsSectionMargin));
         Notify(nameof(BuildingIngredientSectionMargin));
+        Notify(nameof(FuelsSectionMargin));
         Notify(nameof(FuelsSectionMargin));
     }
 

@@ -19,6 +19,6 @@ public partial class ResourceControl
         DependencyProperty.Register(
             nameof(Resource),
             typeof(Resource), 
-            typeof(AmmunitionControl)
+            typeof(ResourceControl)
         );
 }

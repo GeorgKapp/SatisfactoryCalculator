@@ -18,7 +18,7 @@
     <Page.Resources>
 
         <CollectionViewSource x:Key="ProductCollection" Source="{Binding SelectedMinerRecipes}"/>
-        <CollectionViewSource x:Key="ResourcCollection" Source="{Binding SelectedResources}"/>
+        <CollectionViewSource x:Key="ResourceCollection" Source="{Binding SelectedResources}"/>
 
         <DataTemplate DataType="{x:Type models:Recipe}">
             <u:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
@@ -59,8 +59,8 @@
                     <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedMinerRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="-10,0,0,0"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
 
-                    <c:SatisfactoryTextBlock Text="Resources" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedMiner.Resources.Length, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding ResourcesSectionMargin}"/>
-                    <CollectionContainer Collection="{Binding Source={StaticResource ResourcCollection}}"/>
+                    <c:SatisfactoryTextBlock Text="Extractable Resources" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedMiner.Resources.Length, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding ResourcesSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource ResourceCollection}}"/>
                     
                 </CompositeCollection>
             </ItemsControl.ItemsSource>

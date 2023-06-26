@@ -31,7 +31,6 @@ public partial class DocsParserService
 
 			var allTypes = GetAllTypes(rootObjects);
 			
-			
 			var rootObjectHandledDictionary = rootObjects
 				.ToDictionary(p => p.NativeClass, c => false);
 

@@ -21,7 +21,7 @@
         <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedRecipe.Name}" VerticalAlignment="Center" Margin="5,0,0,0" Grid.Row="0"/>
 
         <StackPanel Grid.Row="1" Margin="20">
-            <c:SatisfactoryTextBlock Text="RecipePart" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}" Margin="-10,0,0,0"/>
+            <c:SatisfactoryTextBlock Text="Recipe" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}" Margin="-10,0,0,0"/>
             <u:RecipeControl Recipe="{Binding SelectedRecipe}" Margin="0,0,0,15" Visibility="{Binding SelectedRecipe, Converter={StaticResource NullToVisibilityConverter}}"/>
         </StackPanel>
 

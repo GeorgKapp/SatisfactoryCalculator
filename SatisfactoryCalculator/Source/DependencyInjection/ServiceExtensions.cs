@@ -66,7 +66,7 @@ internal static class ServiceExtensions
 	private static IServiceCollection AddApplicationServices(this IServiceCollection services)
 	{
 		services
-			.AddTransient<CalculationService>()
+			.AddTransient<ModelCalculationService>()
 			.AddTransient<DataModelMappingService>()
 			.AddTransient<PageService>()
 			.AddTransient<ClipBoardService>();
@@ -78,6 +78,7 @@ internal static class ServiceExtensions
 	{
 		services
 			.AddTransient<JsonService>()
+			.AddTransient<CalculationService>()
 			.AddTransient<DocsParserService>();
 
 		return services;

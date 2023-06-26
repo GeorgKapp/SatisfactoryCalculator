@@ -10,6 +10,9 @@ internal class ModelCalculationService
     {
         _calculationService = calculationService ?? throw new ArgumentNullException(nameof(calculationService));
     }
+
+    public decimal? CalculateAmountPerMinte(Form? form, decimal? amount, decimal manufactoringDuration) =>
+        _calculationService.CalculateAmountPerMinte(form, amount, manufactoringDuration);
     
     public FuelCalculationResult CalculateRoundedFuelConsumption(
         double overclock,

@@ -480,13 +480,21 @@ public partial class DocsParserService
 
     private Generator ParseGenerator(Classes class2, Item[] biomassItems)
     {
+        var supplementalPowerRatio = class2.mSupplementalToPowerRatio.MapToNullableDecimal();
+        if (supplementalPowerRatio is 0)
+            supplementalPowerRatio = null;
+        
+        var supplementalLoadAmount = class2.mSupplementalLoadAmount.MapToNullableDecimal();
+        if (supplementalLoadAmount is 0)
+            supplementalLoadAmount = null;
+        
         return new()
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!,
             Fuels = ParseFuels(class2.mFuel, biomassItems),
             PowerProduction = class2.mPowerProduction.MapToDecimal(),
-            SupplementToPowerRatio = class2.mSupplementalToPowerRatio.MapToNullableDecimal(),
-            SupplementalLoadAmount = class2.mSupplementalLoadAmount.MapToNullableDecimal()
+            SupplementToPowerRatio = supplementalPowerRatio,
+            SupplementalLoadAmount = supplementalLoadAmount
         };
     }
 

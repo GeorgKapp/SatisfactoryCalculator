@@ -14,6 +14,7 @@ public partial class AmmunitionControl
         get => (Ammunition)GetValue(AmmunitionProperty);
         set => SetValue(AmmunitionProperty, value);
     }
+    
     internal static readonly DependencyProperty AmmunitionProperty = 
         DependencyProperty.Register(
             nameof(Ammunition), 

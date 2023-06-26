@@ -37,18 +37,21 @@ internal class MainViewModel : ObservableObject
     
     private ICommand? _showAmmunitionsCommand;
     public ICommand ShowAmmunitionsCommand => _showAmmunitionsCommand ??= new SimpleCommand(ShowAmmunitions);
+    
+    private ICommand? _showResourcesCommand;
+    public ICommand ShowRecourcesCommand => _showResourcesCommand ??= new SimpleCommand(ShowRecources);
 
     private ICommand? _showBuildingsCommand;
     public ICommand ShowBuildingsCommand => _showBuildingsCommand ??= new SimpleCommand(ShowBuildings);
 
     private ICommand? _showGeneratorsCommand;
     public ICommand ShowGeneratorsCommand => _showGeneratorsCommand ??= new SimpleCommand(ShowGenerators);
+    
+    private ICommand? _showMinersCommand;
+    public ICommand ShowMinersCommand => _showMinersCommand ??= new SimpleCommand(ShowMiners);
 
     private ICommand? _showRecipesCommand;
     public ICommand ShowRecipesCommand => _showRecipesCommand ??= new SimpleCommand(ShowRecipes);
-    
-    private ICommand? _showResourcesCommand;
-    public ICommand ShowRecourcesCommand => _showResourcesCommand ??= new SimpleCommand(ShowRecources);
 
     private ICommand? _showOverviewCommand;
     public ICommand ShowOverviewCommand => _showOverviewCommand ??= new SimpleCommand(ShowOverview);
@@ -76,10 +79,11 @@ internal class MainViewModel : ObservableObject
     private void ShowConsumables() => ShowFilterableEntityPage(_applicationState.Configuration.Consumables);
     private void ShowWeapons() => ShowFilterableEntityPage(_applicationState.Configuration.Weapons);
     private void ShowAmmunitions() => ShowFilterableEntityPage(_applicationState.Configuration.Ammunitions);
+    private void ShowRecources() => ShowFilterableEntityPage(_applicationState.Configuration.Resources);
     private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
     private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
+    private void ShowMiners() => ShowFilterableEntityPage(_applicationState.Configuration.Miners);
     private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);
-    private void ShowRecources() => ShowFilterableEntityPage(_applicationState.Configuration.Resources);
     private void ShowOverview()
     {
 	    var result = PageService.FetchPageWithViewModel<OverviewPage, OverviewViewModel>();

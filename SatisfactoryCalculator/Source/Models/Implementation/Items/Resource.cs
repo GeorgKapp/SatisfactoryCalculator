@@ -8,4 +8,5 @@ internal class Resource : IResource
     public string Description { get; set; }
     public Form? Form { get; set; }
     public decimal? EnergyValue { get; set; }
+    public IMiner[] Miners { get; set; }
 }

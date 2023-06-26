@@ -39,6 +39,13 @@ public class Configuration : ObservableObject
         set => SetProperty(ref _ammunitions, value);
     }
     
+    private ObservableCollection<IResource> _resources = new();
+    internal ObservableCollection<IResource> Resources
+    {
+        get => _resources;
+        set => SetProperty(ref _resources, value);
+    }
+    
     private ObservableCollection<IBuilding> _buildings = new();
     internal ObservableCollection<IBuilding> Buildings
     {
@@ -51,6 +58,13 @@ public class Configuration : ObservableObject
     {
         get => _generators;
         set => SetProperty(ref _generators, value);
+    }
+    
+    private ObservableCollection<IMiner> _miners = new();
+    internal ObservableCollection<IMiner> Miners
+    {
+        get => _miners;
+        set => SetProperty(ref _miners, value);
     }
     
     private ObservableCollection<IRecipe> _recipes = new();
@@ -79,13 +93,6 @@ public class Configuration : ObservableObject
     {
         get => _plants;
         set => SetProperty(ref _plants, value);
-    }
-    
-    private ObservableCollection<IResource> _resources = new();
-    internal ObservableCollection<IResource> Resources
-    {
-        get => _resources;
-        set => SetProperty(ref _resources, value);
     }
 
     private DateTime? _lastSyncDate = new();

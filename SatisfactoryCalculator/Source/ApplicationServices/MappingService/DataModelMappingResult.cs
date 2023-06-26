@@ -11,7 +11,8 @@ internal class DataModelMappingResult
         IAmmunition[] ammunitions,
         IResource[] resources,
         IBuilding[] buildings,
-        IGenerator[] generators, 
+        IGenerator[] generators,
+        IMiner[] miners,
         IRecipe[] recipes, 
         ICreature[] creatures,
         IDictionary<string, EntityReference> referenceDictionary, 
@@ -25,6 +26,7 @@ internal class DataModelMappingResult
         Resources = resources;
         Buildings = buildings;
         Generators = generators;
+        Miners = miners;
         Recipes = recipes;
         Creatures = creatures;
         ReferenceDictionary = referenceDictionary;
@@ -40,6 +42,7 @@ internal class DataModelMappingResult
     public IResource[] Resources { get; }
     public IBuilding[] Buildings { get; }
     public IGenerator[] Generators { get; }
+    public IMiner[] Miners { get; }
     public IRecipe[] Recipes { get; }
     public ICreature[] Creatures { get; }
     public DateTime? LastSyncDate { get; }

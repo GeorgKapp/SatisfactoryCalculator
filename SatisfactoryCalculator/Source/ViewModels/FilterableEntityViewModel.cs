@@ -6,6 +6,7 @@ using Item = SatisfactoryCalculator.Source.Models.Item;
 using Recipe = SatisfactoryCalculator.Source.Models.Recipe;
 using Weapon = SatisfactoryCalculator.Source.Models.Weapon;
 using Ammunition = SatisfactoryCalculator.Source.Models.Ammunition;
+using Miner = SatisfactoryCalculator.Source.Models.Miner;
 using Resource = SatisfactoryCalculator.Source.Models.Resource;
 
 namespace SatisfactoryCalculator.Source.ViewModels;
@@ -82,6 +83,11 @@ internal class FilterableEntityViewModel : ObservableObject
 			    var generatorFetchResult = PageService.FetchPageWithViewModel<GeneratorPage, GeneratorViewModel>();
 			    generatorFetchResult.Item2.SelectedGenerator = generator;
 			    CurrentPage = generatorFetchResult.Item1;
+			    break;
+		    case Miner miner:
+			    var minerFetchResult = PageService.FetchPageWithViewModel<MinerPage, MinerViewModel>();
+			    minerFetchResult.Item2.SelectedMiner = miner;
+			    CurrentPage = minerFetchResult.Item1;
 			    break;
 		    case Building building:
 			    var buildingFetchResult = PageService.FetchPageWithViewModel<BuildingPage, BuildingViewModel>();

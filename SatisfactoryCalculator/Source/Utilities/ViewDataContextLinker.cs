@@ -11,10 +11,11 @@ public static class ViewDataContextLinker
         Link<ConsumablePage, ConsumableViewModel>();
         Link<WeaponPage, WeaponViewModel>();
         Link<AmmunitionPage, AmmunitionViewModel>();
+        Link<ResourcePage, ResourceViewModel>();
         Link<BuildingPage, BuildingViewModel>();
         Link<GeneratorPage, GeneratorViewModel>();
+        Link<MinerPage, MinerViewModel>();
         Link<RecipePage, RecipeViewModel>();
-        Link<ResourcePage, ResourceViewModel>();
         Link<OverviewPage, OverviewViewModel>();
         Link<DataImportPage, DataImportViewModel>();
     }

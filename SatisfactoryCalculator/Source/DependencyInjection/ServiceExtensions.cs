@@ -94,10 +94,11 @@ internal static class ServiceExtensions
 			.AddSingleton<ConsumablePage>()
 			.AddSingleton<WeaponPage>()
 			.AddSingleton<AmmunitionPage>()
+			.AddSingleton<ResourcePage>()
             .AddSingleton<BuildingPage>()
             .AddSingleton<GeneratorPage>()
+			.AddSingleton<MinerPage>()
             .AddSingleton<RecipePage>()
-			.AddSingleton<ResourcePage>()
 			.AddSingleton<OverviewPage>()
 			.AddSingleton<DataImportPage>();
 	}
@@ -112,10 +113,11 @@ internal static class ServiceExtensions
 			.AddSingleton<ConsumableViewModel>()
 			.AddSingleton<WeaponViewModel>()
 			.AddSingleton<AmmunitionViewModel>()
+			.AddSingleton<ResourceViewModel>()
             .AddSingleton<BuildingViewModel>()
             .AddSingleton<GeneratorViewModel>()
+			.AddSingleton<MinerViewModel>()
             .AddSingleton<RecipeViewModel>()
-			.AddSingleton<ResourceViewModel>()
 			.AddSingleton<OverviewViewModel>()
 			.AddSingleton<DataImportViewModel>();
 

@@ -55,7 +55,8 @@ public static class ModelExtensions
     
     public static IQueryable<Miner> LoadAll(this IQueryable<Miner> miners) =>
         miners
-            .Include(p => p.Building);
+            .Include(p => p.Building)
+            .Include(p => p.ExtractableResources);
     
     public static IQueryable<Recipe> LoadAll(this IQueryable<Recipe> recipes) =>
         recipes

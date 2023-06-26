@@ -7,6 +7,7 @@ using Equipment = Data.Models.Implementation.Equipment;
 using FuelItem = Data.Models.Implementation.FuelItem;
 using Generator = Data.Models.Implementation.Generator;
 using Item = Data.Models.Implementation.Item;
+using Miner = Data.Models.Implementation.Miner;
 using Recipe = Data.Models.Implementation.Recipe;
 using Resource = Data.Models.Implementation.Resource;
 using Weapon = Data.Models.Implementation.Weapon;
@@ -47,8 +48,10 @@ internal class DataModelMappingService
         
         progress?.ReportOrThrow("Map Ammunitions", token);
         var ammunitions = MapToAmmunitions(modelContext.Ammunitions, itemDictionary);
-
         LinkWeaponsAndAmmunition(modelContext.Weapons, modelContext.Ammunitions, itemDictionary);
+        
+        progress?.ReportOrThrow("Map Resources", token);
+        var resources = MapToResources(modelContext.Resources.LoadAll(), itemDictionary);
 
         progress?.ReportOrThrow("Map Buildings", token);
         var buildings = MapToBuildingModels(modelContext.Buildings);
@@ -57,6 +60,10 @@ internal class DataModelMappingService
         progress?.ReportOrThrow("Map Generators", token);
         var generators = MapToGeneratorModels(modelContext.Generators, buildingDictionary);
         
+        progress?.ReportOrThrow("Map Miners", token);
+        var miners = MapToMinerModels(modelContext.Miners, buildingDictionary);
+        LinkMinersAndResources(modelContext.Miners.LoadAll(), modelContext.Resources.LoadAll(), itemDictionary, buildingDictionary);
+
         progress?.ReportOrThrow("Map Fuels", token);
         var fuels = MapToFuelModels(modelContext.Generators.LoadAll(), generators, itemDictionary);
         
@@ -65,10 +72,7 @@ internal class DataModelMappingService
         var creatureDictionary = MapToCreatureDictionary(creatures);
         LinkCreatureVariants(creatures, modelContext.Creatures, itemDictionary, creatureDictionary);
         var creatureLoots = MapToCreatureLoots(modelContext.Creatures, itemDictionary, creatureDictionary);
-        
-        progress?.ReportOrThrow("Map Ammunitions", token);
-        var resources = MapToResources(modelContext.Resources.LoadAll(), itemDictionary);
-        
+
         progress?.ReportOrThrow("Map Recipes", token);
         var recipes = MapToRecipeModels(modelContext.Recipes.LoadAll(), itemDictionary, buildingDictionary);
         
@@ -85,7 +89,8 @@ internal class DataModelMappingService
             ammunitions,
             resources,
             buildingDictionary.Values.ToArray(), 
-            generators, 
+            generators,
+            miners,
             recipes,
             creatureDictionary.Values.ToArray(),
             referenceDictionary, 
@@ -289,6 +294,46 @@ internal class DataModelMappingService
         
         buildingDictionary[generator.ClassName] = mappedGenerator;
         return mappedGenerator;
+    }
+    
+    private IMiner[] MapToMinerModels(IEnumerable<Miner> miner, IDictionary<string, IBuilding> buildingDictionary) => miner
+        .Select(p => MapToMinerModel(p, buildingDictionary))
+        .OrderBy(p => p.Name)
+        .ToArray();
+
+    private IMiner MapToMinerModel(Miner miner, IDictionary<string, IBuilding> buildingDictionary)
+    {
+        var buildingReference = buildingDictionary[miner.ClassName];
+        
+        var mappedMiner = new Models.Miner()
+        {
+            ClassName = buildingReference.ClassName, 
+            Name = buildingReference.Name,
+            Description = buildingReference.Description, 
+            Image = buildingReference.Image,
+            ManufactoringSpeed = buildingReference.ManufactoringSpeed, 
+            PowerConsumption = buildingReference.PowerConsumption,
+            PowerConsumptionExponent = buildingReference.PowerConsumptionExponent,
+            PowerConsumptionRange = buildingReference.PowerConsumptionRange
+        };
+        
+        buildingDictionary[miner.ClassName] = mappedMiner;
+        return mappedMiner;
+    }
+    
+    private void LinkMinersAndResources(IEnumerable<Miner> miners, IEnumerable<Resource> resources, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
+    {
+        foreach (var resource in resources)
+        {
+            var mappedResource = (IResource)itemDictionary[resource.ClassName];
+            mappedResource.Miners = resource.Miners.Select(p => (IMiner)buildingDictionary[p.ClassName]).ToArray();
+        }
+        
+        foreach (var miner in miners)
+        {
+            var mappedMiner = (IMiner)buildingDictionary[miner.ClassName];
+            mappedMiner.Resources = miner.ExtractableResources.Select(p => (IResource)itemDictionary[p.ClassName]).ToArray();
+        }
     }
 
     private GeneratorFuel[] MapToFuelModels(IQueryable<Generator> generators, IGenerator[] generatorModels, IDictionary<string, IItem> itemDictionary)

@@ -13,6 +13,22 @@ internal class ModelCalculationService
 
     public decimal? CalculateAmountPerMinte(Form? form, decimal? amount, decimal manufactoringDuration) =>
         _calculationService.CalculateAmountPerMinte(form, amount, manufactoringDuration);
+
+    public void CalculateAndApplyRoundedFuelConsumption(double overclock,
+        GeneratorFuel generatorFuel)
+    {
+        var fuelConsumptionResult = CalculateRoundedFuelConsumption(
+            overclock,
+            generatorFuel);
+                
+        generatorFuel.Ingredient.AmountPerMinute = fuelConsumptionResult.AmountPerMinute;
+                
+        if (generatorFuel.SupplementalIngredient is not null) 
+            generatorFuel.SupplementalIngredient.AmountPerMinute = fuelConsumptionResult.SupplementalAmountPerMinute;
+                
+        if (generatorFuel.ByProduct is not null) 
+            generatorFuel.ByProduct.AmountPerMinute = fuelConsumptionResult.ByProductAmountPerMinute;
+    }
     
     public FuelCalculationResult CalculateRoundedFuelConsumption(
         double overclock,

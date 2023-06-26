@@ -212,9 +212,11 @@ public partial class DocsParserService
     private Recipe? ParseRecipe(Classes class2, TempModelContext tempModelContext)
     {
         var producedInBuildings = ReferenceParseUtility.GetReferences(class2.mProducedIn);
-        if (producedInBuildings.Contains("Converter_C"))
+        if (producedInBuildings.Contains("Converter"))
+        {
             return null;
-
+        }
+        
         var constructedByBuildGun = producedInBuildings.Contains("BuildGun") || producedInBuildings.Contains("FGBuildGun");
         var constructedInWorkshop = producedInBuildings.Contains("WorkshopComponent");
         // ReSharper disable once HeapView.ObjectAllocation

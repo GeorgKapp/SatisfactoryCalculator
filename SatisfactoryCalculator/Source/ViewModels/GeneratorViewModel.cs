@@ -44,17 +44,9 @@ internal class GeneratorViewModel : ObservableObject
             
             foreach(var generatorFuel in SelectedGeneratorFuels)
             {
-                var fuelConsumptionResult = _modelCalculationService.CalculateRoundedFuelConsumption(
+                _modelCalculationService.CalculateAndApplyRoundedFuelConsumption(
                     selectedGeneratorClockSpeed,
                     generatorFuel);
-                
-                generatorFuel.Ingredient.AmountPerMinute = fuelConsumptionResult.AmountPerMinute;
-                
-                if (generatorFuel.SupplementalIngredient is not null) 
-                    generatorFuel.SupplementalIngredient.AmountPerMinute = fuelConsumptionResult.SupplementalAmountPerMinute;
-                
-                if (generatorFuel.ByProduct is not null) 
-                    generatorFuel.ByProduct.AmountPerMinute = fuelConsumptionResult.ByProductAmountPerMinute;
             }
         }
     }

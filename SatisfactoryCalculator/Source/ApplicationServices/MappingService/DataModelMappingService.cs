@@ -312,21 +312,14 @@ internal class DataModelMappingService
 
         SatisfactoryCalculator.Source.Models.FuelItem? byProductItem = null;
         decimal? byProductAmount = null;
-        
-        if (string.IsNullOrEmpty(fuel.ByProduct?.ClassName))
-            return new()
-            {
-                Ingredient = ingredient, 
-                SupplementalIngredient = supplementalIngredient, 
-                ByProduct = byProductItem,
-                ByProductAmount = byProductAmount, 
-                Generator = generator
-            };
-        
-        byProductItem = MapToFuelContentModel(itemDictionary[fuel.ByProduct.ClassName], 0);
-        byProductAmount = fuel.ByProductAmount;
 
-        return new()
+        if (!string.IsNullOrEmpty(fuel.ByProduct?.ClassName))
+        {
+            byProductItem = MapToFuelContentModel(itemDictionary[fuel.ByProduct.ClassName], 0);
+            byProductAmount = fuel.ByProductAmount;
+        }
+
+        var generatorFuel = new GeneratorFuel()
         {
             Ingredient = ingredient, 
             SupplementalIngredient = supplementalIngredient, 
@@ -334,6 +327,10 @@ internal class DataModelMappingService
             ByProductAmount = byProductAmount, 
             Generator = generator
         };
+
+        _modelCalculationService.CalculateAndApplyRoundedFuelConsumption(100, generatorFuel);
+        
+        return generatorFuel;
     }
 
     private SatisfactoryCalculator.Source.Models.FuelItem MapToFuelContentModel(IItem item, decimal amount) => new(item, amount);
@@ -465,6 +462,8 @@ internal class DataModelMappingService
         {
             recipePart = item;
             form = item.Form;
+            if (item.ClassName == "OreBauxite")
+                _ = "";
         }
         else if (recipeProduct.BuildingClassName is not null && buildingDictionary.TryGetValue(recipeProduct.BuildingClassName, out var building))
             recipePart = building;

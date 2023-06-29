@@ -12,16 +12,13 @@
         
         <DataTemplate DataType="{x:Type models:Ammunition}">
             <StackPanel MinHeight="50" HorizontalAlignment="Left">
+                
                 <TextBlock HorizontalAlignment="Left" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding Name}"/>
-                <Image HorizontalAlignment="Left" Margin="5,0,0,0" ToolTipService.InitialShowDelay="0" Width="50" Height="50" Source="{Binding Image}">
-                    <FrameworkElement.ToolTip>
-                        <ToolTip Background="#00FFFFFF" BorderThickness="0" Placement="Right">
-                            <Border BorderThickness="1" BorderBrush="#FFFFFFFF" CornerRadius="10" Background="{StaticResource PrimaryColor}">
-                                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Text="{Binding Name}" />
-                            </Border>
-                        </ToolTip>
-                    </FrameworkElement.ToolTip>
-                </Image>
+                
+                <c:SatisfactoryImage Margin="5,0,0,0" 
+                                     Source="{Binding Image}" 
+                                     ToolTipText="{Binding Name}"/>
+                
             </StackPanel>
         </DataTemplate>
         

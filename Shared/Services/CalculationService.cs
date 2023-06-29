@@ -1,6 +1,5 @@
 ﻿// ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable once CheckNamespace
-
 using SatisfactoryCalculator.Shared.Utility;
 
 namespace SatisfactoryCalculator.Shared.Services;

@@ -350,7 +350,7 @@ public partial class DocsParserService
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!,
             ItemsPerCycle = Convert.ToInt32(class2.mItemsPerCycle),
-            ExtractCycleTime = class2.mExtractCycleTime.MapToNullableDecimal(),
+            ExtractCycleTime = class2.mExtractCycleTime.MapToDecimal(),
             AllowedResourceForm = MultiFormParseUtility.MapToForms(class2.mAllowedResourceForms).First(),
             ExtractableResources = foundResources
         };

@@ -16,7 +16,6 @@ global using SatisfactoryCalculator.Source.ApplicationServices;
 global using SatisfactoryCalculator.Source.Base;
 global using SatisfactoryCalculator.Source.DependencyInjection;
 global using SatisfactoryCalculator.Source.Models.Interfaces;
-global using SatisfactoryCalculator.Source.Models.Refernces;
 global using SatisfactoryCalculator.Source.Models;
 global using SatisfactoryCalculator.Source.State;
 global using SatisfactoryCalculator.Source.UI.Extensions;

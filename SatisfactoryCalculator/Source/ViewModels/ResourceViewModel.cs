@@ -14,7 +14,7 @@ internal class ResourceViewModel : ObservableObject
             SelectedResourceAsBuildingIngredientInRecipes = new(entityReference.RecipeBuildingIngredient);
             SelectedResourceAsIngredientInRecipes = new(entityReference.RecipeIngredient);
             SelectedResourceAsFuels = new(entityReference.FuelIngredient.Concat(entityReference.FuelByProduct));
-            SelectedMiners = new(_selectedResource.Miners);
+            SelectedMinerResources = new(entityReference.MinerResource);
         }
     }
 
@@ -52,13 +52,13 @@ internal class ResourceViewModel : ObservableObject
         }
     }
     
-    private ObservableCollection<IMiner> _selectedMiners = new();
-    public ObservableCollection<IMiner> SelectedMiners
+    private ObservableCollection<MinerResource> _selectedMinerResources = new();
+    public ObservableCollection<MinerResource> SelectedMinerResources
     {
-        get => _selectedMiners;
+        get => _selectedMinerResources;
         private set
         {
-            SetProperty(ref _selectedMiners, value);
+            SetProperty(ref _selectedMinerResources, value);
             NotifyMarginUpdates();
         }
     }

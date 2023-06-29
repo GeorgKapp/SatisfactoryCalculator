@@ -7,6 +7,7 @@
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ButtonDictionary.xaml" />
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/TextBoxDictionary.xaml" />
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/TextBlockDictionary.xaml" />
+        <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ImageDictionary.xaml" />
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ItemsControlDictionary.xaml" />
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/ListViewDictionary.xaml" />
         <ResourceDictionary Source="/SatisfactoryCalculator.Controls;component/ResourceDictionaries/SpinnerDictionary.xaml" />

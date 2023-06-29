@@ -1,4 +1,4 @@
-namespace SatisfactoryCalculator.Source.Models.Implementation;
+namespace SatisfactoryCalculator.Source.Models;
 
 internal class Plant : IPlant
 {

@@ -60,13 +60,13 @@ internal class DataModelMappingService
         progress?.ReportOrThrow("Map Generators", token);
         var generators = MapToGeneratorModels(modelContext.Generators, buildingDictionary);
         
-        progress?.ReportOrThrow("Map Miners", token);
-        var miners = MapToMinerModels(modelContext.Miners, buildingDictionary);
-        LinkMinersAndResources(modelContext.Miners.LoadAll(), modelContext.Resources.LoadAll(), itemDictionary, buildingDictionary);
-
         progress?.ReportOrThrow("Map Fuels", token);
         var fuels = MapToFuelModels(modelContext.Generators.LoadAll(), generators, itemDictionary);
         
+        progress?.ReportOrThrow("Map Miners", token);
+        var miners = MapToMinerModels(modelContext.Miners, buildingDictionary);
+        var minerResources = MapToMinorResources(modelContext.Miners.LoadAll(), modelContext.Resources.LoadAll(), itemDictionary, buildingDictionary);
+
         progress?.ReportOrThrow("Map Creatures", token);
         var creatures = MapToCreatures(modelContext.Creatures); 
         var creatureDictionary = MapToCreatureDictionary(creatures);
@@ -77,7 +77,7 @@ internal class DataModelMappingService
         var recipes = MapToRecipeModels(modelContext.Recipes.LoadAll(), itemDictionary, buildingDictionary);
         
         progress?.ReportOrThrow("Map References", token);
-        var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, recipes, fuels, creatureLoots);
+        var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, recipes, fuels, creatureLoots, minerResources);
 
         var lastSyncDate = GetLastSyncDate();
         
@@ -314,26 +314,34 @@ internal class DataModelMappingService
             ManufactoringSpeed = buildingReference.ManufactoringSpeed, 
             PowerConsumption = buildingReference.PowerConsumption,
             PowerConsumptionExponent = buildingReference.PowerConsumptionExponent,
-            PowerConsumptionRange = buildingReference.PowerConsumptionRange
+            PowerConsumptionRange = buildingReference.PowerConsumptionRange,
+            ExtractCycleTime = miner.ExtractCycleTime
         };
         
         buildingDictionary[miner.ClassName] = mappedMiner;
         return mappedMiner;
     }
     
-    private void LinkMinersAndResources(IEnumerable<Miner> miners, IEnumerable<Resource> resources, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
+    private MinerResource[] MapToMinorResources(IEnumerable<Miner> miners, IEnumerable<Resource> resources, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
     {
+        List<MinerResource> minerResources = new();
+        
         foreach (var resource in resources)
         {
             var mappedResource = (IResource)itemDictionary[resource.ClassName];
-            mappedResource.Miners = resource.Miners.Select(p => (IMiner)buildingDictionary[p.ClassName]).ToArray();
+            minerResources.AddRange(resource.Miners.Select(p =>
+            {
+                var mappedMiner = (IMiner)buildingDictionary[p.ClassName];
+                return new MinerResource
+                {
+                    Miner = mappedMiner,
+                    Resource = mappedResource,
+                    AmountPerMinute = CalculationUtilties.SecondsPerMinute / mappedMiner.ExtractCycleTime
+                };
+            }));
         }
-        
-        foreach (var miner in miners)
-        {
-            var mappedMiner = (IMiner)buildingDictionary[miner.ClassName];
-            mappedMiner.Resources = miner.ExtractableResources.Select(p => (IResource)itemDictionary[p.ClassName]).ToArray();
-        }
+
+        return minerResources.ToArray();
     }
 
     private GeneratorFuel[] MapToFuelModels(IQueryable<Generator> generators, IGenerator[] generatorModels, IDictionary<string, IItem> itemDictionary)
@@ -539,18 +547,18 @@ internal class DataModelMappingService
         creatures.ToDictionary(p => p.ClassName, p => p);
 
     // ReSharper disable once HeapView.ClosureAllocation
-    private IDictionary<string, EntityReference> MapToEntityReferenceDictionary(IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, IRecipe[] recipes, GeneratorFuel[] fuels, Models.CreatureLoot[] creatureLoots)
+    private IDictionary<string, EntityReference> MapToEntityReferenceDictionary(IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary, IRecipe[] recipes, GeneratorFuel[] fuels, Models.CreatureLoot[] creatureLoots, MinerResource[] minerResources)
     {
         var entityReferences = itemDictionary.Values
-            .ToDictionary(item => item.ClassName, item => CreateEntityReference(item.ClassName, buildingDictionary, fuels, recipes));
+            .ToDictionary(item => item.ClassName, item => CreateEntityReference(item.ClassName, buildingDictionary, recipes, fuels, minerResources));
 
         foreach (var building in buildingDictionary.Values)
-            entityReferences.Add(building.ClassName, CreateEntityReference(building.ClassName, buildingDictionary, fuels, recipes));
+            entityReferences.Add(building.ClassName, CreateEntityReference(building.ClassName, buildingDictionary, recipes, fuels, minerResources));
 
         return entityReferences;
     }
 
-    private EntityReference CreateEntityReference(string entityClassName, IDictionary<string, IBuilding> buildingDictionary, GeneratorFuel[] fuels, IRecipe[] recipes) =>
+    private EntityReference CreateEntityReference(string entityClassName, IDictionary<string, IBuilding> buildingDictionary, IRecipe[] recipes, GeneratorFuel[] fuels, MinerResource[] minerResources) =>
         new()
         {
             RecipeIngredient = GetRecipeIngredientReferences(entityClassName, recipes, buildingDictionary),
@@ -560,6 +568,7 @@ internal class DataModelMappingService
             FuelIngredient = GetFuelIngredientReferences(entityClassName, fuels),
             FuelByProduct = GetFuelByProductReferences(entityClassName, fuels),
             FuelGenerator = GetFuelGeneratorReferences(entityClassName, fuels),
+            MinerResource = GetMinerResourceReferences(entityClassName, minerResources)
         };
     
     private IRecipe[] GetRecipeIngredientReferences(string entityClassName, IEnumerable<IRecipe> recipes, IDictionary<string, IBuilding> buildingDictionary) => recipes
@@ -591,6 +600,10 @@ internal class DataModelMappingService
     private GeneratorFuel[] GetFuelGeneratorReferences(string entityClassName, IEnumerable<GeneratorFuel> fuels) => fuels
        .Where(fuel => fuel.Generator.ClassName == entityClassName)
        .ToArray();
+    
+    private MinerResource[] GetMinerResourceReferences(string entityClassName, IEnumerable<MinerResource> minerResources) => minerResources
+        .Where(minerResource => minerResource.Resource.ClassName == entityClassName || minerResource.Miner.ClassName == entityClassName)
+        .ToArray();
     
     private Models.CreatureLoot[] GetCreatureDropsLootReferences(string entityClassName, IEnumerable<Models.CreatureLoot> creatureLoots) => creatureLoots
         .Where(creatureLoot => creatureLoot.Creature.ClassName == entityClassName)

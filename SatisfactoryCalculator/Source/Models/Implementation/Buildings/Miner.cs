@@ -11,4 +11,5 @@ internal class Miner : IMiner
     public decimal? PowerConsumptionExponent { get; init; }
     public PowerConsumptionRange? PowerConsumptionRange { get; init; }
     public IResource[] Resources { get; set; }
+    public decimal ExtractCycleTime { get; set; }
 }

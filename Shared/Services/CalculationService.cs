@@ -32,6 +32,16 @@ public class CalculationService : ICalculationService
         if (overclock is < 0 or > 250)
             throw new ArgumentException("Overclock Parameter must be between 0 and 250");
 
+        if (overclock == 0)
+            return new()
+            {
+                AmountPerMinute = 0,
+                PowerProduction = 0,
+                FuelBurnTime = 0,
+                SupplementalAmountPerMinute = supplementalToPowerRatio.HasValue ? 0 : null,
+                ByProductAmountPerMinute = byProductAmount.HasValue ? 0 : null
+            };
+
         var overClockMultiplier = overclock.GetOverClockMultiplier();
         var powerCapacity = generatorPowerProduction * (decimal)overClockMultiplier;
         var fuelBurnTime = fuelEnergyValue / powerCapacity;

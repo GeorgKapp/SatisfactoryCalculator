@@ -18,14 +18,14 @@
     <Page.Resources>
 
         <CollectionViewSource x:Key="ProductCollection" Source="{Binding SelectedMinerRecipes}"/>
-        <CollectionViewSource x:Key="ResourceCollection" Source="{Binding SelectedResources}"/>
+        <CollectionViewSource x:Key="MinerResourceCollection" Source="{Binding SelectedMinerResources}"/>
 
         <DataTemplate DataType="{x:Type models:Recipe}">
             <u:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type models:Resource}">
-            <u:ResourceControl Resource="{Binding}" Margin="0,0,0,15"/>
+        <DataTemplate DataType="{x:Type models:MinerResource}">
+            <u:MinerResourceControl MinerResource="{Binding}" Margin="0,0,0,15"/>
         </DataTemplate>
 
     </Page.Resources>
@@ -60,7 +60,7 @@
                     <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
 
                     <c:SatisfactoryTextBlock Text="Extractable Resources" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedMiner.Resources.Length, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding ResourcesSectionMargin}"/>
-                    <CollectionContainer Collection="{Binding Source={StaticResource ResourceCollection}}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource MinerResourceCollection}}"/>
                     
                 </CompositeCollection>
             </ItemsControl.ItemsSource>

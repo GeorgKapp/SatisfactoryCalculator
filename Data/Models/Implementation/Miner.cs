@@ -6,7 +6,7 @@ public class Miner : IClassNamePrimaryKey
     public Building Building { get; set; }
     
     public int ItemsPerCycle { get; set; }
-    public decimal? ExtractCycleTime { get; set; }
+    public decimal ExtractCycleTime { get; set; }
     public Form AllowedResourceForm { get; set; }
     public virtual ICollection<Resource> ExtractableResources { get; set; } = new List<Resource>();
 }

@@ -17,7 +17,7 @@
         <CollectionViewSource x:Key="IngredientCollection" Source="{Binding SelectedResourceAsIngredientInRecipes}"/>
         <CollectionViewSource x:Key="BuildingIngredientCollection" Source="{Binding SelectedResourceAsBuildingIngredientInRecipes}"/>
         <CollectionViewSource x:Key="FuelIngredientCollection" Source="{Binding SelectedResourceAsFuels}"/>
-        <CollectionViewSource x:Key="MinerCollection" Source="{Binding SelectedMiners}"/>
+        <CollectionViewSource x:Key="MinerResourceCollection" Source="{Binding SelectedMinerResources}"/>
         
         <DataTemplate DataType="{x:Type models:GeneratorFuel}">
             <u:FuelControl GeneratorFuel="{Binding}" Margin="0,0,0,15"/>
@@ -27,11 +27,10 @@
             <u:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
         </DataTemplate>
         
-        <DataTemplate DataType="{x:Type models:Miner}">
-            <u:MinerControl Miner="{Binding}" Margin="0,0,0,15"/>
+        <DataTemplate DataType="{x:Type models:MinerResource}">
+            <u:MinerResourceControl MinerResource="{Binding}" Margin="0,0,0,15"/>
         </DataTemplate>
-
-
+        
     </Page.Resources>
     
     <Grid>
@@ -71,8 +70,7 @@
                     <CollectionContainer Collection="{Binding Source={StaticResource FuelIngredientCollection}}"/>
  
                     <c:SatisfactoryTextBlock Text="Extracted in Miners" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedResource.Miners.Length, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding MinersSectionMargin}"/>
-                    <CollectionContainer Collection="{Binding Source={StaticResource MinerCollection}}"/>
-
+                    <CollectionContainer Collection="{Binding Source={StaticResource MinerResourceCollection}}"/>
                     
                 </CompositeCollection>
             </ItemsControl.ItemsSource>

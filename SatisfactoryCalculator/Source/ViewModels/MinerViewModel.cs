@@ -11,7 +11,7 @@ internal class MinerViewModel : ObservableObject
             SetProperty(ref _selectedMiner, value);
             
             SelectedMinerRecipes = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].RecipeProduct);
-            SelectedResources = new(_selectedMiner.Resources);
+            SelectedMinerResources = new(_applicationState.Configuration.ReferenceDictionary[value.ClassName].MinerResource);
         }
     }
 
@@ -22,13 +22,13 @@ internal class MinerViewModel : ObservableObject
         private set => SetProperty(ref _selectedMinerRecipes, value);
     }
     
-    private ObservableCollection<IResource> _selectedResources = new();
-    public ObservableCollection<IResource> SelectedResources
+    private ObservableCollection<MinerResource> _selectedMinerResources = new();
+    public ObservableCollection<MinerResource> SelectedMinerResources
     {
-        get => _selectedResources;
+        get => _selectedMinerResources;
         private set
         {
-            SetProperty(ref _selectedResources, value);
+            SetProperty(ref _selectedMinerResources, value);
             NotifyMarginUpdates();
         }
     }

@@ -68,8 +68,7 @@
             
             <StackPanel Grid.Column="2" Margin="5">
                 <c:SatisfactoryTextBlock Style="{StaticResource SmallGroupTextblock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="Weapon" MinWidth="150"/>
-                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedAmmunition.UsedInWeapon.Name}" />
-                <Image Height="80" Width="80" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,10,0,0" Source="{Binding SelectedAmmunition.UsedInWeapon.Image}" />
+                <c:SatisfactoryImage Height="80" Width="80" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,10,0,0" Source="{Binding SelectedAmmunition.UsedInWeapon.Image}" ToolTipText="{Binding SelectedAmmunition.UsedInWeapon.Name}"/>
             </StackPanel>
         </Grid>
 

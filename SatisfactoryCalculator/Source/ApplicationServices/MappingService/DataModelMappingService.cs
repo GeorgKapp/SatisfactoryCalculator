@@ -10,6 +10,7 @@ using Item = Data.Models.Implementation.Item;
 using Miner = Data.Models.Implementation.Miner;
 using Recipe = Data.Models.Implementation.Recipe;
 using Resource = Data.Models.Implementation.Resource;
+using Statue = Data.Models.Implementation.Statue;
 using Weapon = Data.Models.Implementation.Weapon;
 
 // ReSharper disable MemberCanBeMadeStatic.Local
@@ -72,7 +73,10 @@ internal class DataModelMappingService
         var creatureDictionary = MapToCreatureDictionary(creatures);
         LinkCreatureVariants(creatures, modelContext.Creatures, itemDictionary, creatureDictionary);
         var creatureLoots = MapToCreatureLoots(modelContext.Creatures, itemDictionary, creatureDictionary);
-
+        
+        progress?.ReportOrThrow("Map Statues", token);
+        var statues = MapToStatueModels(modelContext.Statues);
+        
         progress?.ReportOrThrow("Map Recipes", token);
         var recipes = MapToRecipeModels(modelContext.Recipes.LoadAll(), itemDictionary, buildingDictionary);
         
@@ -93,6 +97,7 @@ internal class DataModelMappingService
             miners,
             recipes,
             creatureDictionary.Values.ToArray(),
+            statues,
             referenceDictionary, 
             lastSyncDate);
     }
@@ -270,6 +275,20 @@ internal class DataModelMappingService
             }
         ).OrderBy(p => p.Name).ToArray();
     }
+    
+    private IStatue[] MapToStatueModels(IEnumerable<Statue> statues) => statues
+        .Select(MapToStatueModel)
+        .OrderBy(p => p.Name)
+        .ToArray();
+
+    private IStatue MapToStatueModel(Statue statue) =>
+        new Models.Statue()
+        {
+            ClassName = statue.ClassName, 
+            Name = statue.Name,
+            Description = statue.Description, 
+            Image = BitmapImageCache.Fetch(SelectImagePath(statue.SmallImagePath, statue.BigImagePath)),
+        };
 
     // ReSharper disable once HeapView.ClosureAllocation
     private IGenerator[] MapToGeneratorModels(IEnumerable<Generator> generators, IDictionary<string, IBuilding> buildingDictionary) => generators

@@ -49,6 +49,9 @@ internal class MainViewModel : ObservableObject
     
     private ICommand? _showMinersCommand;
     public ICommand ShowMinersCommand => _showMinersCommand ??= new SimpleCommand(ShowMiners);
+    
+    private ICommand? _showStatuesCommand;
+    public ICommand ShowStatuesCommand => _showStatuesCommand ??= new SimpleCommand(ShowStatues);
 
     private ICommand? _showRecipesCommand;
     public ICommand ShowRecipesCommand => _showRecipesCommand ??= new SimpleCommand(ShowRecipes);
@@ -83,6 +86,7 @@ internal class MainViewModel : ObservableObject
     private void ShowBuildings() => ShowFilterableEntityPage(_applicationState.Configuration.Buildings);
     private void ShowGenerators() => ShowFilterableEntityPage(_applicationState.Configuration.Generators);
     private void ShowMiners() => ShowFilterableEntityPage(_applicationState.Configuration.Miners);
+    private void ShowStatues() => ShowFilterableEntityPage(_applicationState.Configuration.Statues);
     private void ShowRecipes() => ShowFilterableEntityPage(_applicationState.Configuration.Recipes);
     private void ShowOverview()
     {

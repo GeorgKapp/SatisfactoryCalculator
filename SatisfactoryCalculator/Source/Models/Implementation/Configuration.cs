@@ -88,6 +88,13 @@ public class Configuration : ObservableObject
         set => SetProperty(ref _creatures, value);
     }
     
+    private ObservableCollection<IStatue> _statues = new();
+    internal ObservableCollection<IStatue> Statues
+    {
+        get => _statues;
+        set => SetProperty(ref _statues, value);
+    }
+    
     private ObservableCollection<IPlant> _plants = new();
     internal ObservableCollection<IPlant> Plants
     {

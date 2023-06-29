@@ -15,6 +15,7 @@ internal class DataModelMappingResult
         IMiner[] miners,
         IRecipe[] recipes, 
         ICreature[] creatures,
+        IStatue[] statues,
         IDictionary<string, EntityReference> referenceDictionary, 
         DateTime? lastSyncDate)
     {
@@ -29,6 +30,7 @@ internal class DataModelMappingResult
         Miners = miners;
         Recipes = recipes;
         Creatures = creatures;
+        Statues = statues;
         ReferenceDictionary = referenceDictionary;
         LastSyncDate = lastSyncDate;
     }
@@ -45,5 +47,6 @@ internal class DataModelMappingResult
     public IMiner[] Miners { get; }
     public IRecipe[] Recipes { get; }
     public ICreature[] Creatures { get; }
+    public IStatue[] Statues { get; }
     public DateTime? LastSyncDate { get; }
 }

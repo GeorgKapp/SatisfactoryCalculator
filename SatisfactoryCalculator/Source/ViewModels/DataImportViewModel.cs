@@ -1,3 +1,5 @@
+using Settings = SatisfactoryCalculator.Properties.Settings;
+
 namespace SatisfactoryCalculator.Source.ViewModels;
 
 internal class DataImportViewModel : ObservableObject

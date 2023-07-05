@@ -25,6 +25,7 @@ internal class ApplicationState : ObservableObject
         Configuration.Miners = new(mappingResult.Miners);
         Configuration.Recipes = new(mappingResult.Recipes);
         Configuration.Statues = new(mappingResult.Statues);
+        Configuration.FactoryConfigurations = new(mappingResult.FactoryConfigurations);
         Configuration.ReferenceDictionary = mappingResult.ReferenceDictionary;
         Configuration.LastSyncDate = mappingResult.LastSyncDate;
     }

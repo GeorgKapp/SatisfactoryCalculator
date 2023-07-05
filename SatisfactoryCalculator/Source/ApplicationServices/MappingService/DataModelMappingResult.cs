@@ -1,4 +1,7 @@
 ﻿// ReSharper disable once CheckNamespace
+
+using FactoryConfiguration = SatisfactoryCalculator.Source.Models.FactoryConfiguration;
+
 namespace SatisfactoryCalculator.Source.ApplicationServices;
 
 internal class DataModelMappingResult
@@ -16,8 +19,9 @@ internal class DataModelMappingResult
         IRecipe[] recipes, 
         ICreature[] creatures,
         IStatue[] statues,
+        FactoryConfiguration[] factoryConfigurations,
         IDictionary<string, EntityReference> referenceDictionary, 
-        DateTime? lastSyncDate)
+        DateTime lastSyncDate)
     {
         Items = items;
         Equipments = equipments;
@@ -31,11 +35,11 @@ internal class DataModelMappingResult
         Recipes = recipes;
         Creatures = creatures;
         Statues = statues;
+        FactoryConfigurations = factoryConfigurations;
         ReferenceDictionary = referenceDictionary;
         LastSyncDate = lastSyncDate;
     }
-
-    public IDictionary<string, EntityReference> ReferenceDictionary { get; }
+    
     public IItem[] Items { get; }
     public IEquipment[] Equipments { get; }
     public IConsumable[] Consumables { get; }
@@ -48,5 +52,7 @@ internal class DataModelMappingResult
     public IRecipe[] Recipes { get; }
     public ICreature[] Creatures { get; }
     public IStatue[] Statues { get; }
-    public DateTime? LastSyncDate { get; }
+    public FactoryConfiguration[] FactoryConfigurations { get; }
+    public IDictionary<string, EntityReference> ReferenceDictionary { get; }
+    public DateTime LastSyncDate { get; }
 }

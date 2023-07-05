@@ -124,4 +124,17 @@ public static class ModelExtensions
         weapons
             .Include(p => p.Item)
             .Include(p => p.Ammunitions);
+    
+    public static IQueryable<FactoryConfiguration> LoadAll(this IQueryable<FactoryConfiguration> factoryConfigurations) =>
+        factoryConfigurations
+            .Include(p => p.FactoryBuildingConfigurations)
+                .ThenInclude(p => p.Building)
+            .Include(p => p.FactoryBuildingConfigurations)
+                .ThenInclude(p => p.ProducedBuilding)
+            .Include(p => p.FactoryBuildingConfigurations)
+                .ThenInclude(p => p.ProducedItem)
+            .Include(p => p.DesiredOutputs)
+                .ThenInclude(p => p.Building)
+            .Include(p => p.DesiredOutputs)
+                .ThenInclude(p => p.Item);
 }

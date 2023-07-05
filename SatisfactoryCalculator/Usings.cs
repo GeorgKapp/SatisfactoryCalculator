@@ -5,6 +5,7 @@ global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Options;
 global using SatisfactoryCalculator.DocsServices.Services;
+global using System.Collections;
 global using SatisfactoryCalculator.Properties;
 global using SatisfactoryCalculator.Shared.Common.Progress;
 global using SatisfactoryCalculator.Shared.Enums;

@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-
 namespace Data.Configurations;
 
 internal class CreatureConfiguration : IEntityTypeConfiguration<Creature>

@@ -355,8 +355,8 @@ public partial class DocsParserService
 			await CopyMigrationHistoryAsync(tempModelContext);
 
 			File.Copy(
-				@$"{_pathOptions.Value.DataFolder}\TempData.db", 
-				@$"{_pathOptions.Value.DataFolder}\Data.db", 
+				_pathOptions.Value.TempDataFile, 
+				_pathOptions.Value.DataFile, 
 				true);
 			
 			progress?.ReportSuccess("Data succesfully parsed");

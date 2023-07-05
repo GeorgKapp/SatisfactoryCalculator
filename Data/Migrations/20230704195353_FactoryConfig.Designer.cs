@@ -3,6 +3,7 @@ using System;
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(ModelContext))]
-    partial class ModelContextModelSnapshot : ModelSnapshot
+    [Migration("20230704195353_FactoryConfig")]
+    partial class FactoryConfig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.7");
@@ -300,7 +303,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("FactoryConfigurationID")
+                    b.Property<int?>("FactoryConfigurationID")
                         .HasColumnType("INTEGER");
 
                     b.Property<double>("Overclock")
@@ -355,7 +358,7 @@ namespace Data.Migrations
                     b.Property<string>("BuildingClassName")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("FactoryConfigurationID")
+                    b.Property<int?>("FactoryConfigurationID")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ItemClassName")
@@ -1055,11 +1058,9 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Models.Implementation.FactoryConfiguration", "FactoryConfiguration")
+                    b.HasOne("Data.Models.Implementation.FactoryConfiguration", null)
                         .WithMany("FactoryBuildingConfigurations")
-                        .HasForeignKey("FactoryConfigurationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FactoryConfigurationID");
 
                     b.HasOne("Data.Models.Implementation.Building", "ProducedBuilding")
                         .WithMany()
@@ -1070,8 +1071,6 @@ namespace Data.Migrations
                         .HasForeignKey("ProducedItemClassName");
 
                     b.Navigation("Building");
-
-                    b.Navigation("FactoryConfiguration");
 
                     b.Navigation("ProducedBuilding");
 
@@ -1084,19 +1083,15 @@ namespace Data.Migrations
                         .WithMany()
                         .HasForeignKey("BuildingClassName");
 
-                    b.HasOne("Data.Models.Implementation.FactoryConfiguration", "FactoryConfiguration")
+                    b.HasOne("Data.Models.Implementation.FactoryConfiguration", null)
                         .WithMany("DesiredOutputs")
-                        .HasForeignKey("FactoryConfigurationID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FactoryConfigurationID");
 
                     b.HasOne("Data.Models.Implementation.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemClassName");
 
                     b.Navigation("Building");
-
-                    b.Navigation("FactoryConfiguration");
 
                     b.Navigation("Item");
                 });

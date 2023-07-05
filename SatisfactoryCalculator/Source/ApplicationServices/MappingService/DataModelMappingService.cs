@@ -4,6 +4,9 @@ using Consumable = Data.Models.Implementation.Consumable;
 using Creature = Data.Models.Implementation.Creature;
 using CreatureLoot = Data.Models.Implementation.CreatureLoot;
 using Equipment = Data.Models.Implementation.Equipment;
+using FactoryBuildingConfiguration = Data.Models.Implementation.FactoryBuildingConfiguration;
+using FactoryConfiguration = Data.Models.Implementation.FactoryConfiguration;
+using FactoryConfigurationOutput = Data.Models.Implementation.FactoryConfigurationOutput;
 using FuelItem = Data.Models.Implementation.FuelItem;
 using Generator = Data.Models.Implementation.Generator;
 using Item = Data.Models.Implementation.Item;
@@ -24,10 +27,12 @@ internal class DataModelMappingService
 {
     public DataModelMappingService(
         ModelCalculationService modelCalculationService,
-        IDbContextFactory<ModelContext> modelContextFactory)
+        IDbContextFactory<ModelContext> modelContextFactory,
+            IOptions<PathOptions> pathOptions)
     {
         _modelCalculationService = modelCalculationService ?? throw new ArgumentNullException(nameof(modelCalculationService));
         _modelContextFactory = modelContextFactory ?? throw new ArgumentNullException(nameof(modelContextFactory));
+        _pathOptions = pathOptions?.Value ?? throw new ArgumentNullException(nameof(pathOptions));
     }
 
     public async Task<DataModelMappingResult> MapConfigurationModelsAsync(IExtendedProgress<string>? progress = null, CancellationToken? token = null)
@@ -79,6 +84,8 @@ internal class DataModelMappingService
         
         progress?.ReportOrThrow("Map Recipes", token);
         var recipes = MapToRecipeModels(modelContext.Recipes.LoadAll(), itemDictionary, buildingDictionary);
+
+        var factoryConfigurations = MapToFactoryConfigurations(modelContext.FactoryConfigurations.LoadAll(), itemDictionary, buildingDictionary);
         
         progress?.ReportOrThrow("Map References", token);
         var referenceDictionary = MapToEntityReferenceDictionary(itemDictionary, buildingDictionary, recipes, fuels, creatureLoots, minerResources);
@@ -98,6 +105,7 @@ internal class DataModelMappingService
             recipes,
             creatureDictionary.Values.ToArray(),
             statues,
+            factoryConfigurations,
             referenceDictionary, 
             lastSyncDate);
     }
@@ -552,6 +560,59 @@ internal class DataModelMappingService
     private RecipeBuilding MapToRecipeBuildingModel(IBuilding building, PowerConsumptionRange? powerConsumptionRange) =>
         new(building, powerConsumptionRange);
 
+    private Models.FactoryConfiguration[] MapToFactoryConfigurations(IEnumerable<FactoryConfiguration> factoryConfigurations, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary) => factoryConfigurations
+        .Select(p => MapToFactoryConfiguration(p, itemDictionary, buildingDictionary))
+        .ToArray();
+
+    private Models.FactoryConfiguration MapToFactoryConfiguration(FactoryConfiguration factoryConfiguration, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
+    {
+        var mappedfactoryConfiguration = new Models.FactoryConfiguration
+        {
+            ID = factoryConfiguration.ID,
+            Name = factoryConfiguration.Name,
+            DesiredOverclock = factoryConfiguration.DesiredOverclock,
+            SplitOverclockEvenly = factoryConfiguration.SplitOverclockEvenly,
+            CalculatedInVersion = factoryConfiguration.CalculatedInVersion,
+            FactoryBuildingConfigurations = factoryConfiguration.FactoryBuildingConfigurations
+                .Select(p => MapToFactoryBuildingConfiguration(p, itemDictionary, buildingDictionary))
+                .ToArray(),
+            DesiredOutputs = factoryConfiguration.DesiredOutputs
+                .Select(p => MapToFactoryConfigurationOutput(p, itemDictionary, buildingDictionary))
+                .ToArray()
+        };
+
+        return mappedfactoryConfiguration;
+    }
+    
+    private Models.FactoryConfigurationOutput MapToFactoryConfigurationOutput(FactoryConfigurationOutput factoryConfigurationOutput, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
+    {
+        var entityClassName = factoryConfigurationOutput.ItemClassName + factoryConfigurationOutput.BuildingClassName;
+        var entity = GetEntityFromDictionaries(entityClassName, itemDictionary, buildingDictionary);
+
+        return new()
+        {
+            ID = factoryConfigurationOutput.ID,
+            Entity = entity,
+            Amount = factoryConfigurationOutput.Amount
+        };
+    }
+    
+    private Models.FactoryBuildingConfiguration MapToFactoryBuildingConfiguration(FactoryBuildingConfiguration factoryBuildingConfiguration, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
+    {
+        var entityClassName = factoryBuildingConfiguration.ProducedItemClassName + factoryBuildingConfiguration.ProducedBuildingClassName;
+        var entity = GetEntityFromDictionaries(entityClassName, itemDictionary, buildingDictionary);
+
+        return new()
+        {
+            ID = factoryBuildingConfiguration.ID,
+            Overclock = factoryBuildingConfiguration.Overclock,
+            Building = buildingDictionary[factoryBuildingConfiguration.BuildingClassName],
+            BuildingAmount = factoryBuildingConfiguration.BuildingAmount,
+            ProducedEntity = entity,
+            Amount = factoryBuildingConfiguration.Amount
+        };
+    }
+
     #endregion
 
     #region Dictionary Methods
@@ -636,18 +697,29 @@ internal class DataModelMappingService
 
     #region Utility Methods
 
+    private IEntity GetEntityFromDictionaries(string entityClassName, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
+    {
+        if (itemDictionary.ContainsKey(entityClassName) && buildingDictionary.ContainsKey(entityClassName))
+            throw new("Entity is both present as item and building");
+
+        if (itemDictionary.TryGetValue(entityClassName, out var item))
+            return item;
+        
+        if(buildingDictionary.TryGetValue(entityClassName, out var building))
+            return building;
+
+        throw new("Entity is neither present as item or building");
+    }
+
     private string SelectImagePath(string smallIconPath, string bigIconPath) => string.IsNullOrEmpty(smallIconPath)
         ? bigIconPath
         : smallIconPath;
 
-    // private DateTime? GetLastSyncDate() => File.Exists(Constants.InformationFileName)
-    //     ? new DateTime?(File.GetLastWriteTime(Constants.InformationFileName))
-    //     : null;
-    //
-    private DateTime? GetLastSyncDate() => DateTime.Now;
+    private DateTime GetLastSyncDate() => File.GetLastWriteTime(_pathOptions.DataFile);
 
     #endregion
 
     private readonly ModelCalculationService _modelCalculationService;
     private readonly IDbContextFactory<ModelContext> _modelContextFactory;
+    private readonly PathOptions _pathOptions;
 }

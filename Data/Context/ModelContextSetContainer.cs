@@ -19,4 +19,5 @@ public partial class ModelContext
     public DbSet<Statue> Statues { get; set; }
     public DbSet<Vehicle> Vehicles { get; set; }
     public DbSet<Weapon> Weapons { get; set; }
+    public DbSet<FactoryConfiguration> FactoryConfigurations { get; set; }
 }

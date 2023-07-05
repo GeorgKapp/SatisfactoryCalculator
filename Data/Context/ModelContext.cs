@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-#pragma warning disable CS8618
+﻿#pragma warning disable CS8618
 
 namespace Data.Context;
 
@@ -49,5 +47,8 @@ public partial class ModelContext : DbContext
         modelBuilder.ApplyConfiguration(new StatueConfiguration());
         modelBuilder.ApplyConfiguration(new VehicleConfiguration());
         modelBuilder.ApplyConfiguration(new WeaponConfiguration());
+        modelBuilder.ApplyConfiguration(new FactoryConfigurationOutputConfiguration());
+        modelBuilder.ApplyConfiguration(new FactoryBuildingConfigurationConfiguration());
+        modelBuilder.ApplyConfiguration(new FactoryConfigurationConfiguration());
     }
 }

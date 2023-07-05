@@ -42,12 +42,12 @@ internal static class ServiceExtensions
 	{
 		services.AddDbContextFactory<ModelContext>(options =>
 			options
-				.UseSqlite($@"Data Source={pathOptions.DataFolder}\Data.db;Pooling=false")
+				.UseSqlite($@"Data Source={pathOptions.DataFile};Pooling=false")
 			);
 		
 		services.AddDbContextFactory<TempModelContext>(options =>
 			options
-				.UseSqlite($@"Data Source={pathOptions.DataFolder}\TempData.db;Pooling=false")
+				.UseSqlite($@"Data Source={pathOptions.TempDataFile};Pooling=false")
 				.LogTo(p => Debug.WriteLine(p), LogLevel.Error)
 				.EnableSensitiveDataLogging()
 		);

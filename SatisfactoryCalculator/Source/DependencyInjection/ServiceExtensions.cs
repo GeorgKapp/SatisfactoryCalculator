@@ -99,6 +99,7 @@ internal static class ServiceExtensions
             .AddSingleton<GeneratorPage>()
 			.AddSingleton<MinerPage>()
 			.AddSingleton<StatuePage>()
+			.AddSingleton<FactoryPlannerPage>()
             .AddSingleton<RecipePage>()
 			.AddSingleton<OverviewPage>()
 			.AddSingleton<DataImportPage>();
@@ -119,6 +120,7 @@ internal static class ServiceExtensions
             .AddSingleton<GeneratorViewModel>()
 			.AddSingleton<MinerViewModel>()
 			.AddSingleton<StatueViewModel>()
+			.AddSingleton<FactoryPlannerViewModel>()
             .AddSingleton<RecipeViewModel>()
 			.AddSingleton<OverviewViewModel>()
 			.AddSingleton<DataImportViewModel>();

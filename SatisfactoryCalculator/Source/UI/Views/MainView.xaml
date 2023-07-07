@@ -40,7 +40,7 @@
                 <c:SatisfactoryButton Content="Statues" Style="{StaticResource SubCategoryButtonButton}" Command="{Binding ShowStatuesCommand}"/>
                 <c:SatisfactoryButton Content="Recipes" Command="{Binding ShowRecipesCommand}"/>
                 <c:SatisfactoryButton Content="Overview" Command="{Binding ShowOverviewCommand}"/>
-                <c:SatisfactoryButton Content="Factory Planner"/>
+                <c:SatisfactoryButton Content="Factory Planner" Command="{Binding ShowFactoryPlannerCommand}"/>
                 <c:SatisfactoryButton Content="Data Import" Command="{Binding ShowDataImportCommand}"/>
             </StackPanel>
 

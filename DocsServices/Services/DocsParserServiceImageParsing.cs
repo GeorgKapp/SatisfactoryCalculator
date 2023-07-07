@@ -55,7 +55,7 @@ public partial class DocsParserService
         }
 
         await CopyFileAsync(sourceFile, targetPath);
-        return targetPath;
+        return fileName;
     }
 
     private static async Task CopyFileAsync(string sourceFile, string destinationFile, CancellationToken? token = null)

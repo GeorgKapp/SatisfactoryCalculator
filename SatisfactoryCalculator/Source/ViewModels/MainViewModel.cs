@@ -59,6 +59,9 @@ internal class MainViewModel : ObservableObject
     private ICommand? _showOverviewCommand;
     public ICommand ShowOverviewCommand => _showOverviewCommand ??= new SimpleCommand(ShowOverview);
 
+    private ICommand? _showFactoryPlannerCommand;
+    public ICommand ShowFactoryPlannerCommand => _showFactoryPlannerCommand ??= new SimpleCommand(ShowFactoryPlanner);
+
     private ICommand? _showDataImportCommand;
     public ICommand ShowDataImportCommand => _showDataImportCommand ??= new SimpleCommand(ShowDataImport);
 
@@ -94,6 +97,7 @@ internal class MainViewModel : ObservableObject
 	    result.Item2.Update();
 	    CurrentPage = result.Item1;
     }
+    private void ShowFactoryPlanner() => CurrentPage = PageService.FetchPage<FactoryPlannerPage>();
     private void ShowDataImport() => CurrentPage = PageService.FetchPage<DataImportPage>();
 
 	private void ShowFilterableEntityPage(IEnumerable<IEntity> entities)

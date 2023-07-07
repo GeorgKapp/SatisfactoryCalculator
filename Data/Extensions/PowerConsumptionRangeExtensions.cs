@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace Data.Extensions;
 
 internal static class PowerConsumptionRangeExtensions
@@ -14,10 +16,11 @@ internal static class PowerConsumptionRangeExtensions
         if (string.IsNullOrEmpty(input))
             return null;
 
+        var germanCulture = new CultureInfo("de-DE");
         var splittedInput = input.Split("-");
 
         return new(
-            Convert.ToDecimal(splittedInput[0]),
-            Convert.ToDecimal(splittedInput[1]));
+            Convert.ToDecimal(splittedInput[0], germanCulture),
+            Convert.ToDecimal(splittedInput[1], germanCulture));
     }
 }

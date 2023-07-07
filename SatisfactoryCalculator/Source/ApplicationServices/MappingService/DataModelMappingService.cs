@@ -711,9 +711,18 @@ internal class DataModelMappingService
         throw new("Entity is neither present as item or building");
     }
 
-    private string SelectImagePath(string smallIconPath, string bigIconPath) => string.IsNullOrEmpty(smallIconPath)
-        ? bigIconPath
-        : smallIconPath;
+    private string? SelectImagePath(string? smallIconPath, string? bigIconPath)
+    {
+        var iconPath = string.IsNullOrEmpty(smallIconPath)
+            ? bigIconPath
+            : smallIconPath;
+
+        if (string.IsNullOrEmpty(iconPath))
+            return iconPath;
+
+        var fullIconPath = _pathOptions.ImageFolder + "\\" +  iconPath;
+        return fullIconPath;
+    }
 
     private DateTime GetLastSyncDate() => File.GetLastWriteTime(_pathOptions.DataFile);
 

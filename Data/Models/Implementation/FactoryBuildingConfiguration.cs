@@ -9,13 +9,10 @@ public class FactoryBuildingConfiguration : IIDPrimaryKey
     public string BuildingClassName { get; set; }
     public Building Building { get; set; }
     public int BuildingAmount { get; set; }
+    public decimal EnergyConsumption { get; set; }
     
-    public string? ProducedBuildingClassName { get; set; }
-    public Building? ProducedBuilding { get; set; }
-    
-    public string? ProducedItemClassName { get; set; }
-    public Item? ProducedItem { get; set; }
-    
+    public string ProducedItemClassName { get; set; }
+    public Item ProducedItem { get; set; }
     public decimal Amount { get; set; }
     
     public FactoryConfiguration FactoryConfiguration { get; set; }

@@ -67,10 +67,7 @@ internal class MainViewModel : ObservableObject
 
     private ICommand? _showDataImportCommand;
     public ICommand ShowDataImportCommand => _showDataImportCommand ??= new SimpleCommand(ShowDataImport);
-
-    private ICommand? _saveCommand;
-    public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(Save);
-
+    
 	public MainViewModel(
 		IDbContextFactory<ModelContext> modelContextFactory,
 		ApplicationState applicationState, 
@@ -116,11 +113,6 @@ internal class MainViewModel : ObservableObject
 		CurrentPage = fetchResult.Item1;
 	}
 	
-	private void Save()
-	{
-		//Insert instance saving maybe
-	}
-
 	public async Task Load()
     {
 	    try

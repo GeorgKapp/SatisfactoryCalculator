@@ -48,7 +48,6 @@
             <Frame Padding="10" NavigationUIVisibility="Hidden" Grid.Column="1" Grid.Row="0" Content="{Binding CurrentPage}" />
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1">
-                <c:SatisfactoryButton IsDefault="True" Content="Save" FontWeight="SemiBold" Width="100" HorizontalContentAlignment="Center" Command="{Binding SaveCommand}" />
                 <c:SatisfactoryButton IsCancel="True" Content="Close" FontWeight="SemiBold" Width="100" HorizontalContentAlignment="Center" Click="Close_Click" />
             </StackPanel>
 

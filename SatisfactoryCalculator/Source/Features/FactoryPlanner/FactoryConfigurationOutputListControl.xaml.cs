@@ -42,6 +42,12 @@ internal partial class FactoryConfigurationOutputListControl : UserControl
 
     private void CreateNewClick(object sender, RoutedEventArgs e)
     {
+        if (ItemsSource.Any(p => p.Entity is null))
+        {
+            MessageBox.Show("At least one output does not have a selected item");
+            return;
+        }
+        
         var newFactoryConfigurationOutput = new FactoryConfigurationOutput();
         ItemsSource.Add(newFactoryConfigurationOutput);
 

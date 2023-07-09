@@ -130,7 +130,6 @@ public static class ModelExtensions
             .Include(p => p.FactoryBuildingConfigurations)
                 .ThenInclude(p => p.Building)
             .Include(p => p.FactoryBuildingConfigurations)
-                .ThenInclude(p => p.ProducedBuilding)
             .Include(p => p.FactoryBuildingConfigurations)
                 .ThenInclude(p => p.ProducedItem)
             .Include(p => p.DesiredOutputs)

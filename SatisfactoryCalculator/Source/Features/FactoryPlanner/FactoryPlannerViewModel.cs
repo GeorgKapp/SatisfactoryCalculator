@@ -24,6 +24,12 @@ internal class FactoryPlannerViewModel : ObservableObject
         get => _entities;
         set => SetProperty(ref _entities, value);
     }
+    
+    private ICommand? _calculateCommand;
+    public ICommand CalculateCommand => _calculateCommand ??= new SimpleCommand(Calculate);
+    
+    private ICommand? _saveCommand;
+    public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(Save);
 
     public FactoryPlannerViewModel(ApplicationState applicationState)
     {
@@ -33,6 +39,16 @@ internal class FactoryPlannerViewModel : ObservableObject
     public void Initialize()
     {
         Entities = new(_applicationState.Configuration.Items);
+    }
+
+    private void Calculate()
+    {
+        
+    }
+    
+    private void Save()
+    {
+        
     }
 
     private readonly ApplicationState _applicationState;

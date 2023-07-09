@@ -598,8 +598,7 @@ internal class DataModelMappingService
     
     private FactoryPlanner.FactoryBuildingConfiguration MapToFactoryBuildingConfiguration(FactoryBuildingConfiguration factoryBuildingConfiguration, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
     {
-        var entityClassName = factoryBuildingConfiguration.ProducedItemClassName + factoryBuildingConfiguration.ProducedBuildingClassName;
-        var entity = GetEntityFromDictionaries(entityClassName, itemDictionary, buildingDictionary);
+        var entity = GetEntityFromDictionaries(factoryBuildingConfiguration.ProducedItemClassName, itemDictionary, buildingDictionary);
 
         return new()
         {
@@ -607,6 +606,7 @@ internal class DataModelMappingService
             Overclock = factoryBuildingConfiguration.Overclock,
             Building = buildingDictionary[factoryBuildingConfiguration.BuildingClassName],
             BuildingAmount = factoryBuildingConfiguration.BuildingAmount,
+            EnergyConsumption = factoryBuildingConfiguration.EnergyConsumption,
             ProducedEntity = entity,
             Amount = factoryBuildingConfiguration.Amount
         };

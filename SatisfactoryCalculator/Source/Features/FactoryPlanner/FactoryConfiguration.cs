@@ -9,6 +9,8 @@ internal class FactoryConfiguration
     public bool SplitOverclockEvenly { get; set; } = false;
     public string? CalculatedInVersion { get; set; }
     
+    public decimal CalculatedPowerConsumption { get; set; }
+    
     public ObservableCollection<FactoryBuildingConfiguration> FactoryBuildingConfigurations { get; set; } = new ObservableCollection<FactoryBuildingConfiguration>(); 
     public ObservableCollection<FactoryConfigurationOutput> DesiredOutputs { get; set; } = new ObservableCollection<FactoryConfigurationOutput>();
 }

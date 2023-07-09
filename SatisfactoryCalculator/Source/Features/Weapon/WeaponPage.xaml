@@ -1,0 +1,95 @@
+<Page x:Class="SatisfactoryCalculator.Source.Features.Weapon.WeaponPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+      xmlns:models="clr-namespace:SatisfactoryCalculator.Source.Models"
+      xmlns:u="clr-namespace:SatisfactoryCalculator.Source.UI.UserControls"
+      xmlns:userControls="clr-namespace:SatisfactoryCalculator.Source.Features.Shared.UserControls"
+      xmlns:local="clr-namespace:SatisfactoryCalculator.Source.Features.Weapon"
+      xmlns:recipe="clr-namespace:SatisfactoryCalculator.Source.Features.Recipe"
+      xmlns:ammunition="clr-namespace:SatisfactoryCalculator.Source.Features.Ammunition"
+      xmlns:generator="clr-namespace:SatisfactoryCalculator.Source.Features.Generator"
+      mc:Ignorable="d"
+      Background="Transparent"
+      d:Background="#202125"
+      d:DataContext="{d:DesignInstance Type=local:WeaponViewModel}">
+
+    <Page.Resources>
+
+        <CollectionViewSource x:Key="ProductCollection" Source="{Binding SelectedWeaponAsProductInRecipes}"/>
+        <CollectionViewSource x:Key="IngredientCollection" Source="{Binding SelectedWeaponAsIngredientInRecipes}"/>
+        <CollectionViewSource x:Key="AmmunitionCollection" Source="{Binding SelectedAmmunitions}"/>
+        
+        <DataTemplate DataType="{x:Type generator:GeneratorFuel}">
+            <userControls:FuelControl GeneratorFuel="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type recipe:Recipe}">
+            <userControls:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type ammunition:Ammunition}">
+            <local:AmmunitionControl Ammunition="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+    </Page.Resources>
+    
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedWeapon.Image}" />
+            
+            <StackPanel Margin="5,0,0,0" Grid.Column="1">
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedWeapon.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedWeapon.Description}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedWeapon.DamageMultiplier, Converter={StaticResource NullToVisibilityConverter}}">
+                    <Run Text="Damage Multiplier: " FontWeight="SemiBold"/>
+                    <Run Text="{Binding SelectedWeapon.DamageMultiplier}"/>
+                </c:SatisfactoryTextBlock>
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedWeapon.ReloadTime, Converter={StaticResource NullToVisibilityConverter}}">
+                    <Run Text="Reload Time: " FontWeight="SemiBold"/>
+                    <Run Text="{Binding SelectedWeapon.ReloadTime}"/>
+                </c:SatisfactoryTextBlock>
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedWeapon.AutoReloadDelay, Converter={StaticResource NullToVisibilityConverter}}">
+                    <Run Text="Auto Reload Delay: " FontWeight="SemiBold"/>
+                    <Run Text="{Binding SelectedWeapon.AutoReloadDelay}"/>
+                </c:SatisfactoryTextBlock>
+            </StackPanel>
+            
+            <userControls:EquipmentSlotControl Grid.RowSpan="2" Grid.Column="2" Width="200" Height="300" Margin="0,5,5,0" VerticalAlignment="Top" EquipmentSlot="{Binding SelectedWeapon.EquipmentSlot, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+
+        <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+
+                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedWeaponAsProductInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding ProductsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Weapon used as Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedWeaponAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding IngredientsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource IngredientCollection}}"/>
+                    
+                    <c:SatisfactoryTextBlock Text="Ammunition" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedWeapon.Ammunitions.Length, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding AmmunitionSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource AmmunitionCollection}}"/>
+                    
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </c:VirtualizedItemsControl>
+        
+    </Grid>
+</Page>

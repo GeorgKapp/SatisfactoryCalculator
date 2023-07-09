@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="SatisfactoryCalculator.Source.Features.Shared.UserControls.RecipeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+             xmlns:p="clr-namespace:SatisfactoryCalculator.Controls.Panels;assembly=SatisfactoryCalculator.Controls"
+             xmlns:recipe="clr-namespace:SatisfactoryCalculator.Source.Features.Recipe"
+             x:Name="userControl">
+
+    <UserControl.Resources>
+
+        <CollectionViewSource x:Key="ProductCollection" Source="{Binding Recipe.Products, ElementName=userControl}"/>
+        <CollectionViewSource x:Key="IngredientCollection" Source="{Binding Recipe.Ingredients, ElementName=userControl}"/>
+        <CollectionViewSource x:Key="BuildingCollection" Source="{Binding Recipe.Buildings, ElementName=userControl}"/>
+
+        <ItemsPanelTemplate x:Key="RecipeItemsPanelTemplate">
+            <p:ExtendedStackPanel Orientation="Horizontal" Spacing="8" />
+        </ItemsPanelTemplate>
+
+        <DataTemplate DataType="{x:Type recipe:RecipePart}">
+                
+                <Grid MinHeight="50">
+                    
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.RowSpan="2" VerticalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding AmountText}" Visibility="{Binding Amount, Converter={StaticResource StringToVisibilityConverter}}" />
+                        <Border HorizontalAlignment="Stretch" BorderBrush="#FFFFFFFF" BorderThickness="0,0,0,1" Visibility="{Binding AmountPerMinute, Converter={StaticResource StringToVisibilityConverter}}" />
+                        <TextBlock HorizontalAlignment="Center" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding AmountPerMinuteText}" Visibility="{Binding AmountPerMinute, Converter={StaticResource StringToVisibilityConverter}}" />
+                    </StackPanel>
+                    
+                    <c:SatisfactoryImage Grid.Column="1"
+                                         Margin="5,0,0,0"
+                                         Source="{Binding Part.Image}"
+                                         ToolTipText="{Binding Part.Name}"/>
+                </Grid>
+            </DataTemplate>
+
+        <DataTemplate DataType="{x:Type recipe:RecipeBuilding}">
+            <c:SatisfactoryImage Margin="5,0,0,0"
+                                 Source="{Binding Building.Image}"
+                                 ToolTipText="{Binding Building.Name}"/>
+        </DataTemplate>
+
+    </UserControl.Resources>
+    
+    <StackPanel>
+        <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" FontWeight="Medium" Text="{Binding Recipe.Name, ElementName=userControl}" />
+        <ItemsControl ItemsPanel="{StaticResource RecipeItemsPanelTemplate}" Margin="10,0,0,0">
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+                    <CollectionContainer Collection="{Binding Source={StaticResource IngredientCollection}}"/>
+                    <TextBlock x:Name="textBoxEqual" Text="=" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" FontSize="30" VerticalAlignment="Center"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
+                    <TextBlock x:Name="textBoxArrow" Text="▶" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" FontSize="20" VerticalAlignment="Center"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource BuildingCollection}}"/>
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </ItemsControl>
+    </StackPanel>
+    
+</UserControl>

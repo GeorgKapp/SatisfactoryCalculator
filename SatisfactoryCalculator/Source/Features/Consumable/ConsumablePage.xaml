@@ -1,0 +1,83 @@
+<Page x:Class="SatisfactoryCalculator.Source.Features.Consumable.ConsumablePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+      xmlns:local="clr-namespace:SatisfactoryCalculator.Source.Features.Consumable"
+      xmlns:userControls="clr-namespace:SatisfactoryCalculator.Source.Features.Shared.UserControls"
+      xmlns:generator="clr-namespace:SatisfactoryCalculator.Source.Features.Generator"
+      xmlns:recipe="clr-namespace:SatisfactoryCalculator.Source.Features.Recipe"
+      mc:Ignorable="d"
+      Background="Transparent"
+      d:Background="#202125"
+      d:DataContext="{d:DesignInstance Type=local:ConsumableViewModel}">
+
+    <Page.Resources>
+
+        <CollectionViewSource x:Key="ProductCollection" Source="{Binding SelectedConsumableAsProductInRecipes}"/>
+        <CollectionViewSource x:Key="IngredientCollection" Source="{Binding SelectedConsumableAsIngredientInRecipes}"/>
+        <CollectionViewSource x:Key="BuildingIngredientCollection" Source="{Binding SelectedConsumableAsBuildingIngredientInRecipes}"/>
+        <CollectionViewSource x:Key="FuelIngredientCollection" Source="{Binding SelectedConsumableAsFuels}"/>
+
+        <DataTemplate DataType="{x:Type generator:GeneratorFuel}">
+            <userControls:FuelControl GeneratorFuel="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type recipe:Recipe}">
+            <userControls:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+    </Page.Resources>
+    
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
+            <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedConsumable.Image}" />
+            <StackPanel Margin="5,0,0,0" Grid.Column="1">
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedConsumable.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedConsumable.Description}" />
+                <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Visibility="{Binding SelectedConsumable.HealthGain, Converter={StaticResource NullToVisibilityConverter}}">
+                    <Run Text="Health Gain: " FontWeight="SemiBold"/>
+                    <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
+                    <Run Text="{Binding SelectedConsumable.HealthGain}"/>
+                </c:SatisfactoryTextBlock>
+            </StackPanel>
+        </Grid>
+
+        <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+
+                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedConsumableAsProductInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" FontSize="16" Margin="{Binding ProductsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Consumable used as Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedConsumableAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" FontSize="16" Margin="{Binding IngredientsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource IngredientCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Consumable used as Building Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedConsumableAsBuildingIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding BuildingIngredientSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource BuildingIngredientCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Consumable used as Fuel" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedConsumableAsFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding FuelsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource FuelIngredientCollection}}"/>
+ 
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </c:VirtualizedItemsControl>
+        
+    </Grid>
+</Page>

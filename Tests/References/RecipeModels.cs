@@ -1,4 +1,6 @@
-﻿namespace SatisfactoryCalculator.Tests.References;
+﻿using SatisfactoryCalculator.Source.Features.Recipe;
+
+namespace SatisfactoryCalculator.Tests.References;
 
 internal static class RecipeModels
 {

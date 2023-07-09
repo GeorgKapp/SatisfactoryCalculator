@@ -1,0 +1,47 @@
+<UserControl x:Class="SatisfactoryCalculator.Source.Features.FactoryPlanner.FactoryConfigurationOutputListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:SatisfactoryCalculator.Source.Features.FactoryPlanner"
+             xmlns:controls="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+             xmlns:panels="clr-namespace:SatisfactoryCalculator.Controls.Panels;assembly=SatisfactoryCalculator.Controls"
+             mc:Ignorable="d"
+             x:ClassModifier="internal"
+             d:DesignHeight="300" 
+             d:DesignWidth="300"
+             x:Name="userControl">
+
+    <StackPanel Orientation="Vertical">
+        <ItemsControl ItemsSource="{Binding ItemsSource, ElementName=userControl}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:FactoryConfigurationOutput}">
+                    <Grid Margin="0,0,0,8">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <local:FactoryConfigurationOutputControl Grid.Row="0"
+                                                                 FactoryConfigurationOutput="{Binding}"
+                                                                 Entities="{Binding Entities, RelativeSource={RelativeSource AncestorType={x:Type local:FactoryConfigurationOutputListControl}}}"/>
+                        <controls:SatisfactoryButton
+                            Grid.Row="1"
+                            Content="-" 
+                            FontWeight="SemiBold"
+                            Command="{Binding DeleteEntryCommand, RelativeSource={RelativeSource AncestorType={x:Type local:FactoryConfigurationOutputListControl}}}"
+                            CommandParameter="{Binding}"
+                            HorizontalContentAlignment="Center"/>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <controls:SatisfactoryButton 
+                Content="+" 
+                FontWeight="SemiBold"
+                Click="CreateNewClick" 
+                HorizontalContentAlignment="Center"/>
+
+    </StackPanel>
+</UserControl>

@@ -1,3 +1,7 @@
+using SatisfactoryCalculator.Source.Features.Building;
+using SatisfactoryCalculator.Source.Features.Recipe;
+using SatisfactoryCalculator.Source.Features.Shared.Models;
+
 namespace SatisfactoryCalculator.Tests;
 
 public class CalculationTests

@@ -1,0 +1,83 @@
+<Page x:Class="SatisfactoryCalculator.Source.Features.Resource.ResourcePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+      xmlns:u="clr-namespace:SatisfactoryCalculator.Source.UI.UserControls"
+      xmlns:local="clr-namespace:SatisfactoryCalculator.Source.Features.Resource"
+      xmlns:userControls="clr-namespace:SatisfactoryCalculator.Source.Features.Shared.UserControls"
+      xmlns:recipe="clr-namespace:SatisfactoryCalculator.Source.Features.Recipe"
+      xmlns:miner="clr-namespace:SatisfactoryCalculator.Source.Features.Miner"
+      xmlns:generator="clr-namespace:SatisfactoryCalculator.Source.Features.Generator"
+      mc:Ignorable="d"
+      Background="Transparent"
+      d:Background="#202125"
+      d:DataContext="{d:DesignInstance Type=local:ResourceViewModel}">
+
+    <Page.Resources>
+        
+        <CollectionViewSource x:Key="IngredientCollection" Source="{Binding SelectedResourceAsIngredientInRecipes}"/>
+        <CollectionViewSource x:Key="BuildingIngredientCollection" Source="{Binding SelectedResourceAsBuildingIngredientInRecipes}"/>
+        <CollectionViewSource x:Key="FuelIngredientCollection" Source="{Binding SelectedResourceAsFuels}"/>
+        <CollectionViewSource x:Key="MinerResourceCollection" Source="{Binding SelectedMinerResources}"/>
+        
+        <DataTemplate DataType="{x:Type generator:GeneratorFuel}">
+            <userControls:FuelControl GeneratorFuel="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type recipe:Recipe}">
+            <userControls:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type miner:MinerResource}">
+            <u:MinerResourceControl MinerResource="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+        
+    </Page.Resources>
+    
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- ReSharper disable once Xaml.PossibleNullReferenceException -->
+            <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedResource.Image}" />
+            <StackPanel Margin="5,0,0,0" Grid.Column="1">
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedResource.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedResource.Description}" />
+            </StackPanel>
+        </Grid>
+
+        <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+                    
+                    <c:SatisfactoryTextBlock Text="Resource used as Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedResourceAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" FontSize="16" Margin="{Binding IngredientsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource IngredientCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Resource used as Building Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedResourceAsBuildingIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding BuildingIngredientSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource BuildingIngredientCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Resource used as Fuel" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedResourceAsFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding FuelsSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource FuelIngredientCollection}}"/>
+ 
+                    <c:SatisfactoryTextBlock Text="Extracted in Miners" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedResource.Miners.Length, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding MinersSectionMargin}"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource MinerResourceCollection}}"/>
+                    
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </c:VirtualizedItemsControl>
+        
+    </Grid>
+</Page>

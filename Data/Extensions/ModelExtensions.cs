@@ -136,5 +136,7 @@ public static class ModelExtensions
             .Include(p => p.DesiredOutputs)
                 .ThenInclude(p => p.Building)
             .Include(p => p.DesiredOutputs)
-                .ThenInclude(p => p.Item);
+                .ThenInclude(p => p.Item)
+            .Include(p => p.DesiredOutputs)
+                .ThenInclude(p => p.AlternateRecipe);
 }

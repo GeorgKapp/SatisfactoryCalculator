@@ -1,3 +1,14 @@
+using SatisfactoryCalculator.Source.Features.Ammunition;
+using SatisfactoryCalculator.Source.Features.Building;
+using SatisfactoryCalculator.Source.Features.Consumable;
+using SatisfactoryCalculator.Source.Features.DataImport;
+using SatisfactoryCalculator.Source.Features.Equipment;
+using SatisfactoryCalculator.Source.Features.FactoryPlanner;
+using SatisfactoryCalculator.Source.Features.Generator;
+using SatisfactoryCalculator.Source.Features.Item;
+using SatisfactoryCalculator.Source.Features.Main;
+using SatisfactoryCalculator.Source.Features.Shared.FilterableEntity;
+
 namespace SatisfactoryCalculator.Source.Utilities;
 
 public static class ViewDataContextLinker

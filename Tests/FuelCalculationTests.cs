@@ -1,3 +1,5 @@
+using SatisfactoryCalculator.Source.Features.Generator;
+
 namespace SatisfactoryCalculator.Tests;
 
 public class FuelCalculationTests

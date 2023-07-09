@@ -1,0 +1,57 @@
+<UserControl x:Class="SatisfactoryCalculator.Source.Features.FactoryPlanner.FactoryConfigurationOutputControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+             mc:Ignorable="d"
+             x:ClassModifier="internal"
+             x:Name="userControl"
+             d:DesignWidth="300">
+    
+    <UserControl.Resources>
+        <ResourceDictionary Source="/SatisfactoryCalculator;component/Source/Features/Shared/Templates/IEntityDataTemplateDictionary.xaml" />
+    </UserControl.Resources>
+    
+    <StackPanel>
+        
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="0" 
+                                            Text="Item Amount: " 
+                                            TextAlignment="Right"/>
+            
+            <controls:SatisfactoryTextBox Grid.Column="1" Grid.Row="0"
+                                          x:Name="itemAmountTextBox"
+                                          Style="{StaticResource RoundedTextBox}" 
+                                          Text="{Binding FactoryConfigurationOutput.Amount, ElementName=userControl}"
+                                          TextChanged="ItemAmountTextChanged"/>
+            
+            <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="1" 
+                                            Text="Building Amount: "
+                                            TextAlignment="Right"/>
+            
+            <controls:SatisfactoryTextBox Grid.Column="1" Grid.Row="1"
+                                          x:Name="buildingAmountTextBox"
+                                          Style="{StaticResource RoundedTextBox}" 
+                                          Text="{Binding FactoryConfigurationOutput.BuildingAmount, ElementName=userControl}"
+                                          TextChanged="BuildingAmountTextChanged"/>
+        </Grid>
+        
+        <controls:SatisfactoryComboBox 
+            ItemsSource="{Binding Entities, ElementName=userControl}" 
+            ItemTemplate="{StaticResource EntityDataTemplate}"
+            SelectedItem="{Binding FactoryConfigurationOutput.Entity, ElementName=userControl}"/>
+        
+    </StackPanel>
+    
+</UserControl>

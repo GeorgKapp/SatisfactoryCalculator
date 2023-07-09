@@ -1,0 +1,83 @@
+﻿<Page x:Class="SatisfactoryCalculator.Source.Features.Generator.GeneratorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+      xmlns:local="clr-namespace:SatisfactoryCalculator.Source.Features.Generator"
+      xmlns:userControls="clr-namespace:SatisfactoryCalculator.Source.Features.Shared.UserControls"
+      xmlns:recipe="clr-namespace:SatisfactoryCalculator.Source.Features.Recipe"
+      mc:Ignorable="d" 
+      Background="Transparent"
+      d:Background="#202125"
+      d:DataContext="{d:DesignInstance Type=local:GeneratorViewModel}">
+
+    <Page.Resources>
+
+        <CollectionViewSource x:Key="GeneratorCollection" Source="{Binding SelectedGeneratorFuels}"/>
+        <CollectionViewSource x:Key="RecipeCollection" Source="{Binding SelectedGeneratorRecipes}"/>
+
+        <DataTemplate DataType="{x:Type local:GeneratorFuel}">
+            <userControls:FuelControl GeneratorFuel="{Binding}" Margin="0,0,0,15" ShowFuelGenerator="False"/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type recipe:Recipe}">
+            <userControls:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+    </Page.Resources>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedGenerator.Image}"/>
+            <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedGenerator.Description}" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="5,20,0,0" Visibility="{Binding SelectedGenerator, Converter={StaticResource NullToVisibilityConverter}}">
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" Text="Clock Speed"/>
+                <Grid Margin="9,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <c:SatisfactoryTextBox Width="80" IsOverclock="True" Text="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <c:SatisfactorySlider Value="{Binding SelectedGeneratorClockSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" VerticalAlignment="Center" HorizontalAlignment="Left" Width="250" Margin="10,0,10,0" Grid.Column="1"/>
+                </Grid>
+            </StackPanel>
+        </Grid>
+        
+        <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+
+                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedGeneratorRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="-10,0,0,0"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource RecipeCollection}}"/>
+
+                    <c:SatisfactoryTextBlock Text="Fuels" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedGeneratorFuels.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="-10,0,0,0"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource GeneratorCollection}}"/>
+
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </c:VirtualizedItemsControl>
+
+    </Grid>
+</Page>

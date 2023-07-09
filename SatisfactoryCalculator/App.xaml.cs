@@ -1,4 +1,6 @@
-﻿namespace SatisfactoryCalculator;
+﻿using SatisfactoryCalculator.Source.Features.Main;
+
+namespace SatisfactoryCalculator;
 
 public partial class App
 {

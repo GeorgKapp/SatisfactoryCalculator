@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="SatisfactoryCalculator.Source.Features.Shared.UserControls.FuelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+             xmlns:p="clr-namespace:SatisfactoryCalculator.Controls.Panels;assembly=SatisfactoryCalculator.Controls"
+             xmlns:models="clr-namespace:SatisfactoryCalculator.Source.Models"
+             xmlns:generator="clr-namespace:SatisfactoryCalculator.Source.Features.Generator"
+             mc:Ignorable="d" 
+             x:Name="userControl">
+
+    <UserControl.Resources>
+
+        <DataTemplate DataType="{x:Type generator:FuelItem}">
+            <Grid MinHeight="50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding AmountPerMinuteText}"/>
+                
+                <c:SatisfactoryImage Grid.Column="1" 
+                                     Margin="5,0,0,0"
+                                     Source="{Binding Item.Image}"
+                                     ToolTipText="{Binding Item.Name}"/>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type generator:Generator}">
+            <c:SatisfactoryImage Margin="5,0,0,0"
+                                 Source="{Binding Image}"
+                                 ToolTipText="{Binding Name}"/>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+
+    <p:ExtendedStackPanel Orientation="Horizontal" Spacing="3" Margin="10,0,0,0">
+        <ContentControl Content="{Binding GeneratorFuel.Ingredient, ElementName=userControl}"/>
+        <ContentControl Content="{Binding GeneratorFuel.SupplementalIngredient, ElementName=userControl}" Margin="8,0,0,0"/>
+        <TextBlock Text="+" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" Visibility="{Binding GeneratorFuel.ByProduct, Converter={StaticResource NullToVisibilityConverter},ElementName=userControl}" FontSize="30" VerticalAlignment="Stretch"/>
+        <ContentControl Content="{Binding GeneratorFuel.ByProduct, ElementName=userControl}"  Margin="8,0,8,0"/>
+        <TextBlock Text="▶" Margin="-15,0,0,0" Width="25" TextAlignment="Center" Foreground="{StaticResource PrimaryLightColor}" FontSize="20" VerticalAlignment="Center" Visibility="{Binding ShowFuelGenerator, Converter={StaticResource StandardBooleanToVisibilityConverter},ElementName=userControl}"/>
+        <ContentControl Content="{Binding GeneratorFuel.Generator, ElementName=userControl}" Visibility="{Binding ShowFuelGenerator, Converter={StaticResource StandardBooleanToVisibilityConverter},ElementName=userControl}"/>
+    </p:ExtendedStackPanel>
+
+</UserControl>

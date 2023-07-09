@@ -1,4 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Global
+
+using SatisfactoryCalculator.Source.Features.Generator;
+
 namespace SatisfactoryCalculator.Tests.References;
 
 internal static class FuelModels

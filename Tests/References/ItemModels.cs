@@ -1,4 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Global
+
+using SatisfactoryCalculator.Source.Features.Item;
+
 namespace SatisfactoryCalculator.Tests.References;
 
 internal static class ItemModels

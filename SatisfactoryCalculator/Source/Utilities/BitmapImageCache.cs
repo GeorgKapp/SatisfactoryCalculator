@@ -2,7 +2,7 @@ namespace SatisfactoryCalculator.Source.Utilities;
 
 public static class BitmapImageCache
 {
-    public static BitmapImage? Fetch(string imagePath)
+    public static BitmapImage? Fetch(string? imagePath)
     {
         if (string.IsNullOrWhiteSpace(imagePath))
             return null;

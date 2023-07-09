@@ -335,7 +335,7 @@ namespace Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<double?>("DesiredOverclock")
+                    b.Property<double>("DesiredOverclock")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Name")
@@ -356,6 +356,15 @@ namespace Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("AlternateRecipeClassName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal?>("BuildingAmount")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("BuildingClassName")
                         .HasColumnType("TEXT");
 
@@ -366,6 +375,8 @@ namespace Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("AlternateRecipeClassName");
 
                     b.HasIndex("BuildingClassName");
 
@@ -1084,6 +1095,10 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Implementation.FactoryConfigurationOutput", b =>
                 {
+                    b.HasOne("Data.Models.Implementation.Recipe", "AlternateRecipe")
+                        .WithMany()
+                        .HasForeignKey("AlternateRecipeClassName");
+
                     b.HasOne("Data.Models.Implementation.Building", "Building")
                         .WithMany()
                         .HasForeignKey("BuildingClassName");
@@ -1097,6 +1112,8 @@ namespace Data.Migrations
                     b.HasOne("Data.Models.Implementation.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemClassName");
+
+                    b.Navigation("AlternateRecipe");
 
                     b.Navigation("Building");
 

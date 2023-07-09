@@ -8,4 +8,47 @@
     <RootNamespace>SatisfactoryCalculator.Controls</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\UpArrow.svg" />
+    <None Remove="Assets\DownArrow.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Images\UI\Pages\DataImportPage.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>DataImportPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Images\UI\Pages\OverviewPage.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>OverviewPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Images\UI\UserControls\FilterControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>FilterControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Images\UI\UserControls\FuelControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>FuelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Images\UI\UserControls\LoadingControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>LoadingControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Images\UI\UserControls\RecipeControl.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>RecipeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Images\UI\Views\MainView.xaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>MainView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\DownArrow.png" />
+    <Resource Include="Assets\DownArrow.png" />
+    <None Remove="Assets\UpArrow.png" />
+    <Resource Include="Assets\UpArrow.png" />
+  </ItemGroup>
+
 </Project>

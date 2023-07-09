@@ -1,0 +1,63 @@
+﻿<Page x:Class="SatisfactoryCalculator.Source.Features.Building.BuildingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:c="clr-namespace:SatisfactoryCalculator.Controls.Controls;assembly=SatisfactoryCalculator.Controls"
+      xmlns:local="clr-namespace:SatisfactoryCalculator.Source.Features.Building"
+      xmlns:userControls="clr-namespace:SatisfactoryCalculator.Source.Features.Shared.UserControls"
+      xmlns:recipe="clr-namespace:SatisfactoryCalculator.Source.Features.Recipe"
+      mc:Ignorable="d"
+      d:Width="800"
+      d:Height="600"
+      Background="Transparent"
+      d:Background="#202125"
+      d:DataContext="{d:DesignInstance Type=local:BuildingViewModel}">
+
+
+    <Page.Resources>
+
+        <CollectionViewSource x:Key="ProductCollection" Source="{Binding SelectedBuildingRecipes}"/>
+
+        <DataTemplate DataType="{x:Type recipe:Recipe}">
+            <userControls:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
+        </DataTemplate>
+
+    </Page.Resources>
+    
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Height="80" Width="80" VerticalAlignment="Top" Source="{Binding SelectedBuilding.Image}" />
+            <StackPanel VerticalAlignment="Center" Margin="5,0,0,0" Grid.Column="1">
+                <c:SatisfactoryTextBlock Style="{StaticResource LargeTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedBuilding.Name}" />
+                <c:SatisfactoryTextBlock Style="{StaticResource SatisfactorySmallTextBlock}" TextWrapping="WrapWithOverflow" TextTrimming="None" HorizontalAlignment="Left" Text="{Binding SelectedBuilding.Description}" />
+            </StackPanel>
+        </Grid>
+
+        <c:VirtualizedItemsControl Grid.Row="1" Margin="20">
+
+            <ItemsControl.ItemsSource>
+                <CompositeCollection>
+
+                    <c:SatisfactoryTextBlock Text="Recipes" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedBuildingRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="-10,0,0,0"/>
+                    <CollectionContainer Collection="{Binding Source={StaticResource ProductCollection}}"/>
+
+                </CompositeCollection>
+            </ItemsControl.ItemsSource>
+        </c:VirtualizedItemsControl>
+
+    </Grid>
+
+</Page>

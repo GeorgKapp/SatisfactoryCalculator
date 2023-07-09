@@ -4,7 +4,7 @@ public class FactoryConfiguration : IIDPrimaryKey
 {
     public int ID { get; set; }
     public string Name { get; set; }
-    public double? DesiredOverclock { get; set; }
+    public double DesiredOverclock { get; set; }
     public bool SplitOverclockEvenly { get; set; }
     public string CalculatedInVersion { get; set; }
     

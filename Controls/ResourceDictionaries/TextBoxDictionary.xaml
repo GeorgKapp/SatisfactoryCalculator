@@ -40,4 +40,27 @@
         </Setter>
     </Style>
     
+    <Style x:Key="RoundedTextBox" TargetType="{x:Type c:SatisfactoryTextBox}" BasedOn="{StaticResource {x:Type c:SatisfactoryTextBox}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:SatisfactoryTextBox}">
+                    <Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True" CornerRadius="3">
+                        <ScrollViewer Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="border" Property="UIElement.Opacity" Value="0.56" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="{StaticResource SecondaryLightColor}" />
+                        </Trigger>
+                        <Trigger Property="UIElement.IsKeyboardFocused" Value="true">
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="{StaticResource SecondaryLightColor}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>

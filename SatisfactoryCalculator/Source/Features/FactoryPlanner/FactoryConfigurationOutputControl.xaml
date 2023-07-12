@@ -13,45 +13,55 @@
         <ResourceDictionary Source="/SatisfactoryCalculator;component/Source/Features/Shared/Templates/IEntityDataTemplateDictionary.xaml" />
     </UserControl.Resources>
     
-    <StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="0" 
-                                            Text="Item Amount: " 
-                                            TextAlignment="Right"/>
-            
-            <controls:SatisfactoryTextBox Grid.Column="1" Grid.Row="0"
-                                          x:Name="itemAmountTextBox"
-                                          Style="{StaticResource RoundedTextBox}" 
-                                          Text="{Binding FactoryConfigurationOutput.Amount, ElementName=userControl}"
-                                          TextChanged="ItemAmountTextChanged"/>
-            
-            <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="1" 
-                                            Text="Building Amount: "
-                                            TextAlignment="Right"/>
-            
-            <controls:SatisfactoryTextBox Grid.Column="1" Grid.Row="1"
-                                          x:Name="buildingAmountTextBox"
-                                          Style="{StaticResource RoundedTextBox}" 
-                                          Text="{Binding FactoryConfigurationOutput.BuildingAmount, ElementName=userControl}"
-                                          TextChanged="BuildingAmountTextChanged"/>
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         
-        <controls:SatisfactoryComboBox 
-            ItemsSource="{Binding Entities, ElementName=userControl}" 
-            ItemTemplate="{StaticResource EntityDataTemplate}"
-            SelectedItem="{Binding FactoryConfigurationOutput.Entity, ElementName=userControl}"/>
+        <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="0" 
+                                        Text="Item Amount: " 
+                                        TextAlignment="Right"/>
         
-    </StackPanel>
-    
+        <controls:SatisfactoryTextBox Grid.Column="1" Grid.Row="0"
+                                      x:Name="itemAmountTextBox"
+                                      Style="{StaticResource RoundedTextBox}" 
+                                      Text="{Binding FactoryConfigurationOutput.Amount, ElementName=userControl}"/>
+        
+        <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="1" 
+                                        Text="Building Amount: "
+                                        TextAlignment="Right"/>
+        
+        <controls:SatisfactoryTextBox Grid.Column="1" Grid.Row="1"
+                                      x:Name="buildingAmountTextBox"
+                                      Style="{StaticResource RoundedTextBox}" 
+                                      Text="{Binding FactoryConfigurationOutput.BuildingAmount, ElementName=userControl}"/>
+        
+        <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="2" 
+                                        Text="Chosen Item: "
+                                        TextAlignment="Right"/>
+        
+        <controls:SatisfactoryComboBox Grid.Column="1" Grid.Row="2"  
+                                       ItemsSource="{Binding Entities, ElementName=userControl}" 
+                                       ItemTemplate="{StaticResource EntityDataTemplate}"
+                                       SelectedItem="{Binding SelectedEntity, ElementName=userControl}"/>
+
+        <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="3" 
+                                        Text="Item Recipes: "
+                                        TextAlignment="Right"/>
+        
+        <controls:SatisfactoryComboBox Grid.Column="1" Grid.Row="3"  
+                                       ItemsSource="{Binding AvailableRecipes, ElementName=userControl}" 
+                                       DisplayMemberPath="Name"
+                                       SelectedItem="{Binding SelectedRecipe, ElementName=userControl}"/>
+
+    </Grid>
+
 </UserControl>

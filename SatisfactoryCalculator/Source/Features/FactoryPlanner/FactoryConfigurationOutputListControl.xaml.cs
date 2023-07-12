@@ -10,18 +10,18 @@ internal partial class FactoryConfigurationOutputListControl : UserControl
         InitializeComponent();
     }
     
-    public IEnumerable<IEntity> Entities
+    public Configuration Configuration
     {
-        get => (IEnumerable<IEntity>)GetValue(EntitiesProperty);
-        set => SetValue(EntitiesProperty, value);
+        get => (Configuration)GetValue(ConfigurationProperty);
+        set => SetValue(ConfigurationProperty, value);
     }
 
-    public static readonly DependencyProperty EntitiesProperty =
+    public static readonly DependencyProperty ConfigurationProperty =
         DependencyProperty.Register(
-            nameof(Entities), 
-            typeof(IEnumerable<IEntity>), 
+            nameof(Configuration), 
+            typeof(Configuration), 
             typeof(FactoryConfigurationOutputListControl));
-    
+
     public ObservableCollection<FactoryConfigurationOutput> ItemsSource
     {
         get => (ObservableCollection<FactoryConfigurationOutput>)GetValue(ItemsSourceProperty);

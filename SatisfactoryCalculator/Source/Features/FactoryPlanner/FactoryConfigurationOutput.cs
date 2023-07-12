@@ -6,5 +6,5 @@ internal class FactoryConfigurationOutput
     public IEntity? Entity { get; set; }
     public decimal? Amount { get; set; }
     public decimal? BuildingAmount { get; set; }
-    public IRecipe AlternateRecipe { get; set; }
+    public IRecipe ChosenRecipe { get; set; }
 }

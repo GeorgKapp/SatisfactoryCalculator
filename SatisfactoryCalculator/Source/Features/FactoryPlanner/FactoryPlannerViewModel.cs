@@ -17,12 +17,12 @@ internal class FactoryPlannerViewModel : ObservableObject
         get => _factoryConfigurations;
         set => SetProperty(ref _factoryConfigurations, value);
     }
-    
-    private ObservableCollection<IEntity> _entities = new();
-    public ObservableCollection<IEntity> Entities
+
+    private Configuration _configuration = new();
+    public Configuration Configuration
     {
-        get => _entities;
-        set => SetProperty(ref _entities, value);
+        get => _configuration;
+        set => SetProperty(ref _configuration, value);
     }
     
     private ICommand? _calculateCommand;
@@ -38,7 +38,7 @@ internal class FactoryPlannerViewModel : ObservableObject
 
     public void Initialize()
     {
-        Entities = new(_applicationState.Configuration.Items);
+        Configuration = _applicationState.Configuration;
     }
 
     private void Calculate()

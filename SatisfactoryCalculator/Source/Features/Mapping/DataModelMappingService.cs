@@ -574,7 +574,7 @@ internal class DataModelMappingService
             FactoryBuildingConfigurations = new(factoryConfiguration.FactoryBuildingConfigurations
                 .Select(p => MapToFactoryBuildingConfiguration(p, itemDictionary, buildingDictionary))
                 .ToArray()),
-            DesiredOutputs = new(factoryConfiguration.DesiredOutputs
+            OutputRequirements = new(factoryConfiguration.DesiredOutputs
                 .Select(p => MapToFactoryConfigurationOutput(p, itemDictionary, buildingDictionary))
                 .ToArray())
         };
@@ -582,7 +582,7 @@ internal class DataModelMappingService
         return mappedfactoryConfiguration;
     }
     
-    private FactoryPlanner.FactoryConfigurationOutput MapToFactoryConfigurationOutput(FactoryConfigurationOutput factoryConfigurationOutput, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
+    private FactoryPlanner.OutputRequirements MapToFactoryConfigurationOutput(FactoryConfigurationOutput factoryConfigurationOutput, IDictionary<string, IItem> itemDictionary, IDictionary<string, IBuilding> buildingDictionary)
     {
         var entityClassName = factoryConfigurationOutput.ItemClassName + factoryConfigurationOutput.BuildingClassName;
         var entity = GetEntityFromDictionaries(entityClassName, itemDictionary, buildingDictionary);

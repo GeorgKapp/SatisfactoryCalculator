@@ -1,16 +1,3 @@
-using System.Reflection;
-using Microsoft.Extensions.Logging;
-using SatisfactoryCalculator.Source.Features.Ammunition;
-using SatisfactoryCalculator.Source.Features.Building;
-using SatisfactoryCalculator.Source.Features.Consumable;
-using SatisfactoryCalculator.Source.Features.DataImport;
-using SatisfactoryCalculator.Source.Features.Equipment;
-using SatisfactoryCalculator.Source.Features.FactoryPlanner;
-using SatisfactoryCalculator.Source.Features.Generator;
-using SatisfactoryCalculator.Source.Features.Item;
-using SatisfactoryCalculator.Source.Features.Main;
-using SatisfactoryCalculator.Source.Features.Shared.FilterableEntity;
-
 namespace SatisfactoryCalculator.Source.DependencyInjection;
 
 internal static class ServiceExtensions
@@ -79,7 +66,9 @@ internal static class ServiceExtensions
 			.AddTransient<ModelCalculationService>()
 			.AddTransient<DataModelMappingService>()
 			.AddTransient<PageService>()
-			.AddTransient<ClipBoardService>();
+			.AddTransient<ClipBoardService>()
+			.AddTransient<FactoryCalculationService>()
+			.AddTransient<MessageBoxService>();
 
 		return services;
 	}

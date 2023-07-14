@@ -15,7 +15,7 @@
     <StackPanel Orientation="Vertical">
         <ItemsControl ItemsSource="{Binding ItemsSource, ElementName=userControl}">
             <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:FactoryConfigurationOutput}">
+                <DataTemplate DataType="{x:Type local:OutputRequirements}">
                     <Grid Margin="0,0,0,8">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -23,7 +23,7 @@
                         </Grid.RowDefinitions>
                         
                         <local:FactoryConfigurationOutputControl Grid.Row="0"
-                                                                 FactoryConfigurationOutput="{Binding}"
+                                                                 OutputRequirements="{Binding}"
                                                                  Configuration="{Binding Configuration, RelativeSource={RelativeSource AncestorType={x:Type local:FactoryConfigurationOutputListControl}}}"/>
                         <controls:SatisfactoryButton
                             Grid.Row="1"

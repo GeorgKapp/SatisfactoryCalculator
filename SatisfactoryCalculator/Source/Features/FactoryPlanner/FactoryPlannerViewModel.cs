@@ -31,9 +31,14 @@ internal class FactoryPlannerViewModel : ObservableObject
     private ICommand? _saveCommand;
     public ICommand SaveCommand => _saveCommand ??= new SimpleCommand(Save);
 
-    public FactoryPlannerViewModel(ApplicationState applicationState)
+    public FactoryPlannerViewModel(
+        ApplicationState applicationState, 
+        FactoryCalculationService factoryCalculationService,
+        MessageBoxService messageBoxService)
     {
         _applicationState = applicationState;
+        _factoryCalculationService = factoryCalculationService;
+        _messageBoxService = messageBoxService;
     }
 
     public void Initialize()
@@ -43,7 +48,9 @@ internal class FactoryPlannerViewModel : ObservableObject
 
     private void Calculate()
     {
-        
+        var calculationResult = _factoryCalculationService.CalculateFactoryConfiguration(SelectedFactoryConfiguration!);
+        if(!calculationResult.IsSuccess)
+            _messageBoxService.ShowWarning(calculationResult.Error!);
     }
     
     private void Save()
@@ -52,4 +59,6 @@ internal class FactoryPlannerViewModel : ObservableObject
     }
 
     private readonly ApplicationState _applicationState;
+    private readonly FactoryCalculationService _factoryCalculationService;
+    private readonly MessageBoxService _messageBoxService;
 }

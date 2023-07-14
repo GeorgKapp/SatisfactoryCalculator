@@ -1,6 +1,6 @@
 namespace SatisfactoryCalculator.Source.Features.FactoryPlanner;
 
-internal class FactoryConfigurationOutput
+internal class OutputRequirements
 {
     public int? ID { get; set; }
     public IEntity? Entity { get; set; }

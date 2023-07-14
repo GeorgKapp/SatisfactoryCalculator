@@ -22,18 +22,18 @@ internal partial class FactoryConfigurationOutputListControl : UserControl
             typeof(Configuration), 
             typeof(FactoryConfigurationOutputListControl));
 
-    public ObservableCollection<FactoryConfigurationOutput> ItemsSource
+    public ObservableCollection<OutputRequirements> ItemsSource
     {
-        get => (ObservableCollection<FactoryConfigurationOutput>)GetValue(ItemsSourceProperty);
+        get => (ObservableCollection<OutputRequirements>)GetValue(ItemsSourceProperty);
         set => SetValue(ItemsSourceProperty, value);
     }
 
     public static readonly DependencyProperty ItemsSourceProperty =
         DependencyProperty.Register(
             nameof(ItemsSource), 
-            typeof(ObservableCollection<FactoryConfigurationOutput>), 
+            typeof(ObservableCollection<OutputRequirements>), 
             typeof(FactoryConfigurationOutputListControl),
-            new PropertyMetadata(new ObservableCollection<FactoryConfigurationOutput>()));
+            new PropertyMetadata(new ObservableCollection<OutputRequirements>()));
 
 
     private ICommand? _deleteEntryCommand;
@@ -48,7 +48,7 @@ internal partial class FactoryConfigurationOutputListControl : UserControl
             return;
         }
         
-        var newFactoryConfigurationOutput = new FactoryConfigurationOutput();
+        var newFactoryConfigurationOutput = new OutputRequirements();
         ItemsSource.Add(newFactoryConfigurationOutput);
 
         var scrollViewer = this.FindVisualParent<ScrollViewer>();
@@ -57,6 +57,6 @@ internal partial class FactoryConfigurationOutputListControl : UserControl
 
     private void Delete(object? parameter)
     {
-        ItemsSource.Remove((FactoryConfigurationOutput)parameter!);
+        ItemsSource.Remove((OutputRequirements)parameter!);
     }
 }

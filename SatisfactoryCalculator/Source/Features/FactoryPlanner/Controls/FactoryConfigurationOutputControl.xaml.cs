@@ -51,7 +51,7 @@ internal partial class FactoryConfigurationOutputControl : UserControl
 
     private void SelectedEntityPropertyChanged()
     {
-        FactoryConfigurationOutput.Entity = SelectedEntity;
+        OutputRequirements.Entity = SelectedEntity;
         AvailableRecipes = Configuration.ReferenceDictionary[SelectedEntity!.ClassName].RecipeProduct;
         SelectedRecipe = AvailableRecipes.First(p => !p.IsAlternate);
     }
@@ -100,18 +100,18 @@ internal partial class FactoryConfigurationOutputControl : UserControl
 
     private void SelectedRecipePropertyChanged()
     {
-        FactoryConfigurationOutput.ChosenRecipe = SelectedRecipe;
+        OutputRequirements.ChosenRecipe = SelectedRecipe;
     }
 
-    public FactoryConfigurationOutput FactoryConfigurationOutput
+    public OutputRequirements OutputRequirements
     {
-        get => (FactoryConfigurationOutput)GetValue(FactoryConfigurationOutputProperty);
-        set => SetValue(FactoryConfigurationOutputProperty, value);
+        get => (OutputRequirements)GetValue(OutputRequirementsProperty);
+        set => SetValue(OutputRequirementsProperty, value);
     }
     
-    public static readonly DependencyProperty FactoryConfigurationOutputProperty = 
+    public static readonly DependencyProperty OutputRequirementsProperty = 
         DependencyProperty.Register(
-            nameof(FactoryConfigurationOutput), 
-            typeof(FactoryConfigurationOutput), 
+            nameof(OutputRequirements), 
+            typeof(OutputRequirements), 
             typeof(FactoryConfigurationOutputControl));
 }

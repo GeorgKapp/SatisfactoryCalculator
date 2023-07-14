@@ -7,10 +7,11 @@ internal class FactoryConfiguration
     public string? Name { get; set; }
     public double DesiredOverclock { get; set; } = 100;
     public bool SplitOverclockEvenly { get; set; } = false;
+    public bool MergeConfigurationOutput { get; set; } = true;
     public string? CalculatedInVersion { get; set; }
     
     public decimal CalculatedPowerConsumption { get; set; }
     
     public ObservableCollection<FactoryBuildingConfiguration> FactoryBuildingConfigurations { get; set; } = new ObservableCollection<FactoryBuildingConfiguration>(); 
-    public ObservableCollection<FactoryConfigurationOutput> DesiredOutputs { get; set; } = new ObservableCollection<FactoryConfigurationOutput>();
+    public ObservableCollection<OutputRequirements> OutputRequirements { get; set; } = new ObservableCollection<OutputRequirements>();
 }

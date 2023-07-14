@@ -33,7 +33,7 @@
         <controls:SatisfactoryTextBox Grid.Column="1" Grid.Row="0"
                                       x:Name="itemAmountTextBox"
                                       Style="{StaticResource RoundedTextBox}" 
-                                      Text="{Binding FactoryConfigurationOutput.Amount, ElementName=userControl}"/>
+                                      Text="{Binding OutputRequirements.Amount, ElementName=userControl}"/>
         
         <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="1" 
                                         Text="Building Amount: "
@@ -42,7 +42,7 @@
         <controls:SatisfactoryTextBox Grid.Column="1" Grid.Row="1"
                                       x:Name="buildingAmountTextBox"
                                       Style="{StaticResource RoundedTextBox}" 
-                                      Text="{Binding FactoryConfigurationOutput.BuildingAmount, ElementName=userControl}"/>
+                                      Text="{Binding OutputRequirements.BuildingAmount, ElementName=userControl}"/>
         
         <controls:SatisfactoryTextBlock Grid.Column="0" Grid.Row="2" 
                                         Text="Chosen Item: "

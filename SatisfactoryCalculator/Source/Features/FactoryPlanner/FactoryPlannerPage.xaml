@@ -13,8 +13,8 @@
       d:DataContext="{d:DesignInstance Type=local:FactoryPlannerViewModel}">
     
     <Page.Resources>
-        <DataTemplate DataType="{x:Type local:FactoryConfigurationOutput}" x:Key="configOutputTemplate">
-            <local:FactoryConfigurationOutputControl FactoryConfigurationOutput="{Binding}"/>
+        <DataTemplate DataType="{x:Type local:OutputRequirements}" x:Key="configOutputTemplate">
+            <local:FactoryConfigurationOutputControl OutputRequirements="{Binding}"/>
         </DataTemplate>
     </Page.Resources>
     
@@ -54,6 +54,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
@@ -70,13 +71,16 @@
                     <controls:SatisfactoryTextBlock Text="Split Overclock evenly: " Grid.Row="2" Grid.Column="0" TextAlignment="Right"/>
                     <controls:ToggleSwitch Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" IsChecked="{Binding SelectedFactoryConfiguration.SplitOverclockEvenly, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <controls:SatisfactoryTextBlock Text="Version: " Grid.Row="3" Grid.Column="0" TextAlignment="Right"/>
-                    <controls:SatisfactoryTextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedFactoryConfiguration.CalculatedInVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <controls:SatisfactoryTextBlock Text="Merge Configuration Output: " Grid.Row="3" Grid.Column="0" TextAlignment="Right"/>
+                    <controls:ToggleSwitch Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" IsChecked="{Binding SelectedFactoryConfiguration.MergeConfigurationOutput, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    
+                    <controls:SatisfactoryTextBlock Text="Version: " Grid.Row="4" Grid.Column="0" TextAlignment="Right"/>
+                    <controls:SatisfactoryTextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedFactoryConfiguration.CalculatedInVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
 
                 <local:FactoryConfigurationOutputListControl Grid.Column="0" 
                                                              Grid.Row="1"
-                                                             ItemsSource="{Binding SelectedFactoryConfiguration.DesiredOutputs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             ItemsSource="{Binding SelectedFactoryConfiguration.OutputRequirements, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Configuration="{Binding Configuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              HorizontalAlignment="Left"
                                                              MinWidth="200"

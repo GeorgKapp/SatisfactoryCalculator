@@ -30,8 +30,8 @@ internal class ApplicationContext
 
 	private void UpdateDatabase()
 	{
-		using var modelContext = ServiceProvider.GetRequiredService<ModelContext>();
-		modelContext.Database.Migrate();
+		using var modelContext = ServiceProvider.GetRequiredService<ModelContext>();	
+        modelContext.Database.Migrate();
 	}
 
 	private void ConnectDataContextLinks()

@@ -2,11 +2,11 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SatisfactoryCalculator.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="UeModelExportDirectory" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Program Files (x86)\umodel_win32\UmodelExport</Value>
+    <Setting Name="UnrealEngineExportDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files\FModel\Output\Exports</Value>
     </Setting>
     <Setting Name="DocsFilePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\Satisfactory\CommunityResources\Docs\Docs.json</Value>
+      <Value Profile="(Default)">C:\Program Files (x86)\Steam\steamapps\common\Satisfactory\CommunityResources\Docs\en-GB.json</Value>
     </Setting>
   </Settings>
 </SettingsFile>

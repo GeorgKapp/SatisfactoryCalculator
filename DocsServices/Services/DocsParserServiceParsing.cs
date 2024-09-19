@@ -10,16 +10,13 @@ public partial class DocsParserService
         return new []
             {
                 "Desc_Wall_Window_8x4_03_Steel_C",
-                "Build_PillarTop_C",
-                "Desc_QuarterPipeMiddle_Ficsit_4x1_C",
-                "Desc_QuarterPipeMiddle_Ficsit_4x2_C",
-                "Desc_QuarterPipeMiddle_Ficsit_4x4_C"
+                "BP_ConsumeableEquipment_C",
             }
             .Contains(className);
     }
 
     // ReSharper disable once HeapView.ClosureAllocation
-    private IEnumerable<Building> ParseBuildings(IEnumerable<Classes> classes2, IReadOnlyDictionary<string, Classes> classesDictionary)
+    private IEnumerable<Building> ParseBuildings(IEnumerable<Class2> classes2, IReadOnlyDictionary<string, Class2> classesDictionary)
     {
         return classes2
             .Where(p => !ExcludeBuilding(p.ClassName))
@@ -27,15 +24,17 @@ public partial class DocsParserService
             .ToArray();
     }
 
-    private Building ParseBuilding(Classes class2, IReadOnlyDictionary<string, Classes> classesDictionary)
+    private Building ParseBuilding(Class2 class2, IReadOnlyDictionary<string, Class2> classesDictionary)
     {
         var smallIconPath = class2.mSmallIcon;
         var bigIconPath = class2.mPersistentBigIcon;
         var correctedClassName = ClassNameParseUtility.CorrectClassNameForImageLookup(class2.ClassName)!;
-        
+
         if (correctedClassName == class2.ClassName)
             correctedClassName = ClassNameParseUtility.ConvertClassNameToDescClassName(correctedClassName);
-        
+        else
+            _ = "";
+
         if (classesDictionary.ContainsKey(correctedClassName))
         {
             if (string.IsNullOrEmpty(smallIconPath))
@@ -63,15 +62,41 @@ public partial class DocsParserService
             PowerConsumptionRange = PowerConsumptionRangeConverterUtility.ConverToPowerConsumption(class2.mEstimatedMininumPowerConsumption.MapToNullableDecimal(), class2.mEstimatedMaximumPowerConsumption.MapToNullableDecimal())
         };
     }
+    
+    private IEnumerable<Building> EditBuildings(TempModelContext tempModelContext, IEnumerable<Class2> classes2)
+    {
+        return classes2
+            .Where(p => !ExcludeBuilding(p.ClassName))
+            .Select(p => EditBuilding(tempModelContext, p))
+            .ToArray()!;
+    }
 
-    private Item[] ParseItems(IEnumerable<Classes> classes2)
+    private Building EditBuilding(TempModelContext tempModelContext, Class2 class2)
+    {
+        var correctedClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!;
+        var correspondingBuilding = tempModelContext.Buildings.FirstOrDefault(p => p.ClassName == correctedClassName);
+
+        if (correspondingBuilding is null)
+        {
+            var buildings = string.Join(Environment.NewLine, tempModelContext.Buildings.Select(p => p.ClassName));
+            throw new($"{correctedClassName} does not exist for editing in buildings");
+        }
+           
+        
+        correspondingBuilding.Description = string.IsNullOrWhiteSpace(correspondingBuilding.Description) ? class2.mDescription : correspondingBuilding.Description;
+        correspondingBuilding.Name = string.IsNullOrWhiteSpace(correspondingBuilding.Name) ? class2.mDisplayName : correspondingBuilding.Name;
+
+        return correspondingBuilding;
+    }
+
+    private Item[] ParseItems(IEnumerable<Class2> classes2)
     {
         return classes2
             .Select(ParseItem)
             .ToArray();
     }
 
-    private Item ParseItem(Classes class2)
+    private Item ParseItem(Class2 class2)
     {
         var item = new Item
         {
@@ -83,8 +108,8 @@ public partial class DocsParserService
             EnergyValue = class2.mEnergyValue.MapToDecimal(),
             IsRadioActive = !string.IsNullOrEmpty(class2.mIsRadioActive) && Convert.ToBoolean(class2.mIsRadioActive),
             RadioActiveDecay = class2.mRadioactiveDecay.MapToDecimal(),
-            SmallImagePath = IconPathParseUtility.ConvertIconPathToUePath(class2.mSmallIcon)!,
-            BigImagePath = IconPathParseUtility.ConvertIconPathToUePath(class2.mPersistentBigIcon)!,
+            SmallImagePath = IconPathParseUtility.ConvertIconPathToUePath(class2.mSmallIcon),
+            BigImagePath = IconPathParseUtility.ConvertIconPathToUePath(class2.mPersistentBigIcon),
             SinkPoints = string.IsNullOrEmpty(class2.mResourceSinkPoints)
                 ? null
                 : Convert.ToInt32(class2.mResourceSinkPoints)
@@ -93,14 +118,14 @@ public partial class DocsParserService
         return item;
     }
 
-    private IEnumerable<Resource> ParseResources(IEnumerable<Classes> classes2)
+    private IEnumerable<Resource> ParseResources(IEnumerable<Class2> classes2)
     {
         return classes2
             .Select(ParseResource)
             .ToArray();
     }
 
-    private Resource ParseResource(Classes class2)
+    private Resource ParseResource(Class2 class2)
     {
         return new()
         {
@@ -108,14 +133,14 @@ public partial class DocsParserService
         };
     }
 
-    private IEnumerable<Equipment> ParseEquipments(IEnumerable<Classes> classes2)
+    private IEnumerable<Equipment> ParseEquipments(IEnumerable<Class2> classes2)
     {
         return classes2
             .Select(ParseEquipment)
             .ToArray();
     }
 
-    private Equipment ParseEquipment(Classes class2)
+    private Equipment ParseEquipment(Class2 class2)
     {
         var equipment = new Equipment
         {
@@ -126,14 +151,14 @@ public partial class DocsParserService
         return equipment;
     }
 
-    private IEnumerable<Vehicle> ParseVehicles(IEnumerable<Classes> classes2)
+    private IEnumerable<Vehicle> ParseVehicles(IEnumerable<Class2> classes2)
     {
         return classes2
             .Select(ParseVehicle)
             .ToArray();
     }
 
-    private Vehicle ParseVehicle(Classes class2) =>
+    private Vehicle ParseVehicle(Class2 class2) =>
         new()
         {
             ClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!,
@@ -143,14 +168,14 @@ public partial class DocsParserService
             InventorySize = string.IsNullOrEmpty(class2.mInventorySize) ? null : Convert.ToInt32(class2.mInventorySize)
         };
 
-    private IEnumerable<(Weapon, string[])> ParseWeapons(IEnumerable<Classes> classes2, DbSet<Ammunition> ammunitions)
+    private IEnumerable<(Weapon, string[])> ParseWeapons(IEnumerable<Class2> classes2)
     {
         return classes2
-            .Select(p => ParseWeapon(p, ammunitions))
+            .Select(ParseWeapon)
             .ToArray();
     }
 
-    private (Weapon, string[]) ParseWeapon(Classes class2, DbSet<Ammunition> ammunitions)
+    private (Weapon, string[]) ParseWeapon(Class2 class2)
     {
         var weapon = new Weapon()
         {
@@ -167,14 +192,14 @@ public partial class DocsParserService
             );
     }
 
-    private IEnumerable<Ammunition> ParseAmmunitions(IEnumerable<Classes> classes2, Dictionary<string, string> ammunitionWeaponReferences)
+    private IEnumerable<Ammunition> ParseAmmunitions(IEnumerable<Class2> classes2, Dictionary<string, string> ammunitionWeaponReferences)
     {
         return classes2
             .Select(p => ParseAmmunition(p , ammunitionWeaponReferences))
             .ToArray();
     }
 
-    private Ammunition ParseAmmunition(Classes class2, Dictionary<string, string> ammunitionWeaponReferences)
+    private Ammunition ParseAmmunition(Class2 class2, Dictionary<string, string> ammunitionWeaponReferences)
     {
         var cleanedClassName = ClassNameParseUtility.CleanClassName(class2.ClassName)!;
         
@@ -195,12 +220,11 @@ public partial class DocsParserService
             {
                 "Recipe_Wall_Window_8x4_03_Steel_C",
                 "Recipe_CandyCaneBasher_C",
-                "Recipe_PillarTop_C"
             }
             .Contains(className);
     }
 
-    private IEnumerable<Recipe> ParseRecipes(IEnumerable<Classes> classes2, TempModelContext tempModelContext)
+    private IEnumerable<Recipe> ParseRecipes(IEnumerable<Class2> classes2, TempModelContext tempModelContext)
     {
         return classes2
             .Where(p => !ExcludeRecipe(p.ClassName))
@@ -209,7 +233,7 @@ public partial class DocsParserService
             .ToArray();
     }
 
-    private Recipe? ParseRecipe(Classes class2, TempModelContext tempModelContext)
+    private Recipe? ParseRecipe(Class2 class2, TempModelContext tempModelContext)
     {
         var producedInBuildings = ReferenceParseUtility.GetReferences(class2.mProducedIn);
         if (producedInBuildings.Contains("Converter"))
@@ -278,14 +302,14 @@ public partial class DocsParserService
         return recipe;
     }
 
-    private IEnumerable<CustomizationRecipe> ParseCustomizationRecipes(IEnumerable<Classes> classes2)
+    private IEnumerable<CustomizationRecipe> ParseCustomizationRecipes(IEnumerable<Class2> classes2)
     {
         return classes2
             .Select(ParseCustomizationRecipe)
             .ToArray();
     }
 
-    private CustomizationRecipe ParseCustomizationRecipe(Classes class2)
+    private CustomizationRecipe ParseCustomizationRecipe(Class2 class2)
     {
         var producedInBuildings = ReferenceParseUtility.GetReferences(class2.mProducedIn);
 
@@ -318,14 +342,14 @@ public partial class DocsParserService
         return customizationRecipe;
     }
 
-    private IEnumerable<Miner> ParseMiners(IEnumerable<Classes> classes2, TempModelContext tempModelContext)
+    private IEnumerable<Miner> ParseMiners(IEnumerable<Class2> classes2, TempModelContext tempModelContext)
     {
         return classes2
             .Select(p => ParseMiner(p, tempModelContext))
             .ToArray();
     }
 
-    private Miner ParseMiner(Classes class2, TempModelContext tempModelContext)
+    private Miner ParseMiner(Class2 class2, TempModelContext tempModelContext)
     {
         var foundResources = new List<Resource>();
         
@@ -356,7 +380,7 @@ public partial class DocsParserService
         };
     }
 
-    private IEnumerable<Schematic> ParseSchematics(IEnumerable<Classes> classes2, TempModelContext tempModelContext)
+    private IEnumerable<Schematic> ParseSchematics(IEnumerable<Class2> classes2, TempModelContext tempModelContext)
     {
         return classes2
             .Where(p => !ExcludeSchematics(p.ClassName))
@@ -369,7 +393,7 @@ public partial class DocsParserService
         return className is "Schematic_StartingRecipes_C" or "Schematic_SaveCompatibility_C";
     }
 
-    private Schematic ParseSchematic(Classes class2, TempModelContext tempModelContext)
+    private Schematic ParseSchematic(Class2 class2, TempModelContext tempModelContext)
     {
         var costs = UnrealEngineClassParser.ParseInputs(class2.mCost)
             .Select(p => new SchematicCost { ItemClassName = p.ClassName, Amount = p.Amount ?? 1})
@@ -491,14 +515,14 @@ public partial class DocsParserService
 
     // ReSharper disable once HeapView.ClosureAllocation
     // ReSharper disable once ReturnTypeCanBeEnumerable.Local
-    private Generator[] ParseGenerators(IEnumerable<Classes> classes2, Item[] biomassItems)
+    private Generator[] ParseGenerators(IEnumerable<Class2> classes2, Item[] biomassItems)
     {
         return classes2
             .Select(p => ParseGenerator(p, biomassItems))
             .ToArray();
     }
 
-    private Generator ParseGenerator(Classes class2, Item[] biomassItems)
+    private Generator ParseGenerator(Class2 class2, Item[] biomassItems)
     {
         var supplementalPowerRatio = class2.mSupplementalToPowerRatio.MapToNullableDecimal();
         if (supplementalPowerRatio is 0)
@@ -518,14 +542,14 @@ public partial class DocsParserService
         };
     }
 
-    private IEnumerable<Consumable> ParseConsumables(IEnumerable<Classes> classes2)
+    private IEnumerable<Consumable> ParseConsumables(IEnumerable<Class2> classes2)
     {
         return classes2
             .Select(ParseConsumable)
             .ToArray();
     }
 
-    private Consumable ParseConsumable(Classes class2)
+    private Consumable ParseConsumable(Class2 class2)
     {
         return new()
         {
@@ -535,7 +559,7 @@ public partial class DocsParserService
     }
 
     // ReSharper disable once HeapView.ClosureAllocation
-    private FuelItem[] ParseFuels(MFuel[]? mFuel, Item[] biomassItems)
+    private FuelItem[] ParseFuels(Mfuel[]? mFuel, Item[] biomassItems)
     {
         if(mFuel is null)
             return Array.Empty<FuelItem>();
@@ -546,7 +570,7 @@ public partial class DocsParserService
     }
 
     // ReSharper disable once HeapView.ClosureAllocation
-    private IEnumerable<FuelItem> ParseFuel(MFuel mFuel, IEnumerable<Item> biomassItems)
+    private IEnumerable<FuelItem> ParseFuel(Mfuel mFuel, IEnumerable<Item> biomassItems)
     {
         if(mFuel.mFuelClass == "FGItemDescriptorBiomass")
         {
@@ -562,7 +586,7 @@ public partial class DocsParserService
         return new[] { ParseFuel(mFuel) };
     }
 
-    private FuelItem ParseFuel(MFuel mFuel)
+    private FuelItem ParseFuel(Mfuel mFuel)
     {
         return new()
         {

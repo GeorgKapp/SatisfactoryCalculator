@@ -1,3 +1,5 @@
+using System.Net.Mime;
+
 namespace SatisfactoryCalculator.DocsServices.Services;
 
 public partial class DocsParserService
@@ -27,122 +29,158 @@ public partial class DocsParserService
 			await tempModelContext.Database.EnsureCreatedAsync();
 
 			progress?.ReportOrThrow("Read docs.json file", token);
-			var rootObjects = (await _jsonService.ReadJsonAsync<RootObject[]>(docsFilePath))!;
+			var classes1 = (await _jsonService.ReadJsonAsync<Class1[]>(docsFilePath))!;
 
-			var allTypes = GetAllTypes(rootObjects);
+#if DEBUG
+			//TODO: do enum parsing and check for missing matches programmatically via this method, so its faster than manual checking enums
+			var nativeClasses = string.Join(Environment.NewLine, classes1.Select(p => p.NativeClass).ToArray());
+			var allClassPrefixes = string.Join(Environment.NewLine, GetAllClassPrefixes(classes1));
+			var allForms = string.Join(Environment.NewLine, GetAllForms(classes1));
+			var allStackSizes = string.Join(Environment.NewLine, GetAllStackSizes(classes1));
+			var allEquipmentSlots = string.Join(Environment.NewLine, GetAllEquipmentSlots(classes1));
+			var allTypes = string.Join(Environment.NewLine, GetAllTypes(classes1));
+			var allSchematicIcons = string.Join(Environment.NewLine, GetAllSchematicIcons(classes1));
+			var allSmallSchematicIcons = string.Join(Environment.NewLine, GetAllSmallSchematicIcons(classes1));
+			var allSmallSchematicDependencyClasses = string.Join(Environment.NewLine, GetAllSmallSchematicDependencyClasses(classes1));		
+#endif
 			
-			var rootObjectHandledDictionary = rootObjects
-				.ToDictionary(p => p.NativeClass, c => false);
+			var rootObjectHandledDictionary = classes1
+                .ToDictionary(p => p.NativeClass, c => false);
 
-			var classesDictionary = rootObjects
-				.SelectMany(p => p.Classes)
+			var classesDictionary = classes1
+                .SelectMany(p => p.Classes)
 				.ToDictionary(p => p.ClassName!, p => p);
 
 			Item[] biomassItems = null!;
 			
-			progress?.ReportOrThrow("Add items and buildings", token);
-			foreach (var class1 in rootObjects)
+			progress?.ReportOrThrow("Add items", token);
+			foreach (var class1 in classes1)
 				switch (class1.NativeClass)
 				{
-					case "Class'/Script/FactoryGame.FGItemDescriptorBiomass'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGItemDescriptorBiomass'":
 						biomassItems = ParseItems(class1.Classes);
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						tempModelContext.Items.AddRange(biomassItems);
 						await tempModelContext.SaveChangesAsync();
 						break;
 
-					case "Class'/Script/FactoryGame.FGItemDescriptor'":
-					case "Class'/Script/FactoryGame.FGItemDescriptorNuclearFuel'":
-					case "Class'/Script/FactoryGame.FGEquipmentDescriptor'":
-					case "Class'/Script/FactoryGame.FGConsumableDescriptor'":
-					case "Class'/Script/FactoryGame.FGResourceDescriptor'":
-					case "Class'/Script/FactoryGame.FGAmmoTypeInstantHit'":
-					case "Class'/Script/FactoryGame.FGAmmoTypeProjectile'":
-					case "Class'/Script/FactoryGame.FGAmmoTypeSpreadshot'":
-					case "Class'/Script/FactoryGame.FGVehicleDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGItemDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGItemDescriptorNuclearFuel'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGEquipmentDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGConsumableDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGResourceDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGAmmoTypeInstantHit'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGAmmoTypeProjectile'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGAmmoTypeSpreadshot'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGVehicleDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGItemDescriptorPowerBoosterFuel'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGPowerShardDescriptor'":
 						tempModelContext.Items.AddRange(ParseItems(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
-
-					case "Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
-					case "Class'/Script/FactoryGame.FGBuildableWaterPump'":
-					case "Class'/Script/FactoryGame.FGBuildableGeneratorFuel'":
-					case "Class'/Script/FactoryGame.FGBuildableGeneratorNuclear'":
-					case "Class'/Script/FactoryGame.FGBuildableGeneratorGeoThermal'":
-					case "Class'/Script/FactoryGame.FGBuildable'":
-					case "Class'/Script/FactoryGame.FGBuildableAttachmentMerger'":
-					case "Class'/Script/FactoryGame.FGBuildableAttachmentSplitter'":
-					case "Class'/Script/FactoryGame.FGBuildableBeam'":
-					case "Class'/Script/FactoryGame.FGBuildableBeamLightweight'":
-					case "Class'/Script/FactoryGame.FGBuildableBlueprintDesigner'":
-					case "Class'/Script/FactoryGame.FGBuildableCircuitSwitch'":
-					case "Class'/Script/FactoryGame.FGBuildableConveyorBelt'":
-					case "Class'/Script/FactoryGame.FGBuildableConveyorLift'":
-					case "Class'/Script/FactoryGame.FGBuildableCornerWall'":
-					case "Class'/Script/FactoryGame.FGBuildableDockingStation'":
-					case "Class'/Script/FactoryGame.FGBuildableDoor'":
-					case "Class'/Script/FactoryGame.FGBuildableDroneStation'":
-					case "Class'/Script/FactoryGame.FGBuildableFactory'":
-					case "Class'/Script/FactoryGame.FGBuildableFactoryBuilding'":
-					case "Class'/Script/FactoryGame.FGBuildableFactorySimpleProducer'":
-					case "Class'/Script/FactoryGame.FGBuildableFloodlight'":
-					case "Class'/Script/FactoryGame.FGBuildableFoundation'":
-					case "Class'/Script/FactoryGame.FGBuildableFoundationLightweight'":
-					case "Class'/Script/FactoryGame.FGBuildableFrackingActivator'":
-					case "Class'/Script/FactoryGame.FGBuildableFrackingExtractor'":
-					case "Class'/Script/FactoryGame.FGBuildableJumppad'":
-					case "Class'/Script/FactoryGame.FGBuildableLadder'":
-					case "Class'/Script/FactoryGame.FGBuildableLightSource'":
-					case "Class'/Script/FactoryGame.FGBuildableLightsControlPanel'":
-					case "Class'/Script/FactoryGame.FGBuildableMAM'":
-					case "Class'/Script/FactoryGame.FGBuildableManufacturer'":
-					case "Class'/Script/FactoryGame.FGBuildableManufacturerVariablePower'":
-					case "Class'/Script/FactoryGame.FGBuildablePassthrough'":
-					case "Class'/Script/FactoryGame.FGBuildablePillar'":
-					case "Class'/Script/FactoryGame.FGBuildablePillarLightweight'":
-					case "Class'/Script/FactoryGame.FGBuildablePipeHyper'":
-					case "Class'/Script/FactoryGame.FGBuildablePipeReservoir'":
-					case "Class'/Script/FactoryGame.FGBuildablePipeline'":
-					case "Class'/Script/FactoryGame.FGBuildablePipelineJunction'":
-					case "Class'/Script/FactoryGame.FGBuildablePipelinePump'":
-					case "Class'/Script/FactoryGame.FGBuildablePipelineSupport'":
-					case "Class'/Script/FactoryGame.FGBuildablePowerPole'":
-					case "Class'/Script/FactoryGame.FGBuildablePowerStorage'":
-					case "Class'/Script/FactoryGame.FGBuildableRadarTower'":
-					case "Class'/Script/FactoryGame.FGBuildableRailroadSignal'":
-					case "Class'/Script/FactoryGame.FGBuildableRailroadStation'":
-					case "Class'/Script/FactoryGame.FGBuildableRailroadTrack'":
-					case "Class'/Script/FactoryGame.FGBuildableRamp'":
-					case "Class'/Script/FactoryGame.FGBuildableResourceSink'":
-					case "Class'/Script/FactoryGame.FGBuildableResourceSinkShop'":
-					case "Class'/Script/FactoryGame.FGBuildableSnowDispenser'":
-					case "Class'/Script/FactoryGame.FGBuildableSpaceElevator'":
-					case "Class'/Script/FactoryGame.FGBuildableSplitterSmart'":
-					case "Class'/Script/FactoryGame.FGBuildableStair'":
-					case "Class'/Script/FactoryGame.FGBuildableStorage'":
-					case "Class'/Script/FactoryGame.FGBuildableTradingPost'":
-					case "Class'/Script/FactoryGame.FGBuildableTrainPlatformCargo'":
-					case "Class'/Script/FactoryGame.FGBuildableTrainPlatformEmpty'":
-					case "Class'/Script/FactoryGame.FGBuildableWalkway'":
-					case "Class'/Script/FactoryGame.FGBuildableWalkwayLightweight'":
-					case "Class'/Script/FactoryGame.FGBuildableWall'":
-					case "Class'/Script/FactoryGame.FGBuildableWallLightweight'":
-					case "Class'/Script/FactoryGame.FGBuildableWidgetSign'":
-					case "Class'/Script/FactoryGame.FGBuildableWire'":
-					case "Class'/Script/FactoryGame.FGConveyorPoleStackable'":
-					case "Class'/Script/FactoryGame.FGPipeHyperStart'":
-					case "Class'/Script/FactoryGame.FGBuildablePole'":
-					case "Class'/Script/FactoryGame.FGBuildablePoleLightweight'":
+				}
+			
+			progress?.ReportOrThrow("Add buildings", token);
+			foreach (var class1 in classes1)
+				switch (class1.NativeClass)
+				{
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildingDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGPoleDescriptor'":
 						tempModelContext.Buildings.AddRange(ParseBuildings(class1.Classes, classesDictionary));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
 				}
 
-			var itemClassNames = tempModelContext.Items.Select(p => p.ClassName).ToArray();
-			var buildingClassNames = tempModelContext.Buildings.Select(p => p.ClassName).ToArray();
-
+			progress?.ReportOrThrow("Edit Building Information", token);
+			foreach (var class1 in classes1)
+				switch (class1.NativeClass)
+				{
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableWall'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableWallLightweight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGConveyorPoleStackable'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGPipeHyperStart'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePole'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePoleLightweight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildable'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableAttachmentMerger'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableAttachmentSplitter'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableBeam'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableBeamLightweight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableBlueprintDesigner'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableCircuitSwitch'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableConveyorBelt'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableConveyorLift'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableCornerWall'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableDockingStation'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableDoor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableDroneStation'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableFactory'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableFactoryBuilding'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableFactorySimpleProducer'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableFloodlight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableFoundation'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableFoundationLightweight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableFrackingActivator'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableFrackingExtractor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableJumppad'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableLadder'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableLightSource'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableLightsControlPanel'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableMAM'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableManufacturer'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableManufacturerVariablePower'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePassthrough'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePillar'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePillarLightweight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePipeHyper'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePipeReservoir'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePipeline'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePipelineJunction'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePipelinePump'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePipelineSupport'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePowerPole'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePowerStorage'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableRadarTower'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableRailroadSignal'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableRailroadStation'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableRailroadTrack'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableRamp'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableResourceSink'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableResourceSinkShop'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableSnowDispenser'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableSpaceElevator'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableSplitterSmart'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableStair'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableStorage'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableTradingPost'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableTrainPlatformCargo'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableTrainPlatformEmpty'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableWalkway'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableWalkwayLightweight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableWidgetSign'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableWire'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePoleBase'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableRampLightweight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGCentralStorageContainer'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePassthroughPipeHyper'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableGeneratorFuel'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableGeneratorGeoThermal'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableGeneratorNuclear'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableWaterPump'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePortalSatellite'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePriorityPowerSwitch'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePortal'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableCornerWallLightweight'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePowerBooster'":
+						tempModelContext.Buildings.UpdateRange(EditBuildings(tempModelContext, class1.Classes));
+						rootObjectHandledDictionary[class1.NativeClass] = true;
+						await tempModelContext.SaveChangesAsync();
+						break;
+			}
+			
 			progress?.ReportOrThrow("Add missing items", token);
 			tempModelContext.Items.Add(_coffeeCup);
 			tempModelContext.Items.Add(_goldenCoffeeCup);
@@ -164,7 +202,7 @@ public partial class DocsParserService
 			progress?.ReportOrThrow("Add missing statues", token);
 			tempModelContext.Statues.AddRange(_statues);
 			await tempModelContext.SaveChangesAsync();
-
+			
 			progress?.ReportOrThrow("Add missing creatures", token);
 			tempModelContext.Creatures.AddRange(_creatures);
 			await tempModelContext.SaveChangesAsync();
@@ -195,13 +233,13 @@ public partial class DocsParserService
 			
 			progress?.ReportOrThrow("Add weapons", token);
 			var ammunitionWeaponReferences = new Dictionary<string, string>();
-			foreach (var class1 in rootObjects)
+			foreach (var class1 in classes1)
 				switch (class1.NativeClass)
 				{
-					case "Class'/Script/FactoryGame.FGWeapon'":
-					case "Class'/Script/FactoryGame.FGEquipmentStunSpear'":
-					case "Class'/Script/FactoryGame.FGChargedWeapon'":
-						var parsedWeaponResults = ParseWeapons(class1.Classes, tempModelContext.Ammunitions).ToArray();
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGWeapon'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGEquipmentStunSpear'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGChargedWeapon'":
+						var parsedWeaponResults = ParseWeapons(class1.Classes).ToArray();
 						tempModelContext.Weapons.AddRange(parsedWeaponResults.Select(p => p.Item1));
 						
 						foreach (var parsedWeaponResult in parsedWeaponResults)
@@ -216,20 +254,20 @@ public partial class DocsParserService
 				}
 
 			progress?.ReportOrThrow("Add ammunitions", token);
-			foreach (var class1 in rootObjects)
+			foreach (var class1 in classes1)
 				switch (class1.NativeClass)
 				{
-					case "Class'/Script/FactoryGame.FGAmmoTypeInstantHit'":
-					case "Class'/Script/FactoryGame.FGAmmoTypeProjectile'":
-					case "Class'/Script/FactoryGame.FGAmmoTypeSpreadshot'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGAmmoTypeInstantHit'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGAmmoTypeProjectile'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGAmmoTypeSpreadshot'":
 						tempModelContext.Ammunitions.AddRange(ParseAmmunitions(class1.Classes, ammunitionWeaponReferences));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
 				}
 			
-			foreach(var class1 in rootObjects)
-				if (class1.NativeClass == "Class'/Script/FactoryGame.FGResourceDescriptor'")
+			foreach(var class1 in classes1)
+				if (class1.NativeClass == "/Script/CoreUObject.Class'/Script/FactoryGame.FGResourceDescriptor'")
 				{
 					tempModelContext.Resources.AddRange(ParseResources(class1.Classes));
 					rootObjectHandledDictionary[class1.NativeClass] = true;
@@ -237,81 +275,84 @@ public partial class DocsParserService
 				}
 
 			progress?.ReportOrThrow("Add other entities", token);
-			foreach (var class1 in rootObjects)
+			foreach (var class1 in classes1)
 			{
 				token?.ThrowIfCancellationRequested();
 				switch (class1.NativeClass)
 				{
-					case "Class'/Script/FactoryGame.FGConsumableDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGConsumableDescriptor'":
 						tempModelContext.Consumables.AddRange(ParseConsumables(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
 					
-					case "Class'/Script/FactoryGame.FGVehicleDescriptor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGVehicleDescriptor'":
 						tempModelContext.Vehicles.AddRange(ParseVehicles(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
 
-					case "Class'/Script/FactoryGame.FGSuitBase'":
-					case "Class'/Script/FactoryGame.FGParachute'":
-					case "Class'/Script/FactoryGame.FGObjectScanner'":
-					case "Class'/Script/FactoryGame.FGJumpingStilts'":
-					case "Class'/Script/FactoryGame.FGJetPack'":
-					case "Class'/Script/FactoryGame.FGHoverPack'":
-					case "Class'/Script/FactoryGame.FGGasMask'":
-					case "Class'/Script/FactoryGame.FGEquipmentZipline'":
-					case "Class'/Script/FactoryGame.FGChainsaw'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGSuitBase'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGParachute'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGObjectScanner'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGJumpingStilts'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGJetPack'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGHoverPack'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGGasMask'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGEquipmentZipline'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGChainsaw'":
 						tempModelContext.Equipments.AddRange(ParseEquipments(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
 
-					case "Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
-					case "Class'/Script/FactoryGame.FGBuildableWaterPump'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableResourceExtractor'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableWaterPump'":
 						tempModelContext.Miners.AddRange(ParseMiners(class1.Classes, tempModelContext));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
 
-					case "Class'/Script/FactoryGame.FGBuildableGeneratorFuel'":
-					case "Class'/Script/FactoryGame.FGBuildableGeneratorNuclear'":
-					case "Class'/Script/FactoryGame.FGBuildableGeneratorGeoThermal'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableGeneratorFuel'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableGeneratorNuclear'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildableGeneratorGeoThermal'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGBuildablePowerBooster'":
 						tempModelContext.Generators.AddRange(ParseGenerators(class1.Classes, biomassItems!));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
 
-					case "Class'/Script/FactoryGame.FGRecipe'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGRecipe'":
 						tempModelContext.Recipes.AddRange(ParseRecipes(class1.Classes, tempModelContext));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
 
-					case "Class'/Script/FactoryGame.FGCustomizationRecipe'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGCustomizationRecipe'":
 						tempModelContext.CustomizationRecipes.AddRange(ParseCustomizationRecipes(class1.Classes));
 						rootObjectHandledDictionary[class1.NativeClass] = true;
 						await tempModelContext.SaveChangesAsync();
 						break;
-					
-					case "Class'/Script/FactoryGame.FGPortableMinerDispenser'":
-					case "Class'/Script/FactoryGame.FGPoleDescriptor'":
-					case "Class'/Script/FactoryGame.FGGolfCartDispenser'":
-					case "Class'/Script/FactoryGame.FGBuildingDescriptor'":
-					case "Class'/Script/FactoryGame.FGConsumableEquipment'":
-						//Ignore Classes
-						rootObjectHandledDictionary[class1.NativeClass] = true;
-						break;
 				}
 			}
 			
-			foreach (var class1 in rootObjects)
-				if (class1.NativeClass == "Class'/Script/FactoryGame.FGSchematic'")
+			foreach (var class1 in classes1)
+				if (class1.NativeClass == "/Script/CoreUObject.Class'/Script/FactoryGame.FGSchematic'")
 				{
 					tempModelContext.Schematics.AddRange(ParseSchematics(class1.Classes, tempModelContext));
 					rootObjectHandledDictionary[class1.NativeClass] = true;
 					await tempModelContext.SaveChangesAsync();
+				}
+
+			//Ignore Classes
+			foreach (var class1 in classes1)
+				switch (class1.NativeClass)
+				{
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGPortableMinerDispenser'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGGolfCartDispenser'":
+					case "/Script/CoreUObject.Class'/Script/FactoryGame.FGConsumableEquipment'":
+						rootObjectHandledDictionary[class1.NativeClass] = true;
+						break;
 				}
 
 			progress?.ReportOrThrow("Check if all references very traversed");
@@ -348,7 +389,6 @@ public partial class DocsParserService
 				return Result.Failure(validateItemExistenceInSchematicsCheckResult.Error!);
 			
 			//TODO: insert configuration copying beforehand
-			
 			progress?.ReportOrThrow("Parse images", token);
 			await CreateImagesAsync(tempModelContext, ueModelExportDirectoryPath, _pathOptions.Value.ImageFolder, progress, token);
 			

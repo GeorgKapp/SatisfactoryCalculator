@@ -6,8 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 #pragma warning disable CS8618
 [SuppressMessage("Design", "CA1050:Declare types in namespaces")]
-public class RootObject
+public class Rootobject
 {
-    public string NativeClass { get; set; }
-    public Classes[] Classes { get; set; }
+    public Class1[] Classes { get; set; }
 }

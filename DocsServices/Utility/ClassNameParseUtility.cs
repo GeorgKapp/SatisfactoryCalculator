@@ -95,6 +95,7 @@ internal static class ClassNameParseUtility
 		"Desc_QuarterPipeMiddle_Ficsit_4x1_C" => "Build_QuarterPipeMiddle_Ficsit_8x1_C",
 		"Desc_QuarterPipeMiddle_Ficsit_4x2_C" => "Build_QuarterPipeMiddle_Ficsit_8x2_C",
 		"Desc_QuarterPipeMiddle_Ficsit_4x4_C" => "Build_QuarterPipeMiddle_Ficsit_8x4_C",
+		"Build_BlueprintDesigner_Mk3_C" => "Build_BlueprintDesigner_MK3_C",
 		_ => className
 	};
 

@@ -10,7 +10,7 @@ internal static class EnumParseExtension
 		"RF_INVALID" => Form.Invalid,
 		_ => throw new ArgumentOutOfRangeException("Form: " + input)
 	};
-
+	
 	public static StackSize ParseToStackSize(this string input) => input switch
 	{
 		"SS_HUGE" => StackSize.Huge,
@@ -21,7 +21,7 @@ internal static class EnumParseExtension
 		"SS_FLUID" => StackSize.Fluid,
 		_ => throw new ArgumentOutOfRangeException("StackSize: " + input)
 	};
-
+	
     public static EquipmentSlot ParseToEquipmentSlot(this string input) => input switch
     {
         "ES_ARMS" => EquipmentSlot.Arms,
@@ -31,7 +31,7 @@ internal static class EnumParseExtension
         "ES_LEGS" => EquipmentSlot.Legs,
         _ => throw new ArgumentOutOfRangeException("EquipmentSlot: " + input)
     };
-
+    
     public static SchematicType ParseToSchematicType(this string input) => input switch
 	{
 		"EST_Custom" => SchematicType.Custom,
@@ -41,6 +41,7 @@ internal static class EnumParseExtension
 		"EST_Milestone" => SchematicType.Milestone,
 		"EST_Alternate" => SchematicType.Alternate,
 		"EST_ResourceSink" => SchematicType.ResourceSink,
+		"EST_Customization" => SchematicType.Customization,
 		_ => throw new ArgumentOutOfRangeException("SchematicType: " + input)
 	};
     

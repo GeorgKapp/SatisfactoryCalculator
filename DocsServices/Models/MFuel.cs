@@ -2,7 +2,7 @@
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 #pragma warning disable CS8618
-public class MFuel
+public class Mfuel
 {
     public string mFuelClass { get; set; }
     public string mSupplementalResourceClass { get; set; }

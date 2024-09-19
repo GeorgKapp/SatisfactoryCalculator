@@ -8,5 +8,6 @@ public enum SchematicType
 	HardDrive,
 	Milestone,
 	Alternate,
-	ResourceSink
+	ResourceSink,
+	Customization
 }

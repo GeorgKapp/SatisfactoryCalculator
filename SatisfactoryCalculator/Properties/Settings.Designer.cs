@@ -24,20 +24,20 @@ namespace SatisfactoryCalculator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\umodel_win32\\UmodelExport")]
-        public string UeModelExportDirectory {
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files\\FModel\\Output\\Exports")]
+        public string UnrealEngineExportDirectory {
             get {
-                return ((string)(this["UeModelExportDirectory"]));
+                return ((string)(this["UnrealEngineExportDirectory"]));
             }
             set {
-                this["UeModelExportDirectory"] = value;
+                this["UnrealEngineExportDirectory"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("C:\\Program Files (x86)\\Steam\\steamapps\\common\\Satisfactory\\CommunityResources\\Doc" +
-            "s\\Docs.json")]
+            "s\\en-GB.json")]
         public string DocsFilePath {
             get {
                 return ((string)(this["DocsFilePath"]));

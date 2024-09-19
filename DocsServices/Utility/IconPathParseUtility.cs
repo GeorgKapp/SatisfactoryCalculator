@@ -2,9 +2,9 @@ namespace SatisfactoryCalculator.DocsServices.Utility;
 
 internal static class IconPathParseUtility
 {
-	public static string? ConvertIconPathToUePath(string iconPath)
+	public static string? ConvertIconPathToUePath(string? iconPath)
 	{
-		if (iconPath == "None")
+		if (iconPath is null or "None")
 			return null;
 
 		var text = iconPath.StartsWith("Texture2D") ? iconPath.Remove(0, "Texture2D".Length) : iconPath;
@@ -38,7 +38,7 @@ internal static class IconPathParseUtility
 		return ConvertIconPathToUePath(iconPath);
 	}
 
-	public static string ReplaceSmallIconPathFromClass(Classes class2)
+	public static string ReplaceSmallIconPathFromClass(Class2 class2)
 	{
 		var className = class2.ClassName;
 		var result = className switch
@@ -51,7 +51,7 @@ internal static class IconPathParseUtility
 		return result;
 	}
 
-	public static string ReplaceBigIconPathFromClass(Classes class2)
+	public static string ReplaceBigIconPathFromClass(Class2 class2)
 	{
 		var className = class2.ClassName;
 		

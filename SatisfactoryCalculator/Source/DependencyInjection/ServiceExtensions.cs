@@ -18,9 +18,12 @@ internal static class ServiceExtensions
 	private static PathOptions AddPathOption(this IServiceCollection services)
 	{
 		var dataFolder = Environment.CurrentDirectory + "\\Data";
-		var imageFolder = dataFolder + "\\Images";
+		Directory.CreateDirectory(dataFolder);
 
-		services.Configure<PathOptions>(options =>
+		var imageFolder = dataFolder + "\\Images";
+        Directory.CreateDirectory(imageFolder);
+
+        services.Configure<PathOptions>(options =>
 		{
 			options.DataFolder = dataFolder;
 			options.ImageFolder = imageFolder;

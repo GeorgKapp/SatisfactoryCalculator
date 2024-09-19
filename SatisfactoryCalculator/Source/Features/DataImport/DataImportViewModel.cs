@@ -20,10 +20,10 @@ internal class DataImportViewModel : ObservableObject
 
     public string UeModelExportDirectoryPath
     {
-        get => Settings.Default.UeModelExportDirectory;
+        get => Settings.Default.UnrealEngineExportDirectory;
         set
         {
-            Settings.Default.UeModelExportDirectory = value;
+            Settings.Default.UnrealEngineExportDirectory = value;
             Notify(nameof(UeModelExportDirectoryPath));
         }
     }

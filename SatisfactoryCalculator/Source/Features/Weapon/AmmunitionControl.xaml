@@ -13,8 +13,8 @@
         
         <DataTemplate DataType="{x:Type ammunition:Ammunition}">
             <StackPanel MinHeight="50" HorizontalAlignment="Left">
-                
-                <TextBlock HorizontalAlignment="Left" Padding="0,5,0,5" Style="{StaticResource SmallTextBlock}" Text="{Binding Name}"/>
+
+                <c:SatisfactoryTextBlock HorizontalAlignment="Left" Padding="0,5,0,5" Style="{StaticResource SatisfactorySmallTextBlock}" FontWeight="Medium" Text="{Binding Name}"/>
                 
                 <c:SatisfactoryImage Margin="5,0,0,0" 
                                      Source="{Binding Image}" 

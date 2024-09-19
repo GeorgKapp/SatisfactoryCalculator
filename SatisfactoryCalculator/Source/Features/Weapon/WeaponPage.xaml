@@ -27,11 +27,11 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type recipe:Recipe}">
-            <userControls:RecipeControl Recipe="{Binding}" Margin="0,0,0,15"/>
+            <userControls:RecipeControl Recipe="{Binding}" Margin="0,0,20,15"/>
         </DataTemplate>
         
         <DataTemplate DataType="{x:Type ammunition:Ammunition}">
-            <local:AmmunitionControl Ammunition="{Binding}" Margin="0,0,0,15"/>
+            <local:AmmunitionControl Ammunition="{Binding}" Margin="0,0,10,15"/>
         </DataTemplate>
 
     </Page.Resources>
@@ -83,10 +83,16 @@
 
                     <c:SatisfactoryTextBlock Text="Weapon used as Ingredient" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedWeaponAsIngredientInRecipes.Count, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding IngredientsSectionMargin}"/>
                     <CollectionContainer Collection="{Binding Source={StaticResource IngredientCollection}}"/>
-                    
+
                     <c:SatisfactoryTextBlock Text="Ammunition" Style="{StaticResource SmallGroupTextblock}" Visibility="{Binding SelectedWeapon.Ammunitions.Length, Converter={StaticResource IntToVisibilityConverter}}" Margin="{Binding AmmunitionSectionMargin}"/>
-                    <CollectionContainer Collection="{Binding Source={StaticResource AmmunitionCollection}}"/>
-                    
+                    <ItemsControl ItemsSource="{Binding Source={StaticResource AmmunitionCollection}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
                 </CompositeCollection>
             </ItemsControl.ItemsSource>
         </c:VirtualizedItemsControl>

@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <AssemblyName>SatisfactoryCalculator.Controls</AssemblyName>
     <RootNamespace>SatisfactoryCalculator.Controls</RootNamespace>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>

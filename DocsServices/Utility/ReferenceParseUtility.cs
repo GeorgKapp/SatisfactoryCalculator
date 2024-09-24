@@ -7,6 +7,7 @@ internal static class ReferenceParseUtility
 	private const string ArrayOpenTag = "(";
 	private const string ArraySplitTag = ",";
 	private const string ArrayCloseTag = ")";
+	private const string QuotationMark = "\"";
 	private const string ClassReferenceOpenTag = "/";
 	private const string ClassReferenceSplitTag = ".";
 	private const string ClassReferenceCloseTag = "'\"";
@@ -47,6 +48,7 @@ internal static class ReferenceParseUtility
 	{
 		var source = input
 			.Replace(ClassReferenceCloseTag, "")
+			.Replace(QuotationMark, "")
 			.Split(ClassReferenceOpenTag);
 		
 		return source.

@@ -1,10 +1,7 @@
-﻿using System.Diagnostics;
-using System.Windows.Documents;
-using Data.Context;
+﻿using Data.Context;
 using Data.Models.Implementation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using SatisfactoryCalculator.Shared.Models;
 using SatisfactoryCalculator.Shared.Services;
 
@@ -54,170 +51,108 @@ public class FactoryConfigTests
             ImageFolder = imageFolder
         };
     }
-
-    [Fact(DisplayName = "Calculate Factory Config Output for 100 Iron Plates")]
-    public async Task CalculateFactoryConfigOutputFor100IronPlates()
+    
+    [Theory(DisplayName = "Assert Iron Plate recipe list returns correctly")]
+    [InlineData("IronPlate", "IronPlate")]
+    [InlineData("Cable", "Cable")]
+    [InlineData("NuclearFuelRod", "NuclearFuelRod")]
+    public async Task AssertIronPlateRecipeListReturnsCorrectAmount(string itemClassName, string expectedNonAlternateRecipe)
     {
-        var itemClassName = "IronPlate";
-        var amountPerMinute = 100;
+        var recipeList = new List<Recipe>();
+        await CreateAllPossibleRecipesList(itemClassName, recipeList);
+        Assert.True(recipeList.Count > 100); //a lot of recipes should be expected due to alternative recipes creating a very convoluted dependency tree
+        Assert.Contains(recipeList, recipe => !recipe.IsAlternate && recipe.ClassName == expectedNonAlternateRecipe);
+    }
+    
+    /// <param name="itemClassName"></param>
+    /// <param name="allowAltRecipes"></param>
+    /// <param name="expectedRecipes">Format: put recipes in order of recipes to be found. if found recipe dependency has one recipe on the 1st level and 2 on the 2nd level put it in this order 1 (1st) 2(2nd) 3(2nd)</param>
+    [Theory(DisplayName = "Assert Dependency Tree is correct")]
+    [InlineData("IronPlate", false, "IronPlate", "IngotIron")]
+    ////
+    public async Task AssertDependencyTreeCorrect(string itemClassName, bool allowAltRecipes, params string[] expectedRecipes)
+    {
+        var recipeList = new List<Recipe>();
+        await CreateAllPossibleRecipesList(itemClassName, recipeList);
+        
+        if (!allowAltRecipes)
+            recipeList = recipeList.Where(p => !p.IsAlternate).ToList();
 
-        // var usedRecipes = new Dictionary<string, Recipe>();
-        // var recipeTree = await CalculateRecipeTree(itemClassName, usedRecipes);
-
-        var ingredientDic = new Dictionary<string, Recipe[]>();
-        await GetAllPotentialRecipes(itemClassName, ingredientDic);
+        var dependencyTrees = CreateDependencyTree(itemClassName, recipeList)!;
         
-        //put recipes into a dependency tree
-        //first initialize all recipes into a dependency list
-        //second link the dependency list into each other
-        
-        var recipeKeys = ingredientDic.Values.SelectMany(p => p).Select(p => p.ClassName).Distinct().ToArray();
-        var recipesFetched = _context.Recipes.Where(p => recipeKeys.Contains(p.ClassName)).ToArray();
-        
-        var recipeList = new List<RecipeTree>();
-        foreach (var recipe in recipesFetched)
+        foreach (var dependencyTree in dependencyTrees)
         {
-            recipeList.Add(new RecipeTree
-            {
-               Recipe =recipe,
-               DependendOn = new List<RecipeTree>()
-            });
+            var startIndex = 0;
+            RecursivelyAssertDependencyTree(dependencyTree, expectedRecipes, ref startIndex);
         }
-
-        // foreach (var recipeListEntry in recipeList)
-        // {
-        //     foreach (var ingredient in recipeListEntry.Item1.Ingredients)
-        //     {
-        //         foreach (var recipeListPotentialRelatedEntry in recipeList)
-        //         {
-        //             if (recipeListPotentialRelatedEntry.Item1.Products.Any(p => p.ItemClassName == ingredient.ItemClassName))
-        //             {
-        //                 recipeListEntry.Item2.Add(recipeListPotentialRelatedEntry);
-        //             }
-        //         }
-        //     }
-        // }
-        //
-        _ = "";
     }
 
-    [Fact(DisplayName = "2. Calculate Factory Config Output for 100 Iron Plates")]
-    public async Task CalculateFactoryConfigOutputFor100IronPlates2()
+    private void RecursivelyAssertDependencyTree(RecipeDependency recipeDependency, string[] expectedOutput, ref int currentExpectedOutputIndex)
     {
-        var itemClassName = "IronPlate";
-        var recipeList = new List<RecipeWithDependency>();
-        
-        var result = await TestLinking(itemClassName, recipeList);
+        Assert.Equal(expectedOutput[currentExpectedOutputIndex], recipeDependency.ClassName);
+        foreach (var dependency in recipeDependency.Dependencies)
+        {
+            currentExpectedOutputIndex++;
+            RecursivelyAssertDependencyTree(dependency, expectedOutput, ref currentExpectedOutputIndex);
+        }
     }
 
-    private async Task<List<RecipeWithDependency>> TestLinking(string itemClassName, List<RecipeWithDependency> recipeList)
+    public List<RecipeDependency> CreateDependencyTree(string itemClassName, List<Recipe> recipeList)
+    {
+        var recipes = recipeList.Where(recipe => recipe.Products.Any(recipeProduct => recipeProduct.ItemClassName == itemClassName)).ToList();
+
+        if (recipes.Count == 0)
+            return [];
+
+        var recipeDependencies = new List<RecipeDependency>(recipes.Select(recipe => new RecipeDependency(recipe)));
+
+        foreach (var recipeDependency in recipeDependencies)
+            foreach (var ingredient in recipeDependency.Ingredients)
+                recipeDependency.Dependencies.AddRange(CreateDependencyTree(ingredient.ItemClassName, recipeList));
+        
+        return recipeDependencies;
+    }
+
+    public class RecipeDependency : Recipe
+    {
+        public List<RecipeDependency> Dependencies { get; set; } = [];
+        public RecipeDependency(Recipe source)
+        {
+            ClassName = source.ClassName;
+            Buildings = source.Buildings;
+            Ingredients = source.Ingredients;
+            IsAlternate = source.IsAlternate;
+            Products = source.Products;
+            Name = source.Name;
+            ManufactoringDuration = source.ManufactoringDuration;
+            ConstructedInWorkbench = source.ConstructedInWorkbench;
+            ConstructedInWorkshop = source.ConstructedInWorkshop;
+            ManualManufacturingMultiplier = source.ManualManufacturingMultiplier;
+            ManufacturingMenuPriority = source.ManufacturingMenuPriority;
+            ConstructedByBuildGun = source.ConstructedByBuildGun;
+            VariablePowerConsumptionRange = source.VariablePowerConsumptionRange;
+        }
+    }
+    
+    private async Task CreateAllPossibleRecipesList(string itemClassName, ICollection<Recipe> recipeList)
     {
         var recipes = await GetRecipes(itemClassName);
-        var dependencies = new List<RecipeWithDependency>();
-        
         foreach (var recipe in recipes)
         {
-            dependencies.Add(new RecipeWithDependency(recipe));
-        }
-        
-        recipeList.AddRange(dependencies);
-
-        return dependencies;
-    }
-
-    private void TryAddToRecipeList(List<Recipe> recipeList, Recipe recipe)
-    {
-        recipeList.Add(recipe);
-        recipeList = recipeList.DistinctBy(p => p.ClassName).ToList();
-    }
-
-    public class DependencyTree
-    {
-        public Recipe Recipe { get; set; }
-        public List<DependencyTree> Dependencies { get; set; } = new();
-    }
-
-    public class RecipeWithDependency : Recipe
-    {
-        //Dependencies are basically potential recipes related to ingredients
-        public List<RecipeWithDependency> Dependencies { get; set; }
-
-        public RecipeWithDependency(Recipe recipe)
-        {
-            this.ClassName = recipe.ClassName;
-            this.Name = recipe.Name;
-            this.ManualManufacturingMultiplier = recipe.ManualManufacturingMultiplier;
-            this.ManufactoringDuration = recipe.ManufactoringDuration;
-            this.ManufacturingMenuPriority = recipe.ManufacturingMenuPriority;
-            this.ConstructedByBuildGun = recipe.ConstructedByBuildGun;
-            this.ConstructedInWorkshop = recipe.ConstructedInWorkshop;
-            this.ConstructedInWorkbench = recipe.ConstructedInWorkbench;
-            this.IsAlternate = recipe.IsAlternate;
-            this.VariablePowerConsumptionRange = recipe.VariablePowerConsumptionRange;
-            this.Buildings = recipe.Buildings;
-            this.Ingredients = recipe.Ingredients;
-            this.Products = recipe.Products;
-
-            Dependencies = new List<RecipeWithDependency>();
-        }
-    }
-
-    public async Task GetAllPotentialRecipes(string itemClassName, Dictionary<string, Recipe[]> ingredientDic)
-    {
-        var recipes = await GetRecipes(itemClassName);
-
-        ingredientDic.TryAdd(itemClassName, []);
-        ingredientDic[itemClassName] = recipes;
-
-        foreach (var recipe in recipes)
-        {
-            foreach (var ingredient in recipe.Ingredients)
-            {
-               if(ingredientDic.ContainsKey(ingredient.ItemClassName))
-                   continue;
-               
-               await GetAllPotentialRecipes(ingredient.ItemClassName, ingredientDic);
-            }
-        }
-    }
-
-    public async Task<List<RecipeTree>> CalculateRecipeTree(string itemClassName, Dictionary<string, Recipe> usedRecipes)
-    {
-        var recipes = await GetRecipes(itemClassName);
-        
-        var recipeTrees = new List<RecipeTree>();
-        foreach (var recipe in recipes)
-        {
-            if (!usedRecipes.TryAdd(recipe.ClassName, recipe))
+            if (recipeList.Any(p => p.ClassName == recipe.ClassName)) 
                 continue;
-
-            var recipeTreeDependencies = new List<RecipeTree>();
-            foreach (var ingredient in recipe.Ingredients)
-            {
-                recipeTreeDependencies.AddRange(await CalculateRecipeTree(ingredient.ItemClassName, usedRecipes));
-            }
             
-            recipeTrees.Add(new RecipeTree
-            {
-                Recipe = recipe,
-                DependendOn = recipeTreeDependencies
-            });
+            recipeList.Add(recipe);
+            foreach (var ingredient in recipe.Ingredients)
+                await CreateAllPossibleRecipesList(ingredient.ItemClassName, recipeList);
         }
-
-        return recipeTrees;
     }
-
-    private async Task<Recipe[]> GetRecipes(string itemClassName) =>
+    
+    private async Task<Recipe[]> GetRecipes(string itemClassName, bool includeAlternates = true) =>
         await _context.Recipes
-            .Where(recipe => recipe.Products.Any(recipeProduct => recipeProduct.ItemClassName == itemClassName))
+            .Where(recipe => recipe.Products.Any(recipeProduct => recipeProduct.ItemClassName == itemClassName) && (includeAlternates || !recipe.IsAlternate))
             .Include(p => p.Buildings)
             .Include(p => p.Ingredients)
             .Include(p => p.Products)
             .ToArrayAsync();
-
-    public class RecipeTree
-    {
-        public Recipe Recipe { get; set; }
-        public List<RecipeTree> DependendOn { get; set; }
-    }
 }
